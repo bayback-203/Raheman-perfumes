@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-const SUFFIX = 'REHMAN PERFUME'
+const SUFFIX = 'RAHEMAN PERFUMES'
 
 /** Set the tab title. Every screen names itself, so a wall of tabs is readable. */
 export function useDocumentTitle(title) {

@@ -13,7 +13,7 @@ export function PageHeader({ title, description, actions, className }) {
   const { pathname } = useLocation()
   const entry = navEntryFor(pathname)
 
-  const heading = title ?? entry?.label ?? 'Rehman Admin'
+  const heading = title ?? entry?.label ?? 'Raheman Admin'
 
   return (
     <header

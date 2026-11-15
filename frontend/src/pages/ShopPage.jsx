@@ -89,7 +89,7 @@ function ShopCatalogue({ title, subtitle, initialFilters, collection }) {
         className="mb-10"
         eyebrow="Direct Sourcing"
         title="Every bottle comes with its original batch code."
-        body="We buy only from official suppliers, never third-party resellers. Every order has a Rehman seal, and you can check the batch code on the brand's website."
+        body="We buy only from official suppliers, never third-party resellers. Every order has a Raheman Perfumes seal, and you can check the batch code on the brand's website."
         to="/pages/about"
         cta="How We Source"
         tier="Original"

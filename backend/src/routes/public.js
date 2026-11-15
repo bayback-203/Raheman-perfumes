@@ -226,7 +226,7 @@ router.post(
 
     const result = await sendLoggedEmail({
       to: adminEmail,
-      recipientName: 'Rehman Perfume Admin',
+      recipientName: 'Raheman Perfumes Admin',
       replyTo: email,
       replyToName: name,
       kind: 'contact-message',

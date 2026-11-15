@@ -36,8 +36,8 @@ export function resolveBrevoSender(emailCfg = {}, store = {}) {
       .find((item) => item && item !== PLACEHOLDER_SENDER && item.includes('@')) || ''
 
   const name =
-    String(config.brevo.senderName || emailCfg.fromName || store.name || 'Rehman Perfume').trim() ||
-    'Rehman Perfume'
+    String(config.brevo.senderName || emailCfg.fromName || store.name || 'Raheman Perfumes').trim() ||
+    'Raheman Perfumes'
 
   return { email, name }
 }
@@ -117,7 +117,7 @@ export async function sendViaBrevo({
   }
 
   const body = {
-    sender: { name: senderName || 'Rehman Perfume', email: senderEmail },
+    sender: { name: senderName || 'Raheman Perfumes', email: senderEmail },
     to: [{ email: to, name: recipientName || to }],
     subject,
     ...(replyTo ? { replyTo: { email: replyTo, name: replyToName || replyTo } } : {}),

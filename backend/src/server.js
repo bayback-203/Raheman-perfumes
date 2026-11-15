@@ -27,7 +27,7 @@ try {
 
 const app = createApp()
 const server = app.listen(config.port, () => {
-  console.log(`\n  Rehman Perfume API — ${config.nodeEnv}`)
+  console.log(`\n  Raheman Perfumes API — ${config.nodeEnv}`)
   console.log(`  http://localhost:${config.port}/api/health`)
   console.log(`  CORS: ${config.corsOrigins.join(', ')}`)
   /**

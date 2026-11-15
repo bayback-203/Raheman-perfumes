@@ -12,7 +12,7 @@ import { adminApi } from '@/services/adminApi'
  * the same identity `services/settings.js` falls back to on the server.
  */
 const FALLBACK_STORE = {
-  name: 'Rehman Perfume House',
+  name: 'Raheman Perfumes',
   address: '',
   phone: '+91 98201 12345',
 }

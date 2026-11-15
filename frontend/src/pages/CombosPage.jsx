@@ -25,7 +25,7 @@ export function CombosPage() {
     pageSize: 24,
   })
 
-  useDocumentTitle('Perfume Combos & Gift Sets | Rehman Perfume')
+  useDocumentTitle('Perfume Combos & Gift Sets | Raheman Perfumes')
 
   return (
     <>

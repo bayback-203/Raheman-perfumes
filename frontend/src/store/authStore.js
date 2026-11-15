@@ -230,7 +230,7 @@ export const useAuthStore = create(
         })
         return {
           ok: true,
-          message: `Welcome to Rehman, ${session.user?.name ?? 'friend'}.`,
+          message: `Welcome to Raheman Perfumes, ${session.user?.name ?? 'friend'}.`,
           requiresEmailVerification: session.requiresEmailVerification,
           emailDelivered: session.emailDelivered,
           emailProvider: session.emailProvider,

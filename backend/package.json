@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "REHMAN PERFUME — API: Express + MongoDB (data) + Cloudinary (files and images)",
+  "description": "RAHEMAN PERFUMES — API: Express + MongoDB (data) + Cloudinary (files and images)",
   "main": "src/server.js",
   "engines": {
     "node": ">=20"

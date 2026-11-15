@@ -509,8 +509,8 @@ export function adminOrder(doc) {
 const STAGE_ICONS = ['check', 'flask', 'truck', 'scooter', 'mail']
 const STAGE_DESCRIPTIONS = [
   'Payment verified & order confirmed.',
-  'Packed, checked and sealed by Rehman Perfume.',
-  'Sent out from Rehman Perfume.',
+  'Packed, checked and sealed by Raheman Perfumes.',
+  'Sent out from Raheman Perfumes.',
   'Courier on the way in safe heat-protected packing.',
   'Handed over at your doorstep with tamper-safe seal.',
 ]

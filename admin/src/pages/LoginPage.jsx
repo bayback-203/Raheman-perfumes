@@ -55,7 +55,7 @@ export default function LoginPage() {
       setPassword(secret)
 
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(address)) {
-        setLocalError('Enter a complete email address, like you@rehmanperfume.in.')
+        setLocalError('Enter a complete email address, like you@rahemanperfumes.in.')
         return
       }
       if (!secret) {
@@ -149,7 +149,7 @@ export default function LoginPage() {
               <Icon name="flask" className="w-4 h-4" />
             </span>
             <div>
-              <p className="font-serif text-xl leading-none text-ink">Rehman Perfume</p>
+              <p className="font-serif text-xl leading-none text-ink">Raheman Perfumes</p>
               <p className="text-[11px] uppercase tracking-[0.18em] text-ink-muted mt-1">
                 Store Administration
               </p>
@@ -277,7 +277,7 @@ export default function LoginPage() {
                 autoFocus
                 value={forgotEmail}
                 onChange={edited(setForgotEmail)}
-                placeholder="ayaan@rehmanperfume.in"
+                placeholder="ayaan@rahemanperfumes.in"
               />
 
               <Button

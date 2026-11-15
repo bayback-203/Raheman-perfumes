@@ -86,7 +86,7 @@ export function AppPreloader({ children }) {
 
           <div className="relative z-10 flex flex-col items-center text-center px-4">
             <span className="font-serif text-3xl sm:text-4xl tracking-[0.25em] font-semibold text-white animate-pulse">
-              REHMAN
+              RAHEMAN
             </span>
             <div className="mt-2 flex items-center gap-3 text-[9px] uppercase tracking-[0.45em] text-[#D8B878]">
               <span className="h-px w-6 bg-[#D8B878]/60" />

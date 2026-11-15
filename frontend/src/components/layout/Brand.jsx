@@ -8,7 +8,7 @@ export function Logo({ tone = 'dark', className, onClick }) {
     <Link
       to="/"
       onClick={onClick}
-      aria-label="Rehman Perfume — home"
+      aria-label="Raheman Perfumes — home"
       className={cn('group flex flex-col leading-none', className)}
     >
       <span
@@ -18,7 +18,7 @@ export function Logo({ tone = 'dark', className, onClick }) {
           'group-hover:text-brand-goldDark',
         )}
       >
-        REHMAN
+        RAHEMAN
       </span>
       <span
         className={cn(

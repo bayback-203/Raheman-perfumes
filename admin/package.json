@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "REHMAN PERFUME — staff and admin panel (React + Vite + Tailwind)",
+  "description": "RAHEMAN PERFUMES — staff and admin panel (React + Vite + Tailwind)",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

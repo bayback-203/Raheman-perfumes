@@ -355,7 +355,7 @@ export function SignInPage() {
       <div className="relative hidden overflow-hidden bg-neutral-100 lg:block">
         <img
           src="/signin-atelier.jpg"
-          alt="Rehman Perfume glass bottle with oud wood, saffron, and jasmine on stone"
+          alt="Raheman Perfumes glass bottle with oud wood, saffron, and jasmine on stone"
           loading="eager"
           decoding="async"
           className="absolute inset-0 h-full w-full object-cover object-center"
@@ -497,7 +497,7 @@ export function SignInPage() {
             </form>
 
             <p className="mt-6 text-body-sm text-brand-muted text-center">
-              New to Rehman?{' '}
+              New to Raheman Perfumes?{' '}
               <button
                 type="button"
                 onClick={() => switchMode('register')}

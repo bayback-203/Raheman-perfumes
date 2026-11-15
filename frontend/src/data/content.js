@@ -58,7 +58,7 @@ export const FOOTER_COLUMNS = [
     id: 'house',
     title: 'Our Shop',
     links: [
-      { label: 'About Rehman', to: '/pages/about' },
+      { label: 'About Raheman Perfumes', to: '/pages/about' },
       { label: 'Our Perfume Makers', to: '/pages/perfumers' },
       { label: 'Perfume Guides', to: '/pages/journal' },
       { label: 'Privacy Policy', to: '/pages/privacy' },
@@ -69,9 +69,9 @@ export const FOOTER_COLUMNS = [
 ]
 
 export const SOCIAL_LINKS = [
-  { id: 'instagram', label: 'Instagram', handle: '@rehmanperfume', icon: 'instagram', href: 'https://instagram.com' },
+  { id: 'instagram', label: 'Instagram', handle: '@rahemanperfumes', icon: 'instagram', href: 'https://instagram.com' },
   { id: 'whatsapp', label: 'WhatsApp', handle: 'Chat with a perfumer', icon: 'whatsapp', href: 'https://wa.me/919820112345' },
-  { id: 'facebook', label: 'Facebook', handle: 'Rehman Perfume', icon: 'facebook', href: 'https://facebook.com' },
+  { id: 'facebook', label: 'Facebook', handle: 'Raheman Perfumes', icon: 'facebook', href: 'https://facebook.com' },
 ]
 
 export const PAYMENT_BADGES = ['UPI', 'VISA', 'Mastercard', 'RuPay', 'Net Banking', 'COD']
@@ -184,12 +184,12 @@ export const WHY_SHOP = [
 ]
 
 export const INSTAGRAM_POSTS = [
-  { id: 'ig-1', caption: '#UnboxingRehman', handle: '@rehmanperfume', likes: 1240 },
-  { id: 'ig-2', caption: '#SignatureScent', handle: '@rehmanperfume', likes: 892 },
-  { id: 'ig-3', caption: '#FrenchOils', handle: '@rehmanperfume', likes: 1567 },
-  { id: 'ig-4', caption: '#ScentOfTheDay', handle: '@rehmanperfume', likes: 2103 },
-  { id: 'ig-5', caption: '#LuxuryBottle', handle: '@rehmanperfume', likes: 1108 },
-  { id: 'ig-6', caption: '#OudCollection', handle: '@rehmanperfume', likes: 1732 },
+  { id: 'ig-1', caption: '#UnboxingRaheman', handle: '@rahemanperfumes', likes: 1240 },
+  { id: 'ig-2', caption: '#SignatureScent', handle: '@rahemanperfumes', likes: 892 },
+  { id: 'ig-3', caption: '#FrenchOils', handle: '@rahemanperfumes', likes: 1567 },
+  { id: 'ig-4', caption: '#ScentOfTheDay', handle: '@rahemanperfumes', likes: 2103 },
+  { id: 'ig-5', caption: '#LuxuryBottle', handle: '@rahemanperfumes', likes: 1108 },
+  { id: 'ig-6', caption: '#OudCollection', handle: '@rahemanperfumes', likes: 1732 },
 ]
 
 /** Delivery methods offered at checkout. */
@@ -226,7 +226,7 @@ export const HOME_FAQ = [
     id: 'authentic',
     question: 'How do I know the original perfumes are genuine?',
     answer:
-      'Every original bottle ships with its batch code so you can check it on the brand\u2019s website. We buy directly from official distributors \u2014 never from resellers \u2014 and each order comes with a Rehman authenticity seal.',
+      'Every original bottle ships with its batch code so you can check it on the brand\u2019s website. We buy directly from official distributors \u2014 never from resellers \u2014 and each order comes with a Raheman Perfumes authenticity seal.',
   },
   {
     id: 'inspired',
@@ -259,7 +259,7 @@ export const NEWSLETTER = {
 export const HOUSE_BLURB =
   'Hand-blending fine perfumes from rare oils and traditional Indian methods.'
 
-export const COPYRIGHT = '© 2026 REHMAN PERFUME. All rights reserved. Registered trademark.'
+export const COPYRIGHT = '© 2026 RAHEMAN PERFUMES. All rights reserved. Registered trademark.'
 export const TAGLINE = 'Hand-blended with \u2665 for perfume lovers across India.'
 
 export default MAIN_NAV

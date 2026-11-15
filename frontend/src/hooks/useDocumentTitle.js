@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-const BASE_TITLE = 'Rehman Perfume'
+const BASE_TITLE = 'Raheman Perfumes'
 
 /** Sets `document.title`, restoring the previous one on unmount. */
 export function useDocumentTitle(title, { suffix = true } = {}) {

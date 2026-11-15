@@ -133,7 +133,7 @@ const PAGES = {
         heading: 'About Our Perfumes',
         items: [
           { title: 'What is the difference between Original, Inspired and Mixed?', body: 'Original bottles are genuine branded perfumes bought directly from official distributors, with batch codes you can verify. Inspired perfumes are our own versions of famous designer scents, made at 30–35% oil strength. Mixed blends are our in-house custom layers of two or more scents.' },
-          { title: 'How long does a Rehman perfume last on skin?', body: 'Our own perfumes use 30–35% pure perfume oil instead of the usual 15–20%. Expect 8–12 hours on skin and even longer on clothes. One or two sprays are enough.' },
+          { title: 'How long does a Raheman perfume last on skin?', body: 'Our own perfumes use 30–35% pure perfume oil instead of the usual 15–20%. Expect 8–12 hours on skin and even longer on clothes. One or two sprays are enough.' },
           { title: 'What is an attar, and how is it different?', body: 'An attar is an alcohol-free oil perfume made with pure natural oils like sandalwood or jojoba. Apply a little with the glass stick instead of spraying — it stays warm and lasts for hours.' },
           { title: 'Will an Inspired blend smell like the original?', body: 'It smells very close right from the first spray because it uses matching scent oils. Slight differences can appear hours later since brands use locked formulas, but you get the same feel at a much better price.' },
         ],
@@ -213,7 +213,7 @@ const PAGES = {
         kind: 'cards',
         items: [
           { icon: 'phone', image: '/care-concierge.jpg', title: 'Call Or WhatsApp', body: '+91 98201 12345 · Monday to Saturday, 10:00 AM–7:00 PM' },
-          { icon: 'mail', image: '/signin-atelier.jpg', title: 'Email', body: 'atelier@rehmanperfume.in · replies within one working day' },
+          { icon: 'mail', image: '/signin-atelier.jpg', title: 'Email', body: 'atelier@rahemanperfumes.in · replies within one working day' },
         ],
       },
       {
@@ -230,7 +230,7 @@ const PAGES = {
 
   about: {
     eyebrow: 'Our Shop',
-    title: 'About Rehman Perfume',
+    title: 'About Raheman Perfumes',
     subtitle:
       'One shop offering genuine branded perfumes, long-lasting inspired blends, and traditional pure attars.',
     updated: '2026-08-01',
@@ -239,7 +239,7 @@ const PAGES = {
         kind: 'prose',
         heading: 'Our Story',
         body: [
-          'Rehman Perfume started with a simple collection of pure attars and one clear promise: test every bottle for quality before selling it, and only sell scents we are proud of.',
+          'Raheman Perfumes started with a simple collection of pure attars and one clear promise: test every bottle for quality before selling it, and only sell scents we are proud of.',
           'Today we bring together small-batch inspired blends, genuine designer perfumes, and traditional Kannauj attars.',
         ],
       },
@@ -275,18 +275,18 @@ const PAGES = {
   perfumers: {
     eyebrow: 'Our Team',
     title: 'Our Perfume Makers',
-    subtitle: 'Meet the people who make, test and check every blend at Rehman Perfume.',
+    subtitle: 'Meet the people who make, test and check every blend at Raheman Perfumes.',
     updated: '2026-08-01',
     sections: [
       {
         kind: 'team',
         items: [
           {
-            name: 'Imran Rehman',
+            name: 'Imran Raheman',
             role: 'Founder & Head Maker',
             initials: 'IR',
             specialty: 'Oud, amber, leather',
-            bio: 'Imran started Rehman Perfume with a simple goal: every attar and strong perfume should get the same care and quality check. He checks every oud batch himself.',
+            bio: 'Imran started Raheman Perfumes with a simple goal: every attar and strong perfume should get the same care and quality check. He checks every oud batch himself.',
           },
           {
             name: 'Meera Nair',
@@ -419,7 +419,7 @@ const PAGES = {
         kind: 'faq',
         heading: 'Your Rights',
         items: [
-          { title: 'How do I see what you hold about me?', body: 'Write to atelier@rehmanperfume.in from your registered email address and we will send a full export of your account data within 30 days.' },
+          { title: 'How do I see what you hold about me?', body: 'Write to atelier@rahemanperfumes.in from your registered email address and we will send a full export of your account data within 30 days.' },
           { title: 'How do I delete my account?', body: 'The same address, and the same 30 days. Order records required for tax and warranty purposes are retained for the statutory period, with everything else removed.' },
           { title: 'Do you market to me without asking?', body: 'Never. Promotional and new stock emails are sent only if you opt in, and every email has an easy unsubscribe link.' },
         ],
@@ -430,7 +430,7 @@ const PAGES = {
   terms: {
     eyebrow: 'Legal',
     title: 'Terms of Service',
-    subtitle: 'Simple terms for shopping at Rehman Perfume.',
+    subtitle: 'Simple terms for shopping at Raheman Perfumes.',
     updated: '2026-08-01',
     sections: [
       {
@@ -453,7 +453,7 @@ const PAGES = {
         heading: 'Genuine Products & Brand Names',
         body: [
           'Original branded bottles sold here are 100% genuine items from official suppliers. Brand names used on inspired blends are only to explain the scent style — our inspired bottles are our own products.',
-          'All Rehman Perfume logos, bottle images, and descriptions belong to us.',
+          'All Raheman Perfumes logos, bottle images, and descriptions belong to us.',
         ],
       },
       {

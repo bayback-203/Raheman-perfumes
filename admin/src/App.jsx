@@ -98,7 +98,7 @@ export function AppRoutes() {
 function Splash() {
   return (
     <div className="min-h-screen bg-shell-obsidian grid place-items-center">
-      <p className="font-serif text-lg text-shell-ink/70 animate-pulse">Rehman Perfume</p>
+      <p className="font-serif text-lg text-shell-ink/70 animate-pulse">Raheman Perfumes</p>
     </div>
   )
 }

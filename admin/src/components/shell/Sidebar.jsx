@@ -161,7 +161,7 @@ export function Sidebar() {
             </span>
             <span className={cn('flex flex-col overflow-hidden', labelCls)}>
               <span className="truncate font-serif text-headline-sm font-semibold uppercase tracking-wider text-white">
-                Rehman
+                Raheman Perfumes
               </span>
               <span className="text-label-sm font-bold uppercase tracking-[0.2em] text-brand-gold">
                 Admin Panel

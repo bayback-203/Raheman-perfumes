@@ -194,7 +194,7 @@ export function OffersPage() {
           <SectionHeading
             eyebrow="Limited Stock"
             title="Special Offer Deals"
-            subtitle="Selected perfumes added to offers by Rehman Perfume while stock lasts."
+            subtitle="Selected perfumes added to offers by Raheman Perfumes while stock lasts."
           />
 
           <Tabs className="mt-8" value={tab} onChange={setTab} tabs={OFFER_TABS} />

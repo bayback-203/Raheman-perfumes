@@ -237,7 +237,7 @@ export function Topbar() {
               </span>
               <span className="hidden flex-col items-start leading-tight lg:flex">
                 <span className="text-label-lg font-semibold text-ink">
-                  {user?.name ?? 'Rehman Perfume'}
+                  {user?.name ?? 'Raheman Perfumes'}
                 </span>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-ink-muted">
                   {ROLE_LABEL[user?.role] ?? 'Staff'}
@@ -248,7 +248,7 @@ export function Topbar() {
             {openMenu === 'user' && (
               <div className="absolute right-0 top-[calc(100%+6px)] w-64 overflow-hidden rounded border border-outline-variant bg-brand-paper py-1 shadow-overlay">
                 <div className="px-3 py-2">
-                  <p className="text-body-sm font-semibold text-ink">{user?.name ?? 'Rehman Perfume'}</p>
+                  <p className="text-body-sm font-semibold text-ink">{user?.name ?? 'Raheman Perfumes'}</p>
                   <p className="text-body-sm text-ink-muted">
                     {user?.email || 'Staff account'}
                   </p>

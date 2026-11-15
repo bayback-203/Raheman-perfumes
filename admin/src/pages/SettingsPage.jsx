@@ -209,7 +209,7 @@ function EmailSetupPanel({ email = {}, canEdit, onSaved }) {
     port: 587,
     user: '',
     pass: '',
-    fromName: 'Rehman Perfume',
+    fromName: 'Raheman Perfumes',
     fromEmail: '',
   })
   const [testTo, setTestTo] = useState('')
@@ -222,7 +222,7 @@ function EmailSetupPanel({ email = {}, canEdit, onSaved }) {
       port: email?.port ?? 587,
       user: email?.user ?? '',
       pass: email?.hasPassword ? '••••••••' : '',
-      fromName: email?.fromName ?? 'Rehman Perfume',
+      fromName: email?.fromName ?? 'Raheman Perfumes',
       fromEmail: email?.fromEmail ?? '',
     })
   }, [email])
@@ -312,7 +312,7 @@ function EmailSetupPanel({ email = {}, canEdit, onSaved }) {
         />
         <Input
           label="Sender Name"
-          placeholder="Rehman Perfume"
+          placeholder="Raheman Perfumes"
           value={draft.fromName}
           disabled={!canEdit}
           onChange={(e) => set({ fromName: e.target.value })}

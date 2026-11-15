@@ -24,7 +24,7 @@ import { useDocumentTitle } from '@/hooks/useDocumentTitle'
  * and trust proof.
  */
 export function HomePage() {
-  useDocumentTitle('Rehman Perfume — Original Perfumes, Attars & Combos')
+  useDocumentTitle('Raheman Perfumes — Original Perfumes, Attars & Combos')
   const refreshShowcase = useCatalogueStore((state) => state.refreshShowcase)
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export function HomePage() {
     script.text = JSON.stringify({
       '@context': 'https://schema.org',
       '@type': 'Store',
-      name: 'Rehman Perfume',
+      name: 'Raheman Perfumes',
       description: HOUSE_BLURB,
       address: {
         '@type': 'PostalAddress',

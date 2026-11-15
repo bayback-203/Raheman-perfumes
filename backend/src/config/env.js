@@ -144,7 +144,7 @@ export const config = {
   brevo: {
     apiKey: str('BREVO_API_KEY'),
     senderEmail: str('BREVO_SENDER_EMAIL'),
-    senderName: str('BREVO_SENDER_NAME', 'Rehman Perfume'),
+    senderName: str('BREVO_SENDER_NAME', 'Raheman Perfumes'),
     adminNotificationEmail: str('ADMIN_NOTIFICATION_EMAIL', 'pratikdash9938@gmail.com'),
   },
 }

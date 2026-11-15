@@ -672,7 +672,7 @@ export function OrderTrackingPage() {
 
                 <div className="flex items-center gap-2 text-xs text-brand-muted">
                   <Icon name="shield" className="h-3.5 w-3.5 text-emerald-700" />
-                  <span>{tracking.sealNote || 'Authentic Sealed Rehman Fragrance'}</span>
+                  <span>{tracking.sealNote || 'Authentic Sealed Raheman Perfumes Fragrance'}</span>
                 </div>
               </div>
 

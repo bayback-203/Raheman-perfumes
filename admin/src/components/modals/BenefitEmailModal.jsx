@@ -269,7 +269,7 @@ export function BenefitEmailModal({ open, onClose, target = null, bulkRecipients
             rows={2}
             value={customMessage}
             onChange={(event) => setCustomMessage(event.target.value)}
-            placeholder="Thank you for visiting Rehman Perfume! Enjoy this special discount on your next bottle."
+            placeholder="Thank you for visiting Raheman Perfumes! Enjoy this special discount on your next bottle."
           />
         </div>
       )}
