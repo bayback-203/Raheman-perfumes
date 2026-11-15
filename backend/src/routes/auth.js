@@ -146,10 +146,17 @@ router.get(
   authLimiter,
   asyncHandler(async (req, res) => {
     const next = safeNext(req.query.next ?? '/account')
+    const referer = req.get('referer')
+    let origin = null
+    if (referer) {
+      try {
+        origin = new URL(referer).origin
+      } catch { }
+    }
     if (!oauth.googleEnabled()) {
       return bounceBack(res, 'not_configured', { next, req })
     }
-    res.redirect(302, oauth.authorizationUrl({ next }))
+    res.redirect(302, oauth.authorizationUrl({ next, origin }))
   }),
 )
 
@@ -170,7 +177,7 @@ router.get(
     }
 
     try {
-      const { user, customer, next } = await oauth.completeSignIn({ code, state })
+      const { user, customer, next, origin } = await oauth.completeSignIn({ code, state })
       /*
        * The cookie is set on the *response to Google's redirect into the API*,
        * and this is a top-level navigation on the API's own origin — so the
@@ -179,7 +186,8 @@ router.get(
        * route sets it on, so the two flows cannot drift apart.
        */
       setSessionCookie(res, signToken(user))
-      return res.redirect(302, `${storefrontOrigin(req)}${next}`)
+      const targetOrigin = origin || storefrontOrigin(req)
+      return res.redirect(302, `${targetOrigin}${next}`)
     } catch (error) {
       if (error.status && error.status < 500) {
         return bounceBack(res, reasonFor(error))

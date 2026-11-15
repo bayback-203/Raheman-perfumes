@@ -87,20 +87,22 @@ export function signToken(user, { absoluteExpiry } = {}) {
       ? (config.staffSessionDays || 7) * 24 * 60 * 60 * 1000
       : config.sessionIdleHours * 60 * 60 * 1000
 
+    const isCrossDomain = config.isProduction || config.cookieSecure
     res.cookie(config.sessionCookie, token, {
       httpOnly: true,
-      sameSite: 'lax',
-      secure: config.cookieSecure,
+      sameSite: isCrossDomain ? 'none' : 'lax',
+      secure: isCrossDomain ? true : config.cookieSecure,
       maxAge: maxAgeMs,
       path: '/',
     })
   }
 
   export function clearSessionCookie(res) {
+    const isCrossDomain = config.isProduction || config.cookieSecure
     res.clearCookie(config.sessionCookie, {
       httpOnly: true,
-      sameSite: 'lax',
-      secure: config.cookieSecure,
+      sameSite: isCrossDomain ? 'none' : 'lax',
+      secure: isCrossDomain ? true : config.cookieSecure,
       path: '/',
     })
   }

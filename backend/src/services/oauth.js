@@ -84,7 +84,7 @@ function assertConfigured() {
  * audience so a session token can never be replayed here as a state (or the
  * reverse) even though both are JWTs from this server.
  */
-function issueState({ next = '/account', link = null } = {}) {
+function issueState({ next = '/account', link = null, origin = null } = {}) {
   /*
    * `link` is how "connect my existing account" is expressed. It carries the
    * *user id* of the signed-in account whose Google identity is being attached,
@@ -92,19 +92,23 @@ function issueState({ next = '/account', link = null } = {}) {
    * cannot be edited by whoever receives the link. A link-flow state is minted
    * only by an already-authenticated request — see `linkUrl`.
    */
-  return jwt.sign({ n: crypto.randomBytes(16).toString('hex'), next, link }, config.jwtSecret, {
+  return jwt.sign({ n: crypto.randomBytes(16).toString('hex'), next, link, origin }, config.jwtSecret, {
     expiresIn: STATE_TTL,
     audience: 'rehman:oauth:state',
   })
 }
 
-/** Read it back, or refuse. Returns `{ next, link }`. */
+/** Read it back, or refuse. Returns `{ next, link, origin }`. */
 function readState(state) {
   try {
     const payload = jwt.verify(String(state ?? ''), config.jwtSecret, {
       audience: 'rehman:oauth:state',
     })
-    return { next: safeNext(payload.next), link: payload.link ? String(payload.link) : null }
+    return {
+      next: safeNext(payload.next),
+      link: payload.link ? String(payload.link) : null,
+      origin: payload.origin ? String(payload.origin) : null,
+    }
   } catch {
     throw unauthorized('That sign-in link has expired or was tampered with. Please start again.')
   }
@@ -324,8 +328,8 @@ export async function userFromGoogle(identity, { link = null } = {}) {
 /* ───────────────────────────────────────────────────────────────── urls ──── */
 
 /** Where to send the browser to start signing in. */
-export function authorizationUrl({ next = '/account' } = {}) {
-  return authorizationUrlWithState(issueState({ next }))
+export function authorizationUrl({ next = '/account', origin = null } = {}) {
+  return authorizationUrlWithState(issueState({ next, origin }))
 }
 
 /** Where to send a signed-in patron who is attaching Google to their account. */
@@ -363,7 +367,7 @@ function authorizationUrlWithState(state) {
 export async function completeSignIn({ code, state }) {
   assertConfigured()
 
-  const { next, link } = readState(state)
+  const { next, link, origin } = readState(state)
   const value = String(code ?? '').trim()
   if (!value) throw unauthorized('Google did not return an authorization code. Please try again.')
 
@@ -377,7 +381,7 @@ export async function completeSignIn({ code, state }) {
 
   const identity = await identityFrom(tokens, value)
   const { user, customer, linked } = await userFromGoogle(identity, { link })
-  return { user, customer, next, linked: Boolean(link) || linked }
+  return { user, customer, next, linked: Boolean(link) || linked, origin }
 }
 
 /**

@@ -41,7 +41,7 @@ export const API_ORIGIN = /^https?:\/\//i.test(BASE_URL) ? BASE_URL.replace(/\/a
 /** Absolute, navigable URL for a backend path. */
 export function apiUrl(path) {
   const suffix = path.startsWith('/') ? path : `/${path}`
-  return `${API_ORIGIN}${BASE_URL}${suffix}`
+  return `${BASE_URL}${suffix}`
 }
 
 /**
