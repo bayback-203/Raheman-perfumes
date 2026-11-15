@@ -35,6 +35,7 @@ export function AppPreloader({ children }) {
       '/pillar-originals.jpg?v=2',
       '/pillar-inspired.jpg?v=2',
       '/pillar-attars.jpg?v=2',
+      '/pillar-combos.jpg?v=2',
     ]
 
     const startTime = Date.now()

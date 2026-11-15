@@ -141,6 +141,9 @@ export function OffersPage() {
           product.collections?.includes('attars')
         )
       }
+      if (tab === 'combos') {
+        return product.tier === 'Combo' || product.collections?.includes('combos')
+      }
       return false
     })
   }, [offerProducts, tab])

@@ -12,9 +12,15 @@ const COLLECTION_RULES = {
   men: { filters: { gender: ['Men'] }, title: "Men's Perfumes" },
   women: { filters: { gender: ['Women'] }, title: "Women's Perfumes" },
   unisex: { filters: { gender: ['Unisex'] }, title: 'Unisex Signatures' },
+  original: { filters: { tier: ['Original'] }, title: 'Original Branded Perfumes' },
   originals: { filters: { tier: ['Original'] }, title: 'Original Branded Perfumes' },
   inspired: { filters: { tier: ['Inspired', 'Mixed'] }, title: 'Inspired & Mixing Perfumes' },
-  attars: { filters: { family: ['Oriental & Amber'] }, title: 'Pure Attars & Oils' },
+  mixing: { filters: { tier: ['Mixed'] }, title: 'Mixing Perfumes' },
+  mixed: { filters: { tier: ['Mixed'] }, title: 'Mixing Perfumes' },
+  attar: { filters: { tier: ['Attar'] }, title: 'Pure Attars & Oils' },
+  attars: { filters: { tier: ['Attar'] }, title: 'Pure Attars & Oils' },
+  combo: { filters: { tier: ['Combo'] }, title: 'Combos & Gift Sets' },
+  combos: { filters: { tier: ['Combo'] }, title: 'Combos & Gift Sets' },
   'best-sellers': { filters: {}, title: 'Bestsellers' },
 }
 

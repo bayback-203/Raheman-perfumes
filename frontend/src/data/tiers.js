@@ -36,6 +36,28 @@ export const TIERS = {
     border: 'border-tier-mixed/25',
     solid: 'bg-tier-mixed text-white',
   },
+  Attar: {
+    id: 'Attar',
+    label: 'Pure Attar',
+    tagline: 'Alcohol-Free Oil',
+    description:
+      'Pure concentrated perfume oils, distilled rose, oud and musks crafted without alcohol.',
+    text: 'text-amber-800',
+    surface: 'bg-amber-50',
+    border: 'border-amber-700/25',
+    solid: 'bg-amber-800 text-white',
+  },
+  Combo: {
+    id: 'Combo',
+    label: 'Combo Sets',
+    tagline: 'Curated 2-Pack Sets',
+    description:
+      'Specially paired perfume combos and gift box sets curated by our fragrance atelier.',
+    text: 'text-emerald-800',
+    surface: 'bg-emerald-50',
+    border: 'border-emerald-700/25',
+    solid: 'bg-emerald-800 text-white',
+  },
 }
 
 /** Extra merchandising flags that sit beside the tier badge. */

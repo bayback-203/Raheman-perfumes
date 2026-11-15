@@ -175,8 +175,8 @@ export function Hero() {
               Shop The Collection
               <Icon name="arrow-right" className="h-4 w-4" />
             </Button>
-            <Button variant="outline" size="lg" to="/shop/attars">
-              Pure Attars
+            <Button variant="outline" size="lg" to="/combos">
+              Combos
             </Button>
           </div>
         </div>
@@ -265,7 +265,7 @@ export function Pillars() {
           and CTA together, and `overflow-hidden` would crop the button off.
           Below `xl` the cards keep a natural height instead; they are still
           uniform, because grid stretches every card in a row to the tallest. */}
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5 xl:gap-6">
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-4 xl:gap-5">
         {PILLARS.map((pillar) => (
           <Link
             key={pillar.id}

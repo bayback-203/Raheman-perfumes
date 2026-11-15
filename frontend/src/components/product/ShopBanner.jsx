@@ -7,6 +7,7 @@ const BANNER_IMAGES = {
   originals: '/pillar-originals.jpg?v=2',
   inspired: '/pillar-inspired.jpg?v=2',
   attars: '/pillar-attars.jpg?v=2',
+  combos: '/pillar-combos.jpg?v=2',
   'best-sellers': '/offer-white.jpg',
   unisex: '/cat-unisex.jpg',
   men: '/pillar-originals.jpg?v=2',
@@ -28,6 +29,7 @@ export function ShopBanner({ collection, title, eyebrow = 'The Collection' }) {
     { label: 'New Arrivals', to: '/shop?sort=newest', icon: 'sparkle', active: sort === 'newest' },
     { label: 'Offers', to: '/offers', icon: 'tag', active: collection === 'offers' },
     { label: 'Pure Attars', to: '/shop/attars', icon: 'sparkle', active: collection === 'attars' },
+    { label: 'Combos', to: '/combos', icon: 'gift', active: collection === 'combos' },
   ]
 
   return (

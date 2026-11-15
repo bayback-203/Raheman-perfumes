@@ -33,6 +33,7 @@ export function Layout() {
   const flushFooter =
     location.pathname === '/sign-in' ||
     location.pathname.startsWith('/shop') ||
+    location.pathname.startsWith('/combos') ||
     location.pathname.startsWith('/offers') ||
     location.pathname.startsWith('/search')
 

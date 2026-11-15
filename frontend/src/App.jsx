@@ -11,6 +11,7 @@ import { HomePage } from '@/pages/HomePage'
 import { ShopPage, OriginalPerfumesPage, InspiredMixingPage } from '@/pages/ShopPage'
 import { ProductDetailPage } from '@/pages/ProductDetailPage'
 import { SearchResultsPage } from '@/pages/SearchResultsPage'
+import { CombosPage } from '@/pages/CombosPage'
 import { CartPage } from '@/pages/CartPage'
 import { CheckoutPage } from '@/pages/CheckoutPage'
 import { WishlistPage } from '@/pages/WishlistPage'
@@ -43,7 +44,7 @@ export function AppRoutes() {
         <Route path="product/:slug" element={<ProductDetailPage />} />
         <Route path="search" element={<SearchResultsPage />} />
         <Route path="offers" element={<OffersPage />} />
-        <Route path="combos" element={<Navigate to="/shop" replace />} />
+        <Route path="combos" element={<CombosPage />} />
 
         {/* Transaction */}
         <Route path="cart" element={<CartPage />} />

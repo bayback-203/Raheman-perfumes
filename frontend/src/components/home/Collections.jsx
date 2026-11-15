@@ -71,6 +71,7 @@ const CATEGORY_IMAGES = {
   inspired: '/pillar-inspired.jpg?v=2',
   custom: '/compose.png',
   attars: '/pillar-attars.jpg?v=2',
+  combos: '/pillar-combos.jpg?v=2',
   mixed: '/family-oriental.jpg',
 }
 

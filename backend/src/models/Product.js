@@ -37,7 +37,7 @@ import { barcodeFor } from '../lib/barcode.js'
  * what it is, and the `pre('validate')` hook is the only place that sets it.
  */
 
-export const TIERS = ['Original', 'Inspired', 'Mixed', 'Attar']
+export const TIERS = ['Original', 'Inspired', 'Mixed', 'Attar', 'Combo']
 export const GENDERS = ['Men', 'Women', 'Unisex']
 export const PRODUCT_STATUSES = ['Active', 'Draft', 'Archived']
 
@@ -47,6 +47,7 @@ export const TIER_CODE = {
   Inspired: 'INS',
   Mixed: 'MIX',
   Attar: 'ATT',
+  Combo: 'CMB',
 }
 
 /** Share of the selling price that goes on cost of goods, per tier. */
@@ -55,6 +56,7 @@ export const TIER_COST_RATIO = {
   Inspired: 0.28,
   Mixed: 0.34,
   Attar: 0.4,
+  Combo: 0.55,
 }
 
 /**

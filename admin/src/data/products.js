@@ -14,6 +14,7 @@ export const TIER_CODE = {
   Inspired: 'INS',
   Mixed: 'MIX',
   Attar: 'ATT',
+  Combo: 'CMB',
 }
 
 /** Share of the selling price that goes on the cost of goods, per tier. */
@@ -22,6 +23,7 @@ export const TIER_COST_RATIO = {
   Inspired: 0.28,
   Mixed: 0.34,
   Attar: 0.4,
+  Combo: 0.55,
 }
 
 /**
@@ -65,7 +67,7 @@ export const PRODUCT_STATUSES = ['Active', 'Draft', 'Archived']
  * one that has a page.
  */
 export const PRODUCT_COLLECTIONS = [
-  { group: 'Shop pages', slugs: ['originals', 'inspired', 'mixing', 'attars', 'vault', 'best-sellers'] },
+  { group: 'Shop pages', slugs: ['originals', 'inspired', 'mixing', 'attars', 'combos', 'vault', 'best-sellers'] },
   { group: 'Audience', slugs: ['men', 'women', 'unisex'] },
   { group: 'Scent families', slugs: ['fresh', 'floral', 'woody', 'oriental', 'oud', 'leather'] },
 ]

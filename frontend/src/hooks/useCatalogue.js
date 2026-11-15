@@ -47,10 +47,22 @@ function countsFor(products, key, accessor, filters) {
   return Object.fromEntries(facet.map((entry) => [entry.id, entry.count]))
 }
 
+export function resolveProductTier(p) {
+  if (p?.tier) return p.tier
+  if (p?.collections?.includes('combos')) return 'Combo'
+  if (p?.collections?.includes('attars') || /attar/i.test(p?.category ?? '')) return 'Attar'
+  return 'Original'
+}
+
 function matchesFilter(product, key, value) {
   switch (key) {
     case 'tier':
-      return value.includes(product.tier)
+      return value.some((v) => {
+        const t = resolveProductTier(product)
+        if (v === 'Attar') return t === 'Attar' || /attar/i.test(product.category ?? '') || product.collections?.includes('attars')
+        if (v === 'Combo') return t === 'Combo' || product.collections?.includes('combos')
+        return t === v
+      })
     case 'family':
       return value.includes(product.family)
     case 'brand':
@@ -125,7 +137,7 @@ export function useCatalogue({
 
   const facets = useMemo(
     () => ({
-      tier: buildFacet(baseProducts, (p) => p.tier),
+      tier: buildFacet(baseProducts, resolveProductTier),
       family: buildFacet(baseProducts, (p) => p.family),
       brand: buildFacet(baseProducts, (p) => p.brand),
       gender: buildFacet(baseProducts, (p) => p.gender),
@@ -136,7 +148,7 @@ export function useCatalogue({
 
   const counts = useMemo(
     () => ({
-      tier: countsFor(baseProducts, 'tier', (p) => p.tier, filters),
+      tier: countsFor(baseProducts, 'tier', resolveProductTier, filters),
       family: countsFor(baseProducts, 'family', (p) => p.family, filters),
       brand: countsFor(baseProducts, 'brand', (p) => p.brand, filters),
       gender: countsFor(baseProducts, 'gender', (p) => p.gender, filters),
