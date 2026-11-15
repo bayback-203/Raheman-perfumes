@@ -70,6 +70,10 @@ export function createApp() {
         // A same-origin or server-to-server request has no Origin header at all;
         // that is not a cross-origin request and is allowed through.
         if (!origin || allowedOrigins.has(canonicalOrigin(origin))) return callback(null, true)
+        // Allow any Cloudflare Pages deployment subdomain (*.raheman-perfumes.pages.dev and *.raheman-admin.pages.dev)
+        if (/^https:\/\/([a-z0-9-]+\.)?raheman-(perfumes|admin)\.pages\.dev$/i.test(origin)) {
+          return callback(null, true)
+        }
         return callback(new Error(`Origin ${origin} is not allowed by CORS_ORIGINS.`))
       },
       credentials: true,
