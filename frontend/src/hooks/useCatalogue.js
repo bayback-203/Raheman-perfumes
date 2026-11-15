@@ -1,0 +1,209 @@
+import { useCallback, useMemo, useState } from 'react'
+import { useCatalogueStore } from '@/store/catalogueStore'
+
+/**
+ * Catalogue filtering, sorting and pagination.
+ *
+ * The filter facets are derived from the catalogue itself rather than from a
+ * hand-written list, so a new family or maison in `data/products.js` shows up
+ * in the sidebar automatically and can never drift out of sync with the stock.
+ *
+ * The catalogue filtered here is the one in `catalogueStore` — the live one when
+ * the API has answered, the bundled one until then. That default is the whole
+ * point: a surface that renders "the catalogue" should not have to know where
+ * the catalogue came from, and any page that hard-coded the bundle would keep
+ * hiding every fragrance added in the admin panel.
+ *
+ * `baseProducts` is still accepted as an explicit override for the surfaces that
+ * genuinely narrow first and paginate second — search results hand in the
+ * matched subset so the facet counts describe the matches rather than the whole
+ * shop.
+ */
+
+const isEmpty = (value) => value == null || (Array.isArray(value) && value.length === 0)
+
+/** Facet values for one field, with live counts, ordered by frequency. */
+function buildFacet(products, accessor) {
+  const counts = new Map()
+  products.forEach((product) => {
+    const raw = accessor(product)
+    const values = Array.isArray(raw) ? raw : [raw]
+    values.filter(Boolean).forEach((value) => counts.set(value, (counts.get(value) ?? 0) + 1))
+  })
+  return [...counts.entries()]
+    .sort((a, b) => b[1] - a[1] || String(a[0]).localeCompare(String(b[0])))
+    .map(([id, count]) => ({ id, label: id, count }))
+}
+
+/** Counts for one facet, constrained by every *other* active filter. */
+function countsFor(products, key, accessor, filters) {
+  const scoped = products.filter((product) =>
+    Object.entries(filters).every(([filterKey, value]) => {
+      if (filterKey === key || filterKey === 'price' || isEmpty(value)) return true
+      return matchesFilter(product, filterKey, value)
+    }),
+  )
+  const facet = buildFacet(scoped, accessor)
+  return Object.fromEntries(facet.map((entry) => [entry.id, entry.count]))
+}
+
+function matchesFilter(product, key, value) {
+  switch (key) {
+    case 'tier':
+      return value.includes(product.tier)
+    case 'family':
+      return value.includes(product.family)
+    case 'brand':
+      return value.includes(product.brand)
+    case 'gender':
+      return value.includes(product.gender)
+    case 'concentration':
+      return value.includes(product.concentration)
+    case 'inStock':
+      return !value || product.inStock
+    case 'price': {
+      const [min, max] = value
+      return product.price >= min && product.price <= max
+    }
+    default:
+      return true
+  }
+}
+
+const SORTERS = {
+  popular: (a, b) => (b.bestseller ? 1 : 0) - (a.bestseller ? 1 : 0) || b.reviewCount - a.reviewCount,
+  newest: (a, b) => (b.badges?.includes('New') ? 1 : 0) - (a.badges?.includes('New') ? 1 : 0) || b.rating - a.rating,
+  'price-asc': (a, b) => a.price - b.price,
+  'price-desc': (a, b) => b.price - a.price,
+  rating: (a, b) => b.rating - a.rating || b.reviewCount - a.reviewCount,
+  savings: (a, b) => (b.mrp - b.price) / b.mrp - (a.mrp - a.price) / a.mrp,
+}
+
+export function useCatalogue({
+  baseProducts: explicitBase = null,
+  initialFilters = {},
+  initialSort = 'popular',
+  pageSize: initialPageSize = 24,
+} = {}) {
+  // Read through to the store's list rather than taking it as a parameter: this
+  // is what lets an admin-created fragrance appear in a grid that was mounted
+  // before the API answered.
+  const liveBase = useCatalogueStore((state) => state.products)
+  const baseProducts = explicitBase ?? liveBase
+
+  const [filters, setFilters] = useState(initialFilters)
+  const [sort, setSort] = useState(initialSort)
+  const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(initialPageSize)
+
+  const priceBounds = useMemo(() => {
+    const prices = baseProducts.map((product) => product.price)
+    const low = Math.floor(Math.min(...prices, 0) / 100) * 100
+    const high = Math.ceil(Math.max(...prices, 1000) / 100) * 100
+    return [low, high]
+  }, [baseProducts])
+
+  const filtered = useMemo(
+    () =>
+      baseProducts.filter((product) =>
+        Object.entries(filters).every(([key, value]) => isEmpty(value) || matchesFilter(product, key, value)),
+      ),
+    [baseProducts, filters],
+  )
+
+  const sorted = useMemo(() => {
+    const sorter = SORTERS[sort] ?? SORTERS.popular
+    return [...filtered].sort(sorter)
+  }, [filtered, sort])
+
+  const totalPages = Math.max(1, Math.ceil(sorted.length / pageSize))
+  const safePage = Math.min(page, totalPages)
+  const pageItems = useMemo(
+    () => sorted.slice((safePage - 1) * pageSize, safePage * pageSize),
+    [sorted, safePage, pageSize],
+  )
+
+  const facets = useMemo(
+    () => ({
+      tier: buildFacet(baseProducts, (p) => p.tier),
+      family: buildFacet(baseProducts, (p) => p.family),
+      brand: buildFacet(baseProducts, (p) => p.brand),
+      gender: buildFacet(baseProducts, (p) => p.gender),
+      concentration: buildFacet(baseProducts, (p) => p.concentration),
+    }),
+    [baseProducts],
+  )
+
+  const counts = useMemo(
+    () => ({
+      tier: countsFor(baseProducts, 'tier', (p) => p.tier, filters),
+      family: countsFor(baseProducts, 'family', (p) => p.family, filters),
+      brand: countsFor(baseProducts, 'brand', (p) => p.brand, filters),
+      gender: countsFor(baseProducts, 'gender', (p) => p.gender, filters),
+      concentration: countsFor(baseProducts, 'concentration', (p) => p.concentration, filters),
+    }),
+    [baseProducts, filters],
+  )
+
+  const updateFilters = useCallback((next) => {
+    setFilters(next)
+    setPage(1)
+  }, [])
+
+  const clearFilters = useCallback(() => {
+    setFilters({})
+    setPage(1)
+  }, [])
+
+  const activeChips = useMemo(
+    () =>
+      Object.entries(filters).flatMap(([key, value]) => {
+        if (isEmpty(value)) return []
+        if (key === 'price') return [{ key, value, label: `Under ₹${value[1].toLocaleString('en-IN')}` }]
+        if (key === 'inStock') return [{ key, value, label: 'In stock' }]
+        return value.map((entry) => ({ key, value: entry, label: entry }))
+      }),
+    [filters],
+  )
+
+  const removeChip = useCallback(
+    (chip) => {
+      if (chip.key === 'price' || chip.key === 'inStock') {
+        updateFilters({ ...filters, [chip.key]: undefined })
+        return
+      }
+      const next = (filters[chip.key] ?? []).filter((entry) => entry !== chip.value)
+      updateFilters({ ...filters, [chip.key]: next.length ? next : undefined })
+    },
+    [filters, updateFilters],
+  )
+
+  return {
+    filters,
+    setFilters: updateFilters,
+    clearFilters,
+    activeChips,
+    removeChip,
+    sort,
+    setSort: (next) => {
+      setSort(next)
+      setPage(1)
+    },
+    page: safePage,
+    setPage,
+    pageSize,
+    setPageSize: (next) => {
+      setPageSize(next)
+      setPage(1)
+    },
+    totalPages,
+    total: sorted.length,
+    products: pageItems,
+    allFiltered: sorted,
+    facets,
+    counts,
+    priceBounds,
+  }
+}
+
+export default useCatalogue
