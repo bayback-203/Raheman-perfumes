@@ -50,8 +50,6 @@ export function CartDrawer() {
   const increment = useCartStore((state) => state.increment)
   const decrement = useCartStore((state) => state.decrement)
   const removeItem = useCartStore((state) => state.removeItem)
-  const updateComboQuantity = useCartStore((state) => state.updateComboQuantity)
-  const removeCombo = useCartStore((state) => state.removeCombo)
   const syncPricing = useCartStore((state) => state.syncPricing)
   const summary = useCartStore((state) => state.summary())
 
@@ -59,7 +57,7 @@ export function CartDrawer() {
     if (cartDrawerOpen) syncPricing()
   }, [cartDrawerOpen, syncPricing])
 
-  const entries = groupCartItems(items, summary.comboDiscountPercent)
+  const entries = groupCartItems(items)
   const empty = items.length === 0
 
   return (
@@ -103,121 +101,44 @@ export function CartDrawer() {
 
           <div className="flex-1 overflow-y-auto px-5 py-4">
             <ul className="space-y-4">
-              {entries.map((entry) => {
-                if (entry.kind === 'combo') {
-                  return (
-                    <li key={entry.comboId} className="rounded-lg border border-brand-border bg-white p-3">
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold uppercase text-emerald-800 border border-emerald-200">
-                          <Icon name="gift" className="h-3 w-3" />
-                          Combo Deal
+              {entries.map(({ item }) => (
+                <li key={item.id} className="flex gap-3.5">
+                  <Link to={`/product/${item.slug}`} onClick={closeCartDrawer} className="w-16 shrink-0">
+                    <FlaconStage tier={item.tier} seed={item.slug} label={item.name} image={productImage(item)} compact />
+                  </Link>
+
+                  <div className="flex min-w-0 flex-1 flex-col">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <TierBadge tier={item.tier} size="sm" />
+                        <p className="mt-1 truncate text-body-sm font-semibold text-brand-charcoal">{item.name}</p>
+                        <p className="text-body-sm text-brand-muted">{item.volume}</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeItem(item.id)}
+                        aria-label={`Remove ${item.name}`}
+                        className="shrink-0 rounded p-1 text-brand-muted transition hover:bg-brand-cream hover:text-tier-original"
+                      >
+                        <Icon name="trash" className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+
+                    <div className="mt-2.5 flex items-center justify-between gap-3">
+                      <QuantityStepper
+                        value={item.quantity}
+                        onChange={(next) => (next < item.quantity ? decrement(item.id) : increment(item.id))}
+                        size="sm"
+                      />
+                      <div className="text-right">
+                        <span className="text-body-sm font-semibold text-brand-charcoal">
+                          {formatPrice(item.price * item.quantity)}
                         </span>
-                        <button
-                          type="button"
-                          onClick={() => removeCombo(entry.comboId)}
-                          aria-label="Remove combo"
-                          className="shrink-0 rounded p-1 text-brand-muted transition hover:bg-neutral-100 hover:text-tier-original"
-                        >
-                          <Icon name="trash" className="h-3.5 w-3.5" />
-                        </button>
-                      </div>
-
-                      <div className="mt-2.5 space-y-2">
-                        {(entry.isSelfPair ? [entry.lines[0], entry.lines[0]] : entry.lines).map((bottle, idx) => (
-                          <div key={`${entry.comboId}-${idx}`} className="flex items-center gap-2.5">
-                            <Link to={`/product/${bottle.slug}`} onClick={closeCartDrawer} className="w-11 shrink-0">
-                              <FlaconStage
-                                tier={bottle.tier}
-                                seed={bottle.slug}
-                                label={bottle.name}
-                                image={productImage(bottle)}
-                                compact
-                              />
-                            </Link>
-                            <div className="min-w-0 flex-1">
-                              <p className="truncate text-body-sm font-semibold text-brand-charcoal">{bottle.name}</p>
-                              <p className="text-[12px] text-brand-muted">{bottle.volume}</p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-
-                      <div className="mt-3 flex items-center justify-between gap-3 border-t border-brand-border/60 pt-2.5">
-                        <QuantityStepper
-                          value={entry.pairQty}
-                          onChange={(next) => updateComboQuantity(entry.comboId, next)}
-                          size="sm"
-                        />
-                        <div className="text-right">
-                          <span className="text-body-sm font-semibold text-brand-charcoal">
-                            {formatPrice(entry.finalTotal)}
-                          </span>
-                          {entry.discountAmount > 0 && (
-                            <span className="ml-1.5 text-[11px] text-brand-muted line-through">
-                              {formatPrice(entry.rawTotal)}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </li>
-                  )
-                }
-
-                const { item, comboPairs, comboDiscountAmount } = entry
-                return (
-                  <li key={item.id} className="flex gap-3.5">
-                    <Link to={`/product/${item.slug}`} onClick={closeCartDrawer} className="w-16 shrink-0">
-                      <FlaconStage tier={item.tier} seed={item.slug} label={item.name} image={productImage(item)} compact />
-                    </Link>
-
-                    <div className="flex min-w-0 flex-1 flex-col">
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="min-w-0">
-                          <div className="flex flex-wrap items-center gap-1.5">
-                            <TierBadge tier={item.tier} size="sm" />
-                            {comboPairs > 0 && (
-                              <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-1.5 py-0.5 text-[10px] font-bold uppercase text-emerald-800">
-                                <Icon name="gift" className="h-2.5 w-2.5" />
-                                Combo Deal
-                              </span>
-                            )}
-                          </div>
-                          <p className="mt-1 truncate text-body-sm font-semibold text-brand-charcoal">{item.name}</p>
-                          <p className="text-body-sm text-brand-muted">
-                            {item.volume}
-                          </p>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => removeItem(item.id)}
-                          aria-label={`Remove ${item.name}`}
-                          className="shrink-0 rounded p-1 text-brand-muted transition hover:bg-brand-cream hover:text-tier-original"
-                        >
-                          <Icon name="trash" className="h-3.5 w-3.5" />
-                        </button>
-                      </div>
-
-                      <div className="mt-2.5 flex items-center justify-between gap-3">
-                        <QuantityStepper
-                          value={item.quantity}
-                          onChange={(next) => (next < item.quantity ? decrement(item.id) : increment(item.id))}
-                          size="sm"
-                        />
-                        <div className="text-right">
-                          <span className="text-body-sm font-semibold text-brand-charcoal">
-                            {formatPrice(item.price * item.quantity - (comboDiscountAmount || 0))}
-                          </span>
-                          {comboDiscountAmount > 0 && (
-                            <span className="ml-1.5 text-[11px] text-brand-muted line-through">
-                              {formatPrice(item.price * item.quantity)}
-                            </span>
-                          )}
-                        </div>
                       </div>
                     </div>
-                  </li>
-                )
-              })}
+                  </div>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -231,12 +152,6 @@ export function CartDrawer() {
                 <div className="flex items-center justify-between">
                   <dt className="text-brand-muted">Savings</dt>
                   <dd className="font-semibold text-emerald-700">−{formatPrice(summary.productSavings)}</dd>
-                </div>
-              )}
-              {summary.comboDiscount > 0 && (
-                <div className="flex items-center justify-between">
-                  <dt className="text-brand-muted">Combo discount</dt>
-                  <dd className="font-semibold text-emerald-700">−{formatPrice(summary.comboDiscount)}</dd>
                 </div>
               )}
               <div className="flex items-center justify-between">

@@ -81,7 +81,7 @@ export const DEFAULT_PRICING = {
   freeShippingOver: config.pricing.freeShippingOver,
   giftWrapFee: GIFT_WRAP_FEE,
   gstRate: 18,
-  comboDiscountPercent: 15,
+  comboDiscountPercent: 0,
   currency: 'INR',
 }
 

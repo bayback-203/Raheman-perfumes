@@ -7,7 +7,6 @@ const BANNER_IMAGES = {
   originals: '/pillar-originals.jpg?v=2',
   inspired: '/pillar-inspired.jpg?v=2',
   attars: '/pillar-attars.jpg?v=2',
-  combos: '/pillar-combos.jpg?v=2',
   'best-sellers': '/offer-white.jpg',
   unisex: '/cat-unisex.jpg',
   men: '/pillar-originals.jpg?v=2',
@@ -16,7 +15,7 @@ const BANNER_IMAGES = {
 }
 
 /**
- * Shared hero banner used across the Shop, Original, Best Sellers, and Combos pages.
+ * Shared hero banner used across the Shop, Original, and Best Sellers pages.
  */
 export function ShopBanner({ collection, title, eyebrow = 'The Collection' }) {
   const [searchParams] = useSearchParams()
@@ -28,7 +27,7 @@ export function ShopBanner({ collection, title, eyebrow = 'The Collection' }) {
     { label: 'Bestseller', to: '/shop/best-sellers', icon: 'crown', active: collection === 'best-sellers' },
     { label: 'New Arrivals', to: '/shop?sort=newest', icon: 'sparkle', active: sort === 'newest' },
     { label: 'Offers', to: '/offers', icon: 'tag', active: collection === 'offers' },
-    { label: 'Combos', to: '/combos', icon: 'gift', active: collection === 'combos' },
+    { label: 'Pure Attars', to: '/shop/attars', icon: 'sparkle', active: collection === 'attars' },
   ]
 
   return (

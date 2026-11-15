@@ -132,7 +132,7 @@ const PAGES = {
         kind: 'faq',
         heading: 'About Our Perfumes',
         items: [
-          { title: 'What is the difference between Original, Inspired and Mixed?', body: 'Original bottles are genuine branded perfumes bought directly from official distributors, with batch codes you can verify. Inspired perfumes are our own versions of famous designer scents, made at 30–35% oil strength. Mixed blends are our in-house combos of two or more scents.' },
+          { title: 'What is the difference between Original, Inspired and Mixed?', body: 'Original bottles are genuine branded perfumes bought directly from official distributors, with batch codes you can verify. Inspired perfumes are our own versions of famous designer scents, made at 30–35% oil strength. Mixed blends are our in-house custom layers of two or more scents.' },
           { title: 'How long does a Rehman perfume last on skin?', body: 'Our own perfumes use 30–35% pure perfume oil instead of the usual 15–20%. Expect 8–12 hours on skin and even longer on clothes. One or two sprays are enough.' },
           { title: 'What is an attar, and how is it different?', body: 'An attar is an alcohol-free oil perfume made with pure natural oils like sandalwood or jojoba. Apply a little with the glass stick instead of spraying — it stays warm and lasts for hours.' },
           { title: 'Will an Inspired blend smell like the original?', body: 'It smells very close right from the first spray because it uses matching scent oils. Slight differences can appear hours later since brands use locked formulas, but you get the same feel at a much better price.' },
@@ -307,7 +307,7 @@ const PAGES = {
             role: 'Attar & Oil Specialist',
             initials: 'FS',
             specialty: 'Pure attars & layering oils',
-            bio: 'Fatima looks after cold resting and oil mixing across all our traditional alcohol-free attars and combos.',
+            bio: 'Fatima looks after cold resting and oil mixing across all our traditional alcohol-free attars and fragrance blends.',
           },
         ],
       },

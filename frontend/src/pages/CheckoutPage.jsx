@@ -95,7 +95,6 @@ export function CheckoutPage() {
   const summary = useCartStore((state) => state.summary())
   const increment = useCartStore((state) => state.increment)
   const decrement = useCartStore((state) => state.decrement)
-  const updateComboQuantity = useCartStore((state) => state.updateComboQuantity)
   const giftWrap = useCartStore((state) => state.giftWrap)
   const setGiftWrap = useCartStore((state) => state.setGiftWrap)
   const clearCart = useCartStore((state) => state.clearCart)
@@ -175,8 +174,8 @@ export function CheckoutPage() {
   }, [showcase.codEnabled, paymentMethod, availablePayments])
 
   const entries = useMemo(
-    () => groupCartItems(items, summary.comboDiscountPercent),
-    [items, summary.comboDiscountPercent],
+    () => groupCartItems(items),
+    [items],
   )
 
   const expressShipping = SHIPPING_METHODS.find((method) => method.id === shippingMethod)
@@ -315,7 +314,6 @@ export function CheckoutPage() {
         slug: item.slug,
         size: item.volume,
         qty: item.quantity,
-        comboId: item.comboId || undefined,
       })),
       address: {
         name: `${contact.firstName} ${contact.lastName}`.trim(),
@@ -725,104 +723,50 @@ export function CheckoutPage() {
 
           {/* Compact Line-Item White Sub-Cards with live + / - steppers */}
           <ul className="mt-5 space-y-3">
-            {entries.map((entry) => {
-              if (entry.kind === 'single') {
-                const { item, comboPairs, comboDiscountAmount } = entry
-                return (
-                  <li
-                    key={item.id}
-                    className="flex items-center justify-between gap-3 rounded-xl border border-brand-border/70 bg-white p-3"
+            {entries.map(({ item }) => (
+              <li
+                key={item.id}
+                className="flex items-center justify-between gap-3 rounded-xl border border-brand-border/70 bg-white p-3"
+              >
+                <div className="flex min-w-0 items-center gap-3">
+                  <Link
+                    to={`/product/${item.slug}`}
+                    className="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-[#F9F9F9] p-1"
                   >
-                    <div className="flex min-w-0 items-center gap-3">
-                      <Link
-                        to={`/product/${item.slug}`}
-                        className="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-[#F9F9F9] p-1"
-                      >
-                        <FlaconStage
-                          tier={item.tier}
-                          seed={item.slug}
-                          label={item.name}
-                          image={productImage(item)}
-                          compact
-                        />
-                      </Link>
-                      <div className="min-w-0">
-                        <Link
-                          to={`/product/${item.slug}`}
-                          className="block truncate text-sm font-semibold text-brand-charcoal hover:text-brand-goldDark"
-                        >
-                          {item.name}
-                        </Link>
-                        <div className="mt-0.5 flex flex-wrap items-center gap-1 text-xs text-brand-muted">
-                          <span>{item.volume} · Quantity : {item.quantity}</span>
-                          {comboPairs > 0 && (
-                            <span className="font-semibold text-emerald-700">
-                              (Combo Deal)
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex shrink-0 flex-col items-end gap-2">
-                      <span className="text-sm font-semibold tabular-nums text-brand-charcoal">
-                        {formatPrice(item.price * item.quantity - (comboDiscountAmount || 0))}
-                      </span>
-                      {comboDiscountAmount > 0 && (
-                        <span className="text-[11px] text-brand-muted line-through">
-                          {formatPrice(item.price * item.quantity)}
-                        </span>
-                      )}
-                      <MiniQtyStepper
-                        count={item.quantity}
-                        itemLabel={item.name}
-                        onIncrement={() => increment(item.id)}
-                        onDecrement={() => decrement(item.id)}
-                      />
-                    </div>
-                  </li>
-                )
-              }
-
-              const firstLine = entry.lines[0]
-              const comboNames = entry.lines.map((l) => l.name).join(' + ')
-              return (
-                <li
-                  key={entry.comboId}
-                  className="flex items-center justify-between gap-3 rounded-xl border border-brand-border/70 bg-white p-3"
-                >
-                  <div className="flex min-w-0 items-center gap-3">
-                    <div className="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-[#F9F9F9] p-1">
-                      <FlaconStage
-                        tier={firstLine?.tier ?? 'Combo'}
-                        seed={firstLine?.slug ?? entry.comboId}
-                        label={comboNames}
-                        image={productImage(firstLine)}
-                        compact
-                      />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-semibold text-brand-charcoal">{comboNames}</p>
-                      <p className="mt-0.5 truncate text-xs text-brand-muted">
-                        1+1 Combo · Pairs : {entry.pairQty}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex shrink-0 flex-col items-end gap-2">
-                    <span className="text-sm font-semibold tabular-nums text-brand-charcoal">
-                      {formatPrice(entry.payableTotal)}
-                    </span>
-                    <MiniQtyStepper
-                      count={entry.pairQty}
-                      itemLabel={comboNames}
-                      onIncrement={() => updateComboQuantity(entry.comboId, entry.pairQty + 1)}
-                      onDecrement={() => updateComboQuantity(entry.comboId, entry.pairQty - 1)}
+                    <FlaconStage
+                      tier={item.tier}
+                      seed={item.slug}
+                      label={item.name}
+                      image={productImage(item)}
+                      compact
                     />
+                  </Link>
+                  <div className="min-w-0">
+                    <Link
+                      to={`/product/${item.slug}`}
+                      className="block truncate text-sm font-semibold text-brand-charcoal hover:text-brand-goldDark"
+                    >
+                      {item.name}
+                    </Link>
+                    <div className="mt-0.5 flex flex-wrap items-center gap-1 text-xs text-brand-muted">
+                      <span>{item.volume} · Quantity : {item.quantity}</span>
+                    </div>
                   </div>
-                </li>
-              )
-            })}
+                </div>
+
+                <div className="flex shrink-0 flex-col items-end gap-2">
+                  <span className="text-sm font-semibold tabular-nums text-brand-charcoal">
+                    {formatPrice(item.price * item.quantity)}
+                  </span>
+                  <MiniQtyStepper
+                    count={item.quantity}
+                    itemLabel={item.name}
+                    onIncrement={() => increment(item.id)}
+                    onDecrement={() => decrement(item.id)}
+                  />
+                </div>
+              </li>
+            ))}
           </ul>
 
           {/* Optional Gift Wrap toggle */}
@@ -848,12 +792,6 @@ export function CheckoutPage() {
               <dt className="text-brand-muted">Items</dt>
               <dd className="font-medium tabular-nums text-brand-charcoal">{summary.itemCount}x</dd>
             </div>
-            {summary.comboDiscount > 0 && (
-              <div className="flex justify-between">
-                <dt className="text-brand-muted">Combo Savings</dt>
-                <dd className="font-medium tabular-nums text-emerald-700">-{formatPrice(summary.comboDiscount)}</dd>
-              </div>
-            )}
             <div className="flex justify-between">
               <dt className="text-brand-muted">
                 Code Promo{couponCode ? ` (${couponCode})` : ''}

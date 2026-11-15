@@ -3,7 +3,7 @@ import { getTier } from '@/data/tiers'
 import { Icon } from './Icon'
 
 /**
- * Provenance badge — Original / Inspired / Mixed / Combo.
+ * Provenance badge — Original / Inspired / Mixed / Attar.
  * The tier palette is defined once in `data/tiers.js` so every surface agrees.
  */
 export function TierBadge({ tier, size = 'md', showIcon = false, className }) {

@@ -24,7 +24,7 @@ import { useDocumentTitle } from '@/hooks/useDocumentTitle'
  * and trust proof.
  */
 export function HomePage() {
-  useDocumentTitle('Rehman Perfume — Original Perfumes, Attars & Combos')
+  useDocumentTitle('Rehman Perfume — Original Perfumes, Attars & Inspired Blends')
   const refreshShowcase = useCatalogueStore((state) => state.refreshShowcase)
 
   useEffect(() => {

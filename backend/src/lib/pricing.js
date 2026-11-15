@@ -77,35 +77,8 @@ export function couponDiscount(coupon, subtotal) {
  * @param {number} [percent=15]
  * @returns {number}
  */
-export function comboDiscountForLines(lines = [], percent = 15) {
-  const bottlePrices = []
-  for (const line of lines) {
-    const qty = Number(line.qty ?? line.quantity ?? 0)
-    const price = Number(line.unitPrice ?? line.price ?? 0)
-    for (let i = 0; i < qty; i++) {
-      if (price > 0) bottlePrices.push(price)
-    }
-  }
-
-  if (bottlePrices.length < 2) return 0
-
-  // Sort descending: highest price to lowest price
-  bottlePrices.sort((a, b) => b - a)
-
-  const secondRate = Math.max(0, Math.min(80, Number(percent) || 15)) / 100
-  const thirdRate = 0.20
-
-  let discount = 0
-  for (let i = 1; i < bottlePrices.length; i++) {
-    const price = bottlePrices[i]
-    if (i === 1) {
-      discount += Math.round(price * secondRate)
-    } else {
-      discount += Math.round(price * thirdRate)
-    }
-  }
-
-  return rupees(discount)
+export function comboDiscountForLines() {
+  return 0
 }
 
 /**
@@ -115,14 +88,14 @@ export function comboDiscountForLines(lines = [], percent = 15) {
  * @param {Array<{qty: number, unitPrice: number, comboId?: string}>} input.items
  * @param {object|null} [input.coupon]   a coupon document, or a plain rule object
  * @param {boolean} [input.giftWrap]
- * @param {{shippingFee?: number, freeShippingOver?: number, giftWrapFee?: number, comboDiscountPercent?: number}} [input.rule]
+ * @param {{shippingFee?: number, freeShippingOver?: number, giftWrapFee?: number}} [input.rule]
  * @returns {object} the pricing snapshot stored on the order
  */
 export function priceOrder({ items = [], coupon = null, giftWrap = false, rule = {} }) {
   const shippingFee = rule.shippingFee ?? STANDARD_SHIPPING_FEE
   const freeShippingOver = rule.freeShippingOver ?? FREE_SHIPPING_THRESHOLD
   const giftWrapFee = rule.giftWrapFee ?? GIFT_WRAP_FEE
-  const comboDiscountPercent = Number(rule.comboDiscountPercent ?? 15) || 0
+  const comboDiscountPercent = 0
 
   const lines = items.map((item) => ({
     ...item,
@@ -132,10 +105,9 @@ export function priceOrder({ items = [], coupon = null, giftWrap = false, rule =
   }))
 
   const subtotal = lines.reduce((sum, line) => sum + line.lineTotal, 0)
-  const comboDiscount = Math.min(subtotal, comboDiscountForLines(lines, comboDiscountPercent))
-  const afterCombo = Math.max(0, subtotal - comboDiscount)
-  const couponAmount = Math.min(afterCombo, couponDiscount(coupon, subtotal))
-  const discount = comboDiscount + couponAmount
+  const comboDiscount = 0
+  const couponAmount = Math.min(subtotal, couponDiscount(coupon, subtotal))
+  const discount = couponAmount
   const afterCoupon = Math.max(0, subtotal - discount)
 
   // An empty basket is not charged for delivery, and once discounts have taken

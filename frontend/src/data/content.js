@@ -11,7 +11,7 @@ export const MAIN_NAV = [
   { id: 'home', label: 'Home', to: '/' },
   { id: 'shop', label: 'Shop', to: '/shop' },
   { id: 'original', label: 'Original', to: '/shop/originals' },
-  { id: 'combos', label: 'Combos', to: '/combos' },
+  { id: 'attars', label: 'Pure Attars', to: '/shop/attars' },
   { id: 'offers', label: 'Offers', to: '/offers', accent: 'red' },
 ]
 
@@ -20,7 +20,6 @@ export const MOBILE_NAV = [
   { id: 'shop', label: 'Shop', to: '/shop' },
   { id: 'original', label: 'Original', to: '/shop/originals' },
   { id: 'attars', label: 'Pure Attars', to: '/shop/attars' },
-  { id: 'combos', label: 'Combos', to: '/combos' },
   { id: 'offers', label: 'Offers', to: '/offers', accent: 'red' },
   { id: 'track', label: 'Track Order', to: '/track-order' },
   { id: 'wishlist', label: 'Wishlist', to: '/wishlist' },
@@ -37,8 +36,7 @@ export const FOOTER_COLUMNS = [
       { label: 'Unisex Signature', to: '/shop/unisex' },
       { label: 'Original Branded', to: '/shop/originals' },
       { label: 'Inspired Blends', to: '/shop/inspired' },
-      { label: 'Combos', to: '/combos' },
-      { label: 'Combo Sets', to: '/shop/combos' },
+      { label: 'Pure Attars', to: '/shop/attars' },
     ],
   },
   {
@@ -121,19 +119,6 @@ export const PILLARS = [
     tier: 'Mixed',
     note: 'Traditional Hand-Made',
     photo: '/pillar-attars.jpg?v=2',
-  },
-  {
-    id: 'combos',
-    eyebrow: 'Pair & Save',
-    title: 'Combos',
-    description:
-      'Pick any two fragrances as a combo or shop boxed gift sets for instant combo savings.',
-    placeholder: 'COMBO',
-    cta: { label: 'Build a Combo', to: '/combos' },
-    tone: 'burgundy',
-    tier: 'Combo',
-    note: 'Instant Combo Savings',
-    photo: '/pillar-combos.jpg?v=2',
   },
 ]
 

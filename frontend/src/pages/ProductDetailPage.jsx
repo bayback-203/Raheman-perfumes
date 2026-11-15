@@ -443,17 +443,6 @@ export function ProductDetailPage() {
                 Add {formatPrice(FREE_SHIPPING_THRESHOLD - (variant?.price ?? product.price))} more for free delivery
               </p>
             )}
-
-            <div className="mt-3 flex items-center gap-2 rounded-lg bg-emerald-50 border border-emerald-200/60 px-3 py-2 text-body-sm text-emerald-800">
-              <Icon name="gift" className="h-4 w-4 shrink-0 text-emerald-700" />
-              <span>
-                {qty >= 2 ? (
-                  <strong className="font-semibold">Combo Deal applied for this fragrance!</strong>
-                ) : (
-                  <>Add <strong>2 bottles</strong> to automatically unlock our <strong>Combo Deal</strong>.</>
-                )}
-              </span>
-            </div>
           </div>
 
           {/* Quantity + actions */}

@@ -132,7 +132,6 @@ function PricingPanel({ pricing, canEdit, onSaved }) {
         {field('Free delivery over', 'freeShippingOver', 'Orders at or above this amount get free delivery.', '₹')}
         {field('Gift wrap', 'giftWrapFee', 'Added when the buyer ticks gift wrap.', '₹')}
         {field('GST rate', 'gstRate', 'Tax percentage shown on bills and reports.', '%')}
-        {field('Combo discount', 'comboDiscountPercent', 'Automatic % discount on combo pairs (0–80%).', '%')}
       </FieldGroup>
 
       {/*

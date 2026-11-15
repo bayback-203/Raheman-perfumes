@@ -74,17 +74,16 @@ export function StatusPill({ status, dot = true, className }) {
   )
 }
 
-/** Provenance badge — Original / Inspired / Mixed / Attar / Combo. */
+/** Provenance badge — Original / Inspired / Mixed / Attar. */
 export function TierBadge({ tier, className }) {
   const tones = {
     Original: 'border-tier-original/25 bg-tier-originalSurface text-tier-original',
     Inspired: 'border-tier-inspired/25 bg-tier-inspiredSurface text-tier-inspired',
     Mixed: 'border-tier-mixed/25 bg-tier-mixedSurface text-tier-mixed',
     Attar: 'border-brand-goldDark/30 bg-brand-gold/15 text-brand-goldInk',
-    Combo: 'border-outline-variant bg-surface text-ink-variant',
   }
   return (
-    <span className={cn('tier-chip', tones[tier] ?? tones.Combo, className)}>{tier}</span>
+    <span className={cn('tier-chip', tones[tier] ?? 'border-outline-variant bg-surface text-ink-variant', className)}>{tier}</span>
   )
 }
 

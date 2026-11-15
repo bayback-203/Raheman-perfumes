@@ -36,17 +36,6 @@ export const TIERS = {
     border: 'border-tier-mixed/25',
     solid: 'bg-tier-mixed text-white',
   },
-  Combo: {
-    id: 'Combo',
-    label: 'Combo',
-    tagline: 'Pair & Save',
-    description:
-      'Perfume combinations and paired sets offering bundled savings when choosing two fragrances together.',
-    text: 'text-tier-custom',
-    surface: 'bg-tier-customSurface',
-    border: 'border-tier-custom/25',
-    solid: 'bg-tier-custom text-white',
-  },
 }
 
 /** Extra merchandising flags that sit beside the tier badge. */

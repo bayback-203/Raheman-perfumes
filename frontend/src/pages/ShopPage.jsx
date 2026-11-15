@@ -15,7 +15,6 @@ const COLLECTION_RULES = {
   originals: { filters: { tier: ['Original'] }, title: 'Original Branded Perfumes' },
   inspired: { filters: { tier: ['Inspired', 'Mixed'] }, title: 'Inspired & Mixing Perfumes' },
   attars: { filters: { family: ['Oriental & Amber'] }, title: 'Pure Attars & Oils' },
-  combos: { filters: { tier: ['Combo'] }, title: 'Combos & Discovery Sets' },
   'best-sellers': { filters: {}, title: 'Bestsellers' },
 }
 

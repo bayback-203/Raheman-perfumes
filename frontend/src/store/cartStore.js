@@ -10,16 +10,15 @@ import {
   LOYALTY_POINTS_PER_RUPEE,
 } from '@/lib/format'
 
-/** A stable key for a cart line: combo lines keep each paired combination distinct. */
+/** A stable key for a cart line. */
 export function lineKey(item) {
-  if (item.comboId) return `combo:${item.comboId}:${item.productId}:${item.volume}`
   return `${item.productId}:${item.volume}`
 }
 
 /**
- * Snapshot builder shared by single additions and 1+1 combination pairs.
+ * Snapshot builder for cart items.
  */
-function buildCartLine(product, { quantity = 1, volume, price, mrp, comboId = '' } = {}) {
+function buildCartLine(product, { quantity = 1, volume, price, mrp } = {}) {
   const safeQty = Math.min(99, Math.max(1, Math.floor(Number(quantity) || 1)))
   const resolvedProductId = product.productId ?? product.id ?? product._id ?? product.slug
   const chosenVolume = volume ?? product.volumes?.[0]?.size ?? product.volume ?? '50ml'
@@ -28,7 +27,7 @@ function buildCartLine(product, { quantity = 1, volume, price, mrp, comboId = ''
   const unitMrp = mrp ?? variant?.mrp ?? product.mrp ?? unitPrice
 
   return {
-    id: comboId ? `combo:${comboId}:${resolvedProductId}:${chosenVolume}` : `${resolvedProductId}:${chosenVolume}`,
+    id: `${resolvedProductId}:${chosenVolume}`,
     productId: resolvedProductId,
     slug: product.slug,
     name: product.name,
@@ -39,165 +38,34 @@ function buildCartLine(product, { quantity = 1, volume, price, mrp, comboId = ''
     mrp: unitMrp,
     notes: product.notes ?? [],
     images: imageUrls(product),
-    kind: comboId ? 'combo' : 'product',
-    comboId: comboId || undefined,
+    kind: 'product',
     quantity: safeQty,
   }
 }
 
-/**
- * Compute multi-bottle combination discount matching `backend/src/lib/pricing.js`.
- *
- * Rules:
- * - Flatten all bottles across the cart into individual units.
- * - Sort descending by price (highest price first, lowest last).
- * - 1st bottle (highest price): 0% discount (customer pays full price).
- * - 2nd bottle (2nd highest): 15% discount.
- * - 3rd bottle and beyond: 20% discount.
- *
- * Sorting descending ensures that if a customer adds a cheap bottle first and an expensive one later,
- * the 20% cut applies strictly to the cheaper bottle, never the most expensive one.
- */
-export function comboDiscountOf(items = [], percent = 15) {
-  const bottlePrices = []
-  for (const item of items) {
-    const qty = Number(item.quantity ?? item.qty ?? 0)
-    const price = Number(item.price ?? item.unitPrice ?? 0)
-    for (let i = 0; i < qty; i++) {
-      if (price > 0) bottlePrices.push(price)
-    }
-  }
-
-  if (bottlePrices.length < 2) return 0
-
-  // Sort descending: highest price to lowest price
-  bottlePrices.sort((a, b) => b - a)
-
-  const secondRate = Math.max(0, Math.min(80, Number(percent) || 15)) / 100
-  const thirdRate = 0.20
-
-  let discount = 0
-  for (let i = 1; i < bottlePrices.length; i++) {
-    const price = bottlePrices[i]
-    if (i === 1) {
-      discount += Math.round(price * secondRate)
-    } else {
-      discount += Math.round(price * thirdRate)
-    }
-  }
-
-  return discount
+export function comboDiscountOf() {
+  return 0
 }
 
 /**
- * Group cart items for rendering, while allocating combo discounts accurately
- * to each line based on the sorted rule:
- * - Bottle units are sorted descending by price in backend calculation.
- * - Visual display order of items is preserved as added by customer ("not in frontend just in backend").
+ * Group cart items for rendering.
  */
-export function groupCartItems(items = [], comboDiscountPercent = 15) {
-  // 1. Flatten all individual bottle units, referencing their item id
-  const units = []
-  for (const item of items) {
-    const qty = Number(item.quantity ?? 0)
-    const price = Number(item.price ?? 0)
-    for (let u = 0; u < qty; u++) {
-      if (price > 0) {
-        units.push({ id: item.id, price })
-      }
-    }
-  }
-
-  // 2. Accumulate discount per line
-  const lineDiscounts = new Map()
-
-  if (units.length >= 2) {
-    // Sort descending by price (highest price first, lowest last)
-    units.sort((a, b) => b.price - a.price)
-
-    const secondRate = Math.max(0, Math.min(80, Number(comboDiscountPercent) || 15)) / 100
-    const thirdRate = 0.20
-
-    // Unit 0 (highest price): 0% discount
-    // Unit 1 (2nd highest): 15% discount
-    // Unit 2+ (3rd+ cheapest): 20% discount
-    for (let i = 1; i < units.length; i++) {
-      const { id, price } = units[i]
-      const rate = i === 1 ? secondRate : thirdRate
-      const cut = Math.round(price * rate)
-      lineDiscounts.set(id, (lineDiscounts.get(id) || 0) + cut)
-    }
-  }
-
-  // 3. Keep original visual order of items intact
-  const comboMap = new Map()
-  for (const item of items) {
-    if (!item.comboId) continue
-    if (!comboMap.has(item.comboId)) comboMap.set(item.comboId, [])
-    comboMap.get(item.comboId).push(item)
-  }
-
-  const seenCombos = new Set()
-  const entries = []
-
-  for (const item of items) {
-    if (!item.comboId) {
-      const discountAmount = lineDiscounts.get(item.id) || 0
-      entries.push({
-        kind: 'single',
-        item,
-        comboPairs: units.length >= 2 && discountAmount > 0 ? 1 : 0,
-        comboDiscountAmount: discountAmount,
-      })
-      continue
-    }
-
-    if (seenCombos.has(item.comboId)) continue
-    seenCombos.add(item.comboId)
-
-    const lines = comboMap.get(item.comboId) ?? []
-    const isSelfPair = lines.length === 1
-    const pairQty = isSelfPair
-      ? Math.max(1, Math.floor((Number(lines[0].quantity) || 0) / 2))
-      : Math.max(1, Math.min(...lines.map((l) => Number(l.quantity) || 0)))
-    const rawTotal = lines.reduce((sum, l) => sum + (Number(l.price) || 0) * (Number(l.quantity) || 0), 0)
-    const mrpTotal = lines.reduce((sum, l) => sum + (Number(l.mrp ?? l.price) || 0) * (Number(l.quantity) || 0), 0)
-    const discountAmount = lines.reduce((sum, l) => sum + (lineDiscounts.get(l.id) || 0), 0)
-
-    entries.push({
-      kind: 'combo',
-      comboId: item.comboId,
-      lines,
-      isSelfPair,
-      pairQty,
-      rawTotal,
-      mrpTotal,
-      discountAmount,
-      finalTotal: Math.max(0, rawTotal - discountAmount),
-    })
-  }
-
-  return entries
+export function groupCartItems(items = []) {
+  return items.map((item) => ({
+    kind: 'single',
+    item,
+    comboPairs: 0,
+    comboDiscountAmount: 0,
+  }))
 }
 
 const initialState = {
   items: [],
-  /** Live 1+1 combo percentage discount synced from `/api/pricing`. */
-  comboDiscountPercent: 15,
   pricingSynced: false,
-  /**
-   * The applied coupon.
-   *
-   * `coupon` holds the **server's** rule (`{code, type, value, minOrder, cap}`,
-   * pure data, so it persists and round-trips). There is no bundled coupon table
-   * any more: a code only prices as a discount once `/coupons/validate` has
-   * answered for it. `couponCode` mirrors the stored rule's code.
-   */
   couponCode: null,
   coupon: null,
   giftWrap: false,
   giftMessage: '',
-  /** Set by the PDP "buy now" button to skip the cart and jump to checkout. */
   expressItem: null,
 }
 
@@ -206,18 +74,12 @@ export const useCartStore = create(
     (set, get) => ({
       ...initialState,
 
-      /** Fetch live store pricing settings so 1+1 combo percentages match checkout. */
       async syncPricing() {
         try {
-          const data = await productService.pricing()
-          if (data && data.comboDiscountPercent != null) {
-            set({
-              comboDiscountPercent: Number(data.comboDiscountPercent) || 0,
-              pricingSynced: true,
-            })
-          }
+          await productService.pricing()
+          set({ pricingSynced: true })
         } catch {
-          // Keep current percentage on transient failure; server enforces authoritative total.
+          // Ignore transient network failure
         }
       },
 
@@ -241,47 +103,13 @@ export const useCartStore = create(
         return { line, silent }
       },
 
-      /** Add a 1+1 perfume combination pair sharing a `comboId`. */
-      addComboPair(first, second) {
-        if (!first?.product || !second?.product) return null
-        const token =
-          typeof crypto !== 'undefined' && crypto.randomUUID
-            ? crypto.randomUUID().slice(0, 8)
-            : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`
-        const comboId = `cmb-${token}`
-
-        const lineA = buildCartLine(first.product, { volume: first.volume, quantity: 1, comboId })
-        const lineB = buildCartLine(second.product, { volume: second.volume, quantity: 1, comboId })
-        const additions =
-          lineA.productId === lineB.productId && lineA.volume === lineB.volume
-            ? [{ ...lineA, quantity: 2 }]
-            : [lineA, lineB]
-
-        set((state) => ({ items: [...state.items, ...additions] }))
-        return comboId
+      addComboPair() {
+        return null
       },
 
-      /** Set number of combo pairs for a given `comboId`. */
-      updateComboQuantity(comboId, pairCount) {
-        const parsed = Math.floor(Number(pairCount))
-        if (!Number.isFinite(parsed)) return
-        if (parsed < 1) return get().removeCombo(comboId)
-        const capped = Math.min(20, parsed)
-        set((state) => {
-          const groupLines = state.items.filter((item) => item.comboId === comboId)
-          const isSelfPair = groupLines.length === 1
-          return {
-            items: state.items.map((item) =>
-              item.comboId === comboId ? { ...item, quantity: isSelfPair ? capped * 2 : capped } : item,
-            ),
-          }
-        })
-      },
+      updateComboQuantity() {},
 
-      /** Remove all bottles belonging to a 1+1 combo pair. */
-      removeCombo(comboId) {
-        set((state) => ({ items: state.items.filter((item) => item.comboId !== comboId) }))
-      },
+      removeCombo() {},
 
       /**
        * Give older lines the picture they were added under.
@@ -380,21 +208,12 @@ export const useCartStore = create(
         const subtotal = state.subtotal()
         const mrpTotal = state.mrpTotal()
         const productSavings = Math.max(0, mrpTotal - subtotal)
-        const comboDiscountPercent = Number(state.comboDiscountPercent) || 15
-        const comboDiscount = Math.min(subtotal, comboDiscountOf(state.items, comboDiscountPercent))
-        const afterCombo = Math.max(0, subtotal - comboDiscount)
-        // The applied rule, if the server handed one back. `coupon` is a plain
-        // field — it was also a method of the same name once, and the first
-        // `set({ coupon })` overwrote that method and crashed every later
-        // `summary()` call.
         const coupon = state.coupon ?? null
-        const couponDiscount = Math.min(afterCombo, couponDiscountOf(coupon, subtotal))
-        const afterCoupon = Math.max(0, afterCombo - couponDiscount)
+        const couponDiscount = Math.min(subtotal, couponDiscountOf(coupon, subtotal))
+        const afterCoupon = Math.max(0, subtotal - couponDiscount)
         const shipping =
           afterCoupon === 0 || afterCoupon >= FREE_SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING_FEE
         const giftWrapFee = state.giftWrap ? GIFT_WRAP_FEE : 0
-        // Fragrances carry 18% GST, already included in the listed price — shown
-        // as an informational split, not added on top.
         const gst = Math.round((afterCoupon * 18) / 118)
         const total = afterCoupon + shipping + giftWrapFee
 
@@ -403,8 +222,8 @@ export const useCartStore = create(
           subtotal,
           mrpTotal,
           productSavings,
-          comboDiscount,
-          comboDiscountPercent,
+          comboDiscount: 0,
+          comboDiscountPercent: 0,
           couponDiscount,
           couponCode: coupon?.code ?? null,
           shipping,
@@ -412,7 +231,7 @@ export const useCartStore = create(
           gst,
           total,
           payable: total,
-          savings: productSavings + comboDiscount + couponDiscount,
+          savings: productSavings + couponDiscount,
           loyaltyPoints: Math.floor(afterCoupon * LOYALTY_POINTS_PER_RUPEE),
           freeShippingGap: Math.max(0, FREE_SHIPPING_THRESHOLD - afterCoupon),
         }

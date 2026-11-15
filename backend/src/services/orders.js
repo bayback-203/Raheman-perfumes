@@ -190,8 +190,8 @@ export async function place(input, { customer, actor = null } = {}) {
   for (const line of input.items) resolved.push(await resolveLine(line, { counter }))
   const items = resolved.map((entry) => entry.item)
 
-  // When a 1+1 combo or cart contains multiple lines for the same product
-  // (e.g. two sizes or two bottles paired together), ensure cumulative stock suffices.
+  // When a cart contains multiple lines for the same product
+  // (e.g. two sizes or duplicate bottles), ensure cumulative stock suffices.
   const qtyByProduct = new Map()
   for (const { product, item } of resolved) {
     const key = String(product._id)

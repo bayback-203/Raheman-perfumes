@@ -143,7 +143,7 @@ router.get(
   }),
 )
 
-/** Active shipping, 1+1 combo discount rules, and COD availability. */
+/** Active shipping, tax rules, and COD availability. */
 router.get(
   '/pricing',
   asyncHandler(async (_req, res) => {

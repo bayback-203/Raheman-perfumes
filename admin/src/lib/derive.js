@@ -91,7 +91,7 @@ export function ordersForCustomer(orders = [], customerName) {
     .sort((a, b) => (a.placedAt < b.placedAt ? 1 : -1))
 }
 
-/** Products that can still be sold — the pool a combo or a bundle may draw on. */
+/** Products that can still be sold. */
 export function sellableProducts(products = []) {
   return products.filter((p) => p.status === 'Active')
 }

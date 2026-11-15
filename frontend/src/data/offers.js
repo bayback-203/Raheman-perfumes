@@ -25,7 +25,6 @@ export const OFFER_TABS = [
   { id: 'inspired', label: 'Inspired' },
   { id: 'mixing', label: 'Mixing Blends' },
   { id: 'attars', label: 'Pure Attars' },
-  { id: 'combos', label: 'Combo Offers' },
 ]
 
 /** Volume-based savings offers. */
