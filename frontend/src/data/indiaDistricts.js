@@ -113,7 +113,7 @@ export const DISTRICTS_BY_STATE = {
   Odisha: [
     'Angul', 'Balangir', 'Balasore', 'Bargarh', 'Bhadrak', 'Boudh', 'Cuttack', 'Deogarh', 'Dhenkanal',
     'Gajapati', 'Ganjam', 'Jagatsinghapur', 'Jajpur', 'Jharsuguda', 'Kalahandi', 'Kandhamal',
-    'Kendrapara', 'Kendujhar', 'Khordha', 'Koraput', 'Malkangiri', 'Mayurbhanj', 'Nabarangapur',
+    'Kendrapara', 'Kendrapada', 'Kendujhar', 'Khordha', 'Khurda', 'Koraput', 'Malkangiri', 'Mayurbhanj', 'Nabarangapur',
     'Nayagarh', 'Nuapada', 'Puri', 'Rayagada', 'Sambalpur', 'Sonepur', 'Sundargarh',
   ],
   Puducherry: ['Karaikal', 'Mahe', 'Puducherry', 'Yanam'],

@@ -9,7 +9,8 @@ import { authService } from '@/services/authService'
 import { toast } from '@/store/uiStore'
 import { Icon } from '@/components/ui/Icon'
 import { Input, Checkbox } from '@/components/ui/Form'
-import { AddressFields } from '@/components/ui/AddressFields'
+import { AddressFields, districtsMatch } from '@/components/ui/AddressFields'
+import { pincodeDetails } from '@/services/postalApi'
 import { EmptyState, Skeleton } from '@/components/ui/Feedback'
 import { FlaconStage } from '@/components/product/FlaconArt'
 import { productImage } from '@/data/productImages'
@@ -286,6 +287,24 @@ export function CheckoutPage() {
     if (!validate()) {
       toast({ title: 'Check your details', description: 'Some required fields need attention.', tone: 'error' })
       return
+    }
+
+    if (PINCODE_PATTERN.test(shipping.pincode)) {
+      const pinDetails = await pincodeDetails(shipping.pincode)
+      if (pinDetails?.district && !districtsMatch(shipping.district, pinDetails.district)) {
+        setErrors((prev) => ({
+          ...prev,
+          pincode: `PIN code ${shipping.pincode} belongs to ${pinDetails.district}, not ${shipping.district}.`,
+        }))
+        setAddressEditing(true)
+        scrollToSection('customer')
+        toast({
+          title: 'Location mismatch',
+          description: `PIN code ${shipping.pincode} belongs to ${pinDetails.district}. Please match the district before placing your order.`,
+          tone: 'error',
+        })
+        return
+      }
     }
 
     placingRef.current = true

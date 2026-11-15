@@ -1,21 +1,15 @@
 /**
- * India Post area / PIN-code lookups, against the Postal Indexes API.
+ * India Post area / PIN-code lookups, powered by India Post's public directory.
  *
- * This is the *live* half of the address experience: districts are bundled
- * (`data/indiaDistricts.js`) so they always work, while area names and their
- * PIN codes come from here. Every function resolves to an empty array on any
- * failure — timeout, offline, blocked network, malformed payload — because the
- * forms treat a missing suggestion list as "type it yourself", never as an
- * error. A shopper on a bad connection loses the autofill, not the checkout.
- *
- * Results are cached in-memory per session: the same district is picked from
- * the Area box many times across cart, checkout and the account page.
+ * This provides live PIN-code verification, district, state and locality autofill.
+ * Every function resolves cleanly to null/empty array on failure so users can
+ * always type manually if offline.
  */
 
-const BASE = 'https://api.pine-labs.com/postal'
+const BASE = 'https://api.postalpincode.in'
 const TIMEOUT_MS = 6000
 
-/** @type {Map<string, Promise<object[]> | object[]>} */
+/** @type {Map<string, Promise<any> | any>} */
 const cache = new Map()
 
 async function getJson(path) {
@@ -23,11 +17,11 @@ async function getJson(path) {
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS)
   try {
     const response = await fetch(`${BASE}${path}`, { signal: controller.signal })
-    if (!response.ok) return []
+    if (!response.ok) return null
     const payload = await response.json()
-    return Array.isArray(payload?.data) ? payload.data : []
+    return Array.isArray(payload) ? payload[0] : null
   } catch {
-    return []
+    return null
   } finally {
     clearTimeout(timer)
   }
@@ -35,11 +29,9 @@ async function getJson(path) {
 
 function cached(key, loader) {
   if (!cache.has(key)) {
-    // Remember the promise, so parallel callers share one request; the
-    // resolved value (always an array, never a rejection) replaces it.
-    const pending = loader().then((rows) => {
-      cache.set(key, rows)
-      return rows
+    const pending = loader().then((res) => {
+      cache.set(key, res)
+      return res
     })
     cache.set(key, pending)
   }
@@ -47,37 +39,46 @@ function cached(key, loader) {
 }
 
 /**
- * Areas (localities / talukas) of a district with their PIN codes.
+ * Areas (post offices) of a district with their PIN codes.
  * @returns {Promise<Array<{ name: string, pinCode: string }>>}
  */
 export function areasOfDistrict(district) {
-  const key = `place:${district}`
   const clean = String(district ?? '').trim()
   if (!clean) return Promise.resolve([])
+  const key = `place:${clean.toLowerCase()}`
   return cached(key, async () => {
-    const rows = await getJson(`/in/district/${encodeURIComponent(clean)}/place?limit=500`)
-    return rows
-      .filter((row) => row?.name && row?.pin_code)
-      .map((row) => ({ name: String(row.name), pinCode: String(row.pin_code) }))
+    const data = await getJson(`/postoffice/${encodeURIComponent(clean)}`)
+    if (data?.Status !== 'Success' || !Array.isArray(data?.PostOffice)) {
+      return []
+    }
+    return data.PostOffice
+      .filter((row) => row?.Name && row?.Pincode)
+      .map((row) => ({ name: String(row.Name), pinCode: String(row.Pincode) }))
   })
 }
 
 /**
- * What a PIN code covers: its area names, district and state.
- * @returns {Promise<{ pinCode: string, areas: string[], district: string, state: string } | null>}
+ * What a PIN code covers: its area names, district, state, block/taluka.
+ * @returns {Promise<{ pinCode: string, areas: string[], district: string, state: string, block: string } | null>}
  */
 export function pincodeDetails(pincode) {
   const clean = String(pincode ?? '').trim()
   if (!/^\d{6}$/.test(clean)) return Promise.resolve(null)
   const key = `pin:${clean}`
   return cached(key, async () => {
-    const rows = await getJson(`/in/pincode/${clean}`)
-    if (!rows.length) return null
+    const data = await getJson(`/pincode/${clean}`)
+    if (data?.Status !== 'Success' || !Array.isArray(data?.PostOffice) || data.PostOffice.length === 0) {
+      return null
+    }
+    const offices = data.PostOffice
+    const first = offices[0]
+    const areas = Array.from(new Set(offices.map((row) => String(row.Name ?? '')).filter(Boolean)))
     return {
       pinCode: clean,
-      areas: rows.map((row) => String(row.name ?? '')).filter(Boolean),
-      district: String(rows[0]?.district ?? ''),
-      state: String(rows[0]?.region ?? ''),
+      areas,
+      district: String(first?.District ?? '').trim(),
+      state: String(first?.State ?? '').trim(),
+      block: String(first?.Block ?? '').trim(),
     }
   })
 }

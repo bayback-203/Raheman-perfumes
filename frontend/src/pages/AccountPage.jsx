@@ -17,7 +17,8 @@ import { FlaconStage } from '@/components/product/FlaconArt'
 import { productImage } from '@/data/productImages'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 import { ORDER_STATUS } from '@/data/account'
-import { AddressFields } from '@/components/ui/AddressFields'
+import { AddressFields, districtsMatch } from '@/components/ui/AddressFields'
+import { pincodeDetails } from '@/services/postalApi'
 import { useCatalogueStore } from '@/store/catalogueStore'
 
 const NAV_GROUPS = [
@@ -782,6 +783,22 @@ function AddressesTab() {
     if (!/^\d{6}$/.test(draft.pincode)) next.pincode = 'Enter a 6-digit PIN code.'
     setErrors(next)
     if (Object.keys(next).length > 0) return
+
+    if (/^\d{6}$/.test(draft.pincode)) {
+      const pinDetails = await pincodeDetails(draft.pincode)
+      if (pinDetails?.district && !districtsMatch(draft.district, pinDetails.district)) {
+        setErrors((prev) => ({
+          ...prev,
+          pincode: `PIN code ${draft.pincode} belongs to ${pinDetails.district}, not ${draft.district}.`,
+        }))
+        toast({
+          title: 'Location mismatch',
+          description: `PIN code ${draft.pincode} belongs to ${pinDetails.district}. Please match the district.`,
+          tone: 'error',
+        })
+        return
+      }
+    }
 
     savingRef.current = true
     setSaving(true)
