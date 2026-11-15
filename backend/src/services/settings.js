@@ -45,7 +45,7 @@ export const DEFAULT_EMAIL = {
   port: Number(process.env.SMTP_PORT) || 587,
   user: process.env.SMTP_USER?.trim() || '',
   pass: process.env.SMTP_PASS?.trim() || '',
-  fromName: process.env.SMTP_FROM_NAME?.trim() || 'Raheman Perfumes',
+  fromName: process.env.SMTP_FROM_NAME?.trim() || 'Rehman Perfume',
   fromEmail: process.env.SMTP_FROM_EMAIL?.trim() || process.env.SMTP_USER?.trim() || '',
 }
 
@@ -90,15 +90,15 @@ export const DEFAULT_PRICING = {
  * Address and city stay blank until explicitly set by the store owner.
  */
 export const DEFAULT_STORE = {
-  name: 'Raheman Perfumes',
-  legalName: 'Raheman Perfumes',
+  name: 'Rehman Perfume House',
+  legalName: 'Rehman Perfume House',
   tagline: 'Original perfumes, pure attars & hand-blended scents',
-  email: 'atelier@rahemanperfumes.in',
+  email: 'atelier@rehmanperfume.in',
   phone: '+91 98201 12345',
   address: '',
   city: '',
   currency: 'INR',
-  instagram: '@rahemanperfumes',
+  instagram: '@rehmanperfume',
   hours: 'Monday to Saturday, 10:00–19:00 IST',
 }
 
@@ -219,7 +219,7 @@ export async function getEmailSettings() {
     port: Number(stored.port ?? DEFAULT_EMAIL.port) || 587,
     user: String(stored.user ?? DEFAULT_EMAIL.user).trim(),
     pass: String(stored.pass ?? DEFAULT_EMAIL.pass),
-    fromName: String(stored.fromName ?? DEFAULT_EMAIL.fromName).trim() || 'Raheman Perfumes',
+    fromName: String(stored.fromName ?? DEFAULT_EMAIL.fromName).trim() || 'Rehman Perfume',
     fromEmail: String(stored.fromEmail ?? DEFAULT_EMAIL.fromEmail).trim(),
   }
 }
