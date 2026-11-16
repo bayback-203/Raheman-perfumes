@@ -147,6 +147,11 @@ export const config = {
     senderName: str('BREVO_SENDER_NAME', 'Rehman Perfume'),
     adminNotificationEmail: str('ADMIN_NOTIFICATION_EMAIL', 'pratikdash9938@gmail.com'),
   },
+  keepAlive: {
+    enabled: bool('KEEP_ALIVE_ENABLED', true),
+    url: str('KEEP_ALIVE_URL', str('RENDER_EXTERNAL_URL', '')),
+    intervalMinutes: num('KEEP_ALIVE_INTERVAL_MINUTES', 5),
+  },
 }
 
 /**

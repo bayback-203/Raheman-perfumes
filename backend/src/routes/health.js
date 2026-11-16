@@ -7,10 +7,27 @@ import { circuitRegistry } from '../lib/circuitBreaker.js'
 const router = Router()
 
 /**
+ * 0. Fast Ping / Keep-Alive Probe (UptimeRobot, Render Keep-Alive, Pingdom, StatusCake)
+ * Ultra-lightweight endpoint that returns 200 OK immediately without database queries or overhead.
+ * Designed specifically for 5-minute external monitor pings to prevent Render free instance sleeping.
+ */
+router.all(['/ping', '/health/ping'], (_req, res) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+  res.status(200).json({
+    status: 'ok',
+    message: 'pong',
+    service: 'rehman-perfume-api',
+    uptimeSeconds: Math.floor(process.uptime()),
+    timestamp: new Date().toISOString(),
+  })
+})
+
+/**
  * 1. Liveness Probe (Kubernetes / AWS ECS / Docker Swarm)
  * Fast check: Is the process responsive and alive?
  */
-router.get('/health/live', (_req, res) => {
+router.all('/health/live', (_req, res) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
   res.status(200).json({ status: 'live', timestamp: new Date().toISOString() })
 })
 
@@ -19,7 +36,8 @@ router.get('/health/live', (_req, res) => {
  * Deep check: Are critical upstream dependencies (MongoDB, Cache, Queue) ready to receive user traffic?
  * Returns 503 if MongoDB is disconnected so load balancers stop sending traffic here.
  */
-router.get('/health/ready', (_req, res) => {
+router.all('/health/ready', (_req, res) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
   const dbReady = mongoose.connection?.readyState === 1 // 1 = connected
   if (!dbReady) {
     return res.status(503).json({
@@ -42,7 +60,8 @@ router.get('/health/ready', (_req, res) => {
  * 3. Full System Telemetry
  * Provides complete operational metrics for monitoring dashboards.
  */
-router.get('/health', (_req, res) => {
+router.all('/health', (_req, res) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
   const mem = process.memoryUsage()
   const circuits = {}
   for (const [name, breaker] of circuitRegistry.entries()) {

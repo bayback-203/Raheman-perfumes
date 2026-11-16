@@ -115,9 +115,10 @@ export function createApp() {
     app.use(morgan(config.isProduction ? 'combined' : 'dev'))
   }
 
-  // 2. Micro-Health Probes (Liveness & Readiness for Container Orchestrators)
-  // Bypasses general rate-limiter so cluster health checks are never throttled
+  // 2. Micro-Health Probes & Keep-Alive (UptimeRobot, Kubernetes, Render)
+  // Bypasses general rate-limiter so cluster health checks & external monitors are never throttled
   app.use('/api', healthRoutes)
+  app.use(healthRoutes)
 
   // 3. RFC-Compliant Idempotency Layer for mutations
   app.use('/api', idempotency({ ttl: 120 }))

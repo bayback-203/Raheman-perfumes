@@ -5,6 +5,7 @@ import { activeDriver, isAvailable, unavailableReason } from './lib/storage.js'
 import { queue } from './lib/queue.js'
 import { dispatchPendingEvents } from './services/outbox.js'
 import { archivalService } from './services/archival.js'
+import { startKeepAlive, stopKeepAlive } from './services/keepalive.js'
 
 /**
  * The entry point for Rehman Perfume API server.
@@ -57,6 +58,9 @@ const server = app.listen(config.port, () => {
     archivalService.runMaintenance().catch(() => {})
   }, 24 * 60 * 60 * 1000)
   if (maintenanceInterval.unref) maintenanceInterval.unref()
+
+  // 3. Keep-Alive self-ping (Render & cloud hosting)
+  startKeepAlive()
 })
 
 /**
@@ -81,6 +85,7 @@ async function shutdown(signal) {
 
   server.close(async () => {
     try {
+      stopKeepAlive()
       console.log('[server] Draining background queue workers...')
       await queue.drain(3000)
     } catch {}
