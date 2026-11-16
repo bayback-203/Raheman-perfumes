@@ -13,6 +13,17 @@
 
 const BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? '/api').replace(/\/$/, '')
 
+export const API_ORIGIN = /^https?:\/\//i.test(BASE_URL) ? BASE_URL.replace(/\/api$/, '') : ''
+
+/** Turn local backend uploads into absolute reachable URLs when running on deployed hosting. */
+export function resolveImageUrl(url) {
+  if (!url || typeof url !== 'string') return ''
+  if (url.startsWith('/api/uploads/')) {
+    return API_ORIGIN ? `${API_ORIGIN}${url}` : url
+  }
+  return url
+}
+
 /**
  * Who to tell when the server answers **401**.
  *

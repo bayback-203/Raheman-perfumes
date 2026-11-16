@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose'
 import { baseOptions, ref } from './options.js'
+import './Media.js'
 
 /**
  * A placed order.

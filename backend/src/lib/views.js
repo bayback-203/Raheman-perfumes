@@ -415,17 +415,22 @@ export function publicOrder(doc) {
       processedAt: doc.refund?.processedAt ?? null,
       referenceNote: doc.refund?.referenceNote ?? '',
     },
-    items: (doc.items ?? []).map((item) => ({
-      name: item.name,
-      slug: item.slug,
-      // The shot frozen onto the line at placement. The storefront's
-      // `productImage()` reads it before any stand-in, so the order page shows
-      // the bottle that was actually sold.
-      image: item.image ?? '',
-      volume: item.volume,
-      qty: item.qty,
-      price: item.unitPrice,
-    })),
+    items: (doc.items ?? []).map((item) => {
+      let image = item.image ?? ''
+      if ((!image || image.startsWith('/api/uploads/')) && item.product?.images?.[0]) {
+        image = item.product.images[0].secureUrl || item.product.images[0].url || image
+      }
+      return {
+        name: item.name,
+        slug: item.slug,
+        // The shot frozen onto the line at placement. Falls back to product photography
+        // if the line image is missing or was saved under local ephemeral storage.
+        image,
+        volume: item.volume,
+        qty: item.qty,
+        price: item.unitPrice,
+      }
+    }),
     total: doc.pricing?.total ?? 0,
     trackingId: ['Shipped', 'Delivered'].includes(doc.status) ? doc.tracking?.awb || doc.number : null,
     canTrack: ['Shipped', 'Delivered'].includes(doc.status),
@@ -442,16 +447,22 @@ export function publicOrder(doc) {
 
 /** One order as the admin's Orders table and drawer read it. */
 export function adminOrder(doc) {
-  const items = (doc.items ?? []).map((item) => ({
-    name: item.name,
-    sku: item.sku,
-    slug: item.slug,
-    image: item.image ?? '',
-    volume: item.volume,
-    qty: item.qty,
-    price: item.unitPrice,
-    total: item.lineTotal,
-  }))
+  const items = (doc.items ?? []).map((item) => {
+    let image = item.image ?? ''
+    if ((!image || image.startsWith('/api/uploads/')) && item.product?.images?.[0]) {
+      image = item.product.images[0].secureUrl || item.product.images[0].url || image
+    }
+    return {
+      name: item.name,
+      sku: item.sku,
+      slug: item.slug,
+      image,
+      volume: item.volume,
+      qty: item.qty,
+      price: item.unitPrice,
+      total: item.lineTotal,
+    }
+  })
 
   return {
     id: doc.number,

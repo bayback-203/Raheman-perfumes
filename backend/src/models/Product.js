@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose'
 import { baseOptions, ref } from './options.js'
 import { barcodeFor } from '../lib/barcode.js'
+import './Media.js'
 
 /**
  * A fragrance.

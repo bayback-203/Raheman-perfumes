@@ -14,6 +14,17 @@
  * `contain`ed or the stage slices through its edges.
  */
 
+import { API_ORIGIN } from '@/lib/api'
+
+/** Turn local backend uploads into absolute reachable URLs when running on deployed hosting. */
+export function resolveImageUrl(url) {
+  if (!url || typeof url !== 'string') return ''
+  if (url.startsWith('/api/uploads/')) {
+    return API_ORIGIN ? `${API_ORIGIN}${url}` : url
+  }
+  return url
+}
+
 /** The available studio shots. */
 export const PRODUCT_IMAGES = {
   placeholder: { src: '/rehman-placeholder-bottle.png', fit: 'contain' },
@@ -34,16 +45,19 @@ export const PRODUCT_IMAGE_POOL = [PRODUCT_IMAGES.amber, PRODUCT_IMAGES.noir]
 export function asShot(value) {
   if (!value) return null
   if (typeof value === 'object' && value.src) {
-    const isPlaceholder = typeof value.src === 'string' && value.src.includes('rehman-placeholder-bottle.png')
+    const src = resolveImageUrl(value.src)
+    const isPlaceholder = typeof src === 'string' && src.includes('rehman-placeholder-bottle.png')
     return {
       ...value,
+      src,
       fit: value.fit ?? (isPlaceholder ? 'contain' : 'cover'),
     }
   }
   if (typeof value === 'string') {
-    const isPlaceholder = value.includes('rehman-placeholder-bottle.png')
+    const src = resolveImageUrl(value)
+    const isPlaceholder = src.includes('rehman-placeholder-bottle.png')
     return {
-      src: value,
+      src,
       fit: isPlaceholder ? 'contain' : 'cover',
     }
   }

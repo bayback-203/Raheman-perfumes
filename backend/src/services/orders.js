@@ -85,8 +85,8 @@ function assertTransition(order, to) {
  */
 async function resolveLine(line, { counter = false } = {}) {
   const product = line.productId
-    ? await Product.findById(line.productId).populate('images', 'secureUrl')
-    : await Product.findOne({ slug: String(line.slug ?? '').toLowerCase() }).populate('images', 'secureUrl')
+    ? await Product.findById(line.productId).populate('images')
+    : await Product.findOne({ slug: String(line.slug ?? '').toLowerCase() }).populate('images')
 
   if (!product) throw unprocessable(`“${line.slug ?? line.productId}” is not in the catalogue.`)
   if (product.status !== 'Active') throw unprocessable(`${product.name} is not currently available.`)
@@ -125,7 +125,10 @@ async function resolveLine(line, { counter = false } = {}) {
       // The first gallery shot, copied now rather than joined later — see the
       // note on `orderItemSchema.image`. `find` rather than `[0]` because a
       // gallery can hold a dangling ref to a deleted media row.
-      image: (product.images ?? []).find((media) => media?.secureUrl)?.secureUrl ?? '',
+      image:
+        (product.images ?? []).find((media) => media?.secureUrl || media?.url)?.secureUrl ||
+        (product.images ?? []).find((media) => media?.secureUrl || media?.url)?.url ||
+        '',
       volume: volume.size,
       qty,
       unitPrice: volume.price,
@@ -393,6 +396,7 @@ export async function adminList(filters = {}) {
     .sort({ placedAt: -1 })
     .limit(Math.min(Number(filters.limit) || 100, 1000))
     .populate('customer', 'name email phone')
+    .populate({ path: 'items.product', select: 'name slug images', populate: { path: 'images', select: 'secureUrl url' } })
   return orders.map(adminOrder)
 }
 
@@ -404,7 +408,10 @@ export async function adminOne(id) {
 
 /** The signed-in patron's own orders. */
 export async function forCustomer(customerId, { limit = 50 } = {}) {
-  const orders = await Order.find({ customer: customerId }).sort({ placedAt: -1 }).limit(limit)
+  const orders = await Order.find({ customer: customerId })
+    .sort({ placedAt: -1 })
+    .limit(limit)
+    .populate({ path: 'items.product', select: 'name slug images', populate: { path: 'images', select: 'secureUrl url' } })
   return orders.map(publicOrder)
 }
 
@@ -413,7 +420,11 @@ async function findOrder(idOrNumber, { populate = true } = {}) {
   const value = String(idOrNumber ?? '')
   const byNumber = /^rp\d+$/i.test(value)
   let query = Order.findOne(byNumber ? { number: value.toUpperCase() } : { _id: mongoose.isValidObjectId(value) ? value : null })
-  if (populate) query = query.populate('customer', 'name email phone')
+  if (populate) {
+    query = query
+      .populate('customer', 'name email phone')
+      .populate({ path: 'items.product', select: 'name slug images', populate: { path: 'images', select: 'secureUrl url' } })
+  }
   const order = await query
   if (!order) throw notFound(`No order matches “${value}”.`)
   return order

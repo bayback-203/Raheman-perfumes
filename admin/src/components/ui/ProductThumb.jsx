@@ -1,6 +1,7 @@
 import cn from '@/lib/cn'
 import { Icon } from '@/components/ui/Icon'
 import { FlaconArt } from '@/components/ui/FlaconArt'
+import { resolveImageUrl } from '@/lib/api'
 
 export const PLACEHOLDER_IMAGE = '/rehman-placeholder-bottle.png'
 
@@ -11,12 +12,14 @@ export const PLACEHOLDER_IMAGE = '/rehman-placeholder-bottle.png'
  * Rehman Perfume bottle placeholder when the admin has not added photography.
  */
 export function ProductThumb({ product, image, className = 'h-10 w-10' }) {
-  const resolvedUrl =
+  const rawUrl =
     image ||
     product?.images?.[0]?.url ||
     (typeof product?.images?.[0] === 'string' ? product.images[0] : '') ||
     product?.image ||
     PLACEHOLDER_IMAGE
+
+  const resolvedUrl = resolveImageUrl(rawUrl)
 
   const isPlaceholder = !resolvedUrl || resolvedUrl.includes('rehman-placeholder-bottle.png')
   const frame = cn(
