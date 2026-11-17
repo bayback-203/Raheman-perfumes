@@ -377,13 +377,13 @@ export function FilterSidebar({
           {CONCENTRATIONS.map((entry) => (
             <Checkbox
               key={entry.id}
-              checked={(filters.concentration ?? []).includes(entry.id)}
+              checked={(filters.concentration ?? []).includes(entry.id) || (filters.concentration ?? []).includes(entry.label)}
               onChange={() => toggleIn('concentration', entry.id)}
               label={
                 <span className="flex flex-col">
                   <span className="text-body-sm text-brand-charcoal">{entry.label}</span>
                   <span className="text-body-sm text-brand-muted">
-                    {entry.oil} perfume oil{entry.surcharge ? ` · +${formatPrice(entry.surcharge)}` : ''}
+                    {entry.oil} perfume oil
                   </span>
                 </span>
               }

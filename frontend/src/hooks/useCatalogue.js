@@ -69,8 +69,13 @@ function matchesFilter(product, key, value) {
       return value.includes(product.brand)
     case 'gender':
       return value.includes(product.gender)
-    case 'concentration':
-      return value.includes(product.concentration)
+    case 'concentration': {
+      const prodConc = (product.concentration || '').toLowerCase()
+      return value.some((v) => {
+        const needle = String(v).toLowerCase()
+        return prodConc.includes(needle) || needle.includes(prodConc) || (needle === 'edp' && prodConc.includes('parfum'))
+      })
+    }
     case 'inStock':
       return !value || product.inStock
     case 'price': {
