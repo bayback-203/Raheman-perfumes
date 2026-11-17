@@ -9,10 +9,16 @@ export const ANNOUNCEMENTS = [
 
 export const MAIN_NAV = [
   { id: 'home', label: 'Home', to: '/' },
-  { id: 'shop', label: 'Shop', to: '/shop' },
-  { id: 'original', label: 'Original', to: '/shop/originals' },
-  { id: 'attars', label: 'Pure Attars', to: '/shop/attars' },
-  { id: 'combos', label: 'Combos', to: '/combos' },
+  {
+    id: 'shop',
+    label: 'Shop',
+    to: '/shop',
+    children: [
+      { id: 'original', label: 'Original', description: 'Authentic branded perfumes', to: '/shop/originals' },
+      { id: 'attars', label: 'Pure Attars', description: 'Alcohol-free pure oils', to: '/shop/attars' },
+      { id: 'combos', label: 'Combos', description: 'Curated sets & pairings', to: '/combos' },
+    ],
+  },
   { id: 'offers', label: 'Offers', to: '/offers', accent: 'red' },
 ]
 

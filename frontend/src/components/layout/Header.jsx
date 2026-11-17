@@ -122,43 +122,119 @@ export function Header() {
               <Icon name="menu" className="h-5 w-5" />
             </button>
 
-            <nav className="hidden items-center gap-4 lg:flex xl:gap-6" aria-label="Primary">
-              {MAIN_NAV.map((item) => (
-                <NavLink
-                  key={item.id}
-                  to={item.to}
-                  className={cn(
-                    'relative whitespace-nowrap py-1 text-label-sm font-bold uppercase tracking-[0.12em] transition-colors xl:tracking-[0.14em]',
-                    isLightTone
-                      ? (isActive(item.to) ? 'text-brand-gold' : 'text-brand-ivory/90 hover:text-white')
-                      : (isActive(item.to) ? 'text-brand-goldDark' : 'text-ink-variant hover:text-brand-charcoal'),
-                    item.accent === 'red' &&
-                      !isActive(item.to) &&
-                      (isLightTone ? 'text-red-300 hover:text-red-200' : 'text-tier-original hover:text-tier-original'),
-                  )}
-                >
-                  {item.label}
-                  {item.badge && (
-                    <span
+            <nav className="hidden items-center gap-6 lg:flex xl:gap-8" aria-label="Primary">
+              {MAIN_NAV.map((item) => {
+                const hasChildren = Array.isArray(item.children) && item.children.length > 0
+                const active =
+                  isActive(item.to) || (hasChildren && item.children.some((child) => isActive(child.to)))
+
+                if (!hasChildren) {
+                  return (
+                    <NavLink
+                      key={item.id}
+                      to={item.to}
                       className={cn(
-                        'ml-1.5 rounded-full px-1.5 py-0.5 text-[9px] font-bold',
-                        isLightTone ? 'bg-brand-gold/30 text-brand-gold' : 'bg-brand-gold/25 text-brand-goldDark',
+                        'relative whitespace-nowrap py-1 text-label-sm font-bold uppercase tracking-[0.14em] transition-colors',
+                        isLightTone
+                          ? (active ? 'text-brand-gold' : 'text-brand-ivory/90 hover:text-white')
+                          : (active ? 'text-brand-goldDark' : 'text-ink-variant hover:text-brand-charcoal'),
+                        item.accent === 'red' &&
+                          !active &&
+                          (isLightTone ? 'text-red-300 hover:text-red-200' : 'text-tier-original hover:text-tier-original'),
                       )}
                     >
-                      {item.badge}
-                    </span>
-                  )}
-                  {isActive(item.to) && (
-                    <span
-                      className={cn(
-                        'absolute -bottom-[9px] left-0 right-0 h-px',
-                        isLightTone ? 'bg-brand-gold' : 'bg-brand-goldDark',
+                      {item.label}
+                      {item.badge && (
+                        <span
+                          className={cn(
+                            'ml-1.5 rounded-full px-1.5 py-0.5 text-[9px] font-bold',
+                            isLightTone ? 'bg-brand-gold/30 text-brand-gold' : 'bg-brand-gold/25 text-brand-goldDark',
+                          )}
+                        >
+                          {item.badge}
+                        </span>
                       )}
-                      aria-hidden="true"
-                    />
-                  )}
-                </NavLink>
-              ))}
+                      {active && (
+                        <span
+                          className={cn(
+                            'absolute -bottom-[9px] left-0 right-0 h-px',
+                            isLightTone ? 'bg-brand-gold' : 'bg-brand-goldDark',
+                          )}
+                          aria-hidden="true"
+                        />
+                      )}
+                    </NavLink>
+                  )
+                }
+
+                return (
+                  <div key={item.id} className="group/nav relative py-2">
+                    <NavLink
+                      to={item.to}
+                      className={cn(
+                        'relative inline-flex items-center gap-1.5 whitespace-nowrap py-1 text-label-sm font-bold uppercase tracking-[0.14em] transition-colors',
+                        isLightTone
+                          ? (active ? 'text-brand-gold' : 'text-brand-ivory/90 hover:text-white')
+                          : (active ? 'text-brand-goldDark' : 'text-ink-variant hover:text-brand-charcoal'),
+                      )}
+                    >
+                      {item.label}
+                      <Icon
+                        name="chevron-down"
+                        className="h-3 w-3 transition-transform duration-200 group-hover/nav:rotate-180 group-focus-within/nav:rotate-180"
+                        strokeWidth={2.2}
+                      />
+                      {active && (
+                        <span
+                          className={cn(
+                            'absolute -bottom-[9px] left-0 right-0 h-px',
+                            isLightTone ? 'bg-brand-gold' : 'bg-brand-goldDark',
+                          )}
+                          aria-hidden="true"
+                        />
+                      )}
+                    </NavLink>
+
+                    {/* Extended vertical dropdown on hover */}
+                    <div
+                      className="pointer-events-none invisible absolute left-0 top-full z-50 pt-2 opacity-0 translate-y-1 transition-all duration-200 group-hover/nav:pointer-events-auto group-hover/nav:visible group-hover/nav:opacity-100 group-hover/nav:translate-y-0 group-focus-within/nav:pointer-events-auto group-focus-within/nav:visible group-focus-within/nav:opacity-100 group-focus-within/nav:translate-y-0"
+                    >
+                      <div className="min-w-[14.5rem] overflow-hidden rounded-lg border border-brand-border/80 bg-white py-2 shadow-overlay">
+                        {item.children.map((child) => {
+                          const childActive = isActive(child.to)
+                          return (
+                            <Link
+                              key={child.id}
+                              to={child.to}
+                              className={cn(
+                                'flex flex-col px-4 py-2.5 transition-colors hover:bg-brand-cream/60',
+                                childActive ? 'bg-brand-cream/50 text-brand-goldDark' : 'text-brand-charcoal',
+                              )}
+                            >
+                              <span className="text-label-sm font-bold uppercase tracking-[0.12em]">
+                                {child.label}
+                              </span>
+                              {child.description && (
+                                <span className="mt-0.5 text-[11px] font-normal text-brand-muted">
+                                  {child.description}
+                                </span>
+                              )}
+                            </Link>
+                          )
+                        })}
+                        <div className="my-1.5 border-t border-brand-border/60" />
+                        <Link
+                          to={item.to}
+                          className="flex items-center justify-between px-4 py-2 text-label-xs font-bold uppercase tracking-[0.12em] text-brand-goldDark transition-colors hover:bg-brand-cream/60"
+                        >
+                          <span>Shop All Perfumes</span>
+                          <Icon name="arrow-right" className="h-3.5 w-3.5" />
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
             </nav>
           </div>
 
