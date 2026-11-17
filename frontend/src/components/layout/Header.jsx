@@ -105,9 +105,9 @@ export function Header() {
       )}
     >
       <div className="shell-wide">
-        <div className="flex h-[68px] items-center justify-between gap-4 lg:h-[76px]">
-          {/* Left — mobile menu + wordmark */}
-          <div className="flex items-center gap-2">
+        <div className="grid h-[68px] grid-cols-[1fr_auto_1fr] items-center gap-2 lg:h-[76px] lg:gap-4">
+          {/* Left — mobile menu toggle + desktop primary nav */}
+          <div className="flex min-w-0 items-center justify-start gap-2">
             <button
               type="button"
               onClick={openMobileMenu}
@@ -121,51 +121,54 @@ export function Header() {
             >
               <Icon name="menu" className="h-5 w-5" />
             </button>
+
+            <nav className="hidden items-center gap-4 lg:flex xl:gap-6" aria-label="Primary">
+              {MAIN_NAV.map((item) => (
+                <NavLink
+                  key={item.id}
+                  to={item.to}
+                  className={cn(
+                    'relative whitespace-nowrap py-1 text-label-sm font-bold uppercase tracking-[0.12em] transition-colors xl:tracking-[0.14em]',
+                    isLightTone
+                      ? (isActive(item.to) ? 'text-brand-gold' : 'text-brand-ivory/90 hover:text-white')
+                      : (isActive(item.to) ? 'text-brand-goldDark' : 'text-ink-variant hover:text-brand-charcoal'),
+                    item.accent === 'red' &&
+                      !isActive(item.to) &&
+                      (isLightTone ? 'text-red-300 hover:text-red-200' : 'text-tier-original hover:text-tier-original'),
+                  )}
+                >
+                  {item.label}
+                  {item.badge && (
+                    <span
+                      className={cn(
+                        'ml-1.5 rounded-full px-1.5 py-0.5 text-[9px] font-bold',
+                        isLightTone ? 'bg-brand-gold/30 text-brand-gold' : 'bg-brand-gold/25 text-brand-goldDark',
+                      )}
+                    >
+                      {item.badge}
+                    </span>
+                  )}
+                  {isActive(item.to) && (
+                    <span
+                      className={cn(
+                        'absolute -bottom-[9px] left-0 right-0 h-px',
+                        isLightTone ? 'bg-brand-gold' : 'bg-brand-goldDark',
+                      )}
+                      aria-hidden="true"
+                    />
+                  )}
+                </NavLink>
+              ))}
+            </nav>
+          </div>
+
+          {/* Centre — official seal logo */}
+          <div className="flex items-center justify-center">
             <Logo />
           </div>
 
-          {/* Centre — primary nav */}
-          <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary">
-            {MAIN_NAV.map((item) => (
-              <NavLink
-                key={item.id}
-                to={item.to}
-                className={cn(
-                  'relative whitespace-nowrap py-1 text-label-sm font-bold uppercase tracking-[0.14em] transition-colors',
-                  isLightTone
-                    ? (isActive(item.to) ? 'text-brand-gold' : 'text-brand-ivory/90 hover:text-white')
-                    : (isActive(item.to) ? 'text-brand-goldDark' : 'text-ink-variant hover:text-brand-charcoal'),
-                  item.accent === 'red' &&
-                    !isActive(item.to) &&
-                    (isLightTone ? 'text-red-300 hover:text-red-200' : 'text-tier-original hover:text-tier-original'),
-                )}
-              >
-                {item.label}
-                {item.badge && (
-                  <span
-                    className={cn(
-                      'ml-1.5 rounded-full px-1.5 py-0.5 text-[9px] font-bold',
-                      isLightTone ? 'bg-brand-gold/30 text-brand-gold' : 'bg-brand-gold/25 text-brand-goldDark',
-                    )}
-                  >
-                    {item.badge}
-                  </span>
-                )}
-                {isActive(item.to) && (
-                  <span
-                    className={cn(
-                      'absolute -bottom-[9px] left-0 right-0 h-px',
-                      isLightTone ? 'bg-brand-gold' : 'bg-brand-goldDark',
-                    )}
-                    aria-hidden="true"
-                  />
-                )}
-              </NavLink>
-            ))}
-          </nav>
-
           {/* Right — instant search + actions */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center justify-end gap-1">
             <form onSubmit={submitSearch} className="relative hidden md:block">
               <Icon
                 name="search"
@@ -192,10 +195,10 @@ export function Header() {
                 placeholder="Search perfumes, notes, brands…"
                 aria-label="Search the catalogue"
                 className={cn(
-                  'w-44 rounded-full border py-2 pl-9 pr-3 text-body-sm outline-none transition-all xl:w-56',
+                  'w-36 rounded-full border py-2 pl-9 pr-3 text-body-sm outline-none transition-all xl:w-52',
                   isLightTone
-                    ? 'border-white/20 bg-black/25 text-brand-ivory placeholder:text-white/60 focus:w-64 focus:border-brand-gold focus:bg-brand-charcoal/90 focus:text-white focus:ring-1 focus:ring-brand-gold'
-                    : 'border-brand-border bg-white/80 text-brand-charcoal placeholder:text-brand-muted/80 focus:w-64 focus:border-brand-gold focus:bg-white focus:ring-1 focus:ring-brand-gold',
+                    ? 'border-white/20 bg-black/25 text-brand-ivory placeholder:text-white/60 focus:w-52 focus:border-brand-gold focus:bg-brand-charcoal/90 focus:text-white focus:ring-1 focus:ring-brand-gold xl:focus:w-64'
+                    : 'border-brand-border bg-white/80 text-brand-charcoal placeholder:text-brand-muted/80 focus:w-52 focus:border-brand-gold focus:bg-white focus:ring-1 focus:ring-brand-gold xl:focus:w-64',
                 )}
               />
 
