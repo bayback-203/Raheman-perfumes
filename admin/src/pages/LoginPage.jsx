@@ -144,14 +144,20 @@ export default function LoginPage() {
     return (
       <div className="min-h-screen bg-surface-low flex items-center justify-center px-gutter py-16">
         <div className="w-full max-w-md">
-          <div className="flex items-center gap-3 mb-8">
-            <span className="w-9 h-9 grid place-items-center rounded-md bg-shell-obsidian text-brand-gold">
-              <Icon name="flask" className="w-4 h-4" />
-            </span>
+          <div className="flex items-center gap-3.5 mb-8">
+            <img
+              src="/logo.png"
+              alt="Raheman Perfumes"
+              draggable={false}
+              loading="eager"
+              className="h-16 w-16 shrink-0 rounded-full object-contain drop-shadow-sm"
+            />
             <div>
-              <p className="font-serif text-xl leading-none text-ink">Raheman Perfumes</p>
-              <p className="text-[11px] uppercase tracking-[0.18em] text-ink-muted mt-1">
+              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-brand-goldDark">
                 Store Administration
+              </p>
+              <p className="text-xs text-ink-muted mt-1">
+                Authorized Staff Portal
               </p>
             </div>
           </div>

@@ -149,22 +149,26 @@ export function Sidebar() {
         aria-label="Admin sections"
       >
         <div className="flex min-h-0 flex-1 flex-col">
-          {/* Wordmark */}
+          {/* Official Brand Logo */}
           <div
             className={cn(
-              'flex items-center gap-3 px-5 py-5',
+              'flex items-center gap-3 px-5 py-4',
               collapsed && 'lg:justify-center lg:px-0',
             )}
           >
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-gold text-brand-goldInk">
-              <Icon name="sparkle" className="h-[22px] w-[22px]" />
-            </span>
+            <img
+              src="/logo.png"
+              alt="Raheman Perfumes"
+              draggable={false}
+              loading="eager"
+              className="h-11 w-11 shrink-0 rounded-full object-contain drop-shadow-[0_2px_8px_rgba(216,184,120,0.28)]"
+            />
             <span className={cn('flex flex-col overflow-hidden', labelCls)}>
-              <span className="truncate font-serif text-headline-sm font-semibold uppercase tracking-wider text-white">
-                Raheman Perfumes
-              </span>
-              <span className="text-label-sm font-bold uppercase tracking-[0.2em] text-brand-gold">
+              <span className="truncate text-label-sm font-bold uppercase tracking-[0.2em] text-brand-gold">
                 Admin Panel
+              </span>
+              <span className="truncate text-[11px] text-shell-ink/60">
+                Store Control
               </span>
             </span>
             <button

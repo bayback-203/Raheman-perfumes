@@ -85,14 +85,13 @@ export function AppPreloader({ children }) {
           />
 
           <div className="relative z-10 flex flex-col items-center text-center px-4">
-            <span className="font-serif text-3xl sm:text-4xl tracking-[0.25em] font-semibold text-white animate-pulse">
-              RAHEMAN
-            </span>
-            <div className="mt-2 flex items-center gap-3 text-[9px] uppercase tracking-[0.45em] text-[#D8B878]">
-              <span className="h-px w-6 bg-[#D8B878]/60" />
-              <span>Perfumes</span>
-              <span className="h-px w-6 bg-[#D8B878]/60" />
-            </div>
+            <img
+              src="/logo.png"
+              alt="Raheman Perfumes"
+              draggable={false}
+              loading="eager"
+              className="h-28 w-28 sm:h-36 sm:w-36 rounded-full object-contain drop-shadow-[0_0_24px_rgba(216,184,120,0.35)] animate-pulse"
+            />
 
             {/* Elegant loading bar */}
             <div className="mt-8 h-[2px] w-36 overflow-hidden rounded-full bg-white/10">

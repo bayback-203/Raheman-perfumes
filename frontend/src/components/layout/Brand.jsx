@@ -2,33 +2,33 @@ import { Link } from '@/components/ui/AppLink'
 import cn from '@/lib/cn'
 import { Icon } from '@/components/ui/Icon'
 
-/** The wordmark, used by the header and the footer. */
-export function Logo({ tone = 'dark', className, onClick }) {
+const LOGO_SIZES = {
+  sm: 'h-10 w-10 sm:h-11 sm:w-11',
+  md: 'h-12 w-12 sm:h-14 sm:w-14',
+  lg: 'h-20 w-20 sm:h-24 sm:w-24',
+}
+
+/** The official Raheman Perfumes seal logo, used by the header, mobile nav and footer. */
+export function Logo({ size = 'md', className, imgClassName, onClick }) {
   return (
     <Link
       to="/"
       onClick={onClick}
       aria-label="Raheman Perfumes — home"
-      className={cn('group flex flex-col leading-none', className)}
+      className={cn('group inline-flex shrink-0 items-center leading-none', className)}
     >
-      <span
+      <img
+        src="/logo.png"
+        alt="Raheman Perfumes"
+        draggable={false}
+        loading="eager"
+        decoding="async"
         className={cn(
-          'font-serif text-[26px] font-semibold tracking-[0.16em] transition-colors sm:text-[30px]',
-          tone === 'light' ? 'text-brand-ivory' : 'text-brand-charcoal',
-          'group-hover:text-brand-goldDark',
+          'rounded-full object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_2px_6px_rgba(0,0,0,0.16)]',
+          LOGO_SIZES[size] ?? LOGO_SIZES.md,
+          imgClassName,
         )}
-      >
-        RAHEMAN
-      </span>
-      <span
-        className={cn(
-          'mt-1 flex items-center gap-2 text-[8px] font-bold uppercase tracking-[0.42em]',
-          tone === 'light' ? 'text-brand-gold' : 'text-brand-goldDark',
-        )}
-      >
-        <span className={cn('h-px w-4', tone === 'light' ? 'bg-brand-gold/60' : 'bg-brand-goldDark/50')} />
-        Perfumes
-      </span>
+      />
     </Link>
   )
 }

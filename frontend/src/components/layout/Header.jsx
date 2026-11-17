@@ -121,7 +121,7 @@ export function Header() {
             >
               <Icon name="menu" className="h-5 w-5" />
             </button>
-            <Logo tone={tone} />
+            <Logo />
           </div>
 
           {/* Centre — primary nav */}

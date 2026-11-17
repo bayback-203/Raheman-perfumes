@@ -67,7 +67,11 @@ export function ReceiptModal({ open, onClose, order = null, onNewBill }) {
         className="mx-auto w-full max-w-[80mm] bg-white px-1 py-2 font-sans text-[12px] leading-[1.45] text-black"
       >
         <div className="text-center">
-          <p className="font-serif text-[18px] font-semibold uppercase tracking-wider">{store.name}</p>
+          <img
+            src="/logo.png"
+            alt={store.name}
+            className="mx-auto mb-1.5 h-16 w-16 rounded-full object-contain"
+          />
           {store.address && <p className="mt-0.5">{store.address}</p>}
           {store.phone && <p>{store.phone}</p>}
         </div>

@@ -20,7 +20,7 @@ export function Footer({ flush = false }) {
       {/* Link columns */}
       <div className="shell grid gap-10 py-14 lg:grid-cols-[1.3fr_repeat(3,1fr)]">
         <div>
-          <Logo tone="light" />
+          <Logo size="lg" />
           <p className="mt-5 max-w-sm text-body-sm leading-relaxed text-brand-cream/65">{HOUSE_BLURB}</p>
 
           <div className="mt-6 flex items-center gap-2">
