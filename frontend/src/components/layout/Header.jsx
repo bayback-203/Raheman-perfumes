@@ -27,6 +27,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [query, setQuery] = useState('')
   const [focused, setFocused] = useState(false)
+  const [openDropdown, setOpenDropdown] = useState(null)
   const searchRef = useRef(null)
   const blurTimer = useRef(null)
   const progressRef = useRef(null)
@@ -59,10 +60,11 @@ export function Header() {
 
   useLenis(onScroll)
 
-  // Any navigation closes the suggestion panel.
+  // Any navigation closes the suggestion panel and any hover dropdown.
   useEffect(() => {
     setQuery('')
     setFocused(false)
+    setOpenDropdown(null)
   }, [location.pathname, location.search])
 
   useEffect(() => () => clearTimeout(blurTimer.current), [])
@@ -167,10 +169,18 @@ export function Header() {
                   )
                 }
 
+                const isOpen = openDropdown === item.id
+
                 return (
-                  <div key={item.id} className="group/nav relative py-2">
+                  <div
+                    key={item.id}
+                    className="relative py-2"
+                    onMouseEnter={() => setOpenDropdown(item.id)}
+                    onMouseLeave={() => setOpenDropdown(null)}
+                  >
                     <NavLink
                       to={item.to}
+                      onClick={() => setOpenDropdown(null)}
                       className={cn(
                         'relative inline-flex items-center gap-1.5 whitespace-nowrap py-1 text-label-sm font-bold uppercase tracking-[0.14em] transition-colors',
                         isLightTone
@@ -181,7 +191,7 @@ export function Header() {
                       {item.label}
                       <Icon
                         name="chevron-down"
-                        className="h-3 w-3 transition-transform duration-200 group-hover/nav:rotate-180 group-focus-within/nav:rotate-180"
+                        className={cn('h-3 w-3 transition-transform duration-200', isOpen && 'rotate-180')}
                         strokeWidth={2.2}
                       />
                       {active && (
@@ -195,9 +205,14 @@ export function Header() {
                       )}
                     </NavLink>
 
-                    {/* Extended vertical dropdown on hover */}
+                    {/* Extended vertical dropdown strictly on hover */}
                     <div
-                      className="pointer-events-none invisible absolute left-0 top-full z-50 pt-2 opacity-0 translate-y-1 transition-all duration-200 group-hover/nav:pointer-events-auto group-hover/nav:visible group-hover/nav:opacity-100 group-hover/nav:translate-y-0 group-focus-within/nav:pointer-events-auto group-focus-within/nav:visible group-focus-within/nav:opacity-100 group-focus-within/nav:translate-y-0"
+                      className={cn(
+                        'absolute left-0 top-full z-50 pt-2 transition-all duration-200',
+                        isOpen
+                          ? 'pointer-events-auto visible translate-y-0 opacity-100'
+                          : 'pointer-events-none invisible translate-y-1 opacity-0',
+                      )}
                     >
                       <div className="min-w-[14.5rem] overflow-hidden rounded-lg border border-brand-border/80 bg-white py-2 shadow-overlay">
                         {item.children.map((child) => {
@@ -206,6 +221,7 @@ export function Header() {
                             <Link
                               key={child.id}
                               to={child.to}
+                              onClick={() => setOpenDropdown(null)}
                               className={cn(
                                 'flex flex-col px-4 py-2.5 transition-colors hover:bg-brand-cream/60',
                                 childActive ? 'bg-brand-cream/50 text-brand-goldDark' : 'text-brand-charcoal',
@@ -225,10 +241,11 @@ export function Header() {
                         <div className="my-1.5 border-t border-brand-border/60" />
                         <Link
                           to={item.to}
-                          className="flex items-center justify-between px-4 py-2 text-label-xs font-bold uppercase tracking-[0.12em] text-brand-goldDark transition-colors hover:bg-brand-cream/60"
+                          onClick={() => setOpenDropdown(null)}
+                          className="flex items-center justify-between gap-2 whitespace-nowrap px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-brand-goldDark transition-colors hover:bg-brand-cream/60"
                         >
                           <span>Shop All Perfumes</span>
-                          <Icon name="arrow-right" className="h-3.5 w-3.5" />
+                          <Icon name="arrow-right" className="h-3.5 w-3.5 shrink-0" />
                         </Link>
                       </div>
                     </div>
