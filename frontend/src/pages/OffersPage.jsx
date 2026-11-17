@@ -169,7 +169,6 @@ export function OffersPage() {
             <h1 className="mt-6 font-serif text-[32px] font-medium leading-[1.15] text-brand-charcoal sm:text-[42px]">
               {OFFER_HERO.title}
             </h1>
-            <p className="mt-5 max-w-xl text-body-lg leading-relaxed text-brand-muted">{OFFER_HERO.subtitle}</p>
 
             <div className="mt-8 flex flex-wrap gap-3">
               {showcase.showOffersProducts && (
@@ -191,11 +190,7 @@ export function OffersPage() {
       {/* Offers Products (strictly manually curated in Admin -> Website Display) */}
       {showcase.showOffersProducts && (
         <section id="vault" className="shell py-16 lg:py-20">
-          <SectionHeading
-            eyebrow="Limited Stock"
-            title="Special Offer Deals"
-            subtitle="Selected perfumes added to offers by Raheman Perfumes while stock lasts."
-          />
+          <SectionHeading title="Special Offer Deals" />
 
           <Tabs className="mt-8" value={tab} onChange={setTab} tabs={OFFER_TABS} />
 
@@ -232,11 +227,7 @@ export function OffersPage() {
       {showcase.showCouponsSection && (
         <section id="coupons" className="border-y border-brand-border bg-white py-16 lg:py-20">
           <div className="shell">
-            <SectionHeading
-              eyebrow="Coupon Codes"
-              title="Apply A Coupon Code"
-              subtitle="One coupon per order. Minimum order amount is checked after discounts."
-            />
+            <SectionHeading title="Apply A Coupon Code" />
 
             <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {coupons.length === 0 ? (
@@ -259,12 +250,7 @@ export function OffersPage() {
       {showcase.showMultiBottleOffers && (
         <section className="border-y border-brand-border bg-white py-16 lg:py-20">
           <div className="shell">
-            <SectionHeading
-              align="center"
-              eyebrow="Buy More, Save More"
-              title="Multi-Bottle Savings"
-              subtitle="Discounts apply automatically at checkout — no code needed."
-            />
+            <SectionHeading align="center" title="Multi-Bottle Savings" />
 
             <div className="mt-10 grid gap-5 lg:grid-cols-3">
               {VOLUME_TIERS.map((tier) => (
@@ -275,8 +261,7 @@ export function OffersPage() {
                     tier.recommended ? 'border-brand-gold bg-white ring-1 ring-brand-gold shadow-card' : 'border-brand-border bg-white',
                   )}
                 >
-                  <p className="text-label-sm font-bold uppercase tracking-wider text-brand-goldDark">{tier.eyebrow}</p>
-                  <p className="mt-3 font-serif text-3xl font-semibold text-brand-charcoal">{tier.title}</p>
+                  <p className="mt-1 font-serif text-3xl font-semibold text-brand-charcoal">{tier.title}</p>
                   <p className="mt-3 text-body-sm leading-relaxed text-brand-muted">{tier.description}</p>
                   <p className="mt-5 flex items-center justify-center gap-2 text-label-sm font-bold uppercase text-ink-variant">
                     <Icon name="package" className="h-3.5 w-3.5" />
@@ -291,7 +276,7 @@ export function OffersPage() {
 
       {/* Terms */}
       <section className="shell py-16 lg:py-20">
-        <SectionHeading eyebrow="The Fine Print" title="Offer Terms" />
+        <SectionHeading title="Offer Terms" />
         <div className="mt-6 max-w-3xl">
           <Accordion items={OFFER_TERMS} allowMultiple />
         </div>

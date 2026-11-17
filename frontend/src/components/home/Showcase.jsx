@@ -117,9 +117,7 @@ export function BestSellers({ products }) {
     <section className="bridal-canvas relative overflow-hidden py-16 lg:py-20">
       <div className="shell relative z-10">
       <SectionHeading
-        eyebrow="Most Requested"
         title="The Bestsellers"
-        subtitle="The fragrances our customers reorder most — across originals, inspired blends and pure attars."
         action={
           <div className="flex flex-wrap items-center gap-2.5">
             {list.length > 0 && (
@@ -139,9 +137,6 @@ export function BestSellers({ products }) {
       {list.length === 0 ? (
         <div className="mt-9 rounded-xl border border-dashed border-brand-border bg-brand-cream/40 px-6 py-12 text-center">
           <p className="text-body-md font-medium text-brand-charcoal">No bestsellers added yet.</p>
-          <p className="mt-1 text-body-sm text-brand-muted">
-            Add products under Home Page — Best Sellers in Admin to feature them here.
-          </p>
           <Button variant="outline" size="sm" to="/shop" className="mt-4">
             Browse Shop
           </Button>
@@ -206,13 +201,9 @@ export function DealsOfDay() {
       <div className="shell relative z-10">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-label-md font-bold uppercase tracking-[0.18em] text-brand-goldDark">Special Offers</p>
-            <h2 className="mt-2 font-serif text-3xl font-medium text-brand-charcoal lg:text-headline-xl">
+            <h2 className="font-serif text-3xl font-medium text-brand-charcoal lg:text-headline-xl">
               Best Discounts Right Now
             </h2>
-            <p className="mt-2 max-w-xl text-body-md text-brand-muted">
-              Hand-picked discount deals chosen by our shop team.
-            </p>
           </div>
           {deals.length > 0 && (
             <RowSlideControls canPrev={slider.canPrev} canNext={slider.canNext} onSlide={slider.slide} />
@@ -222,9 +213,6 @@ export function DealsOfDay() {
         {deals.length === 0 ? (
           <div className="mt-10 rounded-xl border border-dashed border-brand-border bg-neutral-50/70 px-6 py-10 text-center">
             <p className="text-body-md font-medium text-brand-charcoal">No in-stock discount offers available right now.</p>
-            <p className="mt-1 text-body-sm text-brand-muted">
-              Out-of-stock perfumes are hidden automatically from offer areas until restocked.
-            </p>
             <Button variant="gold" size="sm" to="/offers" className="mt-4">
               View Offers Page
             </Button>
@@ -299,9 +287,7 @@ export function WhyShopWithUs() {
       <div className="shell">
         <SectionHeading
           align="center"
-          eyebrow="Our Promise"
           title="Why Customers Come Back"
-          subtitle="Six promises that hold on every order across originals, inspired blends and attars."
         />
 
         <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

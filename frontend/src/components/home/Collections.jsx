@@ -15,9 +15,7 @@ export function CategoryGrid() {
     <section className="relative bg-gradient-to-b from-white via-[#FFFBF5] to-[#FDF5F6]/55 py-16 lg:py-20">
       <div className="shell">
       <SectionHeading
-        eyebrow="Popular Brands"
         title="Shop by Category"
-        subtitle={`${categories.length} ways into the collection — by who wears it, how it was made, or what it is made of.`}
         action={
           <Button variant="outline" size="sm" to="/shop">
             View All
@@ -142,9 +140,7 @@ export function BrandStrip() {
       <div className="shell">
         <SectionHeading
           align="center"
-          eyebrow="Authentic Sourcing"
           title="Brands We Carry"
-          subtitle="Every original bottle is sourced directly through official distributors."
         />
       </div>
 

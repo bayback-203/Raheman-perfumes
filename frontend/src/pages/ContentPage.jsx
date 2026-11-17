@@ -765,11 +765,9 @@ export function ContentPage() {
         <section className="border-b border-brand-border bg-white">
           <div className="shell py-12 lg:py-16">
             <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: page.title }]} className="mb-6" />
-            <p className="text-label-sm font-bold uppercase tracking-[0.2em] text-brand-goldDark">{page.eyebrow}</p>
-            <h1 className="mt-3 max-w-4xl font-serif text-[30px] font-medium leading-tight text-brand-charcoal sm:text-[40px]">
+            <h1 className="max-w-4xl font-serif text-[30px] font-medium leading-tight text-brand-charcoal sm:text-[40px]">
               {page.title}
             </h1>
-            <p className="mt-4 max-w-2xl text-body-lg leading-relaxed text-brand-muted">{page.subtitle}</p>
           </div>
         </section>
       )}

@@ -301,7 +301,6 @@ export function AddressFields({ value, onChange, errors = {} }) {
         placeholder={value.district ? (loadingAreas ? 'Loading areas…' : 'Start typing an area') : 'Pick a district first'}
         value={value.area ?? ''}
         error={errors.area}
-        hint={areaOptions.length ? 'Choosing a listed area fills the PIN code below.' : undefined}
         onChange={(event) => changeArea(event.target.value)}
       />
       <datalist id="rehman-area-suggestions">

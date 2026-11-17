@@ -307,23 +307,7 @@ export function Pillars() {
             ) : null}
 
             <div className={cn('relative', pillar.photo && 'pillar-copy')}>
-              <p className={cn('text-label-sm font-bold uppercase tracking-[0.18em]', eyebrowFor(pillar))}>
-                {pillar.eyebrow}
-              </p>
-              <h2 className="mt-2.5 text-balance text-headline-sm font-medium xl:text-headline-md">{pillar.title}</h2>
-              <p
-                className={cn(
-                  'mt-2.5 text-body-sm leading-relaxed',
-                  // A photographed pillar has the room the others spend on a
-                  // flacon, so its copy runs the full length instead of being
-                  // clamped to whatever fits beside one — nothing on the card
-                  // ends in an ellipsis.
-                  pillar.photo ? 'text-pretty' : 'lg:line-clamp-3 xl:line-clamp-2 xl:text-body-md',
-                  bodyFor(pillar),
-                )}
-              >
-                {pillar.description}
-              </p>
+              <h2 className="text-balance text-headline-sm font-medium xl:text-headline-md">{pillar.title}</h2>
             </div>
 
             {/* A ghosted bottle standing in for the design's product placeholder.
@@ -342,9 +326,6 @@ export function Pillars() {
             )}
 
             <div className={cn('relative mt-auto flex flex-col gap-2.5 pt-4', pillar.photo && 'pillar-copy')}>
-              <span className={cn('text-label-sm font-bold uppercase tracking-wider', eyebrowFor(pillar))}>
-                {pillar.note}
-              </span>
               <span
                 className={cn(
                   'btn btn-sm w-full pointer-events-none transition-transform duration-300 group-hover:scale-[1.02]',

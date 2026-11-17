@@ -644,14 +644,14 @@ export function ProductDetailPage() {
       {/* Related */}
       {related.length > 0 && (
         <section className="shell py-10">
-          <SectionHeading eyebrow="Pairs Well With" title="You May Also Like" />
+          <SectionHeading title="You May Also Like" />
           <ProductRail className="mt-7" products={related} onAdd={onAdd} />
         </section>
       )}
 
       {alsoViewed.length > 0 && (
         <section className="shell py-10">
-          <SectionHeading eyebrow="Your Session" title="Recently Viewed" />
+          <SectionHeading title="Recently Viewed" />
           <ProductRail className="mt-7" products={alsoViewed} onAdd={onAdd} />
         </section>
       )}

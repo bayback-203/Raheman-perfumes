@@ -122,7 +122,6 @@ export function ResetPasswordPage() {
                 value={form.code}
                 onChange={set('code')}
                 placeholder="Enter the 6-digit code"
-                hint="Check your inbox or developer console for the 6-digit PIN"
               />
             </>
           )}

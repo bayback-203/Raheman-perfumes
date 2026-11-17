@@ -373,14 +373,6 @@ export function SignInPage() {
           {currentMode === 'verify' && 'Verify your email'}
         </h1>
 
-        {currentMode !== 'register' && (
-          <p className="mt-2 text-body-md text-brand-muted">
-            {currentMode === 'signin' && 'Sign in with your email or username to access your perfumes.'}
-            {currentMode === 'forgot' && 'Enter your email or username and we will send you a reset code.'}
-            {currentMode === 'verify' && 'Enter the 6-digit code sent to your email to verify your account.'}
-          </p>
-        )}
-
         {/* Global Error Notice */}
         {error && (
           <div
@@ -665,7 +657,6 @@ export function SignInPage() {
                 value={form.identifier}
                 onChange={setField('identifier')}
                 placeholder="Enter your email or username"
-                hint="We will check your account and send a reset code"
               />
 
               <Button type="submit" variant="primary" size="lg" fullWidth loading={busy}>

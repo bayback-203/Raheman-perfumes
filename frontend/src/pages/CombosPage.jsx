@@ -32,7 +32,6 @@ export function CombosPage() {
       <ShopBanner
         collection="combos"
         title="Perfume Combos & Gift Sets"
-        eyebrow="Curated Sets & Pairings"
       />
 
       <CatalogueView

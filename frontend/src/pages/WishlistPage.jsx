@@ -63,7 +63,6 @@ export function WishlistPage() {
         <EmptyState
           icon="heart"
           title="Your wishlist is empty"
-          description="Tap the heart on any fragrance to keep it here while you decide."
           actionLabel="Browse Fragrances"
           actionTo="/shop"
         />

@@ -2,7 +2,6 @@ import { useMemo } from 'react'
 import { useParams, useSearchParams } from 'react-router-dom'
 import { CatalogueView } from '@/components/product/CatalogueView'
 import { ShopBanner } from '@/components/product/ShopBanner'
-import { SignatureTile } from '@/components/home/Collections'
 import { useCatalogue } from '@/hooks/useCatalogue'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 import { useCatalogueProducts, useCategories } from '@/store/catalogueStore'
@@ -67,47 +66,20 @@ export function ShopPage() {
   )
 }
 
-function ShopCatalogue({ title, subtitle, initialFilters, collection }) {
+function ShopCatalogue({ title, initialFilters, collection }) {
   // No `baseProducts`: the hook reads the live catalogue from the store, so a
   // fragrance created in the admin panel is in this grid.
   const catalogue = useCatalogue({ initialFilters, pageSize: 24 })
-
-  const hero =
-    collection === 'inspired' ? (
-      <SignatureTile
-        className="mb-10"
-        eyebrow="Inspired Blends"
-        title="Popular designer scents, remade with 30%+ oil."
-        body="Our team recreates the scents you love using pure French oils — never diluted. Same feel, much lower price, and longer lasting on skin and clothes."
-        to="/shop"
-        cta="See All Perfumes"
-        tier="Inspired"
-        seed="inspired-hero"
-      />
-    ) : collection === 'originals' ? (
-      <SignatureTile
-        className="mb-10"
-        eyebrow="Direct Sourcing"
-        title="100% Genuine Branded Perfumes."
-        body="We buy only from official suppliers, never third-party resellers. Every order is carefully checked and sealed with a Raheman Perfumes authenticity seal."
-        to="/pages/about"
-        cta="How We Source"
-        tier="Original"
-        seed="originals-hero"
-      />
-    ) : null
 
   return (
     <>
       <ShopBanner
         collection={collection}
         title={title}
-        eyebrow={collection ? 'Selected Collection' : 'All Perfumes'}
       />
 
       <CatalogueView
         catalogue={catalogue}
-        hero={hero}
         emptyTitle="Nothing in this collection matches those filters"
         lockTier={!!initialFilters.tier}
       />
@@ -132,7 +104,6 @@ export function OriginalPerfumesPage() {
     <>
       <ShopBanner
         title="Original Branded Perfumes"
-        eyebrow="100% Authentic"
       />
 
       <CatalogueView

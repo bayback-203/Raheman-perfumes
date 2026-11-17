@@ -31,7 +31,6 @@ export function SearchResultsPage() {
         <EmptyState
           icon="search"
           title="What are you looking for?"
-          description="Try a note, a brand, or a perfume name. You can also start from one of these."
           actionLabel="Browse The Collection"
           actionTo="/shop"
         />
@@ -46,11 +45,10 @@ export function SearchResultsPage() {
         <EmptyState
           icon="search"
           title={`No fragrance matches “${query}”`}
-          description="We searched every name, brand, family and note in the store. Try a shorter word, or browse the collections below."
           actionLabel="Browse The Collection"
           actionTo="/shop"
         />
-        <SuggestionRow title="Try one of these instead" className="mt-8" />
+        <SuggestionRow title="Popular searches" className="mt-8" />
       </div>
     )
   }
@@ -86,10 +84,8 @@ function SearchCatalogue({ query, matches }) {
       catalogue={catalogue}
       layout="full"
       breadcrumbs={[{ label: 'Home', to: '/' }, { label: 'Search' }, { label: query }]}
-      eyebrow={`${matches.length} ${matches.length === 1 ? 'Result' : 'Results'}`}
       title={`“${query}”`}
-      subtitle="Filter and sort these matches exactly as you would in the shop."
-      emptyTitle="No matches survive those filters"
+      emptyTitle="No matching fragrances"
     />
   )
 }

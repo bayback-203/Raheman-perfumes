@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { Link } from '@/components/ui/AppLink'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { SectionHeading } from '@/components/ui/SectionHeading'
@@ -86,11 +85,7 @@ export function HomePage() {
       <Reveal as="section" className="bridal-banner border-b border-[#ECE0CC] py-16 lg:py-20">
         <div className="shell grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
           <div>
-            <SectionHeading
-              eyebrow="Questions"
-              title="Before You Order"
-              subtitle="The four things customers ask us most, answered by our team."
-            />
+            <SectionHeading title="Before You Order" />
             <div className="mt-7 flex flex-wrap gap-3">
               <Button variant="primary" to="/pages/faqs">
                 All Fragrance FAQs
@@ -115,15 +110,9 @@ export function HomePage() {
           {/* Gentle darkening overlay so text remains crystal clear */}
           <div className="pointer-events-none absolute inset-0 bg-black/35 backdrop-brightness-95" aria-hidden="true" />
           <div className="relative z-10 mx-auto max-w-2xl">
-            <p className="text-label-md font-bold uppercase tracking-[0.18em] text-brand-gold">
-              Pure French Oils &amp; Authentic Scents
-            </p>
-            <h2 className="mt-4 font-serif text-3xl font-medium leading-tight lg:text-headline-xl">
+            <h2 className="font-serif text-3xl font-medium leading-tight lg:text-headline-xl">
               Find the scent that becomes your signature.
             </h2>
-            <p className="mt-4 text-body-md text-brand-cream/85">
-              Explore authentic designer classics, long-lasting inspired creations, and pure alcohol-free attars crafted for true fragrance connoisseurs.
-            </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Button variant="gold" size="lg" to="/shop">
                 Shop Fragrances
@@ -133,13 +122,6 @@ export function HomePage() {
                 View Current Offers
               </Button>
             </div>
-            <p className="mt-6 text-body-sm text-brand-cream/65">
-              Prefer to browse by type?{' '}
-              <Link to="/shop/originals" className="link-underline text-brand-gold">
-                Start with the originals
-              </Link>
-              .
-            </p>
           </div>
         </div>
       </Reveal>

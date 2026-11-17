@@ -282,7 +282,6 @@ function OrdersTab() {
       <PanelBanner
         icon="package"
         title="My Orders"
-        description="Track your orders, cancel before packing, or check manual UPI refund status."
         action={
           <Button variant="outline" size="sm" to="/track-order">
             Track by Number
@@ -295,7 +294,6 @@ function OrdersTab() {
           <EmptyState
             icon="package"
             title="No orders yet"
-            description="Once you place an order it appears here with its tracking history and invoice."
             actionLabel="Browse Fragrances"
             actionTo="/shop"
           />
@@ -582,7 +580,6 @@ function ProfileTab({ onOpenVerify }) {
       <PanelBanner
         icon="shield"
         title="Personal Information"
-        description="Update your identity details, mobile contact, and signature fragrance profile used across orders."
       />
 
       <form onSubmit={save} className="space-y-6 p-6 sm:p-8">
@@ -685,7 +682,6 @@ function RewardsTab() {
       <PanelBanner
         icon="award"
         title="Rewards & Loyalty"
-        description="Earn 1 loyalty point for every ₹100 spent across originals, mixes, and attars."
       />
 
       <div className="space-y-6 p-6 sm:p-8">
@@ -822,7 +818,6 @@ function AddressesTab() {
       <PanelBanner
         icon="map-pin"
         title="Saved Addresses"
-        description="Addresses pre-fill checkout delivery fields automatically."
         action={
           <Button variant="primary" size="sm" onClick={openNew}>
             <Icon name="plus" className="h-4 w-4" strokeWidth={2.5} />
@@ -836,7 +831,6 @@ function AddressesTab() {
           <EmptyState
             icon="map-pin"
             title="No saved addresses"
-            description="Add a delivery address to speed up checkout."
             actionLabel="Add Address"
             onAction={openNew}
           />
@@ -999,16 +993,15 @@ function PreferencesTab({ onOpenVerify }) {
       <PanelBanner
         icon="sliders"
         title="Contact Preferences"
-        description="Control delivery alerts, new stock updates, and email verification."
       />
 
       <div className="space-y-6 p-6 sm:p-8">
         <div className="rounded-lg border border-brand-border bg-white/55 p-6">
           <h3 className="text-label-md font-bold uppercase tracking-widest text-brand-charcoal">Notifications</h3>
           <div className="mt-4 space-y-4">
-            <Checkbox defaultChecked label="Order & delivery updates" description="Email and SMS for every delivery step." />
-            <Checkbox defaultChecked label="New stock releases" description="Early updates when new limited releases arrive." />
-            <Checkbox label="Fragrance blog" description="Monthly tips on perfume oils, care, and layering." />
+            <Checkbox defaultChecked label="Order & delivery updates" />
+            <Checkbox defaultChecked label="New stock releases" />
+            <Checkbox label="Fragrance blog" />
           </div>
         </div>
 
