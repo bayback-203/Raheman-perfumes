@@ -250,7 +250,7 @@ export const HOME_FAQ = [
     id: 'return-policy',
     question: 'What is your return and exchange policy?',
     answer:
-      'Due to strict personal care hygiene standards and the sensitive nature of luxury fragrances and pure attars, we maintain a firm No Return and No Exchange Policy. All sales are final once delivered. In the rare event of transit damage or leakage, notify us within 48 hours of delivery with unboxing photos for a free replacement.',
+      'All sales are strictly final. We follow a firm No Return, No Exchange, and No Replacement Policy once an order is packed or delivered.',
   },
 ]
 

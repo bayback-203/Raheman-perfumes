@@ -517,10 +517,7 @@ export function ProductDetailPage() {
               <div className="mt-3 rounded-md border border-brand-gold/30 bg-brand-gold/5 p-3 text-xs leading-relaxed text-brand-charcoal">
                 <span className="font-semibold uppercase tracking-wider text-brand-goldDark">Strict No Return Policy:</span>
                 <p className="mt-1">
-                  Due to strict personal care hygiene standards and the delicate nature of luxury fragrances, all sales are strictly final. We follow a firm <strong>No Return &amp; No Exchange Policy</strong> once an order is delivered.
-                </p>
-                <p className="mt-1 text-brand-muted">
-                  In the rare event of transit damage or leakage, report it with unboxing photos within 48 hours of delivery for a free immediate replacement.
+                  All sales are strictly final. We follow a firm <strong>No Return, No Exchange &amp; No Replacement Policy</strong> once an order is packed or delivered.
                 </p>
               </div>
             </CollapsiblePanel>
