@@ -234,7 +234,7 @@ export function ProductCard({
     <>
       <article
         className={cn(
-          'group relative flex flex-col rounded-xl border border-[#EFE3CF] bg-gradient-to-b from-white via-[#FFFDF9] to-[#FDF6EB]/90 p-3 shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:border-brand-gold/70 hover:shadow-[0_18px_38px_-12px_rgba(200,155,60,0.26)]',
+          'group relative flex h-full w-full flex-col rounded-xl border border-[#EFE3CF] bg-gradient-to-b from-white via-[#FFFDF9] to-[#FDF6EB]/90 p-3 shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:border-brand-gold/70 hover:shadow-[0_18px_38px_-12px_rgba(200,155,60,0.26)]',
           className,
         )}
       >
@@ -318,7 +318,7 @@ export function ProductCard({
         </div>
 
         <div className="flex flex-1 flex-col pt-3 text-left">
-          <h3 className="text-[14.5px] sm:text-[15px] font-medium leading-snug text-brand-charcoal">
+          <h3 className="truncate text-[14.5px] font-medium leading-snug text-brand-charcoal sm:text-[15px]">
             <Link
               to={`/product/${slug}`}
               className="decoration-1 underline-offset-4 transition-colors group-hover:underline"
@@ -334,9 +334,11 @@ export function ProductCard({
             <span className="text-[14.5px] font-medium text-brand-charcoal">{formatPrice(price)}</span>
           </div>
 
-          {!soldOut && typeof product.stockLeft === 'number' && product.stockLeft <= 5 && (
-            <p className="mt-1 text-[11px] font-medium text-brand-goldDark">Only {product.stockLeft} left</p>
-          )}
+          <div className="mt-1 h-4">
+            {!soldOut && typeof product.stockLeft === 'number' && product.stockLeft <= 5 && (
+              <p className="text-[11px] font-medium leading-4 text-brand-goldDark">Only {product.stockLeft} left</p>
+            )}
+          </div>
         </div>
       </article>
 
@@ -353,15 +355,15 @@ export function ProductCard({
   )
 }
 
-/** Responsive product grid. */
-export function ProductGrid({ products = [], columns = 6, variant = 'grid', showTier = false, onAdd, onToggleWishlist, isWishlisted, className }) {
+/** Responsive product grid — uniform Bestsellers card dimensions everywhere. */
+export function ProductGrid({ products = [], columns = 5, variant = 'grid', showTier = true, onAdd, onToggleWishlist, isWishlisted, className }) {
   const colClass = {
-    2: 'sm:grid-cols-2',
-    3: 'sm:grid-cols-2 lg:grid-cols-3',
-    4: 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
-    5: 'sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5',
-    6: 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6',
-  }[columns] ?? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6'
+    2: 'grid-cols-2',
+    3: 'grid-cols-2 lg:grid-cols-3',
+    4: 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
+    5: 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5',
+    6: 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5',
+  }[columns] ?? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'
 
   if (variant === 'list') {
     return (
@@ -381,7 +383,7 @@ export function ProductGrid({ products = [], columns = 6, variant = 'grid', show
   }
 
   return (
-    <div className={cn('grid grid-cols-1 gap-x-6 gap-y-9', colClass, className)}>
+    <div className={cn('grid items-stretch gap-5', colClass, className)}>
       {products.map((product) => (
         <ProductCard
           key={product.id}
@@ -397,20 +399,24 @@ export function ProductGrid({ products = [], columns = 6, variant = 'grid', show
   )
 }
 
-/** Horizontally scrolling rail of compact cards. */
+/** Horizontally scrolling rail matching the exact Bestsellers card dimensions. */
 export function ProductRail({ products = [], onAdd, onToggleWishlist, isWishlisted, className }) {
   if (!products.length) return null
   return (
-    <div className={cn('no-scrollbar -mx-4 flex gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0', className)}>
+    <div className={cn('no-scrollbar flex snap-x snap-mandatory items-stretch gap-5 overflow-x-auto pb-3 pt-1 scroll-smooth', className)}>
       {products.map((product) => (
-        <ProductCard
+        <div
           key={product.id}
-          product={product}
-          variant="compact"
-          onAdd={onAdd}
-          onToggleWishlist={onToggleWishlist}
-          isWishlisted={typeof isWishlisted === 'function' ? isWishlisted(product.id) : isWishlisted}
-        />
+          className="flex w-[78%] shrink-0 snap-start sm:w-[calc((100%-1.25rem)/2)] md:w-[calc((100%-2.5rem)/3)] lg:w-[calc((100%-3.75rem)/4)] xl:w-[calc((100%-5rem)/5)]"
+        >
+          <ProductCard
+            product={product}
+            showTier
+            onAdd={onAdd}
+            onToggleWishlist={onToggleWishlist}
+            isWishlisted={typeof isWishlisted === 'function' ? isWishlisted(product.id) : isWishlisted}
+          />
+        </div>
       ))}
     </div>
   )

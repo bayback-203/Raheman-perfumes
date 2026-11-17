@@ -93,6 +93,7 @@ function OfferProductCard({ product }) {
   return (
     <ProductCard
       product={product}
+      showTier
       onAdd={onAdd}
       onToggleWishlist={onToggleWishlist}
       isWishlisted={isWishlisted(product.id)}
@@ -213,7 +214,7 @@ export function OffersPage() {
                 )}
               </p>
             ) : (
-              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-2 items-stretch gap-5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                 {filteredVault.map((product) => (
                   <OfferProductCard key={product.id} product={product} />
                 ))}

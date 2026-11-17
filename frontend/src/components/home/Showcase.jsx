@@ -1,16 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Link } from '@/components/ui/AppLink'
-import { formatPrice, discountPercent } from '@/lib/format'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import useCartStore from '@/store/cartStore'
 import useWishlistStore from '@/store/wishlistStore'
 import useUiStore, { toast } from '@/store/uiStore'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
-import { TierBadge } from '@/components/ui/Badge'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { ProductCard } from '@/components/product/ProductCard'
-import { FlaconStage } from '@/components/product/FlaconArt'
-import { productImage } from '@/data/productImages'
 import {
   useBestsellers,
   useCatalogueProducts,
@@ -144,12 +139,12 @@ export function BestSellers({ products }) {
       ) : (
         <div
           ref={slider.trackRef}
-          className="no-scrollbar mt-9 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-3 pt-1 scroll-smooth"
+          className="no-scrollbar mt-9 flex snap-x snap-mandatory items-stretch gap-5 overflow-x-auto pb-3 pt-1 scroll-smooth"
         >
           {list.map((product) => (
             <div
               key={product.id}
-              className="w-[78%] shrink-0 snap-start sm:w-[calc((100%-1.25rem)/2)] md:w-[calc((100%-2.5rem)/3)] lg:w-[calc((100%-3.75rem)/4)] xl:w-[calc((100%-5rem)/5)]"
+              className="flex w-[78%] shrink-0 snap-start sm:w-[calc((100%-1.25rem)/2)] md:w-[calc((100%-2.5rem)/3)] lg:w-[calc((100%-3.75rem)/4)] xl:w-[calc((100%-5rem)/5)]"
             >
               <ProductCard
                 product={product}
@@ -174,17 +169,8 @@ export function BestSellers({ products }) {
 export function DealsOfDay() {
   const showcase = useShowcase()
   const featuredDeals = useShowcaseProducts('homeDealProductIds')
-  const { onAdd } = useShopActions()
-
-  const deals = useMemo(
-    () =>
-      featuredDeals.map((product) => ({
-        product,
-        percent: product.mrp > product.price ? discountPercent(product.mrp, product.price) : 0,
-      })),
-    [featuredDeals],
-  )
-  const slider = useRowSlider(deals.length)
+  const { onAdd, onToggleWishlist, isWishlisted } = useShopActions()
+  const slider = useRowSlider(featuredDeals.length)
 
   if (!showcase.showHomeDeals) return null
 
@@ -205,13 +191,13 @@ export function DealsOfDay() {
               Best Discounts Right Now
             </h2>
           </div>
-          {deals.length > 0 && (
+          {featuredDeals.length > 0 && (
             <RowSlideControls canPrev={slider.canPrev} canNext={slider.canNext} onSlide={slider.slide} />
           )}
         </div>
 
-        {deals.length === 0 ? (
-          <div className="mt-10 rounded-xl border border-dashed border-brand-border bg-neutral-50/70 px-6 py-10 text-center">
+        {featuredDeals.length === 0 ? (
+          <div className="mt-9 rounded-xl border border-dashed border-brand-border bg-neutral-50/70 px-6 py-10 text-center">
             <p className="text-body-md font-medium text-brand-charcoal">No in-stock discount offers available right now.</p>
             <Button variant="gold" size="sm" to="/offers" className="mt-4">
               View Offers Page
@@ -220,59 +206,22 @@ export function DealsOfDay() {
         ) : (
           <div
             ref={slider.trackRef}
-            className="no-scrollbar mt-10 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3 pt-1 scroll-smooth"
+            className="no-scrollbar mt-9 flex snap-x snap-mandatory items-stretch gap-5 overflow-x-auto pb-3 pt-1 scroll-smooth"
           >
-            {deals.map(({ product, percent }) => {
-              const soldOut = product.inStock === false || product.stockLeft === 0
-              return (
-                <article
-                  key={product.id}
-                  className="card-lift group flex w-[78%] shrink-0 snap-start flex-col overflow-hidden rounded-xl border border-[#ECE0CC] bg-gradient-to-b from-white via-[#FFFDF9] to-[#FDF6EB]/90 p-5 shadow-card transition duration-300 hover:border-brand-gold sm:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-3rem)/4)]"
-                >
-                  <Link to={`/product/${product.slug}`} className="flex items-center gap-4">
-                    <span className="w-16 shrink-0">
-                      <FlaconStage
-                        tier={product.tier}
-                        seed={product.slug}
-                        label={product.name}
-                        image={productImage(product)}
-                        compact
-                      />
-                    </span>
-                    <span className="min-w-0">
-                      <TierBadge tier={product.tier} size="sm" />
-                      <span className="mt-1.5 block truncate font-serif text-lg font-semibold text-brand-charcoal">
-                        {product.name}
-                      </span>
-                      <span className="mt-0.5 block truncate text-body-sm text-brand-muted">{product.brand}</span>
-                    </span>
-                  </Link>
-
-                  <div className="mt-auto pt-5">
-                    <div className="flex items-baseline gap-2.5">
-                      {product.mrp > product.price && (
-                        <span className="text-[15px] font-medium text-[#C81E1E] line-through">{formatPrice(product.mrp)}</span>
-                      )}
-                      <span className="text-xl font-bold text-brand-charcoal">{formatPrice(product.price)}</span>
-                    </div>
-                    <p className="mt-1 text-label-sm font-bold uppercase text-emerald-700">
-                      {percent > 0 ? `Up to ${percent}% off · Special Offer` : 'Special Offer'}
-                    </p>
-
-                    <Button
-                      variant={soldOut ? 'outline' : 'gold'}
-                      size="sm"
-                      disabled={soldOut}
-                      className="mt-4 w-full shadow-sm"
-                      onClick={() => !soldOut && onAdd(product)}
-                    >
-                      <Icon name="bag" className="h-3.5 w-3.5" />
-                      {soldOut ? 'Out of Stock' : 'Add To Bag'}
-                    </Button>
-                  </div>
-                </article>
-              )
-            })}
+            {featuredDeals.map((product) => (
+              <div
+                key={product.id}
+                className="flex w-[78%] shrink-0 snap-start sm:w-[calc((100%-1.25rem)/2)] md:w-[calc((100%-2.5rem)/3)] lg:w-[calc((100%-3.75rem)/4)] xl:w-[calc((100%-5rem)/5)]"
+              >
+                <ProductCard
+                  product={product}
+                  showTier
+                  onAdd={onAdd}
+                  onToggleWishlist={onToggleWishlist}
+                  isWishlisted={isWishlisted(product.id)}
+                />
+              </div>
+            ))}
           </div>
         )}
       </div>

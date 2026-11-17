@@ -40,9 +40,9 @@ export function ActiveChips({ chips, onRemove, onClear }) {
 }
 
 /** Skeleton grid shown while a catalogue read is in flight. */
-export function CatalogueSkeleton({ count = 12 }) {
+export function CatalogueSkeleton({ count = 10 }) {
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 sm:gap-5">
+    <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
       {Array.from({ length: count }).map((_, index) => (
         <div key={index} className="card-surface overflow-hidden">
           <Skeleton className="aspect-square rounded-none" />
@@ -252,7 +252,8 @@ export function CatalogueView({
                   <ProductGrid
                     products={products}
                     variant={variant}
-                    columns={6}
+                    columns={5}
+                    showTier
                     onAdd={onAdd}
                     onToggleWishlist={onToggleWishlist}
                     isWishlisted={isWishlisted}
