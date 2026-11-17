@@ -520,8 +520,8 @@ export function adminOrder(doc) {
 const STAGE_ICONS = ['check', 'flask', 'truck', 'scooter', 'mail']
 const STAGE_DESCRIPTIONS = [
   'Payment verified & order confirmed.',
-  'Packed, checked and sealed by Rehman Perfume.',
-  'Sent out from Rehman Perfume.',
+  'Packed, checked and sealed by Raheman Perfumes.',
+  'Dispatched from Raheman Perfumes atelier.',
   'Courier on the way in safe heat-protected packing.',
   'Handed over at your doorstep with tamper-safe seal.',
 ]
@@ -556,6 +556,91 @@ export function publicTracking(doc) {
       ...(title === 'In Transit' && doc.tracking?.awb ? { checkpoint: `Checkpoint: ${doc.tracking.awb}` } : {}),
     }
   })
+
+  // Format real events newest first
+  let checkpoints = [...events].reverse().map((event) => ({
+    id: String(event._id || event.title),
+    title: event.title,
+    description: event.description,
+    timestamp: istStamp(event.at),
+  }))
+
+  // If no explicit events were recorded (e.g. earlier orders), synthesize status-accurate checkpoints
+  if (checkpoints.length === 0) {
+    const isCod = ['COD', 'cod'].includes(String(doc.payment?.method || '').toLowerCase())
+    const placedDate = doc.placedAt || doc.createdAt || new Date()
+    const updatedDate = doc.updatedAt || placedDate
+    const synthetic = []
+
+    if (doc.status === 'Cancelled') {
+      synthetic.push({
+        id: 'cp-cancelled',
+        title: 'Order Cancelled',
+        description: 'Order cancelled before dispatch. Full refund processed if prepaid.',
+        timestamp: istStamp(updatedDate),
+      })
+    } else if (doc.status === 'Delivered') {
+      synthetic.push({
+        id: 'cp-delivered',
+        title: 'Delivered',
+        description: `Delivered to ${doc.address?.name || 'Customer'}${doc.address?.city ? ` in ${doc.address.city}` : ''}. Tamper-evident seal intact.`,
+        timestamp: istStamp(updatedDate),
+      })
+      synthetic.push({
+        id: 'cp-out-for-delivery',
+        title: 'Out for Delivery',
+        description: 'Courier delivery executive is out for delivery with your parcel.',
+        timestamp: istStamp(updatedDate),
+      })
+      synthetic.push({
+        id: 'cp-shipped',
+        title: 'Dispatched / In Transit',
+        description: doc.tracking?.courier
+          ? `Dispatched via ${doc.tracking.courier}${doc.tracking?.awb ? ` (AWB: ${doc.tracking.awb})` : ''}. Parcel is en route.`
+          : 'Handed over to courier partner for final delivery.',
+        timestamp: istStamp(placedDate),
+      })
+      synthetic.push({
+        id: 'cp-packed',
+        title: 'Packed & Sealed',
+        description: 'Bottles inspected and sealed in tamper-proof bubble packaging at Raheman Perfumes atelier.',
+        timestamp: istStamp(placedDate),
+      })
+    } else if (doc.status === 'Shipped') {
+      synthetic.push({
+        id: 'cp-shipped',
+        title: 'Dispatched / In Transit',
+        description: doc.tracking?.courier
+          ? `Dispatched via ${doc.tracking.courier}${doc.tracking?.awb ? ` (AWB: ${doc.tracking.awb})` : ''}. Package is in transit to destination hub.`
+          : 'Handed over to courier partner. Transit updates will follow as parcel reaches sorting hub.',
+        timestamp: istStamp(updatedDate),
+      })
+      synthetic.push({
+        id: 'cp-packed',
+        title: 'Packed & Sealed',
+        description: 'Bottles inspected, cushioned in bubble packaging, and sealed with tamper-proof band at atelier.',
+        timestamp: istStamp(placedDate),
+      })
+    } else if (doc.status === 'Packed') {
+      synthetic.push({
+        id: 'cp-packed',
+        title: 'Packed & Sealed',
+        description: 'Fragrance order inspected, safely packed in tamper-evident packaging, and ready for courier pickup.',
+        timestamp: istStamp(updatedDate),
+      })
+    }
+
+    synthetic.push({
+      id: 'cp-confirmed',
+      title: 'Order Confirmed',
+      description: isCod
+        ? 'Order placed & confirmed. Cash on Delivery scheduled for collection at delivery.'
+        : 'Payment verified & order confirmed. Fragrance compounding initiated at Raheman Perfumes atelier.',
+      timestamp: istStamp(placedDate),
+    })
+
+    checkpoints = synthetic
+  }
 
   return {
     orderId: doc.number,
@@ -608,13 +693,7 @@ export function publicTracking(doc) {
       note: item.note,
     })),
     timeline,
-    // Newest first, as the tracking page lists them.
-    checkpoints: [...events].reverse().map((event) => ({
-      id: String(event._id),
-      title: event.title,
-      description: event.description,
-      timestamp: istStamp(event.at),
-    })),
+    checkpoints,
     inclusions: doc.inclusions ?? [],
   }
 }

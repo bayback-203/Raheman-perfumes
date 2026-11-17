@@ -111,19 +111,23 @@ export function OrderTrackingPage() {
     navigate(`/track-order?order=${encodeURIComponent(trimmed)}`, { replace: true })
   }
 
-  // Calculate 4-step progress based on order status
-  // 1: Placed, 2: Shipped, 3: Out for Delivery, 4: Delivered
+  // Calculate 4-step progress based on order status:
+  // 0: Cancelled, 1: Order Placed, 2: Packed & Sealed, 3: In Transit, 4: Delivered
   const getProgressStage = (orderStatus) => {
     const s = String(orderStatus || '').toLowerCase()
+    if (s.includes('cancel')) return 0
     if (s.includes('deliver')) return 4
-    if (s.includes('out for delivery')) return 3
-    if (s.includes('ship') || s.includes('transit')) return 2
-    if (s.includes('pack')) return 1.5
+    if (s.includes('ship') || s.includes('transit') || s.includes('out for delivery')) return 3
+    if (s.includes('pack')) return 2
     return 1
   }
 
   const currentStage = tracking ? getProgressStage(tracking.status) : 1
   const totalItemCount = tracking?.items?.reduce((sum, it) => sum + (Number(it.qty) || 1), 0) || 0
+
+  const packedEvent = tracking?.checkpoints?.find((cp) => cp.title?.toLowerCase().includes('pack'))
+  const shippedEvent = tracking?.checkpoints?.find((cp) => cp.title?.toLowerCase().includes('transit') || cp.title?.toLowerCase().includes('dispatch'))
+  const deliveredEvent = tracking?.checkpoints?.find((cp) => cp.title?.toLowerCase().includes('deliver'))
 
   const handleBuyAgain = (item) => {
     addItem({
@@ -353,11 +357,32 @@ export function OrderTrackingPage() {
                 </p>
 
                 <div className="mt-2.5 flex flex-wrap items-center gap-2">
-                  <span className="inline-flex items-center gap-1.5 rounded bg-brand-charcoal px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-white">
-                    <Icon name="truck" className="h-3.5 w-3.5 text-brand-gold" />
-                    {tracking.courier || 'BLUE DART'}
-                    {tracking.transitNote ? ` · ${tracking.transitNote}` : ''}
-                  </span>
+                  {tracking.courier ? (
+                    <span className="inline-flex items-center gap-1.5 rounded bg-brand-charcoal px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-white">
+                      <Icon name="truck" className="h-3.5 w-3.5 text-brand-gold" />
+                      {tracking.courier}
+                      {tracking.transitNote ? ` · ${tracking.transitNote}` : ''}
+                    </span>
+                  ) : currentStage >= 3 ? (
+                    <span className="inline-flex items-center gap-1.5 rounded bg-brand-charcoal px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-white">
+                      <Icon name="truck" className="h-3.5 w-3.5 text-brand-gold" />
+                      In Transit · En Route
+                    </span>
+                  ) : currentStage === 2 ? (
+                    <span className="inline-flex items-center gap-1.5 rounded border border-amber-300 bg-amber-50 px-2.5 py-1 text-xs font-semibold text-amber-900">
+                      <Icon name="package" className="h-3.5 w-3.5 text-amber-700" />
+                      Packed · Ready for Courier Pickup
+                    </span>
+                  ) : currentStage === 0 ? (
+                    <span className="inline-flex items-center gap-1.5 rounded border border-rose-200 bg-rose-50 px-2.5 py-1 text-xs font-semibold text-rose-800">
+                      Cancelled
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1.5 rounded border border-brand-gold/30 bg-brand-cream px-2.5 py-1 text-xs font-semibold text-brand-goldDark">
+                      <Icon name="check-circle" className="h-3.5 w-3.5" />
+                      Confirmed · Atelier Compounding &amp; Prep
+                    </span>
+                  )}
 
                   {tracking.awb && (
                     <span className="inline-flex items-center gap-1.5 rounded border border-brand-border bg-white px-2.5 py-1 text-xs text-brand-muted">
@@ -386,7 +411,11 @@ export function OrderTrackingPage() {
                     ? 'Delivered'
                     : tracking.status === 'Cancelled'
                     ? 'Order Cancelled'
-                    : "It's on the Way!"}
+                    : currentStage >= 3
+                    ? "It's on the Way!"
+                    : currentStage === 2
+                    ? 'Packed & Ready for Courier'
+                    : 'Order Confirmed & Processing'}
                 </p>
                 <p className="mt-1 text-sm font-bold text-brand-charcoal">
                   Delivery Estimate:{' '}
@@ -414,9 +443,9 @@ export function OrderTrackingPage() {
                         width:
                           currentStage >= 4
                             ? 'calc(100% - 1.5rem)'
-                            : currentStage >= 3
+                            : currentStage === 3
                             ? '66%'
-                            : currentStage >= 2
+                            : currentStage === 2
                             ? '33%'
                             : '0%',
                       }}
@@ -438,7 +467,7 @@ export function OrderTrackingPage() {
                       </span>
                     </div>
 
-                    {/* Step 2: Shipped */}
+                    {/* Step 2: Packed & Sealed */}
                     <div className="relative z-10 flex flex-col items-center text-center">
                       <span
                         className={cn(
@@ -454,14 +483,20 @@ export function OrderTrackingPage() {
                           currentStage >= 2 ? 'text-brand-charcoal' : 'text-neutral-400',
                         )}
                       >
-                        Shipped
+                        Packed & Sealed
                       </span>
                       <span className="text-[11px] font-medium text-brand-muted">
-                        {currentStage >= 2 ? shortDate(tracking.placedAt) : 'Pending'}
+                        {currentStage >= 2
+                          ? packedEvent?.timestamp
+                            ? shortDate(packedEvent.timestamp)
+                            : 'Completed'
+                          : currentStage === 1
+                          ? 'In Atelier'
+                          : 'Pending'}
                       </span>
                     </div>
 
-                    {/* Step 3: Out for Delivery */}
+                    {/* Step 3: In Transit */}
                     <div className="relative z-10 flex flex-col items-center text-center">
                       <span
                         className={cn(
@@ -477,10 +512,12 @@ export function OrderTrackingPage() {
                           currentStage >= 3 ? 'text-brand-charcoal' : 'text-neutral-400',
                         )}
                       >
-                        Out for Delivery
+                        In Transit
                       </span>
                       <span className="text-[11px] font-medium text-brand-muted">
-                        {currentStage >= 3 ? 'On Route' : 'Pending'}
+                        {currentStage >= 3
+                          ? tracking.courier || (shippedEvent?.timestamp ? shortDate(shippedEvent.timestamp) : 'On Route')
+                          : 'Pending'}
                       </span>
                     </div>
 
@@ -503,9 +540,13 @@ export function OrderTrackingPage() {
                         {currentStage >= 4 ? 'Delivered' : 'Est. Delivery'}
                       </span>
                       <span className="text-[11px] font-medium text-brand-muted">
-                        {tracking.expectedDelivery
+                        {currentStage >= 4
+                          ? deliveredEvent?.timestamp
+                            ? shortDate(deliveredEvent.timestamp)
+                            : 'Delivered'
+                          : tracking.expectedDelivery
                           ? shortDate(tracking.expectedDelivery)
-                          : 'Standard'}
+                          : 'Standard (3-5 days)'}
                       </span>
                     </div>
                   </div>
@@ -521,7 +562,7 @@ export function OrderTrackingPage() {
                       className="inline-flex items-center gap-2 rounded bg-[#18538A] px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-sm transition hover:bg-[#12416E]"
                     >
                       <Icon name="truck" className="h-4 w-4" />
-                      Track Package
+                      Track with {tracking.courier || 'Courier'}
                     </a>
                   ) : (
                     <button
@@ -530,7 +571,7 @@ export function OrderTrackingPage() {
                       className="inline-flex items-center gap-2 rounded bg-[#18538A] px-6 py-2.5 text-xs font-bold uppercase tracking-wider text-white shadow-sm transition hover:bg-[#12416E]"
                     >
                       <Icon name="scan" className="h-4 w-4" />
-                      Track Package
+                      {showScanHistory ? 'Hide Checkpoints' : 'View Checkpoints'}
                     </button>
                   )}
                 </div>
@@ -698,7 +739,15 @@ export function OrderTrackingPage() {
                     </ol>
                   ) : (
                     <p className="text-xs text-brand-muted">
-                      Your parcel has been handed to {tracking.courier || 'the courier partner'}. Live hub scans will appear here as the package progresses through transit.
+                      {tracking.status === 'Delivered'
+                        ? 'Package has been delivered to your destination.'
+                        : currentStage >= 3
+                        ? `Your parcel is in transit${tracking.courier ? ` with ${tracking.courier}` : ''}. Live hub scans will update as it progresses through transit hubs.`
+                        : currentStage === 2
+                        ? 'Your order has been hand-packed and sealed with tamper-evident packaging at the atelier. Awaiting courier pickup.'
+                        : currentStage === 0
+                        ? 'This order has been cancelled.'
+                        : 'Your order has been confirmed and payment verified. Our team is compounding and preparing your fragrance for packing.'}
                     </p>
                   )}
                 </div>

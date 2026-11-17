@@ -280,6 +280,23 @@ export async function place(input, { customer, actor = null } = {}) {
             stockApplied: true,
             inclusions: input.inclusions ?? [],
             cashier: counter ? (actor?.name ?? '') : '',
+            shipmentEvents: counter
+              ? [
+                  {
+                    title: 'Handover at Counter',
+                    description: `Fulfilled and handed over at boutique counter${actor?.name ? ` by ${actor.name}` : ''}.`,
+                    at: new Date(),
+                  },
+                ]
+              : [
+                  {
+                    title: 'Order Confirmed',
+                    description: isCod
+                      ? 'Order placed & confirmed. Cash on Delivery scheduled for collection at delivery.'
+                      : 'Payment verified & order confirmed. Fragrance compounding initiated at Raheman Perfumes atelier.',
+                    at: new Date(),
+                  },
+                ],
             ...(input.clientRef ? { clientRef: input.clientRef } : {}),
           },
         ],
@@ -494,15 +511,35 @@ export async function setStatus(idOrNumber, status, { actor = null, note = '', t
         if (tracking.transitNote !== undefined) order.tracking.transitNote = tracking.transitNote
         if (tracking.sealNote !== undefined) order.tracking.sealNote = tracking.sealNote
       }
-      if (status === 'Shipped') {
+      if (status === 'Packed') {
+        order.shipmentEvents.push({
+          title: 'Packed & Sealed',
+          description: 'Bottles hand-inspected, wrapped in shockproof bubble packaging, and sealed with tamper-proof band at atelier.',
+          at: new Date(),
+        })
+      } else if (status === 'Shipped') {
         const courierName = order.tracking?.courier || tracking?.courier || ''
         const awbNumber = order.tracking?.awb || tracking?.awb || ''
         const desc = courierName
-          ? `Dispatched via ${courierName}${awbNumber ? ` (AWB / Ref: ${awbNumber})` : ''}.`
-          : 'Dispatched from atelier.'
+          ? `Dispatched via ${courierName}${awbNumber ? ` (AWB / Tracking: ${awbNumber})` : ''}. Parcel is en route to destination hub.`
+          : 'Dispatched from atelier to courier logistics partner.'
         order.shipmentEvents.push({
-          title: 'In Transit',
+          title: 'Dispatched / In Transit',
           description: desc,
+          at: new Date(),
+        })
+      } else if (status === 'Delivered') {
+        const customerName = order.address?.name || 'Customer'
+        const city = order.address?.city ? ` in ${order.address.city}` : ''
+        order.shipmentEvents.push({
+          title: 'Delivered',
+          description: `Package delivered successfully to ${customerName}${city}. Tamper-evident seal verified.`,
+          at: new Date(),
+        })
+      } else if (status === 'Cancelled') {
+        order.shipmentEvents.push({
+          title: 'Order Cancelled',
+          description: note ? `Order cancelled: ${note}` : 'Order cancelled before dispatch.',
           at: new Date(),
         })
       }
@@ -685,6 +722,13 @@ export async function cancelByCustomer(customerId, orderNumber, { upiId = '', re
           ? `${txOrder.notes}\nCustomer cancelled: ${cleanReason}`
           : `Customer cancelled: ${cleanReason}`
       }
+      txOrder.shipmentEvents.push({
+        title: 'Order Cancelled',
+        description: isPrepaid
+          ? `Order cancelled by customer before packing. Full manual UPI refund requested to ${cleanUpi}.`
+          : 'Order cancelled by customer before packing.',
+        at: new Date(),
+      })
       await txOrder.save({ session })
       committedOrder = txOrder
     })
