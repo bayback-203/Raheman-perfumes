@@ -94,7 +94,7 @@ export const PILLARS = [
     cta: { label: 'Shop Originals', to: '/shop/originals' },
     tone: 'dark',
     tier: 'Original',
-    note: 'Batch Code Checked',
+    note: '100% Authentic',
     photo: '/pillar-originals.jpg?v=2',
   },
   {
@@ -154,9 +154,9 @@ export const WHY_SHOP = [
     image: '/promise-quality.jpg',
   },
   {
-    id: 'small-batch',
+    id: 'hand-blended',
     title: 'Hand-Blended Oils',
-    description: 'Mixed in small batches to last longer',
+    description: 'Expertly crafted with pure oils to last longer',
     icon: 'award',
     image: '/promise-custom.jpg',
   },
@@ -226,7 +226,7 @@ export const HOME_FAQ = [
     id: 'authentic',
     question: 'How do I know the original perfumes are genuine?',
     answer:
-      'Every original bottle ships with its batch code so you can check it on the brand\u2019s website. We buy directly from official distributors \u2014 never from resellers \u2014 and each order comes with a Raheman Perfumes authenticity seal.',
+      'We buy directly from official distributors \u2014 never from resellers \u2014 and each order ships with a Raheman Perfumes authenticity seal.',
   },
   {
     id: 'inspired',

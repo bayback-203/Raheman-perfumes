@@ -25,7 +25,7 @@ import { FREE_SHIPPING_THRESHOLD } from '@/lib/format'
 
 const DELIVERY_PROMISE = [
   { icon: 'truck', title: 'Free delivery over ₹999', note: '4–6 working days across India' },
-  { icon: 'shield', title: 'Authenticity guarantee', note: 'Batch code verifiable on request' },
+  { icon: 'shield', title: '100% Genuine & Authentic', note: 'Sourced directly from official suppliers' },
   { icon: 'sparkle', title: '30%+ oil strength', note: 'Pure French oils & long lasting' },
   { icon: 'shield', title: 'Tamper-proof seal', note: 'Safe 3-layer protective packaging' },
 ]
@@ -347,7 +347,7 @@ export function ProductDetailPage() {
             </span>
             <span className="flex items-center gap-2">
               <Icon name="star" className="h-4 w-4 shrink-0 text-brand-charcoal" />
-              {product.reviewCount > 0 ? `${product.rating}/5 Star Reviews` : '100% Authentic Batch'}
+              {product.reviewCount > 0 ? `${product.rating}/5 Star Reviews` : '100% Authentic'}
             </span>
           </div>
 
@@ -494,13 +494,12 @@ export function ProductDetailPage() {
             <CollapsiblePanel title="The Composition" icon="notes" defaultOpen>
               <NotePyramid notes={product.notes} />
             </CollapsiblePanel>
-            <CollapsiblePanel title="Origin & Batch Info" icon="verified">
+            <CollapsiblePanel title="Product & Origin Info" icon="verified">
               <dl className="grid gap-3 sm:grid-cols-2">
                 {[
                   ['Tier', product.tier],
                   ['Concentration', product.concentration],
                   ['SKU', product.sku],
-                  ['Batch', product.batch],
                   ['Origin', product.origin],
                   ['Wears best on', product.gender],
                 ].map(([label, value]) => (
@@ -547,7 +546,7 @@ export function ProductDetailPage() {
               <p className="text-body-lg leading-relaxed text-ink-variant">{product.description}</p>
               <p className="mt-5 text-body-md leading-relaxed text-brand-muted">
                 {product.tier === 'Original'
-                  ? 'This is an authentic branded bottle, imported through official distributors with its batch code intact. We do not refill or reseal original bottles.'
+                  ? 'This is an authentic branded bottle, sourced directly through official distributors. We do not refill or reseal original bottles.'
                   : 'Our perfumers recreate this scent from pure French oils at 30%+ strength — a unique blend that smells close to the one you already know.'}
               </p>
             </div>

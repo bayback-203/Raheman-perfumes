@@ -144,7 +144,7 @@ export function BrandStrip() {
           align="center"
           eyebrow="Authentic Sourcing"
           title="Brands We Carry"
-          subtitle="Every original bottle is imported through official distributors with its batch code intact."
+          subtitle="Every original bottle is sourced directly through official distributors."
         />
       </div>
 

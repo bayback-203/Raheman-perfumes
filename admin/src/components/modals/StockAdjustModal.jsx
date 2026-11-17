@@ -24,7 +24,6 @@ export function StockAdjustModal({ open, onClose, product = null }) {
   const [direction, setDirection] = useState('in')
   const [quantity, setQuantity] = useState('')
   const [reason, setReason] = useState(ADJUSTMENT_REASONS[0])
-  const [batch, setBatch] = useState('')
   const [by, setBy] = useState(AUTHORISERS[0])
   const [error, setError] = useState('')
   const [saving, setSaving] = useState(false)
@@ -35,7 +34,6 @@ export function StockAdjustModal({ open, onClose, product = null }) {
     setDirection('in')
     setQuantity('')
     setReason(ADJUSTMENT_REASONS[0])
-    setBatch('')
     setBy(AUTHORISERS[0])
     setError('')
     setSaving(false)
@@ -77,8 +75,8 @@ export function StockAdjustModal({ open, onClose, product = null }) {
     try {
       const landed = await adjustStock(
         direction === 'count'
-          ? { productId: product.id, next: amount, reason, batch: batch.trim(), by }
-          : { productId: product.id, change: delta, reason, batch: batch.trim(), by },
+          ? { productId: product.id, next: amount, reason, by }
+          : { productId: product.id, change: delta, reason, by },
       )
       if (landed !== null) onClose()
     } finally {
@@ -173,19 +171,11 @@ export function StockAdjustModal({ open, onClose, product = null }) {
             options={ADJUSTMENT_REASONS}
             hint="Saved beside the number, so a count is never changed without a reason."
           />
-          <Input
-            label="Batch number"
-            value={batch}
-            onChange={(event) => setBatch(event.target.value)}
-            placeholder="Enter batch number (optional)"
-            hint="Optional. Helpful for batches you mixed or bought from a supplier."
-          />
           <Select
             label="Approved by"
             value={by}
             onChange={(event) => setBy(event.target.value)}
             options={AUTHORISERS}
-            containerClassName="sm:col-span-2"
           />
         </FieldGroup>
 

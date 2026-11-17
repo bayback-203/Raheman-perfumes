@@ -88,8 +88,8 @@ function ShopCatalogue({ title, subtitle, initialFilters, collection }) {
       <SignatureTile
         className="mb-10"
         eyebrow="Direct Sourcing"
-        title="Every bottle comes with its original batch code."
-        body="We buy only from official suppliers, never third-party resellers. Every order has a Raheman Perfumes seal, and you can check the batch code on the brand's website."
+        title="100% Genuine Branded Perfumes."
+        body="We buy only from official suppliers, never third-party resellers. Every order is carefully checked and sealed with a Raheman Perfumes authenticity seal."
         to="/pages/about"
         cta="How We Source"
         tier="Original"

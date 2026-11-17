@@ -9,7 +9,7 @@
 /** Reasons offered by the stock-adjustment modal. */
 export const ADJUSTMENT_REASONS = [
   'Restock — supplier delivery',
-  'New Batch Made',
+  'Fresh Stock Blended',
   'Damaged in transit',
   'Stock count correction',
   'Sample given',

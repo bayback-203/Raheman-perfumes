@@ -306,7 +306,6 @@ export const useAdminStore = create(
                             next: movement.next,
                             reason: movement.reason,
                             by: 'Superadmin',
-                            batch: movement.batch || '—',
                           },
                           ...state.ledger,
                         ],
@@ -550,7 +549,7 @@ export const useAdminStore = create(
          * it is the authority on both figures — `movement` is the ledger row it
          * wrote, and the shelf comes back with the product.
          */
-        adjustStock: ({ productId, change, next: countedNext, reason, batch = '', by = 'Superadmin' }) => {
+        adjustStock: ({ productId, change, next: countedNext, reason, by = 'Superadmin' }) => {
           const product = get().products.find((p) => p.id === productId)
           if (!product) return
 
@@ -568,7 +567,6 @@ export const useAdminStore = create(
                     productId,
                     ...(countedNext !== undefined ? { next: countedNext } : { change: delta }),
                     reason,
-                    batch,
                     // Two identical clicks are one adjustment. Derived from what
                     // is being changed rather than generated, so a retry of the
                     // same form carries the same key and the server discards it.
@@ -595,7 +593,6 @@ export const useAdminStore = create(
                         next: movement.next,
                         reason: movement.reason,
                         by,
-                        batch: movement.batch || '—',
                       }
                     : {
                         id: runtimeId('led'),
@@ -607,7 +604,6 @@ export const useAdminStore = create(
                         next,
                         reason,
                         by,
-                        batch: batch || '—',
                       },
                   ...state.ledger,
                 ],
@@ -618,7 +614,7 @@ export const useAdminStore = create(
                 tone: 'stock',
                 actor: by,
                 text: `${delta >= 0 ? 'added' : 'drew down'} ${Math.abs(landed - previous)} units of ${product.name}`,
-                target: batch || product.sku,
+                target: product.sku,
               })
               notify(
                 'Stock adjusted',

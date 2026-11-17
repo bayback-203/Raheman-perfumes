@@ -47,7 +47,6 @@ const PAGES = {
         items: [
           'Your perfume bottle wrapped safely in tissue and a strong box',
           'A tamper-proof safety seal on the cap',
-          'A batch card showing when it was packed',
           'Secure 3-layer protective packaging for safe transit',
         ],
       },
@@ -139,7 +138,7 @@ const PAGES = {
         kind: 'faq',
         heading: 'About Our Perfumes',
         items: [
-          { title: 'What is the difference between Original, Inspired and Mixed?', body: 'Original bottles are genuine branded perfumes bought directly from official distributors, with batch codes you can verify. Inspired perfumes are our own versions of famous designer scents, made at 30–35% oil strength. Mixed blends are our in-house custom layers of two or more scents.' },
+          { title: 'What is the difference between Original, Inspired and Mixed?', body: 'Original bottles are genuine branded perfumes bought directly from official distributors. Inspired perfumes are our own versions of famous designer scents, made at 30–35% oil strength. Mixed blends are our in-house custom layers of two or more scents.' },
           { title: 'How long does a Raheman perfume last on skin?', body: 'Our own perfumes use 30–35% pure perfume oil instead of the usual 15–20%. Expect 8–12 hours on skin and even longer on clothes. One or two sprays are enough.' },
           { title: 'What is an attar, and how is it different?', body: 'An attar is an alcohol-free oil perfume made with pure natural oils like sandalwood or jojoba. Apply a little with the glass stick instead of spraying — it stays warm and lasts for hours.' },
           { title: 'Will an Inspired blend smell like the original?', body: 'It smells very close right from the first spray because it uses matching scent oils. Slight differences can appear hours later since brands use locked formulas, but you get the same feel at a much better price.' },
@@ -229,7 +228,7 @@ const PAGES = {
         items: [
           { title: 'Where is my order?', body: 'Check the tracking page first — it shows live scan updates from the courier. If your parcel has not moved in 48 hours, message us and we will follow up directly.' },
           { title: 'Can I change my delivery address?', body: 'Yes, as long as the parcel has not been picked up yet. Send the order number and the new address and we will update the delivery.' },
-          { title: 'Do you take bulk or corporate orders?', body: 'Yes. Wedding favours, corporate gifts and hotel amenities are made in batches of 25 or more with custom labels. Write to us with quantities and a target date.' },
+          { title: 'Do you take bulk or corporate orders?', body: 'Yes. Wedding favours, corporate gifts and hotel amenities are available in minimum orders of 25 or more with custom labels. Write to us with quantities and a target date.' },
         ],
       },
     ],
@@ -247,25 +246,24 @@ const PAGES = {
         heading: 'Our Story',
         body: [
           'Raheman Perfumes started with a simple collection of pure attars and one clear promise: test every bottle for quality before selling it, and only sell scents we are proud of.',
-          'Today we bring together small-batch inspired blends, genuine designer perfumes, and traditional Kannauj attars.',
+          'Today we bring together handcrafted inspired blends, genuine designer perfumes, and traditional Kannauj attars.',
         ],
       },
       {
         kind: 'cards',
         items: [
-          { icon: 'verified', image: '/promise-authentic.jpg', title: 'Authentic Originals', body: 'Bought directly from official suppliers with original batch codes checked before stocking.' },
-          { icon: 'flask', image: '/promise-custom.jpg', title: 'Hand-Made Blends', body: 'Our inspired blends and mixes are measured and mixed carefully by hand in small batches.' },
+          { icon: 'verified', image: '/promise-authentic.jpg', title: 'Authentic Originals', body: 'Bought directly from official suppliers and carefully verified before stocking.' },
+          { icon: 'flask', image: '/promise-custom.jpg', title: 'Hand-Made Blends', body: 'Our inspired blends and mixes are measured and blended carefully by hand.' },
           { icon: 'award', image: '/family-gourmand.jpg', title: 'Honest Pricing', body: 'No extra showroom markup — you pay fairly for the quality of oil in the bottle.' },
-          { icon: 'shield', image: '/promise-quality.jpg', title: 'Sealed & Safe', body: 'Every order leaves our shop with a tamper-proof seal and batch details.' },
+          { icon: 'shield', image: '/promise-quality.jpg', title: 'Sealed & Safe', body: 'Every order leaves our shop with a tamper-proof authenticity seal.' },
         ],
       },
       {
         kind: 'list',
         heading: 'How We Work',
         items: [
-          'Raw oils are bought in small lots and checked when they arrive — poor lots are rejected',
-          'Each blended batch rests properly before bottling so the scent becomes smooth and long lasting',
-          'A sample from each batch is kept on record so we can check any feedback',
+          'Raw oils are carefully sourced and checked when they arrive — poor quality lots are rejected',
+          'Each fragrance blend rests properly before bottling so the scent becomes smooth and long lasting',
           'Every perfume is checked by our team before packing and sending out',
         ],
       },
@@ -293,7 +291,7 @@ const PAGES = {
             role: 'Founder & Head Maker',
             initials: 'IR',
             specialty: 'Oud, amber, leather',
-            bio: 'Imran started Raheman Perfumes with a simple goal: every attar and strong perfume should get the same care and quality check. He checks every oud batch himself.',
+            bio: 'Imran started Raheman Perfumes with a simple goal: every attar and strong perfume should get the same care and quality check. He oversees every oud blend himself.',
           },
           {
             name: 'Meera Nair',
@@ -356,11 +354,11 @@ const PAGES = {
           },
           {
             tag: 'Buying',
-            title: 'Batch Codes: How To Check An Original Perfume',
+            title: 'How To Choose Your Signature Scent',
             excerpt:
-              'A quick 5-minute check to verify any branded bottle batch code and spot signs of tampering.',
+              'A practical guide to matching top, heart, and base notes with Indian weather and daily occasions.',
             date: '2026-06-18',
-            readTime: '8 min read',
+            readTime: '6 min read',
           },
           {
             tag: 'Care',

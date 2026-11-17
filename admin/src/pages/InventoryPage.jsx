@@ -83,13 +83,12 @@ export function InventoryPage() {
   const book = useDataTable({
     rows: movements,
     pageSize: 8,
-    matches: (row, query) => [row.name, row.sku, row.reason, row.batch, row.by].join(' ').toLowerCase().includes(query),
+    matches: (row, query) => [row.name, row.sku, row.reason, row.by].join(' ').toLowerCase().includes(query),
     compare: {
       at: (row) => row.at,
       name: (row) => row.name,
       change: (row) => row.change,
       reason: (row) => row.reason,
-      batch: (row) => row.batch,
     },
   })
 
@@ -267,12 +266,6 @@ export function InventoryPage() {
       render: (row) => <span className="whitespace-nowrap text-ink-variant">{row.reason}</span>,
     },
     {
-      key: 'batch',
-      header: 'Batch',
-      sortable: true,
-      render: (row) => <span className="tabular whitespace-nowrap text-ink-muted">{row.batch}</span>,
-    },
-    {
       key: 'by',
       header: 'Approved by',
       render: (row) => <span className="whitespace-nowrap text-ink-variant">{row.by}</span>,
@@ -416,7 +409,7 @@ export function InventoryPage() {
         <Toolbar
           search={book.query}
           onSearch={book.setQuery}
-          placeholder="Search changes by batch, product or who made it…"
+          placeholder="Search changes by product, SKU, reason or staff…"
           actions={<span className="text-body-sm text-ink-muted">{book.total} shown</span>}
         />
 

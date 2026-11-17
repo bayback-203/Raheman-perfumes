@@ -56,10 +56,10 @@ const DEFAULT_VOLUME_SIZE = '100ml'
  */
 const LEDGER_REASON = {
   'Restock — supplier delivery': 'Stock received',
-  Compounding: 'New Batch Made',
-  'New Batch Made': 'New Batch Made',
+  'Fresh Stock Blended': 'Stock received',
   'Damaged in transit': 'Damaged or expired',
   'Stock count correction': 'Stock count correction',
+  'Cancelled order restocked': 'Return to stock',
   // A sample leaving the building is stock leaving the building; the ledger has
   // no finer word for it than the catch-all.
   'Sample dispatched': 'Manual adjustment',
@@ -113,7 +113,6 @@ function productBody(record, { brands = [], categories = [] } = {}) {
     bestseller: record.bestseller,
     featured: record.featured,
     collections: record.collections,
-    batch: record.batch,
     origin: record.origin,
   }
 
@@ -267,14 +266,13 @@ export const adminApi = {
    * number is what the product form's "On hand" field and the adjust modal's
    * stock-take direction send.
    */
-  adjustStock: ({ productId, change, next, reason, batch, idempotencyKey }) =>
+  adjustStock: ({ productId, change, next, reason, idempotencyKey }) =>
     api.mutate('/admin/inventory/adjust', {
       method: 'POST',
       body: {
         productId,
         ...(next !== undefined ? { next: Number(next) } : { delta: Number(change) || 0 }),
         reason: ledgerReason(reason),
-        ...(batch ? { batch } : {}),
         // A retried adjustment is the same adjustment. The server keeps a unique
         // index on this, so a double-submit moves stock once.
         ...(idempotencyKey ? { idempotencyKey } : {}),

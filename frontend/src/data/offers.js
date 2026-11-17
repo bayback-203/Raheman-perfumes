@@ -74,7 +74,7 @@ export const OFFER_TERMS = [
   {
     id: 'applicability',
     title: 'Offer Stock & Availability',
-    body: 'Offer prices apply to the listed items while stock lasts. Once an offer batch sells out, the item goes back to its normal price. If something sells out after you order, we will contact you before sending anything else.',
+    body: 'Offer prices apply to the listed items while stock lasts. Once promotional stock sells out, the item goes back to its normal price. If something sells out after you order, we will contact you before sending anything else.',
   },
   {
     id: 'stacking',

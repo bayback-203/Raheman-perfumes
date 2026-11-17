@@ -1007,7 +1007,7 @@ function PreferencesTab({ onOpenVerify }) {
           <h3 className="text-label-md font-bold uppercase tracking-widest text-brand-charcoal">Notifications</h3>
           <div className="mt-4 space-y-4">
             <Checkbox defaultChecked label="Order & delivery updates" description="Email and SMS for every delivery step." />
-            <Checkbox defaultChecked label="New stock releases" description="Early updates when limited small batches arrive." />
+            <Checkbox defaultChecked label="New stock releases" description="Early updates when new limited releases arrive." />
             <Checkbox label="Fragrance blog" description="Monthly tips on perfume oils, care, and layering." />
           </div>
         </div>
