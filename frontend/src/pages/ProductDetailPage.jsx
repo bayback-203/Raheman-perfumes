@@ -196,6 +196,17 @@ export function ProductDetailPage() {
 
   const selectedImageIndex = activeImage < gallery.length ? activeImage : 0
   const mainImage = gallery[selectedImageIndex] ?? productImage(product)
+  const hasMultipleImages = gallery.length > 1
+
+  const showPrevImage = () => {
+    if (!hasMultipleImages) return
+    setActiveImage((selectedImageIndex - 1 + gallery.length) % gallery.length)
+  }
+
+  const showNextImage = () => {
+    if (!hasMultipleImages) return
+    setActiveImage((selectedImageIndex + 1) % gallery.length)
+  }
 
   const percent = discountPercent(variant?.mrp, variant?.price)
   const breakdown = ratingBreakdown(reviews)
@@ -233,14 +244,57 @@ export function ProductDetailPage() {
       <section className="shell grid gap-10 py-8 pt-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-16 lg:pt-10">
         {/* Gallery */}
         <div className="lg:sticky lg:top-28 lg:self-start">
-          <FlaconStage
-            tier={product.tier}
-            seed={product.slug}
-            label={product.name}
-            sublabel={product.concentration}
-            volume={volume}
-            image={mainImage}
-          />
+          <div
+            className="group relative"
+            tabIndex={hasMultipleImages ? 0 : undefined}
+            onKeyDown={(event) => {
+              if (!hasMultipleImages) return
+              if (event.key === 'ArrowLeft') {
+                event.preventDefault()
+                showPrevImage()
+              } else if (event.key === 'ArrowRight') {
+                event.preventDefault()
+                showNextImage()
+              }
+            }}
+          >
+            <FlaconStage
+              tier={product.tier}
+              seed={product.slug}
+              label={product.name}
+              sublabel={product.concentration}
+              volume={volume}
+              image={mainImage}
+            />
+
+            {hasMultipleImages && (
+              <>
+                <button
+                  type="button"
+                  onClick={showPrevImage}
+                  aria-label="Previous product image"
+                  title="Previous image"
+                  className="absolute left-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-brand-border/70 bg-white/90 text-brand-charcoal shadow-md backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-white hover:text-brand-goldDark active:scale-95 sm:h-12 sm:w-12 lg:opacity-0 lg:group-hover:opacity-100 lg:focus-visible:opacity-100"
+                >
+                  <Icon name="chevron-left" className="h-5 w-5" strokeWidth={2} />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={showNextImage}
+                  aria-label="Next product image"
+                  title="Next image"
+                  className="absolute right-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-brand-border/70 bg-white/90 text-brand-charcoal shadow-md backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-white hover:text-brand-goldDark active:scale-95 sm:h-12 sm:w-12 lg:opacity-0 lg:group-hover:opacity-100 lg:focus-visible:opacity-100"
+                >
+                  <Icon name="chevron-right" className="h-5 w-5" strokeWidth={2} />
+                </button>
+
+                <span className="pointer-events-none absolute bottom-3 right-3 z-20 rounded-full bg-brand-charcoal/75 px-2.5 py-1 text-[11px] font-medium tabular-nums text-white backdrop-blur-sm transition-opacity duration-200 lg:opacity-0 lg:group-hover:opacity-100">
+                  {selectedImageIndex + 1} / {gallery.length}
+                </span>
+              </>
+            )}
+          </div>
 
           {gallery.length > 1 && (
             <div className="mt-5 grid grid-cols-4 gap-3">

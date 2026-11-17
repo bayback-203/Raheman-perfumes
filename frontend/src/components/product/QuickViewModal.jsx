@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/Button'
 import { TierBadge } from '@/components/ui/Badge'
 import { Rating } from '@/components/ui/Rating'
 import { FlaconStage, OutOfStockBadge } from './FlaconArt'
-import { productImage } from '@/data/productImages'
+import { productGallery, productImage } from '@/data/productImages'
 import useCartStore from '@/store/cartStore'
 import useUiStore, { toast } from '@/store/uiStore'
 
@@ -28,12 +28,21 @@ export function QuickViewModal({
   const openCartDrawer = useUiStore((state) => state.openCartDrawer)
   const volumes = product?.volumes ?? []
   const [selectedVolume, setSelectedVolume] = useState(volumes[0]?.size ?? null)
+  const [activeImage, setActiveImage] = useState(0)
 
   useEffect(() => {
     setSelectedVolume(product?.volumes?.[0]?.size ?? null)
+    setActiveImage(0)
   }, [product?.id, product?.volumes])
 
   if (!product) return null
+
+  const gallery = productGallery(product)
+  const selectedImageIndex = activeImage < gallery.length ? activeImage : 0
+  const currentImage = gallery[selectedImageIndex] ?? productImage(product)
+  const hasMultipleImages = gallery.length > 1
+  const showPrevImage = () => setActiveImage((selectedImageIndex - 1 + gallery.length) % gallery.length)
+  const showNextImage = () => setActiveImage((selectedImageIndex + 1) % gallery.length)
 
   const activeVariant = volumes.find((v) => v.size === selectedVolume) ?? volumes[0]
   const unitPrice = activeVariant?.price ?? product.price
@@ -66,17 +75,40 @@ export function QuickViewModal({
   return (
     <Modal open={open} onClose={onClose} size="lg" title={product.name}>
       <div className="grid gap-6 sm:grid-cols-[0.9fr_1.1fr]">
-        <div className="relative overflow-hidden rounded-lg">
+        <div className="group relative overflow-hidden rounded-lg">
           <FlaconStage
             tier={product.tier}
             seed={product.slug}
             label={product.name}
             sublabel={product.concentration}
             volume={activeVariant?.size}
-            image={productImage(product)}
+            image={currentImage}
             aspect="square"
             frameless
           />
+          {hasMultipleImages && (
+            <>
+              <button
+                type="button"
+                onClick={showPrevImage}
+                aria-label="Previous product image"
+                className="absolute left-2.5 top-1/2 z-20 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-brand-border/70 bg-white/90 text-brand-charcoal shadow-md backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-white hover:text-brand-goldDark lg:opacity-0 lg:group-hover:opacity-100 lg:focus-visible:opacity-100"
+              >
+                <Icon name="chevron-left" className="h-4 w-4" strokeWidth={2} />
+              </button>
+              <button
+                type="button"
+                onClick={showNextImage}
+                aria-label="Next product image"
+                className="absolute right-2.5 top-1/2 z-20 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-brand-border/70 bg-white/90 text-brand-charcoal shadow-md backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-white hover:text-brand-goldDark lg:opacity-0 lg:group-hover:opacity-100 lg:focus-visible:opacity-100"
+              >
+                <Icon name="chevron-right" className="h-4 w-4" strokeWidth={2} />
+              </button>
+              <span className="pointer-events-none absolute bottom-2.5 right-2.5 z-20 rounded-full bg-brand-charcoal/75 px-2 py-0.5 text-[10px] font-medium tabular-nums text-white backdrop-blur-sm transition-opacity duration-200 lg:opacity-0 lg:group-hover:opacity-100">
+                {selectedImageIndex + 1} / {gallery.length}
+              </span>
+            </>
+          )}
           {soldOut && <OutOfStockBadge />}
         </div>
 
