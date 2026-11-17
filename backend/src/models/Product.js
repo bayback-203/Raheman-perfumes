@@ -38,7 +38,7 @@ import './Media.js'
  * what it is, and the `pre('validate')` hook is the only place that sets it.
  */
 
-export const TIERS = ['Original', 'Inspired', 'Mixed', 'Attar', 'Combo']
+export const TIERS = ['Original', 'Inspired', 'Mixed', 'Attar', 'Combo', 'Bakhoor']
 export const GENDERS = ['Men', 'Women', 'Unisex']
 export const PRODUCT_STATUSES = ['Active', 'Draft', 'Archived']
 
@@ -49,6 +49,7 @@ export const TIER_CODE = {
   Mixed: 'MIX',
   Attar: 'ATT',
   Combo: 'CMB',
+  Bakhoor: 'BKH',
 }
 
 /** Share of the selling price that goes on cost of goods, per tier. */
@@ -58,6 +59,7 @@ export const TIER_COST_RATIO = {
   Mixed: 0.34,
   Attar: 0.4,
   Combo: 0.55,
+  Bakhoor: 0.45,
 }
 
 /**

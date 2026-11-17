@@ -118,7 +118,7 @@ const productBody = z
      */
     brand: z.string().trim().regex(/^[a-f0-9]{24}$/i, 'A brand reference is required.').optional(),
     category: z.string().trim().regex(/^[a-f0-9]{24}$/i, 'A category reference is required.').optional(),
-    tier: z.enum(['Original', 'Inspired', 'Mixed', 'Attar', 'Combo']).optional(),
+    tier: z.enum(['Original', 'Inspired', 'Mixed', 'Attar', 'Combo', 'Bakhoor']).optional(),
     gender: z.enum(['Men', 'Women', 'Unisex']).optional(),
     family: safeStr.pipe(z.string().max(60)).optional(),
     concentration: safeStr.pipe(z.string().max(60)).optional(),

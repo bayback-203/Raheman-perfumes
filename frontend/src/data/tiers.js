@@ -58,6 +58,17 @@ export const TIERS = {
     border: 'border-emerald-700/25',
     solid: 'bg-emerald-800 text-white',
   },
+  Bakhoor: {
+    id: 'Bakhoor',
+    label: 'Bakhoor',
+    tagline: 'Aromatic Oud Incense',
+    description:
+      'Fragrant oud wood chips steeped in natural oils and resins for rich home scenting.',
+    text: 'text-amber-900',
+    surface: 'bg-amber-50',
+    border: 'border-amber-800/25',
+    solid: 'bg-amber-900 text-white',
+  },
 }
 
 /** Extra merchandising flags that sit beside the tier badge. */

@@ -17,6 +17,7 @@ export const MAIN_NAV = [
       { id: 'original', label: 'Original', description: 'Authentic branded perfumes', to: '/shop/originals' },
       { id: 'attars', label: 'Pure Attars', description: 'Alcohol-free pure oils', to: '/shop/attars' },
       { id: 'combos', label: 'Combos', description: 'Curated sets & pairings', to: '/combos' },
+      { id: 'bakhoor', label: 'Bakhoor', description: 'Aromatic oud incense', to: '/shop/bakhoor' },
     ],
   },
   { id: 'offers', label: 'Offers', to: '/offers', accent: 'red' },
@@ -28,6 +29,7 @@ export const MOBILE_NAV = [
   { id: 'original', label: 'Original', to: '/shop/originals' },
   { id: 'attars', label: 'Pure Attars', to: '/shop/attars' },
   { id: 'combos', label: 'Combos', to: '/combos' },
+  { id: 'bakhoor', label: 'Bakhoor', to: '/shop/bakhoor' },
   { id: 'offers', label: 'Offers', to: '/offers', accent: 'red' },
   { id: 'track', label: 'Track Order', to: '/track-order' },
   { id: 'wishlist', label: 'Wishlist', to: '/wishlist' },
@@ -46,6 +48,7 @@ export const FOOTER_COLUMNS = [
       { label: 'Inspired Blends', to: '/shop/inspired' },
       { label: 'Pure Attars', to: '/shop/attars' },
       { label: 'Combo Sets', to: '/combos' },
+      { label: 'Bakhoor', to: '/shop/bakhoor' },
     ],
   },
   {
@@ -91,56 +94,28 @@ export const PAYMENT_BADGES = ['UPI', 'VISA', 'Mastercard', 'RuPay', 'Net Bankin
  */
 export const PILLARS = [
   {
-    id: 'original',
-    eyebrow: '100% Guaranteed',
-    title: 'Original Perfumes',
-    description:
-      'Genuine branded perfumes bought directly from official French and Italian suppliers.',
-    placeholder: 'SAUVAGE',
-    cta: { label: 'Shop Originals', to: '/shop/originals' },
-    tone: 'dark',
-    tier: 'Original',
-    note: '100% Authentic',
+    id: 'perfumes',
+    title: 'Perfumes',
+    to: '/shop',
     photo: '/pillar-originals.jpg?v=2',
   },
   {
-    id: 'inspired',
-    eyebrow: 'Inspired Blends',
-    title: 'Inspired & Mixing',
-    description:
-      'Handmade recreates of famous designer scents at 35% oil strength.',
-    placeholder: 'AQUA',
-    cta: { label: 'Shop Inspired', to: '/shop/inspired' },
-    tone: 'gold',
-    tier: 'Inspired',
-    note: '30%+ Oil Strength',
-    photo: '/pillar-inspired.jpg?v=2',
-  },
-  {
     id: 'attars',
-    eyebrow: 'Alcohol-Free Oils',
-    title: 'Pure Attars',
-    description:
-      'Pure hand-made rose, oud, musk and saffron oils. Zero alcohol.',
-    placeholder: 'ATTAR',
-    cta: { label: 'Shop Attars', to: '/shop/attars' },
-    tone: 'amber',
-    tier: 'Attar',
-    note: 'Traditional Hand-Made',
+    title: 'Attars',
+    to: '/shop/attars',
     photo: '/pillar-attars.jpg?v=2',
   },
   {
     id: 'combos',
-    eyebrow: 'Curated Sets',
-    title: 'Combos & Gift Sets',
-    description:
-      'Curated perfume combinations, paired fragrance bottles, and discovery gift sets.',
-    placeholder: 'COMBO',
-    cta: { label: 'Shop Combos', to: '/combos' },
-    tone: 'burgundy',
-    tier: 'Combo',
-    note: 'Curated Pairings',
+    title: 'Combos',
+    to: '/combos',
     photo: '/pillar-combos.jpg?v=2',
+  },
+  {
+    id: 'bakhoor',
+    title: 'Bakhoor',
+    to: '/shop/bakhoor',
+    photo: '/pillar-bakhoor.jpg',
   },
 ]
 

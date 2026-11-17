@@ -24,7 +24,7 @@ import { useUiStore } from '@/store/uiStore'
 
 const TIERS = Object.keys(TIER_CODE)
 const GENDERS = ['Unisex', 'Men', 'Women']
-const CONCENTRATIONS = ['Eau de Parfum', 'Eau de Parfum Intense', 'Eau de Toilette', 'Extrait de Parfum', 'Pure Attar']
+const CONCENTRATIONS = ['Eau de Parfum', 'Eau de Parfum Intense', 'Eau de Toilette', 'Extrait de Parfum', 'Pure Attar', 'Bakhoor Incense']
 
 const VOLUME_PRESETS = [
   { size: '100ml', label: 'Full Bottle' },

@@ -70,6 +70,7 @@ const CATEGORY_IMAGES = {
   custom: '/compose.png',
   attars: '/pillar-attars.jpg?v=2',
   combos: '/pillar-combos.jpg?v=2',
+  bakhoor: '/pillar-bakhoor.jpg',
   mixed: '/family-oriental.jpg',
 }
 

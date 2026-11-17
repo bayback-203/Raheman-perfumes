@@ -16,6 +16,7 @@ const TIER_GLASS = {
   Mixed: { glass: '#2E1C0C', liquid: '#8C4F1A', cap: '#D8B878', label: '#FFFFFF', ink: '#8C4F1A' },
   Attar: { glass: '#2B2113', liquid: '#6B4C1B', cap: '#D8B878', label: '#FFFFFF', ink: '#6B4C1B' },
   Combo: { glass: '#0F2419', liquid: '#1C402E', cap: '#D8B878', label: '#FFFFFF', ink: '#1C402E' },
+  Bakhoor: { glass: '#2B1B12', liquid: '#6E3F1D', cap: '#D8B878', label: '#FFFFFF', ink: '#6E3F1D' },
 }
 
 /** Deterministic 0–3 index so a product's bottle shape never changes between renders. */

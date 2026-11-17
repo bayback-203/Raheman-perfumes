@@ -33,7 +33,7 @@ import { useSessionStore } from '@/store/sessionStore'
  */
 
 /** Mirrors `TIERS` in `backend/src/models/Product.js` — the scope a code may target. */
-const TIERS = ['Original', 'Inspired', 'Mixed', 'Attar', 'Combo']
+const TIERS = ['Original', 'Inspired', 'Mixed', 'Attar', 'Combo', 'Bakhoor']
 
 const blankCoupon = () => ({
   code: '',

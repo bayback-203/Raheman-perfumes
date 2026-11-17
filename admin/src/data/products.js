@@ -15,6 +15,7 @@ export const TIER_CODE = {
   Mixed: 'MIX',
   Attar: 'ATT',
   Combo: 'CMB',
+  Bakhoor: 'BKH',
 }
 
 /** Share of the selling price that goes on the cost of goods, per tier. */
@@ -24,6 +25,7 @@ export const TIER_COST_RATIO = {
   Mixed: 0.34,
   Attar: 0.4,
   Combo: 0.55,
+  Bakhoor: 0.45,
 }
 
 /**

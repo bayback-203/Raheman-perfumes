@@ -8,6 +8,7 @@ const BANNER_IMAGES = {
   inspired: '/pillar-inspired.jpg?v=2',
   attars: '/pillar-attars.jpg?v=2',
   combos: '/pillar-combos.jpg?v=2',
+  bakhoor: '/pillar-bakhoor.jpg',
   'best-sellers': '/offer-white.jpg',
   unisex: '/cat-unisex.jpg',
   men: '/pillar-originals.jpg?v=2',
@@ -30,6 +31,7 @@ export function ShopBanner({ collection, title, eyebrow }) {
     { label: 'Offers', to: '/offers', icon: 'tag', active: collection === 'offers' },
     { label: 'Pure Attars', to: '/shop/attars', icon: 'sparkle', active: collection === 'attars' },
     { label: 'Combos', to: '/combos', icon: 'gift', active: collection === 'combos' },
+    { label: 'Bakhoor', to: '/shop/bakhoor', icon: 'flame', active: collection === 'bakhoor' },
   ]
 
   return (

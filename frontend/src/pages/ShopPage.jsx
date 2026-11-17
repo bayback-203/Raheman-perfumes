@@ -20,6 +20,7 @@ const COLLECTION_RULES = {
   attars: { filters: { tier: ['Attar'] }, title: 'Pure Attars & Oils' },
   combo: { filters: { tier: ['Combo'] }, title: 'Combos & Gift Sets' },
   combos: { filters: { tier: ['Combo'] }, title: 'Combos & Gift Sets' },
+  bakhoor: { filters: { tier: ['Bakhoor'] }, title: 'Bakhoor' },
   'best-sellers': { filters: {}, title: 'Bestsellers' },
 }
 

@@ -145,6 +145,9 @@ export function OffersPage() {
       if (tab === 'combos') {
         return product.tier === 'Combo' || product.collections?.includes('combos')
       }
+      if (tab === 'bakhoor') {
+        return product.tier === 'Bakhoor' || product.collections?.includes('bakhoor')
+      }
       return false
     })
   }, [offerProducts, tab])
