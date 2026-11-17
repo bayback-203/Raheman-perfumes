@@ -48,7 +48,7 @@ export const FOOTER_COLUMNS = [
     links: [
       { label: 'Track Order', to: '/track-order' },
       { label: 'Shipping Policy', to: '/pages/shipping-policy' },
-      { label: 'Return & Refund', to: '/pages/return-refund' },
+      { label: 'No Return Policy', to: '/pages/return-refund' },
       { label: 'Fragrance FAQs', to: '/pages/faqs' },
       { label: 'Bottle Size Guide', to: '/pages/size-guide' },
       { label: 'Contact Us', to: '/pages/contact' },
@@ -245,6 +245,12 @@ export const HOME_FAQ = [
     question: 'Do you deliver across India?',
     answer:
       'Yes \u2014 we deliver to every working pin code in India. Free shipping above \u20b9999, and express delivery at checkout. Perfumes travel safely in sealed bubble packaging by road or air.',
+  },
+  {
+    id: 'return-policy',
+    question: 'What is your return and exchange policy?',
+    answer:
+      'Due to strict personal care hygiene standards and the sensitive nature of luxury fragrances and pure attars, we maintain a firm No Return and No Exchange Policy. All sales are final once delivered. In the rare event of transit damage or leakage, notify us within 48 hours of delivery with unboxing photos for a free replacement.',
   },
 ]
 

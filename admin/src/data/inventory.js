@@ -13,7 +13,7 @@ export const ADJUSTMENT_REASONS = [
   'Damaged in transit',
   'Stock count correction',
   'Sample given',
-  'Customer return restocked',
+  'Cancelled order restocked',
 ]
 
 /** Staff who can authorise an adjustment. */

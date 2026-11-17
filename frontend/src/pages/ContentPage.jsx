@@ -70,53 +70,60 @@ const PAGES = {
 
   'return-refund': {
     eyebrow: 'Customer Care',
-    title: 'Returns & Refunds',
+    title: 'No Return Policy',
     subtitle:
-      'Fragrance is personal. If a composition is not right for you, these are the terms on which we will make it right.',
-    updated: '2026-08-01',
+      'Due to strict personal care hygiene standards and the delicate nature of luxury fragrances and pure attars, all sales are final once delivered.',
+    updated: '2026-11-17',
     sections: [
       {
         kind: 'prose',
-        heading: 'Cancellation Policy (Before Packing Only)',
+        heading: 'Strict No Return & No Exchange Policy',
         body: [
-          'You can cancel an order ONLY while it is in Confirmed / Processing status — before our team packs the parcel. Go to My Account → Orders and click Cancel Order.',
-          'Once your parcel is Packed or Shipped, cancellation is locked and cannot be done from your account.',
-          'For prepaid online orders (Razorpay / UPI / Card / Net Banking), enter your UPI ID when cancelling. Our Shop Owner verifies the cancellation and transfers your refund manually to your UPI ID within 2–3 working days.',
-        ],
-      },
-      {
-        kind: 'steps',
-        heading: 'How To Start A Return',
-        items: [
-          { title: 'Raise the request', body: 'Use the contact form or WhatsApp within 7 days of delivery, quoting your order number.' },
-          { title: 'Keep the seal intact', body: 'Unopened bottles with the seal unbroken can be returned. Opened bottles cannot be resold and are not returnable.' },
-          { title: 'Schedule the pickup', body: 'We arrange a reverse pickup from the delivery address at no cost to you.' },
-          { title: 'Refund on inspection', body: 'Once the bottle is received and checked, the refund goes to your original payment method within 5–7 working days.' },
+          'Raheman Perfumes maintains a strict No Return and No Exchange Policy for all products once delivered.',
+          'Perfumes, concentrated perfume oils, and pure attars are intimate personal care products. For hygiene, health, and authenticity reasons, opened or delivered bottles cannot be restocked, resold, or re-packaged.',
+          'Please review product descriptions, notes, and size details carefully prior to placing your order. We do not accept returns or issue refunds based on personal scent preference or change of mind.',
         ],
       },
       {
         kind: 'prose',
-        heading: 'Damaged, Leaking Or Wrong Items',
+        heading: 'Order Cancellation (Before Packing Only)',
         body: [
-          'Photograph the parcel and the bottle before opening anything, then contact us within 48 hours of delivery. Damage in transit, a wrong item, or a missing item is replaced or refunded in full, including any shipping charge.',
-          'Do not refuse the parcel at the door. A refused delivery goes back to us as unclaimed and the return shipping cost is deducted from the refund.',
+          'You can cancel an order ONLY while it is in Confirmed / Processing status — before our fulfillment team packs the parcel. To cancel, go to My Account → Orders and click Cancel Order.',
+          'Once your parcel is marked as Packed or Shipped, cancellation is permanently locked and the parcel cannot be cancelled or recalled.',
+          'For prepaid orders (UPI / Card / Net Banking / Razorpay) cancelled before packing, enter your UPI ID during cancellation. The Shop Owner will verify and manually transfer your full refund to your UPI ID within 2–3 working days.',
         ],
       },
       {
         kind: 'prose',
-        heading: 'What Cannot Be Returned',
+        heading: 'Damaged, Leaking Or Broken In Transit (Free Replacement)',
         body: [
-          'Opened or partially used bottles and gift cards cannot be returned.',
-          'For hygiene reasons, Pure Attars and roll-on oils are non-returnable once the seal is broken.',
+          'Every Raheman perfume travels safely inside multi-layer shockproof bubble packaging with tamper-evident seals. However, in the rare event of damage or leakage caused by courier mishandling during transit:',
+          '1. Please take clear photos or a short unboxing video showing the damaged parcel and bottle.',
+          '2. Reach out to our Concierge on WhatsApp (+91 82608 66878) or email us at rahemanfragrance@gmail.com within 48 hours of delivery.',
+          '3. Once verified, we will immediately dispatch a brand-new replacement bottle to your address free of cost.',
+          'Please note: We provide free replacements for genuine transit damage or wrong deliveries. Returns or change-of-mind refunds for delivered items are strictly not permitted.',
         ],
       },
       {
         kind: 'faq',
-        heading: 'Refund Questions',
+        heading: 'Frequently Asked Questions',
         items: [
-          { title: 'How long does a refund take?', body: 'For orders cancelled before packing, enter your UPI ID and the Shop Owner transfers the refund manually within 2–3 working days. For inspected returns after delivery, refunds take 2–7 working days.' },
-          { title: 'Can I exchange an opened perfume?', body: 'For hygiene and safety reasons, opened or sprayed perfume bottles cannot be returned or exchanged. If you received a damaged, defective, or incorrect bottle, contact us within 48 hours for an immediate replacement.' },
-          { title: 'What about cash on delivery orders?', body: 'COD refunds are issued by bank transfer to the account you nominate, or as store credit if you prefer — store credit carries a 5% bonus.' },
+          {
+            title: 'Can I return or exchange a perfume after delivery?',
+            body: 'No. All sales are strictly final once delivered. Due to strict personal hygiene, health, and product purity standards, we do not accept returns or exchanges under any circumstances.',
+          },
+          {
+            title: 'Can I cancel my order before it ships?',
+            body: 'Yes, you can cancel your order from My Account as long as it is in Confirmed or Processing status before parcel packing begins. Once packed or shipped, cancellation is closed.',
+          },
+          {
+            title: 'How do I receive a refund if I cancel an order before packing?',
+            body: 'For prepaid orders cancelled before packing, provide your UPI ID in the cancellation modal. The Shop Owner reviews and transfers the refund directly to your UPI ID within 2–3 working days.',
+          },
+          {
+            title: 'What if my bottle arrives broken or leaking?',
+            body: 'Contact our support team within 48 hours of delivery with unboxing photos/video. Upon verification, we will send an immediate, complimentary replacement bottle.',
+          },
         ],
       },
     ],
@@ -461,7 +468,7 @@ const PAGES = {
         heading: 'Liability And Disputes',
         items: [
           { title: 'What is your liability limit?', body: 'Our liability for any single order is limited to the amount you paid for it. We are not liable for indirect losses, including missed events or consequential costs.' },
-          { title: 'Can I cancel an order?', body: 'Yes, ONLY before the parcel is packed (while status is Processing) from My Account → Orders. Once packed or shipped, cancellation is closed. Prepaid/Razorpay cancellations ask for your UPI ID for manual owner refund.' },
+          { title: 'Can I cancel an order?', body: 'Yes, ONLY before the parcel is packed (while status is Processing) from My Account → Orders. Once packed or shipped, cancellation is closed under our strict No Return Policy. Prepaid/Razorpay cancellations ask for your UPI ID for manual owner refund.' },
           { title: 'Which law governs these terms?', body: 'Indian law governs these terms and any dispute arising from a purchase made here.' },
           { title: 'Do these terms ever change?', body: 'These terms may be updated from time to time. The terms in force on the day you ordered are the ones that govern your order.' },
         ],
@@ -561,7 +568,7 @@ function ContactForm() {
       />
       <Select
         label="What is this about?"
-        options={['Order enquiry', 'Returns & refunds', 'Bulk & corporate gifting', 'Something else']}
+        options={['Order enquiry', 'Transit damage / Replacement', 'Bulk & corporate gifting', 'Something else']}
         value={draft.topic}
         onChange={(event) => setDraft({ ...draft, topic: event.target.value })}
       />
@@ -799,7 +806,7 @@ export function ContentPage() {
             </Link>
             ,{' '}
             <Link to="/pages/return-refund" className="link-underline text-brand-goldDark">
-              Returns & Refunds
+              No Return Policy
             </Link>{' '}
             and{' '}
             <Link to="/pages/faqs" className="link-underline text-brand-goldDark">

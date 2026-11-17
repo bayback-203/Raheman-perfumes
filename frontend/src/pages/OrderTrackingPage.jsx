@@ -216,7 +216,7 @@ export function OrderTrackingPage() {
       {/* ──────────────── B&H STYLE ORDER DETAILS & TRACKING VIEW ──────────────── */}
       {tracking && (
         <div className="mt-6">
-          {/* Top Title & Start Return Button */}
+          {/* Top Title & Order Support Button */}
           <div className="flex flex-wrap items-start justify-between gap-4">
             <h1 className="font-serif text-3xl font-bold tracking-tight text-brand-charcoal">
               Order Details
@@ -226,13 +226,13 @@ export function OrderTrackingPage() {
               variant="outline"
               size="sm"
               href={`https://wa.me/918260866878?text=${encodeURIComponent(
-                `Hi, I need assistance / want to start a return for Order ${tracking.orderId}`,
+                `Hi, I need assistance with Order ${tracking.orderId}`,
               )}`}
               target="_blank"
               rel="noopener noreferrer"
               className="border-brand-border bg-white px-5 py-2 text-xs font-semibold text-brand-charcoal shadow-sm hover:bg-[#F9F9F9]"
             >
-              Start a Return
+              Order Support
             </Button>
           </div>
 
@@ -706,7 +706,7 @@ export function OrderTrackingPage() {
             </div>
           </div>
 
-          {/* Quick Support & Return Notice */}
+          {/* Quick Support Notice */}
           <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-brand-border/70 bg-[#F6F6F6] p-4 text-xs text-brand-muted">
             <p>
               Need assistance with your package or delivery address?{' '}
