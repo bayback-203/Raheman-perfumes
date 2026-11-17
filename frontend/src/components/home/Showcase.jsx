@@ -239,13 +239,13 @@ export function WhyShopWithUs() {
           title="Why Customers Come Back"
         />
 
-        <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-5 lg:grid-cols-3">
           {WHY_SHOP.map((item) => (
             <li
               key={item.id}
-              className="flex items-center gap-4 rounded-xl border border-[#ECE0CC] bg-gradient-to-b from-white via-[#FFFDF9] to-[#FDF6EB]/80 p-5 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand-gold/70 hover:shadow-[0_14px_32px_-10px_rgba(200,155,60,0.22)]"
+              className="flex flex-col items-center gap-2.5 rounded-xl border border-[#ECE0CC] bg-gradient-to-b from-white via-[#FFFDF9] to-[#FDF6EB]/80 p-3.5 text-center shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand-gold/70 hover:shadow-[0_14px_32px_-10px_rgba(200,155,60,0.22)] sm:flex-row sm:items-center sm:gap-4 sm:p-5 sm:text-left"
             >
-              <div className="h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-brand-border bg-neutral-50 shadow-sm">
+              <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg border border-brand-border bg-neutral-50 shadow-sm sm:h-16 sm:w-16">
                 <img
                   src={item.image}
                   alt={item.title}
@@ -255,8 +255,8 @@ export function WhyShopWithUs() {
                 />
               </div>
               <div className="min-w-0">
-                <h3 className="text-body-md font-semibold text-brand-charcoal">{item.title}</h3>
-                <p className="mt-1 text-body-sm leading-relaxed text-brand-muted">{item.description}</p>
+                <h3 className="text-xs font-semibold text-brand-charcoal sm:text-body-md">{item.title}</h3>
+                <p className="mt-1 hidden text-body-sm leading-relaxed text-brand-muted sm:block">{item.description}</p>
               </div>
             </li>
           ))}

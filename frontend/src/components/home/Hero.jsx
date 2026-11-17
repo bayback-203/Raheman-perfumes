@@ -163,12 +163,12 @@ export function Hero() {
         <div className="animate-rise-lux">
           <TypewriterHeadline />
 
-          <p className="mt-6 max-w-xl text-pretty text-body-lg leading-relaxed text-brand-muted">
+          <p className="mt-4 hidden max-w-xl text-pretty text-body-md leading-relaxed text-brand-muted sm:mt-6 sm:block sm:text-body-lg">
             Original designer perfumes, inspired blends and pure attars —
             made with pure French oils for a long-lasting scent.
           </p>
 
-          <div className="mt-9 flex flex-wrap items-center gap-3">
+          <div className="mt-6 flex flex-wrap items-center gap-3 sm:mt-9">
             <Button variant="primary" size="lg" to="/shop">
               Shop The Collection
               <Icon name="arrow-right" className="h-4 w-4" />

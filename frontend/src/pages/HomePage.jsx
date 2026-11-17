@@ -97,7 +97,7 @@ export function HomePage() {
             </div>
           </div>
 
-          <Accordion items={HOME_FAQ} defaultOpenId={HOME_FAQ[0]?.id} allowMultiple />
+          <Accordion items={HOME_FAQ} />
         </div>
       </Reveal>
 

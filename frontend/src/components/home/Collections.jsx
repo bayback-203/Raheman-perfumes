@@ -41,8 +41,10 @@ export function CategoryGrid() {
                     className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
-                <h3 className="mt-4 font-serif text-xl font-semibold text-brand-charcoal">{category.label}</h3>
-                <p className="mt-1 text-body-sm text-brand-muted">{category.blurb}</p>
+                <h3 className="mt-3 font-serif text-base font-semibold text-brand-charcoal sm:mt-4 sm:text-xl">{category.label}</h3>
+                {category.blurb && (
+                  <p className="mt-1 hidden text-body-sm text-brand-muted sm:block">{category.blurb}</p>
+                )}
               </div>
 
               <span className="mt-5 flex items-center justify-between text-label-sm font-bold uppercase text-brand-muted">
