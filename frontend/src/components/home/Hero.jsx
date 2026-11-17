@@ -92,9 +92,9 @@ function TypewriterHeadline() {
 export function Hero() {
   return (
     <section className="relative flex min-h-screen min-h-[100dvh] flex-col justify-between overflow-hidden border-b border-brand-border bg-white text-brand-charcoal">
-      {/* Ambient botanical left backdrop: wet vetiver grass, pampas plumes, ferns & sunlit leaf shadows */}
+      {/* Ambient botanical left backdrop (tablet/desktop): wet vetiver grass, pampas plumes, ferns & sunlit leaf shadows */}
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-[52px] top-[64px] flex items-end justify-start overflow-hidden bg-white lg:top-[68px]"
+        className="pointer-events-none absolute inset-x-0 bottom-[52px] top-[64px] hidden items-end justify-start overflow-hidden bg-white md:flex lg:top-[68px]"
         aria-hidden="true"
       >
         <div
@@ -117,9 +117,9 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Right crystal flacon & note symphony scaled to fill the right visual stage cleanly below the header */}
+      {/* Right crystal flacon & note symphony (tablet/desktop): razor-sharp with zero washout veil */}
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-[52px] top-[64px] flex items-end justify-end overflow-hidden lg:left-[43%] lg:top-[68px]"
+        className="pointer-events-none absolute inset-x-0 bottom-[52px] top-[64px] hidden items-end justify-end overflow-hidden md:left-[43%] md:flex lg:top-[68px]"
         style={{
           WebkitMaskImage:
             'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 10%, black 22%)',
@@ -129,7 +129,7 @@ export function Hero() {
         aria-hidden="true"
       >
         <div
-          className="relative h-full w-auto shrink-0 aspect-[1376/768] lg:h-[min(124%,60vw)]"
+          className="relative h-full w-auto shrink-0 aspect-[1376/768] md:h-[min(115%,62vw)] lg:h-[min(124%,60vw)]"
         >
           <img
             src="/hero-white.jpg?v=3"
@@ -142,18 +142,17 @@ export function Hero() {
         <div className="absolute inset-x-0 top-0 h-8 bg-gradient-to-b from-white/95 to-transparent" />
       </div>
 
-      {/* Full-bleed edge-free mist glow centered behind typography — never clipped to a box */}
-      <div className="pointer-events-none absolute inset-0 bg-white/75 lg:hidden" aria-hidden="true" />
+      {/* Subtle localized mist glow ONLY behind left-column typography on tablet/desktop — never washes out the crystal bottle */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-[4%] top-[18%] h-72 w-72 rounded-full bg-[#FADAE3]/35 blur-3xl"
+        className="pointer-events-none absolute left-[4%] top-[18%] hidden h-72 w-72 rounded-full bg-[#FADAE3]/35 blur-3xl md:block"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-[24%] bottom-[16%] h-64 w-64 rounded-full bg-[#F4E0B5]/30 blur-3xl"
+        className="pointer-events-none absolute left-[24%] bottom-[16%] hidden h-64 w-64 rounded-full bg-[#F4E0B5]/30 blur-3xl md:block"
       />
       <div
-        className="pointer-events-none absolute inset-0 hidden lg:block"
+        className="pointer-events-none absolute inset-0 hidden md:block"
         style={{
           background:
             'radial-gradient(34% 46% at 25% 50%, rgba(255,253,249,0.92) 0%, rgba(255,251,246,0.68) 45%, rgba(255,255,255,0.2) 76%, rgba(255,255,255,0) 100%)',
@@ -161,7 +160,7 @@ export function Hero() {
         aria-hidden="true"
       />
 
-      <div className="shell relative my-auto grid gap-12 pb-16 pt-24 sm:pt-28 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16 lg:pb-24 lg:pt-36">
+      <div className="shell relative my-auto grid gap-8 pb-8 pt-24 sm:pt-28 md:grid-cols-[1.05fr_0.95fr] md:items-center md:gap-12 md:pb-16 lg:gap-16 lg:pb-24 lg:pt-36">
         <div className="animate-rise-lux">
           <TypewriterHeadline />
 
@@ -181,8 +180,15 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Right-hand plate. The grid reserves this column over the crystal bottle. */}
-        <div className="relative mx-auto w-full max-w-md" aria-hidden="true" />
+        {/* Mobile visual stage: crisp, un-blurred full-clarity flacon below CTA; on md+ reserves space over the right backdrop */}
+        <div className="relative mx-auto w-full max-w-md md:h-0">
+          <img
+            src="/hero-white.jpg?v=3"
+            alt="Luxury crystal perfume bottle on white marble framed by roses, citrus, fig, oud wood, and cinnamon sticks"
+            decoding="async"
+            className="w-full rounded-xl object-contain md:hidden"
+          />
+        </div>
       </div>
 
       {/* Trust ribbon */}

@@ -155,9 +155,9 @@ export function OffersPage() {
         className="relative flex min-h-screen min-h-[100dvh] flex-col justify-center overflow-hidden border-b border-brand-border bg-white bg-cover bg-center bg-no-repeat text-brand-charcoal"
         style={{ backgroundImage: "url('/offer-white.jpg')" }}
       >
-        {/* Soft luminous white veil on the left to keep headline and controls crystal-clear */}
+        {/* Soft directional scrim behind typography only — never washes out the perfume visual */}
         <div
-          className="pointer-events-none absolute inset-0 bg-white/75 sm:bg-transparent sm:bg-gradient-to-r sm:from-white/90 sm:via-white/60 sm:to-transparent"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/90 via-white/35 to-transparent sm:bg-gradient-to-r sm:from-white/90 sm:via-white/45 sm:to-transparent"
           aria-hidden="true"
         />
         <div className="shell relative z-10 py-16 pt-24 sm:pt-28 lg:py-24 lg:pt-36">
