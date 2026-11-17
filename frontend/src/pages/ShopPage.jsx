@@ -159,7 +159,6 @@ export function InspiredMixingPage() {
     <>
       <ShopBanner
         title="Inspired Blends & Mixing Perfumes"
-        eyebrow="Strong & Long Lasting"
       />
 
       <CatalogueView

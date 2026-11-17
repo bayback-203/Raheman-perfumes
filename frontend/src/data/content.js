@@ -99,7 +99,7 @@ export const PILLARS = [
   },
   {
     id: 'inspired',
-    eyebrow: 'Strong & Long Lasting',
+    eyebrow: 'Inspired Blends',
     title: 'Inspired & Mixing',
     description:
       'Handmade recreates of famous designer scents at 35% oil strength.',

@@ -18,7 +18,7 @@ const BANNER_IMAGES = {
 /**
  * Shared hero banner used across the Shop, Original, and Best Sellers pages.
  */
-export function ShopBanner({ collection, title, eyebrow = 'The Collection' }) {
+export function ShopBanner({ collection, title, eyebrow }) {
   const [searchParams] = useSearchParams()
   const sort = searchParams.get('sort')
   const visualSrc = BANNER_IMAGES[collection] || BANNER_IMAGES.default
@@ -65,10 +65,12 @@ export function ShopBanner({ collection, title, eyebrow = 'The Collection' }) {
       </div>
 
       <div className="shell relative z-20 pb-8 pt-24 sm:pb-10 sm:pt-28 lg:pb-12 lg:pt-32">
-        <p className="inline-flex items-center gap-2 text-label-md font-bold uppercase tracking-[0.18em] text-brand-goldDark">
-          <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand-goldDark animate-pulse" aria-hidden="true" />
-          {eyebrow}
-        </p>
+        {eyebrow && (
+          <p className="inline-flex items-center gap-2 text-label-md font-bold uppercase tracking-[0.18em] text-brand-goldDark">
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand-goldDark animate-pulse" aria-hidden="true" />
+            {eyebrow}
+          </p>
+        )}
 
         <h1 className="mt-1.5 font-serif text-3xl font-medium tracking-tight text-brand-charcoal sm:text-4xl lg:text-headline-xl">
           {title}
