@@ -175,11 +175,11 @@ export const WHY_SHOP = [
     image: '/promise-delivery.jpg',
   },
   {
-    id: 'returns',
-    title: 'Risk-Free Testing',
-    description: 'Free 2ml trial sample with your order',
-    icon: 'refresh',
-    image: '/promise-testing.jpg',
+    id: 'tamper-proof',
+    title: 'Tamper-Proof Packing',
+    description: 'Sealed & heat-protected transit packaging',
+    icon: 'shield',
+    image: '/promise-authentic.jpg',
   },
 ]
 

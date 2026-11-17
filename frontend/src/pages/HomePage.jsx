@@ -116,14 +116,13 @@ export function HomePage() {
           <div className="pointer-events-none absolute inset-0 bg-black/35 backdrop-brightness-95" aria-hidden="true" />
           <div className="relative z-10 mx-auto max-w-2xl">
             <p className="text-label-md font-bold uppercase tracking-[0.18em] text-brand-gold">
-              Free 2ml Trial Vial With Every Order
+              Pure French Oils &amp; Authentic Scents
             </p>
             <h2 className="mt-4 font-serif text-3xl font-medium leading-tight lg:text-headline-xl">
               Find the scent that becomes your signature.
             </h2>
             <p className="mt-4 text-body-md text-brand-cream/85">
-              Test before you commit. If the trial vial does not convince you, the sealed bottle goes back — no
-              questions asked.
+              Explore authentic designer classics, long-lasting inspired creations, and pure alcohol-free attars crafted for true fragrance connoisseurs.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Button variant="gold" size="lg" to="/shop">

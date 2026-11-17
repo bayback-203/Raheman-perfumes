@@ -48,7 +48,7 @@ const PAGES = {
           'Your perfume bottle wrapped safely in tissue and a strong box',
           'A tamper-proof safety seal on the cap',
           'A batch card showing when it was packed',
-          'Two free 2ml sample bottles on orders above ₹1,999',
+          'Secure 3-layer protective packaging for safe transit',
         ],
       },
       {
@@ -115,7 +115,7 @@ const PAGES = {
         heading: 'Refund Questions',
         items: [
           { title: 'How long does a refund take?', body: 'For orders cancelled before packing, enter your UPI ID and the Shop Owner transfers the refund manually within 2–3 working days. For inspected returns after delivery, refunds take 2–7 working days.' },
-          { title: 'Can I exchange instead of refunding?', body: 'Yes. Pick any other perfume of the same or higher price and pay only the difference. We send the new one the same day your return reaches us.' },
+          { title: 'Can I exchange an opened perfume?', body: 'For hygiene and safety reasons, opened or sprayed perfume bottles cannot be returned or exchanged. If you received a damaged, defective, or incorrect bottle, contact us within 48 hours for an immediate replacement.' },
           { title: 'What about cash on delivery orders?', body: 'COD refunds are issued by bank transfer to the account you nominate, or as store credit if you prefer — store credit carries a 5% bonus.' },
         ],
       },
@@ -150,9 +150,9 @@ const PAGES = {
       },
       {
         kind: 'faq',
-        heading: 'Orders & Sampling',
+        heading: 'Orders & Bottle Sizes',
         items: [
-          { title: 'Do you offer samples before I buy a full bottle?', body: 'Every order comes with two free 2ml samples, and a 5-sample discovery set is available for ₹299 — refundable against your next order above ₹1,499.' },
+          { title: 'Which bottle size should I start with?', body: 'If you are trying a new fragrance for the first time, our compact 30ml size or pure 12ml attars are ideal to experience the scent profile before choosing larger 50ml or 100ml flacons.' },
         ],
       },
     ],

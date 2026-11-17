@@ -25,9 +25,9 @@ import { FREE_SHIPPING_THRESHOLD } from '@/lib/format'
 
 const DELIVERY_PROMISE = [
   { icon: 'truck', title: 'Free delivery over ₹999', note: '4–6 working days across India' },
-  { icon: 'refresh', title: '7-day exchange', note: 'Sealed bottles, no questions asked' },
   { icon: 'shield', title: 'Authenticity guarantee', note: 'Batch code verifiable on request' },
-  { icon: 'gift', title: '2ml free sample', note: 'Test before you open the bottle' },
+  { icon: 'sparkle', title: '30%+ oil strength', note: 'Pure French oils & long lasting' },
+  { icon: 'shield', title: 'Tamper-proof seal', note: 'Safe 3-layer protective packaging' },
 ]
 
 /** Note pyramid rendered as three columns. */
@@ -516,8 +516,7 @@ export function ProductDetailPage() {
                 Free delivery on orders above ₹999, typically 4–6 working days. Express delivery available at checkout. Perfumes travel safely in sealed bubble packaging with a tamper-proof seal.
               </p>
               <p className="mt-3">
-                Sealed bottles can be exchanged within 7 days of delivery. Once a bottle is opened it cannot be
-                returned for hygiene reasons — that's why every order includes a free 2ml sample so you can test first.
+                For hygiene reasons and to preserve the integrity of luxury fragrances and attars, opened bottles cannot be returned or exchanged. If you receive a damaged or leaking item, contact our support within 48 hours of delivery for a prompt replacement.
               </p>
             </CollapsiblePanel>
           </div>
