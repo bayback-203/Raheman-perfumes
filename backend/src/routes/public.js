@@ -99,6 +99,16 @@ router.get(
   }),
 )
 
+/** Draft products surfaced in the homepage "Coming Soon" shelf. Declared before `/products/:slug`. */
+router.get(
+  '/products/coming-soon',
+  cacheResponse({ ttl: 60, tags: ['catalogue', 'products'] }),
+  validate('query', z.object({ limit: z.coerce.number().int().positive().max(100).optional() }).strip()),
+  asyncHandler(async (req, res) => {
+    res.json(await products.comingSoon(req.validatedQuery.limit ?? 50))
+  }),
+)
+
 /** A whole product page in one round trip: `{product, reviews}`. */
 router.get(
   '/products/:slug/bundle',

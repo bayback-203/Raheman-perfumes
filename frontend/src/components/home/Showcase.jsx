@@ -9,6 +9,7 @@ import { ProductCard } from '@/components/product/ProductCard'
 import {
   useBestsellers,
   useCatalogueProducts,
+  useComingSoon,
   useShowcase,
   useShowcaseProducts,
 } from '@/store/catalogueStore'
@@ -157,6 +158,52 @@ export function BestSellers({ products }) {
           ))}
         </div>
       )}
+      </div>
+    </section>
+  )
+}
+
+/**
+ * Coming Soon shelf — automatically displays all products saved as `Draft` by
+ * Admin (perfumes, attars, combos, bakhoor) directly beneath The Bestsellers.
+ */
+export function ComingSoon() {
+  const items = useComingSoon()
+  const { onToggleWishlist, isWishlisted } = useShopActions()
+  const slider = useRowSlider(items.length)
+
+  if (!items || items.length === 0) return null
+
+  return (
+    <section className="relative overflow-hidden border-t border-[#EFE3D0] bg-gradient-to-b from-white via-[#FFFDF9] to-[#FDF6EB]/65 py-16 lg:py-20">
+      <div className="shell relative z-10">
+        <SectionHeading
+          title="Coming Soon"
+          action={
+            items.length > 0 && (
+              <RowSlideControls canPrev={slider.canPrev} canNext={slider.canNext} onSlide={slider.slide} />
+            )
+          }
+        />
+
+        <div
+          ref={slider.trackRef}
+          className="no-scrollbar mt-9 flex snap-x snap-mandatory items-stretch gap-5 overflow-x-auto pb-3 pt-1 scroll-smooth"
+        >
+          {items.map((product) => (
+            <div
+              key={product.id}
+              className="flex w-[78%] shrink-0 snap-start sm:w-[calc((100%-1.25rem)/2)] md:w-[calc((100%-2.5rem)/3)] lg:w-[calc((100%-3.75rem)/4)] xl:w-[calc((100%-5rem)/5)]"
+            >
+              <ProductCard
+                product={product}
+                showTier
+                onToggleWishlist={onToggleWishlist}
+                isWishlisted={isWishlisted(product.id)}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   )

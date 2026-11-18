@@ -215,14 +215,15 @@ export function ProductDetailPage() {
   // counter's reserve, so this is the number to promise a shopper. The bundled
   // fixtures carry no count, which reads as "available, number unknown".
   const stockLeft = typeof product.stockLeft === 'number' ? product.stockLeft : null
-  const soldOut = product.inStock === false || stockLeft === 0
+  const comingSoon = Boolean(product.comingSoon || product.status === 'Draft')
+  const soldOut = !comingSoon && (product.inStock === false || stockLeft === 0)
   const maxQuantity = stockLeft ?? 99
   // The stepper is capped, but a count that drops after the page loaded must
   // not leave a larger quantity sitting in state to be added anyway.
   const qty = Math.min(quantity, Math.max(1, maxQuantity))
 
   const handleAdd = () => {
-    if (soldOut) return
+    if (soldOut || comingSoon) return
     const now = Date.now()
     if (now - lastAddRef.current < 450) return
     lastAddRef.current = now
@@ -232,7 +233,7 @@ export function ProductDetailPage() {
   }
 
   const handleBuyNow = () => {
-    if (soldOut || buyingRef.current) return
+    if (soldOut || comingSoon || buyingRef.current) return
     buyingRef.current = true
     addItem(product, { quantity: qty, volume, price: variant?.price, mrp: variant?.mrp })
     navigate('/checkout', NAV_TRANSITION)
@@ -333,6 +334,12 @@ export function ProductDetailPage() {
         <div className="lg:col-start-2 lg:row-start-1 lg:row-span-2">
           <div className="flex flex-wrap items-center gap-2">
             <TierBadge tier={product.tier} showIcon />
+            {comingSoon && (
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-brand-gold/55 bg-[#14110E] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[#F5DFB0]">
+                <Icon name="sparkle" className="h-3 w-3 text-brand-gold" />
+                Coming Soon
+              </span>
+            )}
             {(product.badges ?? []).map((badge) => (
               <Chip key={badge} tone="dark">
                 {badge}
@@ -414,7 +421,7 @@ export function ProductDetailPage() {
           </div>
 
           {/* Live stock progress bar */}
-          {(soldOut || typeof stockLeft === 'number') && (
+          {!comingSoon && (soldOut || typeof stockLeft === 'number') && (
             <div className="mt-5">
               <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-brand-charcoal">
                 <span
@@ -489,21 +496,23 @@ export function ProductDetailPage() {
 
           {/* Quantity + actions */}
           <div className="mt-5 flex items-center gap-2 sm:mt-6 sm:gap-3">
-            <QuantityStepper
-              value={qty}
-              onChange={setQuantity}
-              max={Math.max(1, maxQuantity)}
-              className="shrink-0"
-            />
+            {!comingSoon && (
+              <QuantityStepper
+                value={qty}
+                onChange={setQuantity}
+                max={Math.max(1, maxQuantity)}
+                className="shrink-0"
+              />
+            )}
             <Button
-              variant="primary"
+              variant={comingSoon ? 'outline' : 'primary'}
               size="lg"
               className="min-w-0 flex-1 whitespace-nowrap px-4 py-3 text-xs sm:px-7 sm:py-3.5 sm:text-label-md"
               onClick={handleAdd}
-              disabled={soldOut}
+              disabled={soldOut || comingSoon}
             >
-              <Icon name="bag" className="h-4 w-4 shrink-0" />
-              {soldOut ? 'Sold Out' : 'Add To Bag'}
+              <Icon name={comingSoon ? 'sparkle' : 'bag'} className="h-4 w-4 shrink-0" />
+              {comingSoon ? 'Coming Soon' : soldOut ? 'Sold Out' : 'Add To Bag'}
             </Button>
             <button
               type="button"
@@ -532,10 +541,12 @@ export function ProductDetailPage() {
             </button>
           </div>
 
-          <Button variant="outline" size="lg" className="mt-3 w-full" onClick={handleBuyNow} disabled={soldOut}>
-            Buy It Now
-            <Icon name="arrow-right" className="h-4 w-4" />
-          </Button>
+          {!comingSoon && (
+            <Button variant="outline" size="lg" className="mt-3 w-full" onClick={handleBuyNow} disabled={soldOut}>
+              Buy It Now
+              <Icon name="arrow-right" className="h-4 w-4" />
+            </Button>
+          )}
 
           <p className="mt-4 flex items-center justify-center gap-2 text-body-sm text-brand-muted">
             <Icon name="lock" className="h-3.5 w-3.5" />

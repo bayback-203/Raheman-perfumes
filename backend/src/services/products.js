@@ -152,6 +152,24 @@ export async function list(filters = {}) {
   return views
 }
 
+/**
+ * Draft fragrances shown in the storefront's "Coming Soon" preview shelf.
+ *
+ * Strictly `status: 'Draft'` (never `Archived`), sorted newest-first so every
+ * perfume, attar, combo, or bakhoor saved as a draft by Admin appears there
+ * automatically until published as `Active`.
+ */
+export async function comingSoon(limit = 50) {
+  const safeLimit = Math.min(Math.max(1, Number(limit) || 50), 100)
+  const products = await withPublicRefs(
+    Product.find({ status: 'Draft' })
+      .sort({ createdAt: -1, name: 1 })
+      .limit(safeLimit),
+  )
+  const stats = await reviewStats(products)
+  return products.map((product) => publicProduct(product, stats.get(String(product._id))))
+}
+
 /** One product by its public slug, or `null` — the PDP's own read. */
 export async function bySlug(slug) {
   const product = await withPublicRefs(Product.findOne({ slug: String(slug).toLowerCase() }))

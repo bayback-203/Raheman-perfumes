@@ -186,15 +186,22 @@ export function QuickViewModal({
           )}
 
           <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-brand-border/70 pt-5">
-            <Button
-              variant={soldOut ? 'outline' : 'primary'}
-              disabled={soldOut}
-              onClick={handleBagAdd}
-              className="flex-1"
-            >
-              <Icon name="bag" className="h-4 w-4" />
-              {soldOut ? 'Out of Stock' : 'Add To Bag'}
-            </Button>
+            {product.comingSoon || product.status === 'Draft' ? (
+              <Button variant="outline" disabled className="flex-1 cursor-not-allowed">
+                <Icon name="sparkle" className="h-4 w-4 text-brand-goldDark" />
+                Coming Soon
+              </Button>
+            ) : (
+              <Button
+                variant={soldOut ? 'outline' : 'primary'}
+                disabled={soldOut}
+                onClick={handleBagAdd}
+                className="flex-1"
+              >
+                <Icon name="bag" className="h-4 w-4" />
+                {soldOut ? 'Out of Stock' : 'Add To Bag'}
+              </Button>
+            )}
             {onToggleWishlist && (
               <button
                 type="button"

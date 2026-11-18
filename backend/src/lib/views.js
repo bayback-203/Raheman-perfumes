@@ -84,6 +84,8 @@ export function publicProduct(doc, stats = null) {
     origin: doc.origin,
     bestseller: doc.bestseller,
     featured: doc.featured,
+    status: doc.status,
+    comingSoon: doc.status === 'Draft',
     collections: doc.collections ?? [],
     images: (doc.images ?? []).map((image) => publicMedia(image)),
   }

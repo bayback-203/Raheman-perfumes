@@ -21,6 +21,9 @@ export const productService = {
   /** Free-text search across name, brand, notes and family. */
   search: (query) => api.get(`/products/search?q=${encodeURIComponent(query)}`),
 
+  /** Draft products surfaced in the homepage "Coming Soon" preview shelf. */
+  comingSoon: (limit = 50) => api.get(`/products/coming-soon?limit=${limit}`),
+
   categories: () => api.get('/categories'),
   brands: () => api.get('/brands'),
   coupons: () => api.get('/coupons'),

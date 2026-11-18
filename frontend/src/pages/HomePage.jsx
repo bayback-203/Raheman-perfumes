@@ -8,6 +8,7 @@ import { Hero, Pillars } from '@/components/home/Hero'
 import { CategoryGrid, BrandStrip } from '@/components/home/Collections'
 import {
   BestSellers,
+  ComingSoon,
   DealsOfDay,
   WhyShopWithUs,
 } from '@/components/home/Showcase'
@@ -73,6 +74,9 @@ export function HomePage() {
 
       <Reveal>
         <BestSellers />
+      </Reveal>
+      <Reveal>
+        <ComingSoon />
       </Reveal>
       <Reveal>
         <DealsOfDay />

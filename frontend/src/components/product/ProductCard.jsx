@@ -41,8 +41,9 @@ export function ProductCard({
   if (!product) return null
 
   const { slug, name, brand, tier, price, mrp, rating, reviewCount, volumes, concentration, badges = [] } = product
-  const soldOut = product.inStock === false || product.stockLeft === 0
-  const percent = discountPercent(mrp, price)
+  const comingSoon = Boolean(product.comingSoon || product.status === 'Draft')
+  const soldOut = !comingSoon && (product.inStock === false || product.stockLeft === 0)
+  const percent = comingSoon ? 0 : discountPercent(mrp, price)
   const flag = badges.find((badge) => FLAGS[badge])
   const defaultVolume = volumes?.[0]?.size
   const image = productImage(product)
@@ -54,7 +55,7 @@ export function ProductCard({
   const handleAdd = (event) => {
     event.preventDefault()
     event.stopPropagation()
-    if (soldOut) return
+    if (soldOut || comingSoon) return
     const now = Date.now()
     if (now - lastAddRef.current < 450) return
     lastAddRef.current = now
@@ -259,10 +260,16 @@ export function ProductCard({
             </div>
           )}
 
-          {percent > 0 && (
-            <span className="pointer-events-none absolute bottom-2.5 left-2.5 z-20 rounded-full border border-brand-gold/45 bg-gradient-to-r from-[#FFFDF9] to-[#FBF0DA] px-2.5 py-0.5 text-[11px] font-semibold tracking-tight text-brand-charcoal shadow-sm">
-              − {percent}%
+          {comingSoon ? (
+            <span className="pointer-events-none absolute bottom-2.5 left-2.5 z-20 rounded-full border border-brand-gold/55 bg-[#14110E]/85 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-[#F5DFB0] shadow-sm backdrop-blur-sm">
+              Coming Soon
             </span>
+          ) : (
+            percent > 0 && (
+              <span className="pointer-events-none absolute bottom-2.5 left-2.5 z-20 rounded-full border border-brand-gold/45 bg-gradient-to-r from-[#FFFDF9] to-[#FBF0DA] px-2.5 py-0.5 text-[11px] font-semibold tracking-tight text-brand-charcoal shadow-sm">
+                − {percent}%
+              </span>
+            )
           )}
 
           {soldOut && <OutOfStockBadge />}
@@ -279,27 +286,29 @@ export function ProductCard({
             {WishlistButton}
           </div>
 
-          {/* Hover action pills bottom-right: Add to Bag & Quick View Eye */}
+          {/* Hover action pills bottom-right: Add to Bag (hidden for Coming Soon drafts) & Quick View Eye */}
           <div className="pointer-events-none absolute bottom-2.5 right-2.5 z-30 flex translate-y-1.5 items-center gap-2 opacity-100 transition-all duration-300 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100 sm:group-focus-within:translate-y-0 sm:group-focus-within:opacity-100">
-            <button
-              type="button"
-              onClick={handleAdd}
-              onMouseDown={(event) => {
-                event.preventDefault()
-                event.stopPropagation()
-              }}
-              disabled={soldOut}
-              aria-label={soldOut ? `${name} is out of stock` : `Add ${name} to bag`}
-              title={soldOut ? 'Out of stock' : 'Add to bag'}
-              className={cn(
-                'pointer-events-auto flex h-9 w-9 items-center justify-center rounded-full border border-neutral-200 bg-white/95 text-brand-charcoal shadow-md backdrop-blur-sm transition duration-200',
-                soldOut
-                  ? 'cursor-not-allowed opacity-55'
-                  : 'hover:scale-105 hover:border-brand-charcoal hover:bg-brand-charcoal hover:text-white active:scale-95',
-              )}
-            >
-              <Icon name="bag" className="h-[16px] w-[16px]" strokeWidth={1.75} />
-            </button>
+            {!comingSoon && (
+              <button
+                type="button"
+                onClick={handleAdd}
+                onMouseDown={(event) => {
+                  event.preventDefault()
+                  event.stopPropagation()
+                }}
+                disabled={soldOut}
+                aria-label={soldOut ? `${name} is out of stock` : `Add ${name} to bag`}
+                title={soldOut ? 'Out of stock' : 'Add to bag'}
+                className={cn(
+                  'pointer-events-auto flex h-9 w-9 items-center justify-center rounded-full border border-neutral-200 bg-white/95 text-brand-charcoal shadow-md backdrop-blur-sm transition duration-200',
+                  soldOut
+                    ? 'cursor-not-allowed opacity-55'
+                    : 'hover:scale-105 hover:border-brand-charcoal hover:bg-brand-charcoal hover:text-white active:scale-95',
+                )}
+              >
+                <Icon name="bag" className="h-[16px] w-[16px]" strokeWidth={1.75} />
+              </button>
+            )}
 
             <button
               type="button"
@@ -328,15 +337,29 @@ export function ProductCard({
           </h3>
 
           <div className="mt-1 flex flex-wrap items-baseline gap-2">
-            {percent > 0 && (
-              <span className="text-[13.5px] font-medium text-[#C81E1E] line-through">{formatPrice(mrp)}</span>
+            {comingSoon ? (
+              price > 0 ? (
+                <span className="text-[14.5px] font-medium text-brand-muted">{formatPrice(price)}</span>
+              ) : (
+                <span className="text-[13.5px] font-medium text-brand-goldDark">Launching Soon</span>
+              )
+            ) : (
+              <>
+                {percent > 0 && (
+                  <span className="text-[13.5px] font-medium text-[#C81E1E] line-through">{formatPrice(mrp)}</span>
+                )}
+                <span className="text-[14.5px] font-medium text-brand-charcoal">{formatPrice(price)}</span>
+              </>
             )}
-            <span className="text-[14.5px] font-medium text-brand-charcoal">{formatPrice(price)}</span>
           </div>
 
           <div className="mt-1 h-4">
-            {!soldOut && typeof product.stockLeft === 'number' && product.stockLeft <= 5 && (
-              <p className="text-[11px] font-medium leading-4 text-brand-goldDark">Only {product.stockLeft} left</p>
+            {comingSoon ? (
+              <p className="text-[11px] font-medium leading-4 text-brand-goldDark">Coming Soon</p>
+            ) : (
+              !soldOut && typeof product.stockLeft === 'number' && product.stockLeft <= 5 && (
+                <p className="text-[11px] font-medium leading-4 text-brand-goldDark">Only {product.stockLeft} left</p>
+              )
             )}
           </div>
         </div>

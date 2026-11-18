@@ -54,6 +54,7 @@ const EMPTY = {
   products: [],
   byId: {},
   bySlug: {},
+  comingSoon: [],
   categories: [],
   brands: [],
   showcase: DEFAULT_SHOWCASE,
@@ -92,8 +93,9 @@ export const useCatalogueStore = create((set, get) => ({
 
     set({ status: 'loading', error: '' })
     try {
-      const [rows, categories, brands, showcase] = await Promise.all([
+      const [rows, comingSoonRows, categories, brands, showcase] = await Promise.all([
         productService.list(),
+        productService.comingSoon().catch(() => []),
         productService.categories().catch(() => []),
         productService.brands().catch(() => []),
         productService.showcase().catch(() => null),
@@ -104,6 +106,7 @@ export const useCatalogueStore = create((set, get) => ({
       if (!Array.isArray(rows)) throw new Error('The catalogue came back malformed.')
       set({
         ...index(rows),
+        comingSoon: Array.isArray(comingSoonRows) ? comingSoonRows : [],
         categories: Array.isArray(categories) ? categories : [],
         brands: Array.isArray(brands) ? brands : [],
         showcase: normalizeShowcase(showcase),
@@ -123,7 +126,10 @@ export const useCatalogueStore = create((set, get) => ({
     if (status === 'loading') return
     if (!force && Date.now() - showcaseLoadedAt < 1500) return
     try {
-      const raw = await productService.showcase()
+      const [raw, comingSoonRows] = await Promise.all([
+        productService.showcase(),
+        productService.comingSoon().catch(() => null),
+      ])
       const next = normalizeShowcase(raw)
       const current = get()
       const anyMissing = [
@@ -140,6 +146,7 @@ export const useCatalogueStore = create((set, get) => ({
 
       set({
         ...productPatch,
+        ...(Array.isArray(comingSoonRows) ? { comingSoon: comingSoonRows } : {}),
         showcase: next,
         showcaseLoadedAt: Date.now(),
       })
@@ -183,5 +190,8 @@ export function useShowcaseProducts(slotKey) {
 export function useBestsellers() {
   return useShowcaseProducts('bestsellerProductIds')
 }
+
+/** Draft products saved by admin, surfaced in the homepage Coming Soon shelf. */
+export const useComingSoon = () => useCatalogueStore((state) => state.comingSoon)
 
 export default useCatalogueStore
