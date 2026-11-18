@@ -63,7 +63,7 @@ function TypewriterHeadline() {
 
   return (
     <h1
-      className="relative text-[34px] font-medium leading-[1.12] tracking-tight text-brand-charcoal sm:text-[46px] lg:text-display-lg"
+      className="relative text-[30px] font-medium leading-[1.12] tracking-tight text-brand-charcoal sm:text-[46px] lg:text-display-lg"
       aria-label={`${HERO_LINE_1} ${HERO_LINE_2}`}
     >
       {/* Hidden full text locks the two-line height so surrounding layout never shifts while typing */}
@@ -90,7 +90,28 @@ function TypewriterHeadline() {
  */
 export function Hero() {
   return (
-    <section className="relative flex min-h-screen min-h-[100dvh] flex-col justify-between overflow-hidden border-b border-brand-border bg-white text-brand-charcoal">
+    <section className="relative flex min-h-[92svh] flex-col justify-between overflow-hidden border-b border-brand-border bg-white text-brand-charcoal md:min-h-screen md:min-h-[100dvh]">
+      {/* Mobile full-bleed background: crisp crystal flacon & botanicals seamlessly behind hero content (zero box, zero blur) */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-[74px] top-[68px] flex items-end overflow-hidden bg-white md:hidden"
+        aria-hidden="true"
+      >
+        <div className="relative h-[60%] w-full sm:h-[64%]">
+          <img
+            src="/hero-white.jpg?v=4"
+            alt="Luxury crystal perfume bottle on white marble framed by roses, citrus, fig, oud wood, and cinnamon sticks"
+            decoding="async"
+            className="h-full w-full object-cover object-[66%_bottom]"
+            style={{
+              WebkitMaskImage:
+                'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.78) 14%, black 28%)',
+              maskImage:
+                'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.78) 14%, black 28%)',
+            }}
+          />
+        </div>
+      </div>
+
       {/* Ambient botanical left backdrop (tablet/desktop): wet vetiver grass, pampas plumes, ferns & sunlit leaf shadows */}
       <div
         className="pointer-events-none absolute inset-x-0 bottom-[52px] top-[64px] hidden items-end justify-start overflow-hidden bg-white md:flex lg:top-[68px]"
@@ -159,7 +180,7 @@ export function Hero() {
         aria-hidden="true"
       />
 
-      <div className="shell relative my-auto grid gap-8 pb-8 pt-24 sm:pt-28 md:grid-cols-[1.05fr_0.95fr] md:items-center md:gap-12 md:pb-16 lg:gap-16 lg:pb-24 lg:pt-36">
+      <div className="shell relative z-10 grid flex-1 content-start gap-8 pb-[58vw] pt-24 sm:pb-[48vw] sm:pt-28 md:my-auto md:flex-none md:grid-cols-[1.05fr_0.95fr] md:items-center md:gap-12 md:pb-16 lg:gap-16 lg:pb-24 lg:pt-36">
         <div className="animate-rise-lux">
           <TypewriterHeadline />
 
@@ -168,35 +189,30 @@ export function Hero() {
             made with pure French oils for a long-lasting scent.
           </p>
 
-          <div className="mt-6 flex flex-wrap items-center gap-3 sm:mt-9">
-            <Button variant="primary" size="lg" to="/shop">
+          <div className="mt-5 flex flex-wrap items-center gap-2.5 sm:mt-9 sm:gap-3">
+            <Button variant="primary" size="lg" to="/shop" className="px-5 py-3 text-xs sm:px-7 sm:py-3.5 sm:text-label-md">
               Shop The Collection
               <Icon name="arrow-right" className="h-4 w-4" />
             </Button>
-            <Button variant="outline" size="lg" to="/combos">
+            <Button variant="outline" size="lg" to="/combos" className="bg-white/85 px-5 py-3 text-xs sm:px-7 sm:py-3.5 sm:text-label-md">
               Combos
             </Button>
           </div>
         </div>
 
-        {/* Mobile visual stage: crisp, un-blurred full-clarity flacon below CTA; on md+ reserves space over the right backdrop */}
-        <div className="relative mx-auto w-full max-w-md md:h-0">
-          <img
-            src="/hero-white.jpg?v=4"
-            alt="Luxury crystal perfume bottle on white marble framed by roses, citrus, fig, oud wood, and cinnamon sticks"
-            decoding="async"
-            className="w-full rounded-xl object-contain md:hidden"
-          />
-        </div>
+        <div className="hidden md:block" aria-hidden="true" />
       </div>
 
       {/* Trust ribbon */}
-      <div className="relative border-t border-[#EBDEC9] bg-gradient-to-r from-[#FFFDF9]/95 via-[#FDF4F6]/90 to-[#FBF3E4]/95 backdrop-blur-xs">
-        <div className="shell-wide grid grid-cols-2 divide-x divide-[#EDE0CC] lg:grid-cols-4">
+      <div className="relative z-10 border-t border-[#EBDEC9] bg-[#EDE0CC]">
+        <div className="shell-wide grid grid-cols-2 gap-px bg-[#EDE0CC] px-0 lg:grid-cols-4 lg:px-8 xl:px-12">
           {ANNOUNCEMENTS.map((item) => (
-            <div key={item.id} className="flex items-center gap-3 px-4 py-4 lg:justify-center">
-              <Icon name={item.icon} className="h-4 w-4 shrink-0 text-brand-goldDark" />
-              <span className="text-label-sm font-semibold uppercase tracking-[0.12em] text-brand-charcoal">
+            <div
+              key={item.id}
+              className="flex items-center gap-2 bg-gradient-to-r from-[#FFFDF9] via-[#FDF6F7] to-[#FBF4E7] px-3 py-3 sm:gap-3 sm:px-4 sm:py-4 lg:justify-center"
+            >
+              <Icon name={item.icon} className="h-3.5 w-3.5 shrink-0 text-brand-goldDark sm:h-4 sm:w-4" />
+              <span className="text-[10px] font-semibold uppercase leading-tight tracking-[0.08em] text-brand-charcoal sm:text-label-sm sm:tracking-[0.12em]">
                 {item.text}
               </span>
             </div>

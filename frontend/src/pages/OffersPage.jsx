@@ -155,34 +155,49 @@ export function OffersPage() {
   return (
     <div className="pb-16">
       {/* Hero */}
-      <section
-        className="relative flex min-h-screen min-h-[100dvh] flex-col justify-center overflow-hidden border-b border-brand-border bg-white bg-cover bg-center bg-no-repeat text-brand-charcoal"
-        style={{ backgroundImage: "url('/offer-white.jpg?v=2')" }}
-      >
-        {/* Soft directional scrim behind typography only — never washes out the perfume visual */}
+      <section className="relative flex min-h-[84svh] flex-col justify-start overflow-hidden border-b border-brand-border bg-white text-brand-charcoal sm:min-h-screen sm:min-h-[100dvh] sm:justify-center">
+        {/* Full-bleed background image: bottom-anchored & feathered on phones, full cover on desktop */}
         <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/90 via-white/35 to-transparent sm:bg-gradient-to-r sm:from-white/90 sm:via-white/45 sm:to-transparent"
+          className="pointer-events-none absolute inset-x-0 bottom-0 top-[68px] flex items-end overflow-hidden sm:inset-0"
+          aria-hidden="true"
+        >
+          <img
+            src="/offer-white.jpg?v=2"
+            alt=""
+            decoding="async"
+            className="h-[58%] w-full object-cover object-[70%_bottom] sm:h-full sm:object-center"
+            style={{
+              WebkitMaskImage:
+                'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 14%, black 28%)',
+              maskImage:
+                'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 14%, black 28%)',
+            }}
+          />
+        </div>
+        {/* Soft directional scrim behind desktop typography only — never washes out the perfume visual */}
+        <div
+          className="pointer-events-none absolute inset-0 hidden sm:block sm:bg-gradient-to-r sm:from-white/90 sm:via-white/45 sm:to-transparent"
           aria-hidden="true"
         />
-        <div className="shell relative z-10 py-16 pt-24 sm:pt-28 lg:py-24 lg:pt-36">
+        <div className="shell relative z-10 pb-[52vw] pt-24 sm:py-24 sm:pt-28 lg:pt-36">
           <div className="max-w-2xl">
             <Chip tone="dark" className="bg-white/95 shadow-sm">
               <Icon name="tag" className="h-3.5 w-3.5 text-brand-goldDark" />
               {OFFER_HERO.badge}
             </Chip>
-            <h1 className="mt-6 font-serif text-[32px] font-medium leading-[1.15] text-brand-charcoal sm:text-[42px]">
+            <h1 className="mt-5 font-serif text-[30px] font-medium leading-[1.15] text-brand-charcoal sm:mt-6 sm:text-[42px]">
               {OFFER_HERO.title}
             </h1>
 
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-wrap gap-2.5 sm:mt-8 sm:gap-3">
               {showcase.showOffersProducts && (
-                <Button variant="primary" size="lg" href="#vault">
+                <Button variant="primary" size="lg" href="#vault" className="px-5 py-3 text-xs sm:px-7 sm:py-3.5 sm:text-label-md">
                   {OFFER_HERO.cta.label}
                   <Icon name="arrow-right" className="h-4 w-4" />
                 </Button>
               )}
               {showcase.showCouponsSection && (
-                <Button variant="outline" size="lg" href="#coupons" className="bg-white/80">
+                <Button variant="outline" size="lg" href="#coupons" className="bg-white/85 px-5 py-3 text-xs sm:px-7 sm:py-3.5 sm:text-label-md">
                   View Coupon Codes
                 </Button>
               )}

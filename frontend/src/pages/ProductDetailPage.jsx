@@ -241,9 +241,9 @@ export function ProductDetailPage() {
   return (
     <div className="pb-16">
       {/* Main */}
-      <section className="shell grid gap-10 py-8 pt-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-16 lg:pt-10">
+      <section className="shell grid gap-6 py-5 sm:gap-8 sm:py-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start lg:gap-x-16 lg:gap-y-6 lg:pt-10">
         {/* Gallery */}
-        <div className="lg:sticky lg:top-28 lg:self-start">
+        <div className="lg:col-start-1 lg:row-start-1">
           <div
             className="group relative"
             tabIndex={hasMultipleImages ? 0 : undefined}
@@ -297,7 +297,7 @@ export function ProductDetailPage() {
           </div>
 
           {gallery.length > 1 && (
-            <div className="mt-5 grid grid-cols-4 gap-3">
+            <div className="mt-3.5 grid grid-cols-4 gap-2.5 sm:mt-5 sm:gap-3">
               {gallery.map((shot, index) => {
                 const active = selectedImageIndex === index
                 return (
@@ -327,22 +327,10 @@ export function ProductDetailPage() {
               })}
             </div>
           )}
-
-          <ul className="mt-6 grid grid-cols-2 gap-3">
-            {DELIVERY_PROMISE.map((item) => (
-              <li key={item.title} className="flex gap-2.5 rounded-xl border border-brand-border bg-white p-3.5">
-                <Icon name={item.icon} className="mt-0.5 h-4 w-4 shrink-0 text-brand-charcoal" />
-                <span>
-                  <span className="block text-body-sm font-semibold text-brand-charcoal">{item.title}</span>
-                  <span className="block text-body-sm text-brand-muted">{item.note}</span>
-                </span>
-              </li>
-            ))}
-          </ul>
         </div>
 
-        {/* Buy box */}
-        <div>
+        {/* Buy box — renders directly under product image on phones; right column on desktop */}
+        <div className="lg:col-start-2 lg:row-start-1 lg:row-span-2">
           <div className="flex flex-wrap items-center gap-2">
             <TierBadge tier={product.tier} showIcon />
             {(product.badges ?? []).map((badge) => (
@@ -406,20 +394,20 @@ export function ProductDetailPage() {
           </div>
 
           {/* Clean certification badges */}
-          <div className="mt-5 grid grid-cols-2 gap-3">
-            <div className="flex items-center gap-3 rounded-xl bg-[#F5F5F5] px-4 py-3">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-neutral-300 bg-white text-[10px] font-semibold tracking-wider text-brand-charcoal">
+          <div className="mt-5 grid grid-cols-2 gap-2.5 sm:gap-3">
+            <div className="flex items-center gap-2.5 rounded-xl bg-[#F5F5F5] px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-neutral-300 bg-white text-[9px] font-semibold tracking-wider text-brand-charcoal sm:h-9 sm:w-9 sm:text-[10px]">
                 IFRA
               </span>
-              <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-brand-charcoal">
+              <span className="whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.06em] text-brand-charcoal sm:text-[11px] sm:tracking-[0.08em]">
                 IFRA-Certified
               </span>
             </div>
-            <div className="flex items-center gap-3 rounded-xl bg-[#F5F5F5] px-4 py-3">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-neutral-300 bg-white text-brand-charcoal">
-                <Icon name="flask" className="h-4 w-4" />
+            <div className="flex items-center gap-2.5 rounded-xl bg-[#F5F5F5] px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-neutral-300 bg-white text-brand-charcoal sm:h-9 sm:w-9">
+                <Icon name="flask" className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               </span>
-              <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-brand-charcoal">
+              <span className="whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.06em] text-brand-charcoal sm:text-[11px] sm:tracking-[0.08em]">
                 Pure Oils
               </span>
             </div>
@@ -500,10 +488,21 @@ export function ProductDetailPage() {
           </div>
 
           {/* Quantity + actions */}
-          <div className="mt-6 flex flex-wrap items-center gap-3">
-            <QuantityStepper value={qty} onChange={setQuantity} max={Math.max(1, maxQuantity)} />
-            <Button variant="primary" size="lg" className="flex-1" onClick={handleAdd} disabled={soldOut}>
-              <Icon name="bag" className="h-4 w-4" />
+          <div className="mt-5 flex items-center gap-2 sm:mt-6 sm:gap-3">
+            <QuantityStepper
+              value={qty}
+              onChange={setQuantity}
+              max={Math.max(1, maxQuantity)}
+              className="shrink-0"
+            />
+            <Button
+              variant="primary"
+              size="lg"
+              className="min-w-0 flex-1 whitespace-nowrap px-4 py-3 text-xs sm:px-7 sm:py-3.5 sm:text-label-md"
+              onClick={handleAdd}
+              disabled={soldOut}
+            >
+              <Icon name="bag" className="h-4 w-4 shrink-0" />
               {soldOut ? 'Sold Out' : 'Add To Bag'}
             </Button>
             <button
@@ -519,7 +518,7 @@ export function ProductDetailPage() {
               aria-label={saved ? 'Remove from wishlist' : 'Save to wishlist'}
               aria-pressed={saved}
               className={cn(
-                'flex h-12 w-12 shrink-0 items-center justify-center rounded border transition shadow-sm',
+                'flex h-11 w-11 shrink-0 items-center justify-center rounded border transition shadow-sm sm:h-12 sm:w-12',
                 saved
                   ? 'border-red-200 bg-red-50 text-red-500 hover:bg-red-100'
                   : 'border-brand-border text-brand-muted hover:border-brand-gold hover:text-brand-goldDark',
@@ -577,6 +576,26 @@ export function ProductDetailPage() {
             </CollapsiblePanel>
           </div>
         </div>
+
+        {/* Trust / delivery promise cards — rendered BELOW price & details on phones, under gallery on desktop */}
+        <ul className="grid grid-cols-2 gap-2.5 sm:gap-3 lg:col-start-1 lg:row-start-2 lg:self-start">
+          {DELIVERY_PROMISE.map((item) => (
+            <li
+              key={item.title}
+              className="flex items-start gap-2 rounded-xl border border-brand-border bg-white p-3 sm:gap-2.5 sm:p-3.5"
+            >
+              <Icon name={item.icon} className="mt-0.5 h-4 w-4 shrink-0 text-brand-charcoal" />
+              <span className="min-w-0">
+                <span className="block text-[12px] font-semibold leading-snug text-brand-charcoal sm:text-body-sm">
+                  {item.title}
+                </span>
+                <span className="mt-0.5 block text-[11px] leading-snug text-brand-muted sm:text-xs">
+                  {item.note}
+                </span>
+              </span>
+            </li>
+          ))}
+        </ul>
       </section>
 
       {/* Tabs: description, reviews, shipping */}

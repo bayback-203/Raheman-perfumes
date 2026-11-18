@@ -108,20 +108,34 @@ export function Header() {
     >
       <div className="shell-wide">
         <div className="grid h-[68px] grid-cols-[1fr_auto_1fr] items-center gap-2 lg:h-[76px] lg:gap-4">
-          {/* Left — mobile menu toggle + desktop primary nav */}
-          <div className="flex min-w-0 items-center justify-start gap-2">
+          {/* Left — mobile menu & search + desktop primary nav */}
+          <div className="flex min-w-0 items-center justify-start gap-0.5 sm:gap-1.5">
             <button
               type="button"
               onClick={openMobileMenu}
               aria-label="Open menu"
               className={cn(
-                'flex h-10 w-10 items-center justify-center rounded-full transition lg:hidden',
+                'flex h-9 w-9 items-center justify-center rounded-full transition sm:h-10 sm:w-10 lg:hidden',
                 isLightTone
                   ? 'text-brand-ivory hover:bg-white/15'
                   : 'text-brand-charcoal hover:bg-neutral-100',
               )}
             >
               <Icon name="menu" className="h-5 w-5" />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => toggleSearch(true)}
+              aria-label="Search"
+              className={cn(
+                'flex h-9 w-9 items-center justify-center rounded-full transition sm:h-10 sm:w-10 md:hidden',
+                isLightTone
+                  ? 'text-brand-ivory hover:bg-white/15 hover:text-brand-gold'
+                  : 'text-brand-charcoal hover:bg-neutral-100 hover:text-brand-goldDark',
+              )}
+            >
+              <Icon name="search" className="h-[18px] w-[18px]" strokeWidth={1.7} />
             </button>
 
             <nav className="hidden items-center gap-6 lg:flex xl:gap-8" aria-label="Primary">
@@ -261,7 +275,7 @@ export function Header() {
           </div>
 
           {/* Right — instant search + actions */}
-          <div className="flex items-center justify-end gap-1">
+          <div className="flex items-center justify-end gap-0.5 sm:gap-1">
             <form onSubmit={submitSearch} className="relative hidden md:block">
               <Icon
                 name="search"
@@ -354,20 +368,6 @@ export function Header() {
                 </div>
               )}
             </form>
-
-            <button
-              type="button"
-              onClick={() => toggleSearch(true)}
-              aria-label="Search"
-              className={cn(
-                'flex h-10 w-10 items-center justify-center rounded-full transition md:hidden',
-                isLightTone
-                  ? 'text-brand-ivory hover:bg-white/15 hover:text-brand-gold'
-                  : 'text-brand-charcoal hover:bg-neutral-100 hover:text-brand-goldDark',
-              )}
-            >
-              <Icon name="search" className="h-[18px] w-[18px]" strokeWidth={1.7} />
-            </button>
 
             <HeaderAction icon="user" label="My account" to="/account" tone={tone} />
             <HeaderAction icon="heart" label="Wishlist" to="/wishlist" badge={wishlistCount} tone={tone} />

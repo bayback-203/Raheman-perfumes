@@ -66,7 +66,7 @@ export function ShopBanner({ collection, title, eyebrow }) {
         <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-[#FFFBF6]/30" />
       </div>
 
-      <div className="shell relative z-20 pb-8 pt-24 sm:pb-10 sm:pt-28 lg:pb-12 lg:pt-32">
+      <div className="shell relative z-20 pb-6 pt-24 sm:pb-10 sm:pt-28 lg:pb-12 lg:pt-32">
         {eyebrow && (
           <p className="inline-flex items-center gap-2 text-label-md font-bold uppercase tracking-[0.18em] text-brand-goldDark">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand-goldDark animate-pulse" aria-hidden="true" />
@@ -74,11 +74,11 @@ export function ShopBanner({ collection, title, eyebrow }) {
           </p>
         )}
 
-        <h1 className="mt-1.5 font-serif text-3xl font-medium tracking-tight text-brand-charcoal sm:text-4xl lg:text-headline-xl">
+        <h1 className="mt-1.5 font-serif text-2xl font-medium tracking-tight text-brand-charcoal sm:text-4xl lg:text-headline-xl">
           {title}
         </h1>
 
-        <div className="mt-5 flex flex-wrap items-center gap-2.5">
+        <div className="no-scrollbar -mx-4 mt-4 flex flex-nowrap items-center gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:mt-5 sm:flex-wrap sm:gap-2.5 sm:overflow-visible sm:px-0 sm:pb-0">
           {pills.map((pill) => {
             const isActive = pill.active
             return (
@@ -86,7 +86,7 @@ export function ShopBanner({ collection, title, eyebrow }) {
                 key={pill.label}
                 to={pill.to}
                 className={cn(
-                  'inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-body-sm font-semibold transition-all duration-300',
+                  'inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all duration-300 sm:px-4 sm:py-2 sm:text-body-sm',
                   isActive
                     ? 'bg-gradient-to-r from-[#1A1613] via-[#2C231B] to-[#1A1613] text-[#FDF6E8] shadow-[0_6px_18px_-4px_rgba(20,16,12,0.45)] ring-1 ring-brand-gold/60'
                     : 'border border-[#CDBAA0] bg-white text-brand-charcoal shadow-xs hover:-translate-y-0.5 hover:border-brand-charcoal hover:bg-[#FFFDF7] hover:shadow-sm',

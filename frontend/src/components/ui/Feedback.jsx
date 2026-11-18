@@ -8,7 +8,7 @@ export function QuantityStepper({ value, onChange, min = 1, max = 99, size = 'md
   const decrement = () => onChange(Math.max(min, value - 1))
   const increment = () => onChange(Math.min(max, value + 1))
 
-  const dims = size === 'sm' ? 'h-8 w-8' : 'h-10 w-10'
+  const dims = size === 'sm' ? 'h-8 w-8' : 'h-11 w-9 sm:h-11 sm:w-10'
   const base =
     tone === 'dark'
       ? 'border-white/15 text-brand-ivory hover:bg-white/10'
@@ -27,7 +27,7 @@ export function QuantityStepper({ value, onChange, min = 1, max = 99, size = 'md
       </button>
       <span
         className={cn(
-          'min-w-[2.25rem] text-center text-body-sm font-semibold tabular-nums',
+          'min-w-[1.75rem] text-center text-body-sm font-semibold tabular-nums sm:min-w-[2.25rem]',
           tone === 'dark' ? 'text-brand-ivory' : 'text-brand-charcoal',
         )}
         aria-live="polite"

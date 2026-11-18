@@ -3,9 +3,9 @@ import cn from '@/lib/cn'
 import { Icon } from '@/components/ui/Icon'
 
 const LOGO_SIZES = {
-  sm: 'h-10 w-10 sm:h-11 sm:w-11',
-  md: 'h-12 w-12 sm:h-14 sm:w-14',
-  lg: 'h-20 w-20 sm:h-24 sm:w-24',
+  sm: 'h-9 w-9 sm:h-11 sm:w-11',
+  md: 'h-11 w-11 sm:h-14 sm:w-14',
+  lg: 'h-16 w-16 sm:h-24 sm:w-24',
 }
 
 /** The official Raheman Perfumes seal logo, used by the header, mobile nav and footer. */
@@ -47,7 +47,7 @@ export function HeaderAction({ icon, label, to, onClick, badge, tone = 'dark', c
   )
 
   const classes = cn(
-    'relative flex h-10 w-10 items-center justify-center rounded-full transition',
+    'relative flex h-9 w-9 items-center justify-center rounded-full transition sm:h-10 sm:w-10',
     tone === 'light'
       ? 'text-brand-ivory hover:bg-white/10 hover:text-brand-gold'
       : 'text-brand-charcoal hover:bg-neutral-100 hover:text-brand-goldDark',
