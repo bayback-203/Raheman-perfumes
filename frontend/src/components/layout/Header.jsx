@@ -100,14 +100,14 @@ export function Header() {
     <header
       className={cn(
         'sticky top-0 z-40 transition-all duration-300',
-        isHeroPage && '-mb-[68px] lg:-mb-[76px]',
+        isHeroPage && '-mb-[80px] sm:-mb-[88px] lg:-mb-[104px]',
         isTransparent
           ? 'border-transparent bg-transparent shadow-none'
           : 'border-b border-brand-border/80 bg-white/95 backdrop-blur-md shadow-card',
       )}
     >
       <div className="shell-wide">
-        <div className="grid h-[68px] grid-cols-[1fr_auto_1fr] items-center gap-2 lg:h-[76px] lg:gap-4">
+        <div className="grid h-[80px] grid-cols-[1fr_auto_1fr] items-center gap-2 sm:h-[88px] lg:h-[104px] lg:gap-4">
           {/* Left — mobile menu & search + desktop primary nav */}
           <div className="flex min-w-0 items-center justify-start gap-0.5 sm:gap-1.5">
             <button

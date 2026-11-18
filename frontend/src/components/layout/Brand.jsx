@@ -3,9 +3,9 @@ import cn from '@/lib/cn'
 import { Icon } from '@/components/ui/Icon'
 
 const LOGO_SIZES = {
-  sm: 'h-9 w-9 sm:h-11 sm:w-11',
-  md: 'h-11 w-11 sm:h-14 sm:w-14',
-  lg: 'h-16 w-16 sm:h-24 sm:w-24',
+  sm: 'h-12 w-12 sm:h-14 sm:w-14',
+  md: 'h-[64px] w-[64px] sm:h-[74px] sm:w-[74px] lg:h-[86px] lg:w-[86px]',
+  lg: 'h-20 w-20 sm:h-28 sm:w-28',
 }
 
 /** The official Raheman Perfumes seal logo, used by the header, mobile nav and footer. */

@@ -93,7 +93,7 @@ export function Hero() {
     <section className="relative flex flex-col justify-between overflow-hidden border-b border-brand-border bg-white text-brand-charcoal md:min-h-screen md:min-h-[100dvh]">
       {/* Ambient botanical left backdrop (tablet/desktop): wet vetiver grass, pampas plumes, ferns & sunlit leaf shadows */}
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-[52px] top-[64px] hidden items-end justify-start overflow-hidden bg-white md:flex lg:top-[68px]"
+        className="pointer-events-none absolute inset-x-0 bottom-[52px] top-[84px] hidden items-end justify-start overflow-hidden bg-white md:flex lg:top-[96px]"
         aria-hidden="true"
       >
         <div
@@ -118,7 +118,7 @@ export function Hero() {
 
       {/* Right crystal flacon & note symphony (tablet/desktop): razor-sharp with zero washout veil */}
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-[52px] top-[64px] hidden items-end justify-end overflow-hidden md:left-[43%] md:flex lg:top-[68px]"
+        className="pointer-events-none absolute inset-x-0 bottom-[52px] top-[84px] hidden items-end justify-end overflow-hidden md:left-[43%] md:flex lg:top-[96px]"
         style={{
           WebkitMaskImage:
             'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 10%, black 22%)',
@@ -179,7 +179,7 @@ export function Hero() {
           />
         </div>
 
-        <div className="shell relative z-10 grid gap-8 pb-[86vw] pt-[92px] text-center sm:pb-[380px] sm:pt-28 md:my-auto md:grid-cols-[1.05fr_0.95fr] md:items-center md:gap-12 md:pb-16 md:text-left lg:gap-16 lg:pb-24 lg:pt-36">
+        <div className="shell relative z-10 grid gap-8 pb-[86vw] pt-[104px] text-center sm:pb-[380px] sm:pt-32 md:my-auto md:grid-cols-[1.05fr_0.95fr] md:items-center md:gap-12 md:pb-16 md:text-left lg:gap-16 lg:pb-24 lg:pt-40">
           <div className="animate-rise-lux">
             <TypewriterHeadline />
 

@@ -179,7 +179,7 @@ export function OffersPage() {
           className="pointer-events-none absolute inset-0 hidden sm:block sm:bg-gradient-to-r sm:from-white/90 sm:via-white/45 sm:to-transparent"
           aria-hidden="true"
         />
-        <div className="shell relative z-10 pb-[78vw] pt-[92px] text-center sm:py-24 sm:pt-28 sm:text-left lg:pt-36">
+        <div className="shell relative z-10 pb-[78vw] pt-[104px] text-center sm:py-24 sm:pt-32 sm:text-left lg:pt-40">
           <div className="mx-auto max-w-2xl sm:mx-0">
             <Chip tone="dark" className="bg-white/95 shadow-sm">
               <Icon name="tag" className="h-3.5 w-3.5 text-brand-goldDark" />
