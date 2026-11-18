@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/Button'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Accordion } from '@/components/ui/Accordion'
 import { Reveal } from '@/components/ui/Reveal'
-import { Hero, Pillars } from '@/components/home/Hero'
+import { Hero, Pillars, OccasionGrid } from '@/components/home/Hero'
 import { CategoryGrid, BrandStrip } from '@/components/home/Collections'
 import {
   BestSellers,
@@ -61,6 +61,9 @@ export function HomePage() {
 
       <Reveal>
         <Pillars />
+      </Reveal>
+      <Reveal>
+        <OccasionGrid />
       </Reveal>
       <Reveal>
         <CategoryGrid />

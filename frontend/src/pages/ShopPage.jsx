@@ -22,6 +22,60 @@ const COLLECTION_RULES = {
   combos: { filters: { tier: ['Combo'] }, title: 'Combos & Gift Sets' },
   bakhoor: { filters: { tier: ['Bakhoor'] }, title: 'Bakhoor' },
   'best-sellers': { filters: {}, title: 'Bestsellers' },
+  everyday: {
+    filters: {},
+    title: 'Everyday Perfumes',
+    occasionKeywords: ['everyday', 'daily', 'fresh', 'citrus', 'floral', 'musk', 'clean', 'bergamot', 'aqua', 'vetiver'],
+  },
+  office: {
+    filters: {},
+    title: 'Office Perfumes',
+    occasionKeywords: ['office', 'work', 'woody', 'vetiver', 'citrus', 'fresh', 'cedar', 'musk', 'aromatic', 'bergamot'],
+  },
+  party: {
+    filters: {},
+    title: 'Party Perfumes',
+    occasionKeywords: ['party', 'night', 'club', 'oriental', 'oud', 'spicy', 'amber', 'gourmand', 'sweet', 'vanilla', 'leather', 'tobacco'],
+  },
+  sports: {
+    filters: {},
+    title: 'Sports Perfumes',
+    occasionKeywords: ['sport', 'sports', 'gym', 'fresh', 'citrus', 'aqua', 'aquatic', 'marine', 'ice', 'mint', 'lemon', 'bergamot'],
+  },
+  'date-night': {
+    filters: {},
+    title: 'Date Night Perfumes',
+    occasionKeywords: ['date', 'romantic', 'evening', 'oriental', 'oud', 'rose', 'vanilla', 'amber', 'gourmand', 'musk', 'floral', 'jasmine', 'saffron'],
+  },
+  college: {
+    filters: {},
+    title: 'College Perfumes',
+    occasionKeywords: ['college', 'casual', 'youth', 'fresh', 'citrus', 'fruity', 'sweet', 'gourmand', 'floral', 'ice', 'aqua'],
+  },
+}
+
+/** Match live catalogue items suited to an occasion (by collection tag, family, notes, or copy). */
+function filterByOccasion(products, slug, keywords) {
+  if (!keywords?.length) return products
+  const matched = products.filter((p) => {
+    if (Array.isArray(p.collections) && p.collections.some((c) => String(c).toLowerCase() === slug)) {
+      return true
+    }
+    const haystack = [
+      p.family,
+      p.tagline,
+      p.description,
+      p.name,
+      ...(p.notes?.top ?? []),
+      ...(p.notes?.heart ?? []),
+      ...(p.notes?.base ?? []),
+    ]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase()
+    return keywords.some((kw) => haystack.includes(kw))
+  })
+  return matched.length > 0 ? matched : products
 }
 
 /**
@@ -63,14 +117,24 @@ export function ShopPage() {
       subtitle={category?.blurb ?? rule?.subtitle}
       initialFilters={initialFilters}
       collection={collection}
+      occasionKeywords={rule?.occasionKeywords}
     />
   )
 }
 
-function ShopCatalogue({ title, initialFilters, collection }) {
-  // No `baseProducts`: the hook reads the live catalogue from the store, so a
-  // fragrance created in the admin panel is in this grid.
-  const catalogue = useCatalogue({ initialFilters, pageSize: 24 })
+function ShopCatalogue({ title, initialFilters, collection, occasionKeywords }) {
+  const allProducts = useCatalogueProducts()
+  const occasionProducts = useMemo(
+    () => (occasionKeywords ? filterByOccasion(allProducts, collection, occasionKeywords) : null),
+    [allProducts, collection, occasionKeywords],
+  )
+  // No `baseProducts` for normal pages so the hook reads the live catalogue
+  // directly; occasion routes narrow cleanly to fragrances matching the mood.
+  const catalogue = useCatalogue({
+    baseProducts: occasionProducts,
+    initialFilters,
+    pageSize: 24,
+  })
 
   return (
     <>

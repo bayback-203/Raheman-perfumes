@@ -13,6 +13,12 @@ const BANNER_IMAGES = {
   unisex: '/cat-unisex.jpg?v=3',
   men: '/pillar-originals.jpg?v=4',
   women: '/hero-white.jpg?v=5',
+  everyday: '/occasion-everyday.jpg',
+  office: '/occasion-office.jpg',
+  party: '/occasion-party.jpg',
+  sports: '/occasion-sports.jpg',
+  'date-night': '/occasion-date-night.jpg',
+  college: '/occasion-college.jpg',
   default: '/hero-white.jpg?v=5',
 }
 

@@ -124,6 +124,15 @@ export const PILLARS = [
   },
 ]
 
+export const OCCASIONS = [
+  { id: 'everyday', label: 'Everyday', to: '/shop/everyday', image: '/occasion-everyday.jpg' },
+  { id: 'office', label: 'Office', to: '/shop/office', image: '/occasion-office.jpg' },
+  { id: 'party', label: 'Party', to: '/shop/party', image: '/occasion-party.jpg' },
+  { id: 'sports', label: 'Sports', to: '/shop/sports', image: '/occasion-sports.jpg' },
+  { id: 'date-night', label: 'Date Night', to: '/shop/date-night', image: '/occasion-date-night.jpg' },
+  { id: 'college', label: 'College', to: '/shop/college', image: '/occasion-college.jpg' },
+]
+
 export const WHY_SHOP = [
   {
     id: 'authentic',
