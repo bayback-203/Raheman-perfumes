@@ -90,7 +90,7 @@ function TypewriterHeadline() {
  */
 export function Hero() {
   return (
-    <section className="relative flex flex-col justify-between overflow-hidden border-b border-brand-border bg-white text-brand-charcoal md:min-h-[calc(100dvh-142px)]">
+    <section className="relative flex flex-col justify-between overflow-hidden border-b border-brand-border bg-white text-brand-charcoal md:min-h-[calc(100dvh-104px)]">
       {/* Ambient botanical left backdrop (tablet/desktop): wet vetiver grass, pampas plumes, ferns & sunlit leaf shadows */}
       <div
         className="pointer-events-none absolute inset-x-0 bottom-0 top-0 hidden items-end justify-start overflow-hidden bg-white md:flex"

@@ -155,7 +155,7 @@ export function OffersPage() {
   return (
     <div className="pb-16">
       {/* Hero */}
-      <section className="relative flex flex-col justify-start overflow-hidden border-b border-brand-border bg-white text-brand-charcoal sm:min-h-[calc(100dvh-142px)] sm:justify-center">
+      <section className="relative flex flex-col justify-start overflow-hidden border-b border-brand-border bg-white text-brand-charcoal sm:min-h-[calc(100dvh-104px)] sm:justify-center">
         {/* Full-bleed background image: dead-centered bottles on phones, full cover on desktop */}
         <div
           className="pointer-events-none absolute inset-0 flex items-end overflow-hidden"
