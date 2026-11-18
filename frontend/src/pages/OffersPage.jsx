@@ -155,22 +155,22 @@ export function OffersPage() {
   return (
     <div className="pb-16">
       {/* Hero */}
-      <section className="relative flex min-h-[84svh] flex-col justify-start overflow-hidden border-b border-brand-border bg-white text-brand-charcoal sm:min-h-screen sm:min-h-[100dvh] sm:justify-center">
-        {/* Full-bleed background image: bottom-anchored & feathered on phones, full cover on desktop */}
+      <section className="relative flex flex-col justify-start overflow-hidden border-b border-brand-border bg-white text-brand-charcoal sm:min-h-screen sm:min-h-[100dvh] sm:justify-center">
+        {/* Full-bleed background image: dead-centered bottles on phones, full cover on desktop */}
         <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 top-[68px] flex items-end overflow-hidden sm:inset-0"
+          className="pointer-events-none absolute inset-0 flex items-end overflow-hidden"
           aria-hidden="true"
         >
           <img
             src="/offer-white.jpg?v=3"
             alt=""
             decoding="async"
-            className="h-[58%] w-full object-cover object-[70%_bottom] sm:h-full sm:object-center"
+            className="h-[96vw] max-h-[440px] w-full object-cover object-right-bottom sm:h-full sm:max-h-none sm:object-center"
             style={{
               WebkitMaskImage:
-                'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 14%, black 28%)',
+                'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.82) 14%, black 26%)',
               maskImage:
-                'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 14%, black 28%)',
+                'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.82) 14%, black 26%)',
             }}
           />
         </div>
@@ -179,17 +179,17 @@ export function OffersPage() {
           className="pointer-events-none absolute inset-0 hidden sm:block sm:bg-gradient-to-r sm:from-white/90 sm:via-white/45 sm:to-transparent"
           aria-hidden="true"
         />
-        <div className="shell relative z-10 pb-[52vw] pt-24 sm:py-24 sm:pt-28 lg:pt-36">
-          <div className="max-w-2xl">
+        <div className="shell relative z-10 pb-[78vw] pt-[92px] text-center sm:py-24 sm:pt-28 sm:text-left lg:pt-36">
+          <div className="mx-auto max-w-2xl sm:mx-0">
             <Chip tone="dark" className="bg-white/95 shadow-sm">
               <Icon name="tag" className="h-3.5 w-3.5 text-brand-goldDark" />
               {OFFER_HERO.badge}
             </Chip>
-            <h1 className="mt-5 font-serif text-[30px] font-medium leading-[1.15] text-brand-charcoal sm:mt-6 sm:text-[42px]">
+            <h1 className="mt-4 font-serif text-[30px] font-medium leading-[1.15] text-brand-charcoal sm:mt-6 sm:text-[42px]">
               {OFFER_HERO.title}
             </h1>
 
-            <div className="mt-6 flex flex-wrap gap-2.5 sm:mt-8 sm:gap-3">
+            <div className="mt-5 flex flex-wrap justify-center gap-2.5 sm:mt-8 sm:justify-start sm:gap-3">
               {showcase.showOffersProducts && (
                 <Button variant="primary" size="lg" href="#vault" className="px-5 py-3 text-xs sm:px-7 sm:py-3.5 sm:text-label-md">
                   {OFFER_HERO.cta.label}
@@ -197,7 +197,7 @@ export function OffersPage() {
                 </Button>
               )}
               {showcase.showCouponsSection && (
-                <Button variant="outline" size="lg" href="#coupons" className="bg-white/85 px-5 py-3 text-xs sm:px-7 sm:py-3.5 sm:text-label-md">
+                <Button variant="outline" size="lg" href="#coupons" className="bg-white/90 px-5 py-3 text-xs sm:px-7 sm:py-3.5 sm:text-label-md">
                   View Coupon Codes
                 </Button>
               )}

@@ -90,28 +90,7 @@ function TypewriterHeadline() {
  */
 export function Hero() {
   return (
-    <section className="relative flex min-h-[92svh] flex-col justify-between overflow-hidden border-b border-brand-border bg-white text-brand-charcoal md:min-h-screen md:min-h-[100dvh]">
-      {/* Mobile full-bleed background: crisp crystal flacon & botanicals seamlessly behind hero content (zero box, zero blur) */}
-      <div
-        className="pointer-events-none absolute inset-x-0 bottom-[74px] top-[68px] flex items-end overflow-hidden bg-white md:hidden"
-        aria-hidden="true"
-      >
-        <div className="relative h-[60%] w-full sm:h-[64%]">
-          <img
-            src="/hero-white.jpg?v=5"
-            alt="Luxury crystal perfume bottle on white marble framed by roses, citrus, fig, oud wood, and cinnamon sticks"
-            decoding="async"
-            className="h-full w-full object-cover object-[66%_bottom]"
-            style={{
-              WebkitMaskImage:
-                'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.78) 14%, black 28%)',
-              maskImage:
-                'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.78) 14%, black 28%)',
-            }}
-          />
-        </div>
-      </div>
-
+    <section className="relative flex flex-col justify-between overflow-hidden border-b border-brand-border bg-white text-brand-charcoal md:min-h-screen md:min-h-[100dvh]">
       {/* Ambient botanical left backdrop (tablet/desktop): wet vetiver grass, pampas plumes, ferns & sunlit leaf shadows */}
       <div
         className="pointer-events-none absolute inset-x-0 bottom-[52px] top-[64px] hidden items-end justify-start overflow-hidden bg-white md:flex lg:top-[68px]"
@@ -180,27 +159,48 @@ export function Hero() {
         aria-hidden="true"
       />
 
-      <div className="shell relative z-10 grid flex-1 content-start gap-8 pb-[58vw] pt-24 sm:pb-[48vw] sm:pt-28 md:my-auto md:flex-none md:grid-cols-[1.05fr_0.95fr] md:items-center md:gap-12 md:pb-16 lg:gap-16 lg:pb-24 lg:pt-36">
-        <div className="animate-rise-lux">
-          <TypewriterHeadline />
-
-          <p className="mt-4 hidden max-w-xl text-pretty text-body-md leading-relaxed text-brand-muted sm:mt-6 sm:block sm:text-body-lg">
-            Original designer perfumes, inspired blends and pure attars —
-            made with pure French oils for a long-lasting scent.
-          </p>
-
-          <div className="mt-5 flex flex-wrap items-center gap-2.5 sm:mt-9 sm:gap-3">
-            <Button variant="primary" size="lg" to="/shop" className="px-5 py-3 text-xs sm:px-7 sm:py-3.5 sm:text-label-md">
-              Shop The Collection
-              <Icon name="arrow-right" className="h-4 w-4" />
-            </Button>
-            <Button variant="outline" size="lg" to="/combos" className="bg-white/85 px-5 py-3 text-xs sm:px-7 sm:py-3.5 sm:text-label-md">
-              Combos
-            </Button>
-          </div>
+      <div className="relative flex flex-1 flex-col justify-center">
+        {/* Mobile full-bleed background: mathematically dead-centered crystal flacon + botanicals seamlessly behind hero */}
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 top-0 flex items-end overflow-hidden md:hidden"
+          aria-hidden="true"
+        >
+          <img
+            src="/hero-white.jpg?v=5"
+            alt="Luxury crystal perfume bottle on white marble framed by roses, citrus, fig, oud wood, and cinnamon sticks"
+            decoding="async"
+            className="h-[104vw] max-h-[460px] w-full object-cover object-right-bottom"
+            style={{
+              WebkitMaskImage:
+                'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 14%, black 26%)',
+              maskImage:
+                'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 14%, black 26%)',
+            }}
+          />
         </div>
 
-        <div className="hidden md:block" aria-hidden="true" />
+        <div className="shell relative z-10 grid gap-8 pb-[86vw] pt-[92px] text-center sm:pb-[380px] sm:pt-28 md:my-auto md:grid-cols-[1.05fr_0.95fr] md:items-center md:gap-12 md:pb-16 md:text-left lg:gap-16 lg:pb-24 lg:pt-36">
+          <div className="animate-rise-lux">
+            <TypewriterHeadline />
+
+            <p className="mt-4 hidden max-w-xl text-pretty text-body-md leading-relaxed text-brand-muted sm:mx-auto sm:mt-5 sm:block sm:text-body-lg md:mx-0 md:mt-6">
+              Original designer perfumes, inspired blends and pure attars —
+              made with pure French oils for a long-lasting scent.
+            </p>
+
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-2.5 sm:mt-7 sm:gap-3 md:mt-9 md:justify-start">
+              <Button variant="primary" size="lg" to="/shop" className="px-5 py-3 text-xs sm:px-7 sm:py-3.5 sm:text-label-md">
+                Shop The Collection
+                <Icon name="arrow-right" className="h-4 w-4" />
+              </Button>
+              <Button variant="outline" size="lg" to="/combos" className="bg-white/90 px-5 py-3 text-xs sm:px-7 sm:py-3.5 sm:text-label-md">
+                Combos
+              </Button>
+            </div>
+          </div>
+
+          <div className="hidden md:block" aria-hidden="true" />
+        </div>
       </div>
 
       {/* Trust ribbon */}
