@@ -92,17 +92,17 @@ export function QuickViewModal({
                 type="button"
                 onClick={showPrevImage}
                 aria-label="Previous product image"
-                className="absolute left-2.5 top-1/2 z-20 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-brand-border/70 bg-white/90 text-brand-charcoal shadow-md backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-white hover:text-brand-goldDark lg:opacity-0 lg:group-hover:opacity-100 lg:focus-visible:opacity-100"
+                className="absolute left-1 top-1/2 z-20 flex h-14 w-10 -translate-y-1/2 items-center justify-center bg-transparent text-white/90 [filter:drop-shadow(0_1px_2px_rgba(0,0,0,0.8))_drop-shadow(0_0_1px_rgba(0,0,0,0.65))] transition-all duration-200 hover:scale-110 hover:text-brand-gold active:scale-95 lg:opacity-0 lg:group-hover:opacity-100 lg:focus-visible:opacity-100"
               >
-                <Icon name="chevron-left" className="h-4 w-4" strokeWidth={2} />
+                <Icon name="chevron-left" className="h-6 w-6" strokeWidth={2.2} />
               </button>
               <button
                 type="button"
                 onClick={showNextImage}
                 aria-label="Next product image"
-                className="absolute right-2.5 top-1/2 z-20 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-brand-border/70 bg-white/90 text-brand-charcoal shadow-md backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-white hover:text-brand-goldDark lg:opacity-0 lg:group-hover:opacity-100 lg:focus-visible:opacity-100"
+                className="absolute right-1 top-1/2 z-20 flex h-14 w-10 -translate-y-1/2 items-center justify-center bg-transparent text-white/90 [filter:drop-shadow(0_1px_2px_rgba(0,0,0,0.8))_drop-shadow(0_0_1px_rgba(0,0,0,0.65))] transition-all duration-200 hover:scale-110 hover:text-brand-gold active:scale-95 lg:opacity-0 lg:group-hover:opacity-100 lg:focus-visible:opacity-100"
               >
-                <Icon name="chevron-right" className="h-4 w-4" strokeWidth={2} />
+                <Icon name="chevron-right" className="h-6 w-6" strokeWidth={2.2} />
               </button>
               <span className="pointer-events-none absolute bottom-2.5 right-2.5 z-20 rounded-full bg-brand-charcoal/75 px-2 py-0.5 text-[10px] font-medium tabular-nums text-white backdrop-blur-sm transition-opacity duration-200 lg:opacity-0 lg:group-hover:opacity-100">
                 {selectedImageIndex + 1} / {gallery.length}

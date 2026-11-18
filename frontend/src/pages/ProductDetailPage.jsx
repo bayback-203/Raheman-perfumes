@@ -274,9 +274,9 @@ export function ProductDetailPage() {
                   onClick={showPrevImage}
                   aria-label="Previous product image"
                   title="Previous image"
-                  className="absolute left-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-brand-border/70 bg-white/90 text-brand-charcoal shadow-md backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-white hover:text-brand-goldDark active:scale-95 sm:h-12 sm:w-12 lg:opacity-0 lg:group-hover:opacity-100 lg:focus-visible:opacity-100"
+                  className="absolute left-1 top-1/2 z-20 flex h-16 w-12 -translate-y-1/2 items-center justify-center bg-transparent text-white/90 [filter:drop-shadow(0_1px_2px_rgba(0,0,0,0.8))_drop-shadow(0_0_1px_rgba(0,0,0,0.65))] transition-all duration-200 hover:scale-110 hover:text-brand-gold active:scale-95 sm:left-2 sm:h-20 sm:w-14 lg:opacity-0 lg:group-hover:opacity-100 lg:focus-visible:opacity-100"
                 >
-                  <Icon name="chevron-left" className="h-5 w-5" strokeWidth={2} />
+                  <Icon name="chevron-left" className="h-7 w-7 sm:h-8 sm:w-8" strokeWidth={2.2} />
                 </button>
 
                 <button
@@ -284,9 +284,9 @@ export function ProductDetailPage() {
                   onClick={showNextImage}
                   aria-label="Next product image"
                   title="Next image"
-                  className="absolute right-3 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-brand-border/70 bg-white/90 text-brand-charcoal shadow-md backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-white hover:text-brand-goldDark active:scale-95 sm:h-12 sm:w-12 lg:opacity-0 lg:group-hover:opacity-100 lg:focus-visible:opacity-100"
+                  className="absolute right-1 top-1/2 z-20 flex h-16 w-12 -translate-y-1/2 items-center justify-center bg-transparent text-white/90 [filter:drop-shadow(0_1px_2px_rgba(0,0,0,0.8))_drop-shadow(0_0_1px_rgba(0,0,0,0.65))] transition-all duration-200 hover:scale-110 hover:text-brand-gold active:scale-95 sm:right-2 sm:h-20 sm:w-14 lg:opacity-0 lg:group-hover:opacity-100 lg:focus-visible:opacity-100"
                 >
-                  <Icon name="chevron-right" className="h-5 w-5" strokeWidth={2} />
+                  <Icon name="chevron-right" className="h-7 w-7 sm:h-8 sm:w-8" strokeWidth={2.2} />
                 </button>
 
                 <span className="pointer-events-none absolute bottom-3 right-3 z-20 rounded-full bg-brand-charcoal/75 px-2.5 py-1 text-[11px] font-medium tabular-nums text-white backdrop-blur-sm transition-opacity duration-200 lg:opacity-0 lg:group-hover:opacity-100">
