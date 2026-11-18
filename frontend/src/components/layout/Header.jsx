@@ -198,8 +198,8 @@ export function Header() {
                       className={cn(
                         'relative inline-flex items-center gap-1.5 whitespace-nowrap py-1 text-label-sm font-bold uppercase tracking-[0.14em] transition-colors',
                         isLightTone
-                          ? (active ? 'text-brand-gold' : 'text-brand-ivory/90 hover:text-white')
-                          : (active ? 'text-brand-goldDark' : 'text-ink-variant hover:text-brand-charcoal'),
+                          ? (active || isOpen ? 'text-brand-gold' : 'text-brand-ivory/90 hover:text-white')
+                          : (active || isOpen ? 'text-brand-goldDark' : 'text-ink-variant hover:text-brand-charcoal'),
                       )}
                     >
                       {item.label}
@@ -208,10 +208,10 @@ export function Header() {
                         className={cn('h-3 w-3 transition-transform duration-200', isOpen && 'rotate-180')}
                         strokeWidth={2.2}
                       />
-                      {active && (
+                      {(active || isOpen) && (
                         <span
                           className={cn(
-                            'absolute -bottom-[9px] left-0 right-0 h-px',
+                            'absolute -bottom-[6px] left-0 right-0 h-[1.5px] transition-opacity duration-200',
                             isLightTone ? 'bg-brand-gold' : 'bg-brand-goldDark',
                           )}
                           aria-hidden="true"
@@ -219,48 +219,36 @@ export function Header() {
                       )}
                     </NavLink>
 
-                    {/* Extended vertical dropdown strictly on hover */}
+                    {/* Editorial single-column hover dropdown matching the warm ivory & champagne-gold theme */}
                     <div
                       className={cn(
-                        'absolute left-0 top-full z-50 pt-2 transition-all duration-200',
+                        'absolute left-0 top-full z-50 pt-1.5 transition-all duration-200',
                         isOpen
                           ? 'pointer-events-auto visible translate-y-0 opacity-100'
                           : 'pointer-events-none invisible translate-y-1 opacity-0',
                       )}
                     >
-                      <div className="min-w-[14.5rem] overflow-hidden rounded-lg border border-brand-border/80 bg-white py-2 shadow-overlay">
+                      <div className="min-w-[14rem] border border-[#E5D3B3] border-t-2 border-t-brand-gold bg-gradient-to-b from-[#FFFDF9] via-[#FDF7EC] to-[#F9EFE0] py-2 shadow-[0_18px_40px_-14px_rgba(32,22,12,0.18)]">
                         {item.children.map((child) => {
-                          const childActive = isActive(child.to)
+                          const childActive = location.pathname === child.to
+                          const isViewAll = child.id === 'view-all'
                           return (
                             <Link
                               key={child.id}
                               to={child.to}
                               onClick={() => setOpenDropdown(null)}
                               className={cn(
-                                'flex flex-col px-4 py-2.5 transition-colors hover:bg-brand-cream/60',
-                                childActive ? 'bg-brand-cream/50 text-brand-goldDark' : 'text-brand-charcoal',
+                                'block whitespace-nowrap px-5 py-2.5 text-[14px] font-medium tracking-[0.01em] transition-colors duration-150',
+                                isViewAll && 'mt-1 border-t border-[#E8D8BC]/80 pt-3 font-semibold text-brand-goldDark',
+                                childActive
+                                  ? 'bg-[#F3E5CA]/75 text-brand-goldDark'
+                                  : 'text-brand-charcoal hover:bg-[#F3E5CA]/60 hover:text-brand-goldDark',
                               )}
                             >
-                              <span className="text-label-sm font-bold uppercase tracking-[0.12em]">
-                                {child.label}
-                              </span>
-                              {child.description && (
-                                <span className="mt-0.5 text-[11px] font-normal text-brand-muted">
-                                  {child.description}
-                                </span>
-                              )}
+                              {child.label}
                             </Link>
                           )
                         })}
-                        <div className="my-1.5 border-t border-brand-border/60" />
-                        <Link
-                          to={item.to}
-                          onClick={() => setOpenDropdown(null)}
-                          className="flex items-center justify-between gap-2 whitespace-nowrap px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-brand-goldDark transition-colors hover:bg-brand-cream/60"
-                        >
-                          <span>Shop All Perfumes</span>
-                          <Icon name="arrow-right" className="h-3.5 w-3.5 shrink-0" />
-                        </Link>
                       </div>
                     </div>
                   </div>

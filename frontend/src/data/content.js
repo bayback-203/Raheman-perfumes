@@ -11,13 +11,18 @@ export const MAIN_NAV = [
   { id: 'home', label: 'Home', to: '/' },
   {
     id: 'shop',
-    label: 'Shop',
+    label: 'Shop All',
     to: '/shop',
     children: [
-      { id: 'original', label: 'Original', description: 'Authentic branded perfumes', to: '/shop/originals' },
-      { id: 'attars', label: 'Pure Attars', description: 'Alcohol-free pure oils', to: '/shop/attars' },
-      { id: 'combos', label: 'Combos', description: 'Curated sets & pairings', to: '/combos' },
-      { id: 'bakhoor', label: 'Bakhoor', description: 'Aromatic oud incense', to: '/shop/bakhoor' },
+      { id: 'bestsellers', label: 'Best Sellers', to: '/shop/best-sellers' },
+      { id: 'original', label: 'Original', to: '/shop/originals' },
+      { id: 'attars', label: 'Pure Attars', to: '/shop/attars' },
+      { id: 'combos', label: 'Combos', to: '/combos' },
+      { id: 'bakhoor', label: 'Bakhoor', to: '/shop/bakhoor' },
+      { id: 'men', label: 'Perfume for Men', to: '/shop/men' },
+      { id: 'women', label: 'Perfume for Women', to: '/shop/women' },
+      { id: 'unisex', label: 'Unisex', to: '/shop/unisex' },
+      { id: 'view-all', label: 'View All', to: '/shop' },
     ],
   },
   { id: 'offers', label: 'Offers', to: '/offers', accent: 'red' },
@@ -25,7 +30,7 @@ export const MAIN_NAV = [
 
 export const MOBILE_NAV = [
   { id: 'home', label: 'Home', to: '/' },
-  { id: 'shop', label: 'Shop', to: '/shop' },
+  { id: 'shop', label: 'Shop All', to: '/shop' },
   { id: 'original', label: 'Original', to: '/shop/originals' },
   { id: 'attars', label: 'Pure Attars', to: '/shop/attars' },
   { id: 'combos', label: 'Combos', to: '/combos' },
