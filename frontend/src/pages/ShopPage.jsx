@@ -55,6 +55,29 @@ const COLLECTION_RULES = {
   },
 }
 
+/**
+ * Strict note-pyramid filter: ONLY shows perfumes whose Top, Heart, or Base
+ * notes actually contain the requested note/oil (never falls back to unrelated
+ * perfumes).
+ */
+function filterByNote(products, noteTerms) {
+  if (!noteTerms?.length) return []
+  const patterns = noteTerms.map(
+    (term) => new RegExp(`\\b${String(term).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i'),
+  )
+  return products.filter((p) => {
+    const pyramid = [
+      ...(p.notes?.top ?? []),
+      ...(p.notes?.heart ?? []),
+      ...(p.notes?.base ?? []),
+    ]
+    return pyramid.some((entry) => {
+      const text = String(entry ?? '').trim()
+      return text && patterns.some((re) => re.test(text))
+    })
+  })
+}
+
 /** Match live catalogue items suited to an occasion (by collection tag, family, notes, or copy). */
 function filterByOccasion(products, slug, keywords) {
   if (!keywords?.length) return products
@@ -122,22 +145,25 @@ export function ShopPage() {
       subtitle={category?.blurb ?? rule?.subtitle}
       initialFilters={initialFilters}
       collection={collection}
-      occasionKeywords={activeNote?.keywords ?? rule?.occasionKeywords}
+      activeNote={activeNote}
+      occasionKeywords={activeNote ? null : rule?.occasionKeywords}
       bannerOverride={activeNote?.image}
     />
   )
 }
 
-function ShopCatalogue({ title, initialFilters, collection, occasionKeywords, bannerOverride }) {
+function ShopCatalogue({ title, initialFilters, collection, activeNote, occasionKeywords, bannerOverride }) {
   const allProducts = useCatalogueProducts()
-  const occasionProducts = useMemo(
-    () => (occasionKeywords ? filterByOccasion(allProducts, collection ?? '', occasionKeywords) : null),
-    [allProducts, collection, occasionKeywords],
-  )
+  const scopedProducts = useMemo(() => {
+    if (activeNote) return filterByNote(allProducts, activeNote.keywords)
+    if (occasionKeywords) return filterByOccasion(allProducts, collection ?? '', occasionKeywords)
+    return null
+  }, [allProducts, activeNote, collection, occasionKeywords])
+
   // No `baseProducts` for normal pages so the hook reads the live catalogue
-  // directly; occasion & note routes narrow cleanly to fragrances matching the mood.
+  // directly; note routes strictly match Top/Heart/Base notes with zero fallback.
   const catalogue = useCatalogue({
-    baseProducts: occasionProducts,
+    baseProducts: scopedProducts,
     initialFilters,
     pageSize: 24,
   })
@@ -152,7 +178,11 @@ function ShopCatalogue({ title, initialFilters, collection, occasionKeywords, ba
 
       <CatalogueView
         catalogue={catalogue}
-        emptyTitle="Nothing in this collection matches those filters"
+        emptyTitle={
+          activeNote
+            ? `No perfumes with ${activeNote.label} notes right now`
+            : 'Nothing in this collection matches those filters'
+        }
         lockTier={!!initialFilters.tier}
       />
     </>
