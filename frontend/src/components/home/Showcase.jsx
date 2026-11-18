@@ -13,7 +13,8 @@ import {
   useShowcase,
   useShowcaseProducts,
 } from '@/store/catalogueStore'
-import { WHY_SHOP } from '@/data/content'
+import { Link } from '@/components/ui/AppLink'
+import { WHY_SHOP, SHOP_NOTES } from '@/data/content'
 
 /** Tracks horizontal overflow and provides smooth step sliding for single-row shelves. */
 function useRowSlider(itemCount) {
@@ -271,6 +272,81 @@ export function DealsOfDay() {
             ))}
           </div>
         )}
+      </div>
+    </section>
+  )
+}
+
+/**
+ * Shop by Notes horizontal slider — 20 perfumery notes with studio botanical
+ * photography on warm cream cards and smooth left/right sliding controls.
+ */
+export function ShopByNotes() {
+  const slider = useRowSlider(SHOP_NOTES.length)
+
+  return (
+    <section className="relative overflow-hidden border-b border-[#EFE3D0] bg-white py-14 lg:py-16">
+      <div className="shell relative z-10">
+        <div className="flex items-center justify-between gap-4">
+          <h2 className="font-serif text-2xl font-medium uppercase tracking-[0.06em] text-brand-charcoal sm:text-3xl">
+            Shop by Notes
+          </h2>
+          <RowSlideControls canPrev={slider.canPrev} canNext={slider.canNext} onSlide={slider.slide} />
+        </div>
+
+        <div className="relative mt-7 sm:mt-8">
+          <div
+            ref={slider.trackRef}
+            className="no-scrollbar flex snap-x snap-mandatory items-stretch gap-4 overflow-x-auto pb-2 scroll-smooth sm:gap-5"
+          >
+            {SHOP_NOTES.map((note) => (
+              <Link
+                key={note.id}
+                to={`/shop?note=${encodeURIComponent(note.id)}`}
+                aria-label={`Shop ${note.label} perfumes`}
+                className="group block w-[46%] shrink-0 snap-start focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold sm:w-[calc((100%-1.25rem)/2)] md:w-[calc((100%-2.5rem)/3)] lg:w-[calc((100%-3.75rem)/4)]"
+              >
+                <div className="aspect-square w-full overflow-hidden rounded-lg border border-[#F0E7D5] bg-[#FAF7EE]">
+                  <img
+                    src={note.image}
+                    alt={note.label}
+                    loading="lazy"
+                    decoding="async"
+                    className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                  />
+                </div>
+                <p className="mt-3 text-[14.5px] font-semibold text-brand-charcoal transition-colors group-hover:text-brand-goldDark sm:text-[15px]">
+                  {note.label}
+                </p>
+                <p className="mt-0.5 text-[12.5px] text-brand-muted sm:text-[13px]">
+                  {note.mood}
+                </p>
+              </Link>
+            ))}
+          </div>
+
+          {/* Floating side arrows on desktop mirroring the editorial slider reference */}
+          {slider.canPrev && (
+            <button
+              type="button"
+              onClick={() => slider.slide(-1)}
+              aria-label="Previous notes"
+              className="absolute -left-3 top-[40%] z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-[#E5D7BF] bg-white/95 text-brand-charcoal shadow-md backdrop-blur-xs transition hover:scale-105 hover:border-brand-gold hover:text-brand-goldDark lg:flex"
+            >
+              <Icon name="chevron-left" className="h-4 w-4" strokeWidth={2.2} />
+            </button>
+          )}
+          {slider.canNext && (
+            <button
+              type="button"
+              onClick={() => slider.slide(1)}
+              aria-label="Next notes"
+              className="absolute -right-3 top-[40%] z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-[#E5D7BF] bg-white/95 text-brand-charcoal shadow-md backdrop-blur-xs transition hover:scale-105 hover:border-brand-gold hover:text-brand-goldDark lg:flex"
+            >
+              <Icon name="chevron-right" className="h-4 w-4" strokeWidth={2.2} />
+            </button>
+          )}
+        </div>
       </div>
     </section>
   )

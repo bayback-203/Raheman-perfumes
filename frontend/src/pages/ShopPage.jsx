@@ -5,6 +5,7 @@ import { ShopBanner } from '@/components/product/ShopBanner'
 import { useCatalogue } from '@/hooks/useCatalogue'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 import { useCatalogueProducts, useCategories } from '@/store/catalogueStore'
+import { SHOP_NOTES } from '@/data/content'
 
 /** Collection slug -> how to narrow the catalogue. */
 const COLLECTION_RULES = {
@@ -96,6 +97,8 @@ export function ShopPage() {
 
   const brandParam = searchParams.get('brand')
   const familyParam = searchParams.get('family')
+  const noteParam = searchParams.get('note')
+  const activeNote = noteParam ? SHOP_NOTES.find((n) => n.id === noteParam.toLowerCase()) : null
 
   const initialFilters = useMemo(() => {
     const base = { ...(rule?.filters ?? {}) }
@@ -105,31 +108,34 @@ export function ShopPage() {
     // Recompute only when the route or the deep-link params actually change.
   }, [rule, brandParam, familyParam])
 
-  const title = rule?.title ?? (category ? category.label : 'All Fragrances')
+  const title = activeNote
+    ? `${activeNote.label} Perfumes`
+    : (rule?.title ?? (category ? category.label : 'All Fragrances'))
   useDocumentTitle(title)
 
   // Deep-link params stay in the URL so filter links remain shareable; the
   // `key` below remounts the catalogue with fresh filters whenever they change.
   return (
     <ShopCatalogue
-      key={`${collection ?? 'all'}-${brandParam ?? ''}-${familyParam ?? ''}`}
+      key={`${collection ?? 'all'}-${brandParam ?? ''}-${familyParam ?? ''}-${noteParam ?? ''}`}
       title={title}
       subtitle={category?.blurb ?? rule?.subtitle}
       initialFilters={initialFilters}
       collection={collection}
-      occasionKeywords={rule?.occasionKeywords}
+      occasionKeywords={activeNote?.keywords ?? rule?.occasionKeywords}
+      bannerOverride={activeNote?.image}
     />
   )
 }
 
-function ShopCatalogue({ title, initialFilters, collection, occasionKeywords }) {
+function ShopCatalogue({ title, initialFilters, collection, occasionKeywords, bannerOverride }) {
   const allProducts = useCatalogueProducts()
   const occasionProducts = useMemo(
-    () => (occasionKeywords ? filterByOccasion(allProducts, collection, occasionKeywords) : null),
+    () => (occasionKeywords ? filterByOccasion(allProducts, collection ?? '', occasionKeywords) : null),
     [allProducts, collection, occasionKeywords],
   )
   // No `baseProducts` for normal pages so the hook reads the live catalogue
-  // directly; occasion routes narrow cleanly to fragrances matching the mood.
+  // directly; occasion & note routes narrow cleanly to fragrances matching the mood.
   const catalogue = useCatalogue({
     baseProducts: occasionProducts,
     initialFilters,
@@ -141,6 +147,7 @@ function ShopCatalogue({ title, initialFilters, collection, occasionKeywords }) 
       <ShopBanner
         collection={collection}
         title={title}
+        imageOverride={bannerOverride}
       />
 
       <CatalogueView

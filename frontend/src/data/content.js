@@ -133,6 +133,35 @@ export const OCCASIONS = [
   { id: 'college', label: 'College', to: '/shop/college', image: '/occasion-college.jpg' },
 ]
 
+export const GENDER_SEGMENTS = [
+  { id: 'men', label: 'Men', to: '/shop/men', image: '/gender-men.jpg' },
+  { id: 'women', label: 'Women', to: '/shop/women', image: '/gender-women.jpg' },
+  { id: 'unisex', label: 'Unisex', to: '/shop/unisex', image: '/gender-unisex.jpg' },
+]
+
+export const SHOP_NOTES = [
+  { id: 'oud', label: 'Oud', mood: 'Deep. Warm. Refined.', image: '/note-oud.jpg', keywords: ['oud', 'agarwood', 'woody'] },
+  { id: 'rose', label: 'Rose', mood: 'Velvety. Floral. Timeless.', image: '/note-rose.jpg', keywords: ['rose', 'floral', 'damask'] },
+  { id: 'amber', label: 'Amber', mood: 'Golden. Resinous. Rich.', image: '/note-amber.jpg', keywords: ['amber', 'ambergris', 'oriental', 'resin'] },
+  { id: 'bergamot', label: 'Bergamot', mood: 'Crisp. Zesty. Uplifting.', image: '/note-bergamot.jpg', keywords: ['bergamot', 'citrus', 'fresh'] },
+  { id: 'lavender', label: 'Lavender', mood: 'Fresh. Aromatic. Clean.', image: '/note-lavender.jpg', keywords: ['lavender', 'aromatic', 'herbal', 'fresh'] },
+  { id: 'cardamom', label: 'Cardamom', mood: 'Aromatic. Spiced. Crisp.', image: '/note-cardamom.jpg', keywords: ['cardamom', 'spice', 'spicy', 'aromatic'] },
+  { id: 'vanilla', label: 'Vanilla', mood: 'Warm. Sweet. Comforting.', image: '/note-vanilla.jpg', keywords: ['vanilla', 'gourmand', 'sweet', 'tonka'] },
+  { id: 'saffron', label: 'Saffron', mood: 'Royal. Spicy. Opulent.', image: '/note-saffron.jpg', keywords: ['saffron', 'spice', 'spicy', 'oriental'] },
+  { id: 'vetiver', label: 'Vetiver', mood: 'Earthy. Crisp. Grounded.', image: '/note-vetiver.jpg', keywords: ['vetiver', 'earthy', 'woody', 'green'] },
+  { id: 'jasmine', label: 'Jasmine', mood: 'Luminous. Soft. Romantic.', image: '/note-jasmine.jpg', keywords: ['jasmine', 'white floral', 'floral'] },
+  { id: 'citrus', label: 'Citrus', mood: 'Juicy. Vibrant. Bright.', image: '/note-citrus.jpg', keywords: ['citrus', 'orange', 'lemon', 'grapefruit', 'mandarin', 'lime', 'fig', 'fresh'] },
+  { id: 'cinnamon', label: 'Cinnamon', mood: 'Spiced. Warm. Festive.', image: '/note-cinnamon.jpg', keywords: ['cinnamon', 'spice', 'spicy', 'clove', 'warm'] },
+  { id: 'sandalwood', label: 'Sandalwood', mood: 'Creamy. Smooth. Woody.', image: '/note-sandalwood.jpg', keywords: ['sandalwood', 'sandal', 'woody', 'wood'] },
+  { id: 'gourmand', label: 'Gourmand', mood: 'Decadent. Sweet. Addictive.', image: '/note-gourmand.jpg', keywords: ['gourmand', 'coffee', 'cocoa', 'chocolate', 'caramel', 'praline', 'tonka', 'sweet'] },
+  { id: 'spices', label: 'Spices', mood: 'Bold. Exotic. Intense.', image: '/note-spice.jpg', keywords: ['spice', 'spicy', 'anise', 'clove', 'pepper', 'nutmeg', 'oriental'] },
+  { id: 'cedarwood', label: 'Cedarwood', mood: 'Dry. Clean. Structured.', image: '/note-cedarwood.jpg', keywords: ['cedar', 'cedarwood', 'woody', 'wood'] },
+  { id: 'floral', label: 'Floral', mood: 'Elegant. Soft. Romantic.', image: '/note-floral.jpg', keywords: ['floral', 'rose', 'peony', 'jasmine', 'blossom', 'flower'] },
+  { id: 'aqua', label: 'Aqua', mood: 'Cool. Breezy. Refreshing.', image: '/note-aqua.jpg', keywords: ['aqua', 'aquatic', 'marine', 'sea', 'ice', 'water', 'fresh'] },
+  { id: 'musk', label: 'Musk', mood: 'Delicate. Creamy. Sensual.', image: '/note-musk.jpg', keywords: ['musk', 'musky', 'white musk', 'clean'] },
+  { id: 'resins', label: 'Resins', mood: 'Smoky. Sacred. Lasting.', image: '/note-resin.jpg', keywords: ['resin', 'frankincense', 'myrrh', 'incense', 'bakhoor', 'amber', 'oud'] },
+]
+
 export const WHY_SHOP = [
   {
     id: 'authentic',

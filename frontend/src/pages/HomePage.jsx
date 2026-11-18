@@ -4,12 +4,13 @@ import { Button } from '@/components/ui/Button'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Accordion } from '@/components/ui/Accordion'
 import { Reveal } from '@/components/ui/Reveal'
-import { Hero, Pillars, OccasionGrid } from '@/components/home/Hero'
+import { Hero, Pillars, GenderShowcase, OccasionGrid } from '@/components/home/Hero'
 import { CategoryGrid, BrandStrip } from '@/components/home/Collections'
 import {
   BestSellers,
   ComingSoon,
   DealsOfDay,
+  ShopByNotes,
   WhyShopWithUs,
 } from '@/components/home/Showcase'
 import { HOME_FAQ, HOUSE_BLURB } from '@/data/content'
@@ -63,7 +64,13 @@ export function HomePage() {
         <Pillars />
       </Reveal>
       <Reveal>
+        <GenderShowcase />
+      </Reveal>
+      <Reveal>
         <OccasionGrid />
+      </Reveal>
+      <Reveal>
+        <ShopByNotes />
       </Reveal>
       <Reveal>
         <CategoryGrid />

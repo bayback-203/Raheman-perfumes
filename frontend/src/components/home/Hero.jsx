@@ -3,7 +3,7 @@ import cn from '@/lib/cn'
 import { Link } from '@/components/ui/AppLink'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
-import { PILLARS, OCCASIONS } from '@/data/content'
+import { PILLARS, OCCASIONS, GENDER_SEGMENTS } from '@/data/content'
 import { TIERS } from '@/data/tiers'
 
 const HERO_LINE_1 = 'Wear a scent that'
@@ -229,6 +229,48 @@ export function Pillars() {
               <p className="mt-3 text-left text-[15px] font-medium text-brand-charcoal">
                 {pillar.title}
               </p>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/** Three gender showcase tiles: Men, Women, Unisex. */
+export function GenderShowcase() {
+  return (
+    <section className="bridal-canvas relative border-b border-[#EFE3D0] py-14 lg:py-16">
+      <div className="shell">
+        <h2 className="text-center font-serif text-2xl font-medium tracking-tight text-brand-charcoal sm:text-3xl lg:text-headline-xl">
+          Shop by Gender
+        </h2>
+
+        <div className="mt-8 grid grid-cols-3 gap-3 sm:mt-10 sm:gap-5 lg:gap-6">
+          {GENDER_SEGMENTS.map((segment) => (
+            <Link
+              key={segment.id}
+              to={segment.to}
+              aria-label={`Shop ${segment.label} perfumes`}
+              className="group relative block aspect-[4/5] overflow-hidden rounded-2xl border border-[#EFE3CF] bg-[#F8F4EE] shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand-gold/70 hover:shadow-[0_18px_36px_-12px_rgba(32,22,12,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold sm:aspect-square"
+            >
+              <img
+                src={segment.image}
+                alt={segment.label}
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+              />
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 via-black/20 to-transparent"
+              />
+              <div className="absolute inset-x-2 bottom-3 flex items-center justify-center sm:inset-x-5 sm:bottom-5">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/95 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-brand-charcoal shadow-md backdrop-blur-xs transition-colors duration-200 group-hover:border-brand-gold/60 group-hover:bg-brand-charcoal group-hover:text-[#F6E2B3] sm:px-6 sm:py-2 sm:text-xs">
+                  {segment.label}
+                  <Icon name="arrow-right" className="hidden h-3.5 w-3.5 sm:inline-block" />
+                </span>
+              </div>
             </Link>
           ))}
         </div>

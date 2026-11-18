@@ -25,10 +25,10 @@ const BANNER_IMAGES = {
 /**
  * Shared hero banner used across the Shop, Original, and Best Sellers pages.
  */
-export function ShopBanner({ collection, title, eyebrow }) {
+export function ShopBanner({ collection, title, eyebrow, imageOverride }) {
   const [searchParams] = useSearchParams()
   const sort = searchParams.get('sort')
-  const visualSrc = BANNER_IMAGES[collection] || BANNER_IMAGES.default
+  const visualSrc = imageOverride || BANNER_IMAGES[collection] || BANNER_IMAGES.default
 
   const pills = [
     { label: 'All', to: '/shop', active: !collection && !sort },
