@@ -85,41 +85,26 @@ export function Header() {
     return location.pathname === to || location.pathname.startsWith(`${to}/`)
   }
 
-  const isDarkHero = false
-  const isLightHero =
-    location.pathname === '/' ||
-    location.pathname === '/shop' ||
-    location.pathname.startsWith('/shop/') ||
-    location.pathname === '/offers'
-  const isHeroPage = isDarkHero || isLightHero
-  const isTransparent = isHeroPage && !scrolled
-  const isLightTone = isTransparent && isDarkHero
-  const tone = isLightTone ? 'light' : 'dark'
+  const isLightTone = false
+  const tone = 'dark'
 
   return (
     <header
       className={cn(
-        'sticky top-0 z-40 transition-all duration-300',
-        isHeroPage && '-mb-[80px] sm:-mb-[88px] lg:-mb-[104px]',
-        isTransparent
-          ? 'border-transparent bg-transparent shadow-none'
-          : 'border-b border-brand-border/80 bg-white/95 backdrop-blur-md shadow-card',
+        'sticky top-0 z-40 border-b border-brand-border/80 bg-white/95 backdrop-blur-md transition-shadow duration-300',
+        scrolled ? 'shadow-card' : 'shadow-none',
       )}
     >
+      {/* Layer 1: Centered Logo + Search & Actions */}
       <div className="shell-wide">
-        <div className="grid h-[80px] grid-cols-[1fr_auto_1fr] items-center gap-2 sm:h-[88px] lg:h-[104px] lg:gap-4">
-          {/* Left — mobile menu & search + desktop primary nav */}
+        <div className="grid h-[76px] grid-cols-[1fr_auto_1fr] items-center gap-2 sm:h-[84px] lg:h-[96px] lg:gap-4">
+          {/* Left — mobile menu & search */}
           <div className="flex min-w-0 items-center justify-start gap-0.5 sm:gap-1.5">
             <button
               type="button"
               onClick={openMobileMenu}
               aria-label="Open menu"
-              className={cn(
-                'flex h-9 w-9 items-center justify-center rounded-full transition sm:h-10 sm:w-10 lg:hidden',
-                isLightTone
-                  ? 'text-brand-ivory hover:bg-white/15'
-                  : 'text-brand-charcoal hover:bg-neutral-100',
-              )}
+              className="flex h-9 w-9 items-center justify-center rounded-full text-brand-charcoal transition hover:bg-neutral-100 sm:h-10 sm:w-10 lg:hidden"
             >
               <Icon name="menu" className="h-5 w-5" />
             </button>
@@ -128,133 +113,10 @@ export function Header() {
               type="button"
               onClick={() => toggleSearch(true)}
               aria-label="Search"
-              className={cn(
-                'flex h-9 w-9 items-center justify-center rounded-full transition sm:h-10 sm:w-10 md:hidden',
-                isLightTone
-                  ? 'text-brand-ivory hover:bg-white/15 hover:text-brand-gold'
-                  : 'text-brand-charcoal hover:bg-neutral-100 hover:text-brand-goldDark',
-              )}
+              className="flex h-9 w-9 items-center justify-center rounded-full text-brand-charcoal transition hover:bg-neutral-100 hover:text-brand-goldDark sm:h-10 sm:w-10 md:hidden"
             >
               <Icon name="search" className="h-[18px] w-[18px]" strokeWidth={1.7} />
             </button>
-
-            <nav className="hidden items-center gap-6 lg:flex xl:gap-8" aria-label="Primary">
-              {MAIN_NAV.map((item) => {
-                const hasChildren = Array.isArray(item.children) && item.children.length > 0
-                const active =
-                  isActive(item.to) || (hasChildren && item.children.some((child) => isActive(child.to)))
-
-                if (!hasChildren) {
-                  return (
-                    <NavLink
-                      key={item.id}
-                      to={item.to}
-                      className={cn(
-                        'relative whitespace-nowrap py-1 text-label-sm font-bold uppercase tracking-[0.14em] transition-colors',
-                        isLightTone
-                          ? (active ? 'text-brand-gold' : 'text-brand-ivory/90 hover:text-white')
-                          : (active ? 'text-brand-goldDark' : 'text-ink-variant hover:text-brand-charcoal'),
-                        item.accent === 'red' &&
-                          !active &&
-                          (isLightTone ? 'text-red-300 hover:text-red-200' : 'text-tier-original hover:text-tier-original'),
-                      )}
-                    >
-                      {item.label}
-                      {item.badge && (
-                        <span
-                          className={cn(
-                            'ml-1.5 rounded-full px-1.5 py-0.5 text-[9px] font-bold',
-                            isLightTone ? 'bg-brand-gold/30 text-brand-gold' : 'bg-brand-gold/25 text-brand-goldDark',
-                          )}
-                        >
-                          {item.badge}
-                        </span>
-                      )}
-                      {active && (
-                        <span
-                          className={cn(
-                            'absolute -bottom-[9px] left-0 right-0 h-px',
-                            isLightTone ? 'bg-brand-gold' : 'bg-brand-goldDark',
-                          )}
-                          aria-hidden="true"
-                        />
-                      )}
-                    </NavLink>
-                  )
-                }
-
-                const isOpen = openDropdown === item.id
-
-                return (
-                  <div
-                    key={item.id}
-                    className="relative py-2"
-                    onMouseEnter={() => setOpenDropdown(item.id)}
-                    onMouseLeave={() => setOpenDropdown(null)}
-                  >
-                    <NavLink
-                      to={item.to}
-                      onClick={() => setOpenDropdown(null)}
-                      className={cn(
-                        'relative inline-flex items-center gap-1.5 whitespace-nowrap py-1 text-label-sm font-bold uppercase tracking-[0.14em] transition-colors',
-                        isLightTone
-                          ? (active || isOpen ? 'text-brand-gold' : 'text-brand-ivory/90 hover:text-white')
-                          : (active || isOpen ? 'text-brand-goldDark' : 'text-ink-variant hover:text-brand-charcoal'),
-                      )}
-                    >
-                      {item.label}
-                      <Icon
-                        name="chevron-down"
-                        className={cn('h-3 w-3 transition-transform duration-200', isOpen && 'rotate-180')}
-                        strokeWidth={2.2}
-                      />
-                      {(active || isOpen) && (
-                        <span
-                          className={cn(
-                            'absolute -bottom-[6px] left-0 right-0 h-[1.5px] transition-opacity duration-200',
-                            isLightTone ? 'bg-brand-gold' : 'bg-brand-goldDark',
-                          )}
-                          aria-hidden="true"
-                        />
-                      )}
-                    </NavLink>
-
-                    {/* Editorial single-column hover dropdown centered under Shop All */}
-                    <div
-                      className={cn(
-                        'absolute left-1/2 top-full z-50 -translate-x-1/2 pt-1.5 transition-all duration-200',
-                        isOpen
-                          ? 'pointer-events-auto visible translate-y-0 opacity-100'
-                          : 'pointer-events-none invisible translate-y-1 opacity-0',
-                      )}
-                    >
-                      <div className="min-w-[14rem] border border-[#E5D3B3] border-t-2 border-t-brand-gold bg-gradient-to-b from-[#FFFDF9] via-[#FDF7EC] to-[#F9EFE0] py-2 shadow-[0_18px_40px_-14px_rgba(32,22,12,0.18)]">
-                        {item.children.map((child) => {
-                          const childActive = location.pathname === child.to
-                          const isViewAll = child.id === 'view-all'
-                          return (
-                            <Link
-                              key={child.id}
-                              to={child.to}
-                              onClick={() => setOpenDropdown(null)}
-                              className={cn(
-                                'block whitespace-nowrap px-5 py-2.5 text-[14px] font-medium tracking-[0.01em] transition-colors duration-150',
-                                isViewAll && 'mt-1 border-t border-[#E8D8BC]/80 pt-3 font-semibold text-brand-goldDark',
-                                childActive
-                                  ? 'bg-[#F3E5CA]/75 text-brand-goldDark'
-                                  : 'text-brand-charcoal hover:bg-[#F3E5CA]/60 hover:text-brand-goldDark',
-                              )}
-                            >
-                              {child.label}
-                            </Link>
-                          )
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                )
-              })}
-            </nav>
           </div>
 
           {/* Centre — official seal logo */}
@@ -361,6 +223,109 @@ export function Header() {
             <HeaderAction icon="heart" label="Wishlist" to="/wishlist" badge={wishlistCount} tone={tone} />
             <HeaderAction icon="bag" label="Shopping bag" onClick={openCartDrawer} badge={cartCount} tone={tone} />
           </div>
+        </div>
+      </div>
+
+      {/* Layer 2: Centered Primary Navigation Bar (desktop) */}
+      <div className="hidden border-t border-[#EFE3D0] bg-gradient-to-r from-[#FFFDF9] via-white to-[#FFFDF9] lg:block">
+        <div className="shell-wide">
+          <nav className="flex h-[46px] items-center justify-center gap-8 xl:gap-10" aria-label="Primary">
+            {MAIN_NAV.map((item) => {
+              const hasChildren = Array.isArray(item.children) && item.children.length > 0
+              const active = hasChildren
+                ? location.pathname === item.to ||
+                  item.children.some((child) => child.to !== '/shop' && location.pathname === child.to)
+                : isActive(item.to)
+
+              if (!hasChildren) {
+                return (
+                  <NavLink
+                    key={item.id}
+                    to={item.to}
+                    className={cn(
+                      'relative whitespace-nowrap py-1 text-[12px] font-bold uppercase tracking-[0.14em] transition-colors',
+                      active ? 'text-brand-goldDark' : 'text-brand-charcoal hover:text-brand-goldDark',
+                      item.accent === 'red' && !active && 'text-tier-original hover:text-tier-original',
+                    )}
+                  >
+                    {item.label}
+                    {active && (
+                      <span
+                        className="absolute -bottom-[6px] left-0 right-0 h-[1.5px] bg-brand-goldDark"
+                        aria-hidden="true"
+                      />
+                    )}
+                  </NavLink>
+                )
+              }
+
+              const isOpen = openDropdown === item.id
+
+              return (
+                <div
+                  key={item.id}
+                  className="relative py-2"
+                  onMouseEnter={() => setOpenDropdown(item.id)}
+                  onMouseLeave={() => setOpenDropdown(null)}
+                >
+                  <NavLink
+                    to={item.to}
+                    onClick={() => setOpenDropdown(null)}
+                    className={cn(
+                      'relative inline-flex items-center gap-1.5 whitespace-nowrap py-1 text-[12px] font-bold uppercase tracking-[0.14em] transition-colors',
+                      active || isOpen ? 'text-brand-goldDark' : 'text-brand-charcoal hover:text-brand-goldDark',
+                    )}
+                  >
+                    {item.label}
+                    <Icon
+                      name="chevron-down"
+                      className={cn('h-3 w-3 transition-transform duration-200', isOpen && 'rotate-180')}
+                      strokeWidth={2.2}
+                    />
+                    {(active || isOpen) && (
+                      <span
+                        className="absolute -bottom-[6px] left-0 right-0 h-[1.5px] bg-brand-goldDark transition-opacity duration-200"
+                        aria-hidden="true"
+                      />
+                    )}
+                  </NavLink>
+
+                  {/* Editorial single-column hover dropdown centered under Shop All */}
+                  <div
+                    className={cn(
+                      'absolute left-1/2 top-full z-50 -translate-x-1/2 pt-1.5 transition-all duration-200',
+                      isOpen
+                        ? 'pointer-events-auto visible translate-y-0 opacity-100'
+                        : 'pointer-events-none invisible translate-y-1 opacity-0',
+                    )}
+                  >
+                    <div className="min-w-[14rem] border border-[#E5D3B3] border-t-2 border-t-brand-gold bg-gradient-to-b from-[#FFFDF9] via-[#FDF7EC] to-[#F9EFE0] py-2 shadow-[0_18px_40px_-14px_rgba(32,22,12,0.18)]">
+                      {item.children.map((child) => {
+                        const childActive = location.pathname === child.to
+                        const isViewAll = child.id === 'view-all'
+                        return (
+                          <Link
+                            key={child.id}
+                            to={child.to}
+                            onClick={() => setOpenDropdown(null)}
+                            className={cn(
+                              'block whitespace-nowrap px-5 py-2.5 text-[14px] font-medium tracking-[0.01em] transition-colors duration-150',
+                              isViewAll && 'mt-1 border-t border-[#E8D8BC]/80 pt-3 font-semibold text-brand-goldDark',
+                              childActive
+                                ? 'bg-[#F3E5CA]/75 text-brand-goldDark'
+                                : 'text-brand-charcoal hover:bg-[#F3E5CA]/60 hover:text-brand-goldDark',
+                            )}
+                          >
+                            {child.label}
+                          </Link>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </nav>
         </div>
       </div>
 

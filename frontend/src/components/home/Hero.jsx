@@ -3,7 +3,7 @@ import cn from '@/lib/cn'
 import { Link } from '@/components/ui/AppLink'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
-import { PILLARS, OCCASIONS, ANNOUNCEMENTS } from '@/data/content'
+import { PILLARS, OCCASIONS } from '@/data/content'
 import { TIERS } from '@/data/tiers'
 
 const HERO_LINE_1 = 'Wear a scent that'
@@ -90,10 +90,10 @@ function TypewriterHeadline() {
  */
 export function Hero() {
   return (
-    <section className="relative flex flex-col justify-between overflow-hidden border-b border-brand-border bg-white text-brand-charcoal md:min-h-screen md:min-h-[100dvh]">
+    <section className="relative flex flex-col justify-between overflow-hidden border-b border-brand-border bg-white text-brand-charcoal md:min-h-[calc(100dvh-142px)]">
       {/* Ambient botanical left backdrop (tablet/desktop): wet vetiver grass, pampas plumes, ferns & sunlit leaf shadows */}
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-[52px] top-[84px] hidden items-end justify-start overflow-hidden bg-white md:flex lg:top-[96px]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 top-0 hidden items-end justify-start overflow-hidden bg-white md:flex"
         aria-hidden="true"
       >
         <div
@@ -116,9 +116,9 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Right crystal flacon & note symphony (tablet/desktop): razor-sharp with zero washout veil */}
+      {/* Right crystal flacon & note symphony (tablet/desktop): anchored flush downwards to bottom edge */}
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-[52px] top-[84px] hidden items-end justify-end overflow-hidden md:left-[43%] md:flex lg:top-[96px]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 top-0 hidden items-end justify-end overflow-hidden md:left-[43%] md:flex"
         style={{
           WebkitMaskImage:
             'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.45) 10%, black 22%)',
@@ -128,7 +128,7 @@ export function Hero() {
         aria-hidden="true"
       >
         <div
-          className="relative h-full w-auto shrink-0 aspect-[1376/768] md:h-[min(115%,62vw)] lg:h-[min(124%,60vw)]"
+          className="relative h-full w-auto shrink-0 aspect-[1376/768] md:h-[min(115%,62vw)] lg:h-[min(122%,58vw)]"
         >
           <img
             src="/hero-white.jpg?v=5"
@@ -137,8 +137,6 @@ export function Hero() {
             className="h-full w-full object-contain"
           />
         </div>
-        {/* Feather the upper edge just under the sticky header without reaching the bottle cap */}
-        <div className="absolute inset-x-0 top-0 h-8 bg-gradient-to-b from-white/95 to-transparent" />
       </div>
 
       {/* Subtle localized mist glow ONLY behind left-column typography on tablet/desktop — never washes out the crystal bottle */}
@@ -160,7 +158,7 @@ export function Hero() {
       />
 
       <div className="relative flex flex-1 flex-col justify-center">
-        {/* Mobile full-bleed background: mathematically dead-centered crystal flacon + botanicals seamlessly behind hero */}
+        {/* Mobile full-bleed background: mathematically dead-centered crystal flacon anchored downwards */}
         <div
           className="pointer-events-none absolute inset-x-0 bottom-0 top-0 flex items-end overflow-hidden md:hidden"
           aria-hidden="true"
@@ -179,7 +177,7 @@ export function Hero() {
           />
         </div>
 
-        <div className="shell relative z-10 grid gap-8 pb-[86vw] pt-[104px] text-center sm:pb-[380px] sm:pt-32 md:my-auto md:grid-cols-[1.05fr_0.95fr] md:items-center md:gap-12 md:pb-16 md:text-left lg:gap-16 lg:pb-24 lg:pt-40">
+        <div className="shell relative z-10 grid gap-8 pb-[86vw] pt-10 text-center sm:pb-[380px] sm:pt-12 md:my-auto md:grid-cols-[1.05fr_0.95fr] md:items-center md:gap-12 md:py-16 md:text-left lg:gap-16 lg:py-20">
           <div className="animate-rise-lux">
             <TypewriterHeadline />
 
@@ -200,23 +198,6 @@ export function Hero() {
           </div>
 
           <div className="hidden md:block" aria-hidden="true" />
-        </div>
-      </div>
-
-      {/* Trust ribbon */}
-      <div className="relative z-10 border-t border-[#EBDEC9] bg-[#EDE0CC]">
-        <div className="shell-wide grid grid-cols-2 gap-px bg-[#EDE0CC] px-0 lg:grid-cols-4 lg:px-8 xl:px-12">
-          {ANNOUNCEMENTS.map((item) => (
-            <div
-              key={item.id}
-              className="flex items-center gap-2 bg-gradient-to-r from-[#FFFDF9] via-[#FDF6F7] to-[#FBF4E7] px-3 py-3 sm:gap-3 sm:px-4 sm:py-4 lg:justify-center"
-            >
-              <Icon name={item.icon} className="h-3.5 w-3.5 shrink-0 text-brand-goldDark sm:h-4 sm:w-4" />
-              <span className="text-[10px] font-semibold uppercase leading-tight tracking-[0.08em] text-brand-charcoal sm:text-label-sm sm:tracking-[0.12em]">
-                {item.text}
-              </span>
-            </div>
-          ))}
         </div>
       </div>
     </section>

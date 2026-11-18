@@ -9,6 +9,10 @@ export const ANNOUNCEMENTS = [
 
 export const MAIN_NAV = [
   { id: 'home', label: 'Home', to: '/' },
+  { id: 'perfumes', label: 'Perfumes', to: '/shop/originals' },
+  { id: 'attars', label: 'Attars', to: '/shop/attars' },
+  { id: 'combos', label: 'Combos', to: '/combos' },
+  { id: 'bakhoor', label: 'Bakhoor', to: '/shop/bakhoor' },
   {
     id: 'shop',
     label: 'Shop All',

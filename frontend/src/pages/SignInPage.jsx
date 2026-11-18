@@ -350,7 +350,7 @@ export function SignInPage() {
   const googleHref = googleSignInUrl(next)
 
   return (
-    <div className="min-h-[calc(100vh-80px)] w-full sm:min-h-[calc(100vh-88px)] lg:grid lg:min-h-[calc(100vh-104px)] lg:grid-cols-2">
+    <div className="min-h-[calc(100vh-76px)] w-full sm:min-h-[calc(100vh-84px)] lg:grid lg:min-h-[calc(100vh-142px)] lg:grid-cols-2">
       {/* Left 50% full-bleed showcase — hidden on smaller screens so only the essential login box shows */}
       <div className="relative hidden overflow-hidden bg-neutral-100 lg:block">
         <img
@@ -363,7 +363,7 @@ export function SignInPage() {
       </div>
 
       {/* Right 50% (100% below lg): essential login / account area */}
-      <div className="flex min-h-[calc(100vh-80px)] items-center justify-center bg-white px-4 py-8 sm:min-h-[calc(100vh-88px)] sm:px-8 lg:min-h-[calc(100vh-104px)] lg:border-l lg:border-brand-border lg:px-14 lg:py-12">
+      <div className="flex min-h-[calc(100vh-76px)] items-center justify-center bg-white px-4 py-8 sm:min-h-[calc(100vh-84px)] sm:px-8 lg:min-h-[calc(100vh-142px)] lg:border-l lg:border-brand-border lg:px-14 lg:py-12">
         <div className="w-full max-w-md rounded-xl border border-brand-border bg-white p-6 shadow-card sm:p-8 lg:max-w-lg lg:rounded-none lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none">
         {/* Header Heading */}
         <h1 className="font-serif text-3xl font-medium text-brand-charcoal lg:text-headline-lg">
