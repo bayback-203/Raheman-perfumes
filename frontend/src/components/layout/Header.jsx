@@ -219,10 +219,10 @@ export function Header() {
                       )}
                     </NavLink>
 
-                    {/* Editorial single-column hover dropdown matching the warm ivory & champagne-gold theme */}
+                    {/* Editorial single-column hover dropdown centered under Shop All */}
                     <div
                       className={cn(
-                        'absolute left-0 top-full z-50 pt-1.5 transition-all duration-200',
+                        'absolute left-1/2 top-full z-50 -translate-x-1/2 pt-1.5 transition-all duration-200',
                         isOpen
                           ? 'pointer-events-auto visible translate-y-0 opacity-100'
                           : 'pointer-events-none invisible translate-y-1 opacity-0',
