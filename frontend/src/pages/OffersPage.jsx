@@ -155,7 +155,7 @@ export function OffersPage() {
   return (
     <div className="pb-16">
       {/* Hero */}
-      <section className="relative flex flex-col justify-start overflow-hidden border-b border-brand-border bg-white text-brand-charcoal sm:min-h-[calc(100dvh-104px)] sm:justify-center">
+      <section className="relative flex flex-col justify-start overflow-hidden border-b border-brand-border bg-white text-brand-charcoal sm:min-h-screen sm:min-h-[100dvh] sm:justify-center">
         {/* Full-bleed background image: dead-centered bottles on phones, full cover on desktop */}
         <div
           className="pointer-events-none absolute inset-0 flex items-end overflow-hidden"
@@ -179,7 +179,7 @@ export function OffersPage() {
           className="pointer-events-none absolute inset-0 hidden sm:block sm:bg-gradient-to-r sm:from-white/90 sm:via-white/45 sm:to-transparent"
           aria-hidden="true"
         />
-        <div className="shell relative z-10 pb-[78vw] pt-10 text-center sm:py-16 sm:text-left lg:py-20">
+        <div className="shell relative z-10 pb-[78vw] pt-[104px] text-center sm:py-24 sm:pt-32 sm:text-left lg:pt-40">
           <div className="mx-auto max-w-2xl sm:mx-0">
             <Chip tone="dark" className="bg-white/95 shadow-sm">
               <Icon name="tag" className="h-3.5 w-3.5 text-brand-goldDark" />

@@ -90,7 +90,7 @@ function TypewriterHeadline() {
  */
 export function Hero() {
   return (
-    <section className="relative flex flex-col justify-between overflow-hidden border-b border-brand-border bg-white text-brand-charcoal md:min-h-[calc(100dvh-104px)]">
+    <section className="relative flex flex-col justify-between overflow-hidden border-b border-brand-border bg-white text-brand-charcoal md:min-h-screen md:min-h-[100dvh]">
       {/* Ambient botanical left backdrop (tablet/desktop): wet vetiver grass, pampas plumes, ferns & sunlit leaf shadows */}
       <div
         className="pointer-events-none absolute inset-x-0 bottom-0 top-0 hidden items-end justify-start overflow-hidden bg-white md:flex"
@@ -177,7 +177,7 @@ export function Hero() {
           />
         </div>
 
-        <div className="shell relative z-10 grid gap-8 pb-[86vw] pt-10 text-center sm:pb-[380px] sm:pt-12 md:my-auto md:grid-cols-[1.05fr_0.95fr] md:items-center md:gap-12 md:py-16 md:text-left lg:gap-16 lg:py-20">
+        <div className="shell relative z-10 grid gap-8 pb-[86vw] pt-[104px] text-center sm:pb-[380px] sm:pt-32 md:my-auto md:grid-cols-[1.05fr_0.95fr] md:items-center md:gap-12 md:pb-16 md:pt-28 md:text-left lg:gap-16 lg:pb-24 lg:pt-36">
           <div className="animate-rise-lux">
             <TypewriterHeadline />
 

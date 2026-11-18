@@ -72,7 +72,7 @@ export function ShopBanner({ collection, title, eyebrow, imageOverride }) {
         <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-[#FFFBF6]/30" />
       </div>
 
-      <div className="shell relative z-20 py-7 sm:py-10 lg:py-12">
+      <div className="shell relative z-20 pb-7 pt-[104px] sm:pb-10 sm:pt-32 lg:pb-12 lg:pt-36">
         {eyebrow && (
           <p className="inline-flex items-center gap-2 text-label-md font-bold uppercase tracking-[0.18em] text-brand-goldDark">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand-goldDark animate-pulse" aria-hidden="true" />

@@ -60,6 +60,17 @@ export function Header() {
 
   useLenis(onScroll)
 
+  // Native scroll fallback (touch devices / instant jumps) + sync on route change
+  useEffect(() => {
+    const syncScroll = () => {
+      const next = window.scrollY > 8
+      setScrolled((previous) => (previous === next ? previous : next))
+    }
+    syncScroll()
+    window.addEventListener('scroll', syncScroll, { passive: true })
+    return () => window.removeEventListener('scroll', syncScroll)
+  }, [location.pathname, location.search])
+
   // Any navigation closes the suggestion panel and any hover dropdown.
   useEffect(() => {
     setQuery('')
@@ -85,14 +96,23 @@ export function Header() {
     return location.pathname === to || location.pathname.startsWith(`${to}/`)
   }
 
+  const isHeroPage =
+    location.pathname === '/' ||
+    location.pathname === '/shop' ||
+    location.pathname.startsWith('/shop/') ||
+    location.pathname === '/offers'
+  const isTransparent = isHeroPage && !scrolled
   const isLightTone = false
   const tone = 'dark'
 
   return (
     <header
       className={cn(
-        'sticky top-0 z-40 border-b border-brand-border/80 bg-white/95 backdrop-blur-md transition-shadow duration-300',
-        scrolled ? 'shadow-card' : 'shadow-none',
+        'sticky top-0 z-40 transition-all duration-300',
+        isHeroPage && '-mb-[80px] sm:-mb-[88px] lg:-mb-[104px]',
+        isTransparent
+          ? 'border-b border-transparent bg-transparent shadow-none'
+          : 'border-b border-brand-border/80 bg-white/95 backdrop-blur-md shadow-card',
       )}
     >
       <div className="shell-wide">
