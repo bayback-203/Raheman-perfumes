@@ -162,7 +162,7 @@ export function OffersPage() {
           aria-hidden="true"
         >
           <img
-            src="/offer-white.jpg?v=2"
+            src="/offer-white.jpg?v=3"
             alt=""
             decoding="async"
             className="h-[58%] w-full object-cover object-[70%_bottom] sm:h-full sm:object-center"

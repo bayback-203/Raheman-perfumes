@@ -354,7 +354,7 @@ export function SignInPage() {
       {/* Left 50% full-bleed showcase — hidden on smaller screens so only the essential login box shows */}
       <div className="relative hidden overflow-hidden bg-neutral-100 lg:block">
         <img
-          src="/signin-atelier.jpg?v=2"
+          src="/signin-atelier.jpg?v=3"
           alt="Raheman Perfumes glass bottle with oud wood, saffron, and jasmine on stone"
           loading="eager"
           decoding="async"

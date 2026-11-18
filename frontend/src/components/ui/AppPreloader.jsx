@@ -28,15 +28,15 @@ export function AppPreloader({ children }) {
 
   useEffect(() => {
     const criticalImages = [
-      '/hero-white.jpg?v=4',
+      '/hero-white.jpg?v=5',
       '/studio.png',
-      '/offer-white.jpg?v=2',
+      '/offer-white.jpg?v=3',
       '/compose.png',
-      '/pillar-originals.jpg?v=3',
-      '/pillar-inspired.jpg?v=3',
-      '/pillar-attars.jpg?v=3',
-      '/pillar-combos.jpg?v=3',
-      '/pillar-bakhoor.jpg?v=2',
+      '/pillar-originals.jpg?v=4',
+      '/pillar-inspired.jpg?v=4',
+      '/pillar-attars.jpg?v=4',
+      '/pillar-combos.jpg?v=4',
+      '/pillar-bakhoor.jpg?v=3',
     ]
 
     const startTime = Date.now()

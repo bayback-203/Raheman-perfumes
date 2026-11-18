@@ -102,25 +102,25 @@ export const PILLARS = [
     id: 'perfumes',
     title: 'Perfumes',
     to: '/shop',
-    photo: '/pillar-originals.jpg?v=3',
+    photo: '/pillar-originals.jpg?v=4',
   },
   {
     id: 'attars',
     title: 'Attars',
     to: '/shop/attars',
-    photo: '/pillar-attars.jpg?v=3',
+    photo: '/pillar-attars.jpg?v=4',
   },
   {
     id: 'combos',
     title: 'Combos',
     to: '/combos',
-    photo: '/pillar-combos.jpg?v=3',
+    photo: '/pillar-combos.jpg?v=4',
   },
   {
     id: 'bakhoor',
     title: 'Bakhoor',
     to: '/shop/bakhoor',
-    photo: '/pillar-bakhoor.jpg?v=2',
+    photo: '/pillar-bakhoor.jpg?v=3',
   },
 ]
 

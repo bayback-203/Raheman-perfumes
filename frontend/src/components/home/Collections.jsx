@@ -34,7 +34,7 @@ export function CategoryGrid() {
               <div>
                 <div className="h-14 w-14 overflow-hidden rounded-lg border border-brand-border/70 bg-white/70 shadow-sm">
                   <img
-                    src={category.image || CATEGORY_IMAGES[category.slug] || CATEGORY_IMAGES[category.id] || '/cat-unisex.jpg?v=2'}
+                    src={category.image || CATEGORY_IMAGES[category.slug] || CATEGORY_IMAGES[category.id] || '/cat-unisex.jpg?v=3'}
                     alt={category.label}
                     loading="lazy"
                     decoding="async"
@@ -65,14 +65,14 @@ export function CategoryGrid() {
 
 const CATEGORY_IMAGES = {
   men: '/rehman-bottle-transparent.png',
-  women: '/hero-white.jpg?v=4',
-  unisex: '/cat-unisex.jpg?v=2',
-  originals: '/pillar-originals.jpg?v=3',
-  inspired: '/pillar-inspired.jpg?v=3',
+  women: '/hero-white.jpg?v=5',
+  unisex: '/cat-unisex.jpg?v=3',
+  originals: '/pillar-originals.jpg?v=4',
+  inspired: '/pillar-inspired.jpg?v=4',
   custom: '/compose.png',
-  attars: '/pillar-attars.jpg?v=3',
-  combos: '/pillar-combos.jpg?v=3',
-  bakhoor: '/pillar-bakhoor.jpg?v=2',
+  attars: '/pillar-attars.jpg?v=4',
+  combos: '/pillar-combos.jpg?v=4',
+  bakhoor: '/pillar-bakhoor.jpg?v=3',
   mixed: '/family-oriental.jpg',
 }
 
