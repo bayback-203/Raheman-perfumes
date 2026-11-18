@@ -105,7 +105,7 @@ export function HomePage() {
       <Reveal as="section" className="shell py-16 lg:py-20">
         <div
           className="relative overflow-hidden rounded-xl bg-brand-charcoal bg-cover bg-center bg-no-repeat px-8 py-16 text-center text-brand-ivory shadow-2xl lg:px-16 lg:py-20"
-          style={{ backgroundImage: "url('/finder.png')" }}
+          style={{ backgroundImage: "url('/finder.png?v=2')" }}
         >
           {/* Gentle darkening overlay so text remains crystal clear */}
           <div className="pointer-events-none absolute inset-0 bg-black/35 backdrop-brightness-95" aria-hidden="true" />

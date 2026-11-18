@@ -179,7 +179,7 @@ const PAGES = {
         kind: 'cards',
         items: [
           { icon: 'package', image: '/promise-delivery.jpg', title: 'Box Size', body: '50ml bottles ship in a 9 × 9 × 14 cm box; 100ml in 11 × 11 × 17 cm. Easy to store or carry.' },
-          { icon: 'plane', image: '/cat-unisex.jpg', title: 'Flight Cabin Rules', body: 'Perfume bottles up to 100ml are allowed in flight cabin bags.' },
+          { icon: 'plane', image: '/cat-unisex.jpg?v=2', title: 'Flight Cabin Rules', body: 'Perfume bottles up to 100ml are allowed in flight cabin bags.' },
           { icon: 'gift', image: '/promise-testing.jpg', title: 'Travel Sprays', body: 'Ask our team for empty glass mini spray bottles to carry your perfume easily while travelling.' },
         ],
       },
@@ -204,7 +204,7 @@ const PAGES = {
         kind: 'cards',
         items: [
           { icon: 'phone', image: '/care-concierge.jpg', title: 'Call Or WhatsApp', body: '+91 98201 12345 · Monday to Saturday, 10:00 AM–7:00 PM' },
-          { icon: 'mail', image: '/signin-atelier.jpg', title: 'Email', body: 'atelier@rahemanperfumes.in · replies within one working day' },
+          { icon: 'mail', image: '/signin-atelier.jpg?v=2', title: 'Email', body: 'atelier@rahemanperfumes.in · replies within one working day' },
         ],
       },
       {

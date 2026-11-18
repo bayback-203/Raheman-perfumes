@@ -101,7 +101,7 @@ export function Hero() {
           style={{ height: 'min(100%, 55.814vw)' }}
         >
           <img
-            src="/hero-white.jpg?v=3"
+            src="/hero-white.jpg?v=4"
             alt=""
             decoding="async"
             className="h-full w-full object-contain"
@@ -131,7 +131,7 @@ export function Hero() {
           className="relative h-full w-auto shrink-0 aspect-[1376/768] md:h-[min(115%,62vw)] lg:h-[min(124%,60vw)]"
         >
           <img
-            src="/hero-white.jpg?v=3"
+            src="/hero-white.jpg?v=4"
             alt="Luxury crystal perfume bottle on white marble framed by ornamental grass, roses, jasmine, blood orange, citrus, fig, aqua splash, oud wood, and cinnamon sticks"
             decoding="async"
             className="h-full w-full object-contain"
@@ -182,7 +182,7 @@ export function Hero() {
         {/* Mobile visual stage: crisp, un-blurred full-clarity flacon below CTA; on md+ reserves space over the right backdrop */}
         <div className="relative mx-auto w-full max-w-md md:h-0">
           <img
-            src="/hero-white.jpg?v=3"
+            src="/hero-white.jpg?v=4"
             alt="Luxury crystal perfume bottle on white marble framed by roses, citrus, fig, oud wood, and cinnamon sticks"
             decoding="async"
             className="w-full rounded-xl object-contain md:hidden"

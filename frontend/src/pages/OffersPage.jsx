@@ -157,7 +157,7 @@ export function OffersPage() {
       {/* Hero */}
       <section
         className="relative flex min-h-screen min-h-[100dvh] flex-col justify-center overflow-hidden border-b border-brand-border bg-white bg-cover bg-center bg-no-repeat text-brand-charcoal"
-        style={{ backgroundImage: "url('/offer-white.jpg')" }}
+        style={{ backgroundImage: "url('/offer-white.jpg?v=2')" }}
       >
         {/* Soft directional scrim behind typography only — never washes out the perfume visual */}
         <div

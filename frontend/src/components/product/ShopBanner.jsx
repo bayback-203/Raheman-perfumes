@@ -4,16 +4,16 @@ import cn from '@/lib/cn'
 import { Icon } from '@/components/ui/Icon'
 
 const BANNER_IMAGES = {
-  originals: '/pillar-originals.jpg?v=2',
-  inspired: '/pillar-inspired.jpg?v=2',
-  attars: '/pillar-attars.jpg?v=2',
-  combos: '/pillar-combos.jpg?v=2',
-  bakhoor: '/pillar-bakhoor.jpg',
-  'best-sellers': '/offer-white.jpg',
-  unisex: '/cat-unisex.jpg',
-  men: '/pillar-originals.jpg?v=2',
-  women: '/hero-white.jpg?v=3',
-  default: '/hero-white.jpg?v=3',
+  originals: '/pillar-originals.jpg?v=3',
+  inspired: '/pillar-inspired.jpg?v=3',
+  attars: '/pillar-attars.jpg?v=3',
+  combos: '/pillar-combos.jpg?v=3',
+  bakhoor: '/pillar-bakhoor.jpg?v=2',
+  'best-sellers': '/offer-white.jpg?v=2',
+  unisex: '/cat-unisex.jpg?v=2',
+  men: '/pillar-originals.jpg?v=3',
+  women: '/hero-white.jpg?v=4',
+  default: '/hero-white.jpg?v=4',
 }
 
 /**
