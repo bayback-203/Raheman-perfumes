@@ -100,7 +100,9 @@ export function Header() {
     location.pathname === '/' ||
     location.pathname === '/shop' ||
     location.pathname.startsWith('/shop/') ||
-    location.pathname === '/offers'
+    location.pathname === '/offers' ||
+    location.pathname === '/combos' ||
+    location.pathname.startsWith('/combos/')
   const isTransparent = isHeroPage && !scrolled
   const isLightTone = false
   const tone = 'dark'

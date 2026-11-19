@@ -72,19 +72,19 @@ export function ShopBanner({ collection, title, eyebrow, imageOverride }) {
         <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-[#FFFBF6]/30" />
       </div>
 
-      <div className="shell relative z-20 pb-7 pt-[104px] sm:pb-10 sm:pt-32 lg:pb-12 lg:pt-36">
+      <div className="shell relative z-20 pb-3.5 pt-[84px] sm:pb-4 sm:pt-[94px] lg:pb-4.5 lg:pt-[108px]">
         {eyebrow && (
-          <p className="inline-flex items-center gap-2 text-label-md font-bold uppercase tracking-[0.18em] text-brand-goldDark">
+          <p className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-brand-goldDark sm:text-label-sm">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand-goldDark animate-pulse" aria-hidden="true" />
             {eyebrow}
           </p>
         )}
 
-        <h1 className="mt-1.5 font-serif text-2xl font-medium tracking-tight text-brand-charcoal sm:text-4xl lg:text-headline-xl">
+        <h1 className="mt-1 font-serif text-xl font-medium tracking-tight text-brand-charcoal sm:text-2xl lg:text-3xl">
           {title}
         </h1>
 
-        <div className="no-scrollbar -mx-4 mt-4 flex flex-nowrap items-center gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:mt-5 sm:flex-wrap sm:gap-2.5 sm:overflow-visible sm:px-0 sm:pb-0">
+        <div className="no-scrollbar -mx-4 mt-2.5 flex flex-nowrap items-center gap-1.5 overflow-x-auto px-4 pb-0.5 sm:mx-0 sm:mt-3 sm:flex-wrap sm:gap-2 sm:overflow-visible sm:px-0 sm:pb-0">
           {pills.map((pill) => {
             const isActive = pill.active
             return (
@@ -92,9 +92,9 @@ export function ShopBanner({ collection, title, eyebrow, imageOverride }) {
                 key={pill.label}
                 to={pill.to}
                 className={cn(
-                  'inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all duration-300 sm:px-4 sm:py-2 sm:text-body-sm',
+                  'inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold transition-all duration-300 sm:px-3.5 sm:py-1.5 sm:text-[13px]',
                   isActive
-                    ? 'bg-gradient-to-r from-[#1A1613] via-[#2C231B] to-[#1A1613] text-[#FDF6E8] shadow-[0_6px_18px_-4px_rgba(20,16,12,0.45)] ring-1 ring-brand-gold/60'
+                    ? 'bg-gradient-to-r from-[#1A1613] via-[#2C231B] to-[#1A1613] text-[#FDF6E8] shadow-[0_4px_14px_-3px_rgba(20,16,12,0.45)] ring-1 ring-brand-gold/60'
                     : 'border border-[#CDBAA0] bg-white text-brand-charcoal shadow-xs hover:-translate-y-0.5 hover:border-brand-charcoal hover:bg-[#FFFDF7] hover:shadow-sm',
                 )}
               >

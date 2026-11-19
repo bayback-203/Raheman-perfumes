@@ -135,29 +135,29 @@ export function CatalogueView({
         aria-hidden="true"
         className="pointer-events-none absolute -right-28 top-32 h-[38rem] w-80 rounded-full bg-gradient-to-l from-[#F5E1B8]/35 to-transparent blur-3xl"
       />
-      <div className="shell relative z-10 flex flex-1 flex-col pb-0 pt-6 lg:pt-8">
-      {breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} className="mb-4" />}
+      <div className="shell relative z-10 flex flex-1 flex-col pb-0 pt-3 sm:pt-4">
+      {breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} className="mb-3" />}
 
       {hero}
 
       {!hero && (title || eyebrow) && (
-        <header className="mb-6 max-w-3xl">
+        <header className="mb-4 max-w-3xl">
           {eyebrow && <p className="text-label-md font-bold uppercase tracking-[0.18em] text-brand-goldDark">{eyebrow}</p>}
           {title && (
-            <h1 className="mt-2 font-serif text-3xl font-medium text-brand-charcoal lg:text-headline-xl">{title}</h1>
+            <h1 className="mt-1 font-serif text-2xl font-medium text-brand-charcoal lg:text-3xl">{title}</h1>
           )}
-          {subtitle && <p className="mt-2 text-body-md leading-relaxed text-brand-muted">{subtitle}</p>}
+          {subtitle && <p className="mt-1.5 text-body-sm leading-relaxed text-brand-muted">{subtitle}</p>}
         </header>
       )}
 
-      <div className={cn('flex flex-1 flex-col gap-10', layout === 'sidebar' && desktopFiltersOpen && 'lg:grid lg:grid-cols-[16rem_1fr]')}>
+      <div className={cn('flex flex-1 flex-col gap-6 lg:gap-8', layout === 'sidebar' && desktopFiltersOpen && 'lg:grid lg:grid-cols-[16rem_1fr]')}>
         {layout === 'sidebar' && desktopFiltersOpen && (
-          <div className="hidden pb-10 lg:block">{renderSidebar(() => setDesktopFiltersOpen(false))}</div>
+          <div className="hidden pb-8 lg:block">{renderSidebar(() => setDesktopFiltersOpen(false))}</div>
         )}
 
         <div className="flex flex-1 min-w-0 flex-col">
           {/* Toolbar */}
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#EFE5D5] pb-4">
+          <div className="flex flex-wrap items-center justify-between gap-2.5 border-b border-[#EFE5D5] pb-2.5 sm:pb-3">
             <div className="flex items-center gap-3">
               {layout === 'sidebar' && (
                 <>
@@ -217,7 +217,7 @@ export function CatalogueView({
           )}
 
           {/* Results */}
-          <div className="flex flex-1 flex-col pt-6" ref={resultsRef}>
+          <div className="flex flex-1 flex-col pt-3.5 sm:pt-4" ref={resultsRef}>
             {loading ? (
               <div className="flex-1 pb-10">
                 <CatalogueSkeleton count={pageSize > 12 ? 12 : pageSize} />
