@@ -127,15 +127,8 @@ export function Topbar() {
           <Icon name="menu" className="h-5 w-5" />
         </button>
 
-        {/* Breadcrumb.
-            The current section is a `p`, not an `h1`: every page in this panel
-            renders its own `<h1>` (the greeting on the dashboard, the section
-            name elsewhere), and a chrome copy would put two top-level headings
-            in every document. It also made the render smoke test read
-            "Dashboard" where the page says "Good morning, Owner" — the shell
-            winning a race it should not have been in. */}
+        {/* Breadcrumb / Page Title */}
         <nav aria-label="Breadcrumb" className="hidden min-w-0 flex-col sm:flex">
-          <span className="text-label-sm uppercase tracking-[0.16em] text-ink-muted">{group}</span>
           <p className="truncate font-serif text-headline-sm font-semibold leading-tight text-ink">{title}</p>
         </nav>
 

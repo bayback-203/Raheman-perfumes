@@ -12,10 +12,10 @@
  */
 
 export const NAV_GROUPS = [
-  { id: 'today', label: 'Today' },
+  { id: 'today', label: 'Operations' },
   { id: 'catalogue', label: 'Products & Stock' },
   { id: 'people', label: 'Customers' },
-  { id: 'shop', label: 'Shop' },
+  { id: 'shop', label: 'Shop Settings' },
 ]
 
 export const ADMIN_NAV = [

@@ -382,12 +382,17 @@ export function OrderSummary({ children, cta, className }) {
         </p>
       )}
 
-      {summary.freeShippingGap > 0 && (
+      {summary.shipping > 0 && summary.freeShippingGap > 0 ? (
         <p className="mt-2 flex items-center gap-2 text-body-sm text-ink-variant">
           <Icon name="truck" className="h-3.5 w-3.5 text-brand-goldDark" />
-          {formatPrice(summary.freeShippingGap)} more for free delivery
+          Add {formatPrice(summary.freeShippingGap)} more for free delivery
         </p>
-      )}
+      ) : summary.shipping === 0 ? (
+        <p className="mt-2 flex items-center gap-2 text-body-sm font-medium text-emerald-700">
+          <Icon name="check-circle" className="h-3.5 w-3.5" />
+          Complimentary delivery unlocked
+        </p>
+      ) : null}
 
       {children}
 

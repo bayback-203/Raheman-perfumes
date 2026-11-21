@@ -24,7 +24,7 @@ import { ratingBreakdown } from '@/lib/reviews'
 import { FREE_SHIPPING_THRESHOLD } from '@/lib/format'
 
 const DELIVERY_PROMISE = [
-  { icon: 'truck', title: 'Free delivery over ₹999', note: '4–6 working days across India' },
+  { icon: 'truck', title: 'Complimentary Delivery Available', note: '4–6 working days across India' },
   { icon: 'shield', title: '100% Genuine & Authentic', note: 'Sourced directly from official suppliers' },
   { icon: 'sparkle', title: '30%+ oil strength', note: 'Pure French oils & long lasting' },
   { icon: 'shield', title: 'Tamper-proof seal', note: 'Safe 3-layer protective packaging' },
@@ -143,6 +143,18 @@ export function ProductDetailPage() {
   const liveCatalogue = useCatalogueProducts()
   const liveById = useCatalogueStore((state) => state.byId)
   const showcase = useShowcase()
+  const freeShippingOver = useCartStore((state) => state.freeShippingOver)
+  const shippingFee = useCartStore((state) => state.shippingFee)
+  const syncPricing = useCartStore((state) => state.syncPricing)
+
+  useEffect(() => {
+    syncPricing()
+  }, [syncPricing])
+
+  const currentPrice = variant?.price ?? product?.price ?? 0
+  const isFreeDeliveryAll = shippingFee === 0 || (typeof freeShippingOver === 'number' && freeShippingOver <= 1)
+  const qualifiesForFreeDelivery = typeof freeShippingOver === 'number' && currentPrice >= freeShippingOver
+  const shippingGap = typeof freeShippingOver === 'number' ? Math.max(0, freeShippingOver - currentPrice) : 0
 
   // Relatives are drawn from the live catalogue: the rail sits under the
   // fragrance the shopper is looking at, and a bundled sibling that has been
@@ -486,12 +498,22 @@ export function ProductDetailPage() {
                 )
               })}
             </div>
-            {(variant?.price ?? product.price) < FREE_SHIPPING_THRESHOLD && (
+            {isFreeDeliveryAll ? (
+              <p className="mt-3 flex items-center gap-2 text-body-sm font-medium text-emerald-700">
+                <Icon name="truck" className="h-4 w-4" />
+                Complimentary Free Delivery Included
+              </p>
+            ) : qualifiesForFreeDelivery ? (
+              <p className="mt-3 flex items-center gap-2 text-body-sm font-medium text-emerald-700">
+                <Icon name="truck" className="h-4 w-4" />
+                Qualifies for Complimentary Free Delivery
+              </p>
+            ) : shippingGap > 0 ? (
               <p className="mt-3 flex items-center gap-2 text-body-sm text-ink-variant">
                 <Icon name="truck" className="h-4 w-4 text-brand-charcoal" />
-                Add {formatPrice(FREE_SHIPPING_THRESHOLD - (variant?.price ?? product.price))} more for free delivery
+                Add {formatPrice(shippingGap)} more for free delivery
               </p>
-            )}
+            ) : null}
           </div>
 
           {/* Quantity + actions */}
@@ -576,7 +598,11 @@ export function ProductDetailPage() {
             </CollapsiblePanel>
             <CollapsiblePanel title="Delivery & Return Policy" icon="truck">
               <p>
-                Free delivery on orders above ₹999, typically 4–6 working days. Express delivery available at checkout. Perfumes travel safely in sealed bubble packaging with a tamper-proof seal.
+                {isFreeDeliveryAll
+                  ? 'Complimentary free delivery on all orders, typically 4–6 working days.'
+                  : typeof freeShippingOver === 'number' && freeShippingOver > 1
+                    ? `Free delivery on orders above ₹${freeShippingOver}, typically 4–6 working days.`
+                    : 'Complimentary standard delivery available across India.'} Express delivery available at checkout. Perfumes travel safely in sealed bubble packaging with a tamper-proof seal.
               </p>
               <div className="mt-3 rounded-md border border-brand-gold/30 bg-brand-gold/5 p-3 text-xs leading-relaxed text-brand-charcoal">
                 <span className="font-semibold uppercase tracking-wider text-brand-goldDark">Strict No Return Policy:</span>

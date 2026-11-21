@@ -1,7 +1,7 @@
 /** Static site content: navigation, footer, trust copy, FAQs and social. */
 
 export const ANNOUNCEMENTS = [
-  { id: 'shipping', text: 'Free shipping on orders over ₹999', icon: 'truck' },
+  { id: 'shipping', text: 'Complimentary Free Delivery Available', icon: 'truck' },
   { id: 'authentic', text: '100% Authentic Originals', icon: 'shield' },
   { id: 'oils', text: '30%+ French Oil Strength', icon: 'sparkle' },
   { id: 'secure', text: 'Secure Encrypted Payment', icon: 'lock' },
@@ -268,7 +268,7 @@ export const HOME_FAQ = [
     id: 'shipping',
     question: 'Do you deliver across India?',
     answer:
-      'Yes \u2014 we deliver to every working pin code in India. Free shipping above \u20b9999, and express delivery at checkout. Perfumes travel safely in sealed bubble packaging by road or air.',
+      'Yes \u2014 we deliver to every working pin code in India. Free shipping is available across India with express delivery at checkout. Perfumes travel safely in sealed bubble packaging by road or air.',
   },
   {
     id: 'return-policy',
