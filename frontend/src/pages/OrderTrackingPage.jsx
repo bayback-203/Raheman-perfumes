@@ -14,6 +14,7 @@ import { FlaconStage } from '@/components/product/FlaconArt'
 import { productImage } from '@/data/productImages'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 import { ORDER_STATUS } from '@/data/account'
+import { TaxInvoice, TaxInvoiceModal } from '@/components/order/TaxInvoice'
 
 /** Helper to extract short formatted date e.g. 'OCT 19' */
 function shortDate(dateStr) {
@@ -62,6 +63,7 @@ export function OrderTrackingPage() {
   const [status, setStatus] = useState(initial ? 'loading' : 'idle')
   const [tracking, setTracking] = useState(null)
   const [showScanHistory, setShowScanHistory] = useState(false)
+  const [showInvoiceModal, setShowInvoiceModal] = useState(false)
 
   // If no order is specified in the URL, but the user has past orders, auto-load their latest order
   useEffect(() => {
@@ -145,36 +147,37 @@ export function OrderTrackingPage() {
   }
 
   return (
-    <div className="shell py-8 lg:py-12">
-      {/* ──────────────── BREADCRUMBS & TOP BAR ──────────────── */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-brand-border/70 pb-4 text-xs">
-        <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-brand-muted">
-          <Link to="/" className="transition hover:text-brand-charcoal">
-            Home
-          </Link>
-          <span>/</span>
-          <Link to="/account" className="transition hover:text-brand-charcoal">
-            My Account
-          </Link>
-          <span>/</span>
-          <Link to="/account?tab=orders" className="transition hover:text-brand-charcoal">
-            My Orders
-          </Link>
-          <span>/</span>
-          <span className="font-semibold text-brand-charcoal">Order Details</span>
-        </nav>
+    <>
+      <div className="shell py-8 lg:py-12 print:hidden">
+        {/* ──────────────── BREADCRUMBS & TOP BAR ──────────────── */}
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-brand-border/70 pb-4 text-xs">
+          <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-brand-muted">
+            <Link to="/" className="transition hover:text-brand-charcoal">
+              Home
+            </Link>
+            <span>/</span>
+            <Link to="/account" className="transition hover:text-brand-charcoal">
+              My Account
+            </Link>
+            <span>/</span>
+            <Link to="/account?tab=orders" className="transition hover:text-brand-charcoal">
+              My Orders
+            </Link>
+            <span>/</span>
+            <span className="font-semibold text-brand-charcoal">Order Details</span>
+          </nav>
 
-        {tracking && (
-          <button
-            type="button"
-            onClick={() => window.print()}
-            className="inline-flex items-center gap-1.5 font-medium text-brand-charcoal transition hover:text-brand-goldDark"
-          >
-            <Icon name="file" className="h-4 w-4 text-brand-muted" />
-            <span>View PDF Invoice(s)</span>
-          </button>
-        )}
-      </div>
+          {tracking && (
+            <button
+              type="button"
+              onClick={() => setShowInvoiceModal(true)}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-brand-border bg-white px-3 py-1.5 text-xs font-semibold text-brand-charcoal shadow-xs transition hover:border-brand-gold hover:text-brand-goldDark active:scale-95"
+            >
+              <Icon name="file-text" className="h-4 w-4 text-brand-goldDark" />
+              <span>View PDF Invoice</span>
+            </button>
+          )}
+        </div>
 
       {/* ──────────────── SEARCH BAR (If looking up another order) ──────────────── */}
       {!tracking && (
@@ -820,7 +823,24 @@ export function OrderTrackingPage() {
           </ul>
         </div>
       )}
-    </div>
+      </div>
+
+      {/* ──────────────── EXCLUSIVE PRINT-ONLY TAX INVOICE ──────────────── */}
+      {tracking && (
+        <div className="hidden print:block">
+          <TaxInvoice tracking={tracking} />
+        </div>
+      )}
+
+      {/* ──────────────── INTERACTIVE TAX INVOICE PREVIEW MODAL ──────────────── */}
+      {tracking && (
+        <TaxInvoiceModal
+          tracking={tracking}
+          open={showInvoiceModal}
+          onClose={() => setShowInvoiceModal(false)}
+        />
+      )}
+    </>
   )
 }
 
