@@ -409,9 +409,9 @@ export function CheckoutPage() {
     placingRef.current = true
     setPlacing(true)
 
-    let rzpData
+    let rzpResult
     try {
-      rzpData = await authService.createRazorpayOrder({
+      rzpResult = await authService.createRazorpayOrder({
         items: draft.items,
         couponCode: draft.couponCode,
         giftWrap,
@@ -426,6 +426,9 @@ export function CheckoutPage() {
       })
       return
     }
+
+    // api.mutate wraps the response as { live, data }, unwrap it
+    const rzpData = rzpResult?.data ?? rzpResult
 
     const scriptLoaded = await loadRazorpayScript()
     if (!scriptLoaded) {
