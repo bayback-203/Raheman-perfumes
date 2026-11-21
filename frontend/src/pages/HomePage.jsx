@@ -5,7 +5,7 @@ import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Accordion } from '@/components/ui/Accordion'
 import { Reveal } from '@/components/ui/Reveal'
 import { Hero, Pillars, GenderShowcase, OccasionGrid } from '@/components/home/Hero'
-import { CategoryGrid, BrandStrip } from '@/components/home/Collections'
+import { BrandStrip } from '@/components/home/Collections'
 import {
   BestSellers,
   ComingSoon,
@@ -54,43 +54,50 @@ export function HomePage() {
 
   return (
     <>
-      {/* The hero is above the fold and animates itself in, so it is deliberately
-          not wrapped — a reveal there would read as the page loading slowly
-          rather than as the page arriving. Everything below is revealed as it
-          comes into view. */}
+      {/* 1. Landing page hero banner */}
       <Hero />
 
+      {/* 2. The Bestsellers */}
+      <Reveal>
+        <BestSellers />
+      </Reveal>
+
+      {/* 3. The 4 Category Tiles: Perfumes, Attars, Combos, Bakhoor */}
       <Reveal>
         <Pillars />
       </Reveal>
-      <Reveal>
-        <GenderShowcase />
-      </Reveal>
-      <Reveal>
-        <OccasionGrid />
-      </Reveal>
-      <Reveal>
-        <ShopByNotes />
-      </Reveal>
-      <Reveal>
-        <CategoryGrid />
-      </Reveal>
 
-      {/* The maisons sit directly under the category grid: the two answer the
-          same "what do you stock" question, so they read as one beat. */}
+      {/* 4. Brands We Carry */}
       <Reveal>
         <BrandStrip />
       </Reveal>
 
+      {/* 5. Discover Your Signature Scent */}
       <Reveal>
-        <BestSellers />
+        <OccasionGrid />
       </Reveal>
+
+      {/* 6. Shop by Gender */}
       <Reveal>
-        <ComingSoon />
+        <GenderShowcase />
       </Reveal>
+
+      {/* 7. Shop by Notes */}
+      <Reveal>
+        <ShopByNotes />
+      </Reveal>
+
+      {/* 8. Best Discounts Right Now */}
       <Reveal>
         <DealsOfDay />
       </Reveal>
+
+      {/* 9. Upcoming Perfumes (Coming Soon) */}
+      <Reveal>
+        <ComingSoon />
+      </Reveal>
+
+      {/* 10. Why Customers Come Back & Rest as it is */}
       <Reveal>
         <WhyShopWithUs />
       </Reveal>
