@@ -1,5 +1,5 @@
 import crypto from 'node:crypto'
-import { unprocessable, serviceUnavailable } from '../lib/errors.js'
+import { unprocessable, serviceUnavailable } from '../middleware/error.js'
 
 /**
  * Razorpay Payment Gateway Service.

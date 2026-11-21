@@ -45,6 +45,7 @@ export const notFound = (message = 'Not found.') => new HttpError(404, message)
 export const conflict = (message, details) => new HttpError(409, message, details)
 export const unprocessable = (message, details) => new HttpError(422, message, details)
 export const unavailable = (message, details) => new HttpError(503, message, details)
+export const serviceUnavailable = unavailable
 
 /** Anything that reached no route. */
 export function notFoundHandler(req, res, next) {
