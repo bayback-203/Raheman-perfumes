@@ -56,7 +56,7 @@ export const DEFAULT_SHOWCASE = {
   showHomeDeals: true,
   showOffersProducts: true,
   showCouponsSection: true,
-  showMultiBottleOffers: true,
+  showMultiBottleOffers: false,
   offerProductIds: [],
   bestsellerProductIds: [],
   homeDealProductIds: [],

@@ -17,7 +17,6 @@ import { productService } from '@/services/productService'
 import {
   OFFER_HERO,
   OFFER_TABS,
-  VOLUME_TIERS,
   OFFER_TERMS,
   couponApplies,
   formatCouponTitle,
@@ -265,33 +264,7 @@ export function OffersPage() {
         </section>
       )}
 
-      {/* Volume ladder */}
-      {showcase.showMultiBottleOffers && (
-        <section className="border-y border-brand-border bg-white py-16 lg:py-20">
-          <div className="shell">
-            <SectionHeading align="center" title="Multi-Bottle Savings" />
 
-            <div className="mt-10 grid gap-5 lg:grid-cols-3">
-              {VOLUME_TIERS.map((tier) => (
-                <div
-                  key={tier.id}
-                  className={cn(
-                    'rounded border p-6 text-center',
-                    tier.recommended ? 'border-brand-gold bg-white ring-1 ring-brand-gold shadow-card' : 'border-brand-border bg-white',
-                  )}
-                >
-                  <p className="mt-1 font-serif text-3xl font-semibold text-brand-charcoal">{tier.title}</p>
-                  <p className="mt-3 text-body-sm leading-relaxed text-brand-muted">{tier.description}</p>
-                  <p className="mt-5 flex items-center justify-center gap-2 text-label-sm font-bold uppercase text-ink-variant">
-                    <Icon name="package" className="h-3.5 w-3.5" />
-                    Buy {tier.threshold}+ bottles
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Terms */}
       <section className="shell py-16 lg:py-20">
