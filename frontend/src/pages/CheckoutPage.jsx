@@ -103,6 +103,10 @@ export function CheckoutPage() {
   const showcase = useShowcase()
   const refreshShowcase = useCatalogueStore((state) => state.refreshShowcase)
 
+  // Step state: 2 = Address & Contact, 3 = Payment Method & Confirmation (Step 1 is Cart)
+  const [step, setStep] = useState(2)
+  const [showMobileOrderSummary, setShowMobileOrderSummary] = useState(false)
+
   useEffect(() => {
     syncPricing()
     refreshShowcase({ force: true })
@@ -145,7 +149,6 @@ export function CheckoutPage() {
   const [notes, setNotes] = useState('')
   const [errors, setErrors] = useState({})
   const [placing, setPlacing] = useState(false)
-  const [activeTab, setActiveTab] = useState('customer')
   const [addressEditing, setAddressEditing] = useState(
     () =>
       !(
@@ -157,8 +160,6 @@ export function CheckoutPage() {
       ),
   )
 
-  const customerRef = useRef(null)
-  const paymentRef = useRef(null)
   const placingRef = useRef(false)
   const orderKeyRef = useRef({ signature: '', key: '' })
 
@@ -190,12 +191,6 @@ export function CheckoutPage() {
     Boolean(shipping.district.trim()) &&
     Boolean(shipping.state.trim()) &&
     PINCODE_PATTERN.test(shipping.pincode)
-
-  const customerComplete =
-    EMAIL_PATTERN.test(contact.email) &&
-    PHONE_PATTERN.test(contact.phone) &&
-    Boolean(contact.firstName.trim()) &&
-    hasValidAddress
 
   const formattedAddress = [
     shipping.line1,
@@ -240,12 +235,6 @@ export function CheckoutPage() {
     return <Navigate to={`/sign-in?next=${encodeURIComponent(next)}&reason=checkout`} replace />
   }
 
-  const scrollToSection = (section) => {
-    setActiveTab(section)
-    const target = section === 'payment' ? paymentRef.current : customerRef.current
-    target?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
-
   const applySavedAddress = (address) => {
     setShipping({
       line1: address.line1 ?? '',
@@ -260,7 +249,7 @@ export function CheckoutPage() {
     setAddressEditing(false)
   }
 
-  const validate = () => {
+  const validateAddress = async () => {
     const next = {}
     if (!EMAIL_PATTERN.test(contact.email)) next.email = 'Enter a valid email address.'
     if (!PHONE_PATTERN.test(contact.phone)) next.phone = 'Enter a valid 10-digit mobile number.'
@@ -271,39 +260,56 @@ export function CheckoutPage() {
     if (!shipping.state.trim()) next.state = 'Required.'
     if (!PINCODE_PATTERN.test(shipping.pincode)) next.pincode = 'Enter a 6-digit PIN code.'
     setErrors(next)
+
     if (next.line1 || next.city || next.district || next.state || next.pincode) {
       setAddressEditing(true)
     }
-    if (Object.keys(next).length > 0) {
-      scrollToSection('customer')
-    }
-    return Object.keys(next).length === 0
-  }
 
-  const placeOrder = async (event) => {
-    event.preventDefault()
-    if (placingRef.current) return
-    if (!validate()) {
+    if (Object.keys(next).length > 0) {
       toast({ title: 'Check your details', description: 'Some required fields need attention.', tone: 'error' })
-      return
+      return false
     }
 
     if (PINCODE_PATTERN.test(shipping.pincode)) {
-      const pinDetails = await pincodeDetails(shipping.pincode)
-      if (pinDetails?.district && !districtsMatch(shipping.district, pinDetails.district)) {
-        setErrors((prev) => ({
-          ...prev,
-          pincode: `PIN code ${shipping.pincode} belongs to ${pinDetails.district}, not ${shipping.district}.`,
-        }))
-        setAddressEditing(true)
-        scrollToSection('customer')
-        toast({
-          title: 'Location mismatch',
-          description: `PIN code ${shipping.pincode} belongs to ${pinDetails.district}. Please match the district before placing your order.`,
-          tone: 'error',
-        })
-        return
+      try {
+        const pinDetails = await pincodeDetails(shipping.pincode)
+        if (pinDetails?.district && !districtsMatch(shipping.district, pinDetails.district)) {
+          setErrors((prev) => ({
+            ...prev,
+            pincode: `PIN code ${shipping.pincode} belongs to ${pinDetails.district}, not ${shipping.district}.`,
+          }))
+          setAddressEditing(true)
+          toast({
+            title: 'Location mismatch',
+            description: `PIN code ${shipping.pincode} belongs to ${pinDetails.district}. Please match the district before proceeding.`,
+            tone: 'error',
+          })
+          return false
+        }
+      } catch {
+        // If postal lookup fails, allow progression
       }
+    }
+
+    return true
+  }
+
+  const handleProceedToPayment = async () => {
+    const valid = await validateAddress()
+    if (valid) {
+      setStep(3)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
+
+  const placeOrder = async (event) => {
+    if (event?.preventDefault) event.preventDefault()
+    if (placingRef.current) return
+
+    const valid = await validateAddress()
+    if (!valid) {
+      setStep(2)
+      return
     }
 
     placingRef.current = true
@@ -384,340 +390,517 @@ export function CheckoutPage() {
   }
 
   return (
-    <div className="shell py-8 lg:py-10">
-      {/* Top minimal breadcrumb link matching reference layout */}
-      <Link
-        to="/cart"
-        className="inline-flex items-center gap-1.5 text-sm font-medium text-brand-charcoal transition hover:text-brand-goldDark"
-      >
-        <Icon name="chevron-left" className="h-4 w-4" strokeWidth={2} />
-        <span>Home / Shopping Bag</span>
-      </Link>
+    <div className="shell pb-24 pt-4 sm:pt-6 lg:pb-12 lg:pt-8">
+      {/* ─────────── FLIPKART-STYLE 3-STEP PROGRESS STEPPER ─────────── */}
+      <div className="mx-auto max-w-xl pb-5">
+        <div className="relative flex items-center justify-between">
+          {/* Connecting line: Step 1 -> Step 2 */}
+          <div className="absolute left-[16%] right-[50%] top-4 -z-0 h-[2.5px] -translate-y-1/2 bg-emerald-500" />
+          {/* Connecting line: Step 2 -> Step 3 */}
+          <div
+            className={cn(
+              'absolute left-[50%] right-[16%] top-4 -z-0 h-[2.5px] -translate-y-1/2 transition-colors duration-300',
+              step === 3 ? 'bg-emerald-500' : 'bg-neutral-200',
+            )}
+          />
 
-      <form
-        onSubmit={placeOrder}
-        className="mt-7 grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_25rem] xl:grid-cols-[minmax(0,1fr)_27rem] lg:gap-12"
-      >
-        {/* ─────────── LEFT COLUMN: Step Tabs + Customer Info + Payment Method ─────────── */}
-        <div className="min-w-0 lg:border-r lg:border-brand-border/80 lg:pr-10">
-          {/* Two-step horizontal progress tabs */}
-          <div className="grid grid-cols-2 border-b border-brand-border">
-            <button
-              type="button"
-              onClick={() => scrollToSection('customer')}
+          {/* Step 1: Cart (Completed) */}
+          <Link
+            to="/cart"
+            title="Return to shopping cart"
+            className="group relative z-10 flex flex-col items-center gap-1 focus:outline-none"
+          >
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-600 text-white shadow-xs transition group-hover:scale-105">
+              <Icon name="check" className="h-4 w-4" strokeWidth={2.8} />
+            </div>
+            <span className="text-xs font-semibold text-emerald-700">Cart</span>
+          </Link>
+
+          {/* Step 2: Address */}
+          <button
+            type="button"
+            onClick={() => {
+              if (step > 2) setStep(2)
+            }}
+            className={cn(
+              'group relative z-10 flex flex-col items-center gap-1 focus:outline-none',
+              step > 2 ? 'cursor-pointer' : 'cursor-default',
+            )}
+          >
+            <div
               className={cn(
-                '-mb-px flex items-center gap-2.5 border-b-2 pb-3.5 text-left text-sm font-medium transition',
-                activeTab === 'customer'
-                  ? 'border-brand-charcoal text-brand-charcoal'
-                  : 'border-transparent text-brand-muted hover:text-brand-charcoal',
+                'flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-all shadow-xs',
+                step > 2
+                  ? 'bg-emerald-600 text-white'
+                  : 'bg-brand-charcoal text-white ring-4 ring-brand-charcoal/15',
               )}
             >
-              <span
-                className={cn(
-                  'flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-white transition',
-                  customerComplete || activeTab === 'customer' ? 'bg-brand-charcoal' : 'bg-brand-border',
-                )}
-              >
-                <Icon name="check" className="h-3 w-3" strokeWidth={2.5} />
-              </span>
-              <span className="truncate">Customer Information</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => scrollToSection('payment')}
+              {step > 2 ? <Icon name="check" className="h-4 w-4" strokeWidth={2.8} /> : '2'}
+            </div>
+            <span
               className={cn(
-                '-mb-px flex items-center gap-2.5 border-b-2 pb-3.5 text-left text-sm font-medium transition',
-                activeTab === 'payment'
-                  ? 'border-brand-charcoal text-brand-charcoal'
-                  : 'border-transparent text-brand-muted hover:text-brand-charcoal',
+                'text-xs font-semibold transition-colors',
+                step > 2 ? 'text-emerald-700' : 'text-brand-charcoal',
               )}
             >
-              <span
-                className={cn(
-                  'flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-white transition',
-                  activeTab === 'payment' ? 'bg-brand-charcoal' : 'bg-brand-border',
-                )}
-              >
-                <Icon name="check" className="h-3 w-3" strokeWidth={2.5} />
-              </span>
-              <span className="truncate">Payment Details</span>
-            </button>
+              Address
+            </span>
+          </button>
+
+          {/* Step 3: Payment */}
+          <div className="group relative z-10 flex flex-col items-center gap-1">
+            <div
+              className={cn(
+                'flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold transition-all shadow-xs',
+                step === 3
+                  ? 'bg-brand-charcoal text-white ring-4 ring-brand-charcoal/15'
+                  : 'bg-neutral-200 text-neutral-500',
+              )}
+            >
+              3
+            </div>
+            <span
+              className={cn(
+                'text-xs font-semibold transition-colors',
+                step === 3 ? 'text-brand-charcoal' : 'text-neutral-400',
+              )}
+            >
+              Payment
+            </span>
           </div>
+        </div>
+      </div>
 
-          {/* Section 1: Customer Information & Delivery */}
-          <section ref={customerRef} className="pt-8 scroll-mt-24">
-            <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <div>
-                <h1 className="text-xl font-semibold text-brand-charcoal sm:text-2xl">Check Out Your Items</h1>
-                <p className="mt-1 text-xs text-brand-muted sm:text-sm">
-                  For a better experience, verify your details and choose delivery before ordering.
-                </p>
+      {/* ─────────── MOBILE COMPACT ACCORDION FOR ORDER SUMMARY ─────────── */}
+      <div className="mb-4 rounded-xl border border-brand-border bg-[#F9F7F3] p-3 lg:hidden">
+        <button
+          type="button"
+          onClick={() => setShowMobileOrderSummary((prev) => !prev)}
+          className="flex w-full items-center justify-between text-left text-xs font-medium text-brand-charcoal"
+        >
+          <div className="flex items-center gap-2">
+            <Icon name="bag" className="h-4 w-4 text-brand-goldDark" />
+            <span>
+              {summary.itemCount} {summary.itemCount === 1 ? 'fragrance' : 'fragrances'} in bag
+            </span>
+            <span className="font-bold text-brand-charcoal">· {formatPrice(payable)}</span>
+          </div>
+          <div className="flex items-center gap-1 text-[11px] font-semibold text-brand-goldDark">
+            <span>{showMobileOrderSummary ? 'Hide Items' : 'View Items'}</span>
+            <Icon
+              name="chevron-down"
+              className={cn('h-3.5 w-3.5 transition-transform duration-200', showMobileOrderSummary && 'rotate-180')}
+            />
+          </div>
+        </button>
+
+        {showMobileOrderSummary && (
+          <div className="mt-3 border-t border-brand-border/70 pt-3">
+            <ul className="space-y-2">
+              {entries.map(({ item }) => (
+                <li key={item.id} className="flex items-center justify-between gap-2.5 text-xs">
+                  <div className="flex min-w-0 items-center gap-2">
+                    <div className="h-8 w-8 shrink-0 overflow-hidden rounded bg-white p-0.5 border border-brand-border/60">
+                      <FlaconStage tier={item.tier} seed={item.slug} label={item.name} image={productImage(item)} compact />
+                    </div>
+                    <span className="truncate font-medium text-brand-charcoal">{item.name}</span>
+                    <span className="text-brand-muted">({item.volume} × {item.quantity})</span>
+                  </div>
+                  <span className="shrink-0 font-semibold tabular-nums text-brand-charcoal">
+                    {formatPrice(item.price * item.quantity)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-2.5 flex items-center justify-between border-t border-brand-border/60 pt-2 text-[11px] text-brand-muted">
+              <span>Standard Delivery: {totalDelivery === 0 ? 'Free' : formatPrice(totalDelivery)}</span>
+              <Link to="/cart" className="font-semibold text-brand-goldDark underline">
+                Edit Bag
+              </Link>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_25rem] xl:grid-cols-[minmax(0,1fr)_27rem] lg:gap-10">
+        {/* ─────────── LEFT COLUMN: STEP-BY-STEP FLOW ─────────── */}
+        <div className="min-w-0">
+          {/* ═══════════════ STEP 2: ADDRESS & CONTACT ═══════════════ */}
+          {step === 2 && (
+            <section className="space-y-4">
+              <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-brand-border pb-3">
+                <div>
+                  <h1 className="text-lg font-bold text-brand-charcoal sm:text-xl">Delivery Address & Contact</h1>
+                  <p className="mt-0.5 text-xs text-brand-muted">
+                    Enter where we should deliver your fragrance parcel safely.
+                  </p>
+                </div>
+                {addresses.length > 0 && addressEditing && (
+                  <button
+                    type="button"
+                    onClick={() => applySavedAddress(addresses[0])}
+                    className="text-xs font-semibold text-brand-goldDark hover:underline"
+                  >
+                    Use Saved Address
+                  </button>
+                )}
               </div>
-              {addresses.length > 0 && addressEditing && (
+
+              {/* Customer Contact Cards */}
+              <div className="grid gap-3 sm:grid-cols-2">
+                <CheckoutFieldCard
+                  icon="user"
+                  label="First Name"
+                  required
+                  value={contact.firstName}
+                  error={errors.firstName}
+                  placeholder="Enter first name"
+                  onChange={(event) => setContact({ ...contact, firstName: event.target.value })}
+                />
+                <CheckoutFieldCard
+                  icon="user"
+                  label="Last Name"
+                  value={contact.lastName}
+                  placeholder="Enter last name"
+                  onChange={(event) => setContact({ ...contact, lastName: event.target.value })}
+                />
+                <CheckoutFieldCard
+                  icon="mail"
+                  label="Email"
+                  type="email"
+                  required
+                  value={contact.email}
+                  error={errors.email}
+                  placeholder="you@example.com"
+                  onChange={(event) => setContact({ ...contact, email: event.target.value })}
+                />
+                <CheckoutFieldCard
+                  icon="phone"
+                  label="Mobile Number"
+                  type="tel"
+                  required
+                  value={contact.phone}
+                  error={errors.phone}
+                  placeholder="10-digit mobile number"
+                  onChange={(event) => setContact({ ...contact, phone: event.target.value })}
+                />
+              </div>
+
+              {/* Address Form or Saved Address Card */}
+              <div className="rounded-xl border border-brand-border bg-white p-4 transition focus-within:border-brand-charcoal">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-2 text-brand-muted">
+                    <Icon name="map-pin" className="h-4 w-4 shrink-0" />
+                    <span className="text-xs font-medium text-brand-muted">Address Details</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    {addresses.length > 0 && !addressEditing && (
+                      <Link to="/account" className="text-xs font-medium text-brand-goldDark hover:underline">
+                        Manage Saved
+                      </Link>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => setAddressEditing((open) => !open)}
+                      aria-label={addressEditing ? 'Collapse delivery address form' : 'Edit delivery address'}
+                      title={addressEditing ? 'Done editing' : 'Edit delivery address'}
+                      className="flex h-7 w-7 items-center justify-center rounded-lg text-brand-muted transition hover:bg-neutral-100 hover:text-brand-charcoal"
+                    >
+                      <Icon name={addressEditing ? 'check' : 'edit'} className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+
+                {!addressEditing && hasValidAddress ? (
+                  <div className="mt-2 pl-6 text-sm leading-relaxed text-brand-charcoal">
+                    <p className="font-medium">{formattedAddress}</p>
+                    {notes && <p className="mt-1 text-xs text-brand-muted">Note: {notes}</p>}
+                  </div>
+                ) : (
+                  <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                    <Input
+                      containerClassName="sm:col-span-2"
+                      label="Address line 1"
+                      required
+                      value={shipping.line1}
+                      error={errors.line1}
+                      onChange={(event) => setShipping({ ...shipping, line1: event.target.value })}
+                      placeholder="House / Flat no., Building, Street"
+                    />
+                    <Input
+                      containerClassName="sm:col-span-2"
+                      label="Address line 2"
+                      value={shipping.line2}
+                      onChange={(event) => setShipping({ ...shipping, line2: event.target.value })}
+                      placeholder="Apartment, Suite, Floor (optional)"
+                    />
+                    <AddressFields
+                      value={shipping}
+                      onChange={(patch) => setShipping((current) => ({ ...current, ...patch }))}
+                      errors={errors}
+                    />
+                    <Input
+                      label="Delivery notes (optional)"
+                      value={notes}
+                      onChange={(event) => setNotes(event.target.value.slice(0, 200))}
+                      placeholder="Instructions for courier (optional)"
+                    />
+                    <div className="flex flex-wrap items-center justify-between gap-3 pt-1 sm:col-span-2">
+                      <Checkbox
+                        checked={sameAsBilling}
+                        onChange={(event) => setSameAsBilling(event.target.checked)}
+                        label="Billing address same as delivery"
+                      />
+                      {hasValidAddress && (
+                        <button
+                          type="button"
+                          onClick={() => setAddressEditing(false)}
+                          className="rounded-lg bg-brand-charcoal px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-brand-goldDark"
+                        >
+                          Save Address
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Delivery Speed Options */}
+              <div className="grid gap-2.5 sm:grid-cols-2">
+                {SHIPPING_METHODS.map((method) => {
+                  const selected = shippingMethod === method.id
+                  return (
+                    <label
+                      key={method.id}
+                      className={cn(
+                        'flex cursor-pointer items-center justify-between gap-3 rounded-xl border px-3.5 py-3 transition',
+                        selected
+                          ? 'border-2 border-brand-charcoal bg-white shadow-xs'
+                          : 'border-brand-border bg-white hover:border-brand-charcoal/40',
+                      )}
+                    >
+                      <input
+                        type="radio"
+                        name="shipping"
+                        value={method.id}
+                        checked={selected}
+                        onChange={() => setShippingMethod(method.id)}
+                        className="sr-only"
+                      />
+                      <div className="min-w-0">
+                        <p className="text-xs font-semibold text-brand-charcoal">{method.name}</p>
+                        <p className="mt-0.5 text-[11px] text-brand-muted">
+                          {method.eta} · {method.price === 0 ? 'Complimentary' : formatPrice(method.price)}
+                        </p>
+                      </div>
+                      <span
+                        className={cn(
+                          'flex h-4 w-4 shrink-0 items-center justify-center rounded-full border',
+                          selected ? 'border-brand-charcoal' : 'border-brand-muted/50',
+                        )}
+                      >
+                        {selected && <span className="h-2 w-2 rounded-full bg-brand-charcoal" />}
+                      </span>
+                    </label>
+                  )
+                })}
+              </div>
+
+              {/* Primary "Continue to Payment" Button */}
+              <div className="pt-2">
                 <button
                   type="button"
-                  onClick={() => applySavedAddress(addresses[0])}
-                  className="text-xs font-semibold text-brand-goldDark hover:underline"
+                  onClick={handleProceedToPayment}
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-brand-charcoal px-6 py-3.5 text-sm font-semibold text-white shadow-md transition hover:bg-brand-goldDark"
                 >
-                  Use Saved Address
+                  <span>Deliver Here & Continue To Payment</span>
+                  <Icon name="arrow-right" className="h-4 w-4" />
                 </button>
-              )}
-            </div>
+              </div>
+            </section>
+          )}
 
-            <div className="mt-5 grid gap-3.5 sm:grid-cols-2">
-              <CheckoutFieldCard
-                icon="user"
-                label="First Name"
-                required
-                value={contact.firstName}
-                error={errors.firstName}
-                placeholder="Enter first name"
-                onChange={(event) => {
-                  setActiveTab('customer')
-                  setContact({ ...contact, firstName: event.target.value })
-                }}
-              />
-              <CheckoutFieldCard
-                icon="user"
-                label="Last Name"
-                value={contact.lastName}
-                placeholder="Enter last name"
-                onChange={(event) => {
-                  setActiveTab('customer')
-                  setContact({ ...contact, lastName: event.target.value })
-                }}
-              />
-              <CheckoutFieldCard
-                icon="mail"
-                label="Email"
-                type="email"
-                required
-                value={contact.email}
-                error={errors.email}
-                placeholder="you@example.com"
-                onChange={(event) => {
-                  setActiveTab('customer')
-                  setContact({ ...contact, email: event.target.value })
-                }}
-              />
-              <CheckoutFieldCard
-                icon="phone"
-                label="Mobile Number"
-                type="tel"
-                required
-                value={contact.phone}
-                error={errors.phone}
-                placeholder="10-digit mobile number"
-                onChange={(event) => {
-                  setActiveTab('customer')
-                  setContact({ ...contact, phone: event.target.value })
-                }}
-              />
-            </div>
-
-            {/* Delivery Address card — matches reference box with edit toggle */}
-            <div className="mt-4 rounded-xl border border-brand-border bg-white p-4 transition focus-within:border-brand-charcoal">
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex items-center gap-2.5 text-brand-muted">
-                  <Icon name="map-pin" className="h-4 w-4 shrink-0" />
-                  <span className="text-xs font-medium text-brand-muted">Delivery Address</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  {addresses.length > 0 && !addressEditing && (
-                    <Link to="/account" className="text-xs font-medium text-brand-goldDark hover:underline">
-                      Saved
-                    </Link>
-                  )}
+          {/* ═══════════════ STEP 3: PAYMENT METHOD (WITH COLLAPSED ADDRESS CARD) ═══════════════ */}
+          {step === 3 && (
+            <section className="space-y-4">
+              {/* FLIPKART-STYLE COLLAPSED DELIVERY ADDRESS CARD */}
+              <div className="rounded-2xl border border-brand-border bg-white p-4 shadow-xs sm:p-5">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-brand-charcoal">
+                      <Icon name="user" className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-bold text-brand-charcoal">
+                          {contact.firstName} {contact.lastName}
+                        </span>
+                        <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] font-semibold uppercase text-brand-muted">
+                          Delivery
+                        </span>
+                      </div>
+                      <p className="mt-1 text-xs leading-relaxed text-brand-charcoal/90 sm:text-sm">
+                        {formattedAddress}
+                      </p>
+                      <p className="mt-1 text-xs text-brand-muted">
+                        Phone: <span className="font-medium text-brand-charcoal">{contact.phone}</span>
+                      </p>
+                    </div>
+                  </div>
                   <button
                     type="button"
                     onClick={() => {
-                      setActiveTab('customer')
-                      setAddressEditing((open) => !open)
+                      setStep(2)
+                      window.scrollTo({ top: 0, behavior: 'smooth' })
                     }}
-                    aria-label={addressEditing ? 'Collapse delivery address form' : 'Edit delivery address'}
-                    title={addressEditing ? 'Done editing' : 'Edit delivery address'}
-                    className="flex h-7 w-7 items-center justify-center rounded-lg text-brand-muted transition hover:bg-neutral-100 hover:text-brand-charcoal"
+                    className="shrink-0 rounded-lg border border-brand-border px-3 py-1.5 text-xs font-bold text-brand-goldDark transition hover:border-brand-charcoal hover:text-brand-charcoal"
                   >
-                    <Icon name={addressEditing ? 'check' : 'edit'} className="h-4 w-4" />
+                    Change
                   </button>
                 </div>
               </div>
 
-              {!addressEditing && hasValidAddress ? (
-                <div className="mt-2 pl-6 text-sm leading-relaxed text-brand-charcoal">
-                  <p className="font-medium">{formattedAddress}</p>
-                  {notes && <p className="mt-1 text-xs text-brand-muted">Note: {notes}</p>}
-                </div>
-              ) : (
-                <div className="mt-4 grid gap-3.5 sm:grid-cols-2">
-                  <Input
-                    containerClassName="sm:col-span-2"
-                    label="Address line 1"
-                    required
-                    value={shipping.line1}
-                    error={errors.line1}
-                    onChange={(event) => setShipping({ ...shipping, line1: event.target.value })}
-                    placeholder="House / Flat no., Building, Street"
-                  />
-                  <Input
-                    containerClassName="sm:col-span-2"
-                    label="Address line 2"
-                    value={shipping.line2}
-                    onChange={(event) => setShipping({ ...shipping, line2: event.target.value })}
-                    placeholder="Apartment, Suite, Floor (optional)"
-                  />
-                  <AddressFields
-                    value={shipping}
-                    onChange={(patch) => setShipping((current) => ({ ...current, ...patch }))}
-                    errors={errors}
-                  />
-                  <Input
-                    label="Delivery notes (optional)"
-                    value={notes}
-                    onChange={(event) => setNotes(event.target.value.slice(0, 200))}
-                    placeholder="Instructions for courier (optional)"
-                  />
-                  <div className="flex flex-wrap items-center justify-between gap-3 pt-1 sm:col-span-2">
-                    <Checkbox
-                      checked={sameAsBilling}
-                      onChange={(event) => setSameAsBilling(event.target.checked)}
-                      label="Billing address same as delivery"
-                    />
-                    {hasValidAddress && (
-                      <button
-                        type="button"
-                        onClick={() => setAddressEditing(false)}
-                        className="rounded-lg bg-brand-charcoal px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-brand-goldDark"
-                      >
-                        Done
-                      </button>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
+              {/* PAYMENT METHOD SELECTOR */}
+              <div className="rounded-2xl border border-brand-border bg-white p-4 shadow-xs sm:p-5">
+                <h2 className="text-base font-bold text-brand-charcoal sm:text-lg">Select Payment Method</h2>
+                <p className="mt-0.5 text-xs text-brand-muted">
+                  All transactions are encrypted and secured end-to-end.
+                </p>
 
-            {/* Compact Delivery Speed Selector */}
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {SHIPPING_METHODS.map((method) => {
-                const selected = shippingMethod === method.id
-                return (
-                  <label
-                    key={method.id}
-                    className={cn(
-                      'flex cursor-pointer items-center justify-between gap-3 rounded-xl border px-4 py-3 transition',
-                      selected
-                        ? 'border-2 border-brand-charcoal bg-white'
-                        : 'border-brand-border bg-white hover:border-brand-charcoal/40',
-                    )}
-                  >
-                    <input
-                      type="radio"
-                      name="shipping"
-                      value={method.id}
-                      checked={selected}
-                      onChange={() => setShippingMethod(method.id)}
-                      className="sr-only"
-                    />
-                    <div className="min-w-0">
-                      <p className="text-xs font-semibold text-brand-charcoal">{method.name}</p>
-                      <p className="mt-0.5 text-[11px] text-brand-muted">
-                        {method.eta} · {method.price === 0 ? 'Complimentary' : formatPrice(method.price)}
-                      </p>
-                    </div>
-                    <span
-                      className={cn(
-                        'flex h-4 w-4 shrink-0 items-center justify-center rounded-full border',
-                        selected ? 'border-brand-charcoal' : 'border-brand-muted/50',
-                      )}
-                    >
-                      {selected && <span className="h-2 w-2 rounded-full bg-brand-charcoal" />}
-                    </span>
-                  </label>
-                )
-              })}
-            </div>
-          </section>
-
-          {/* Section 2: Payment Method — stacked selectable rows matching reference */}
-          <section ref={paymentRef} className="mt-9 scroll-mt-24">
-            <h2 className="text-xl font-semibold text-brand-charcoal sm:text-2xl">Payment Method</h2>
-            <p className="mt-1 text-xs text-brand-muted sm:text-sm">
-              Select the method for payment of your order. Encrypted end to end.
-            </p>
-
-            <div className="mt-5 space-y-3">
-              {availablePayments.map((method) => {
-                const selected = paymentMethod === method.id
-                return (
-                  <label
-                    key={method.id}
-                    onClick={() => setActiveTab('payment')}
-                    className={cn(
-                      'flex cursor-pointer items-center justify-between gap-4 rounded-xl border px-4 py-3.5 transition-all',
-                      selected
-                        ? 'border-2 border-brand-charcoal bg-white shadow-xs'
-                        : 'border-brand-border bg-white hover:border-brand-charcoal/40',
-                    )}
-                  >
-                    <input
-                      type="radio"
-                      name="payment"
-                      value={method.id}
-                      checked={selected}
-                      onChange={() => {
-                        setActiveTab('payment')
-                        setPaymentMethod(method.id)
-                      }}
-                      className="sr-only"
-                    />
-                    <div className="flex min-w-0 items-center gap-3.5">
-                      <span
+                <div className="mt-4 space-y-3">
+                  {availablePayments.map((method) => {
+                    const selected = paymentMethod === method.id
+                    return (
+                      <label
+                        key={method.id}
                         className={cn(
-                          'flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border text-brand-charcoal',
-                          selected ? 'border-brand-charcoal bg-neutral-50' : 'border-brand-border bg-white',
+                          'flex cursor-pointer items-center justify-between gap-4 rounded-xl border px-4 py-3.5 transition-all',
+                          selected
+                            ? 'border-2 border-brand-charcoal bg-white shadow-xs'
+                            : 'border-brand-border bg-white hover:border-brand-charcoal/40',
                         )}
                       >
-                        <Icon name={PAYMENT_ICON[method.id] ?? 'card'} className="h-4 w-4" />
-                      </span>
-                      <div className="min-w-0">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="text-sm font-medium text-brand-charcoal">{method.label}</span>
-                          {method.badge && (
-                            <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-brand-muted">
-                              {method.badge}
-                            </span>
-                          )}
+                        <input
+                          type="radio"
+                          name="payment"
+                          value={method.id}
+                          checked={selected}
+                          onChange={() => setPaymentMethod(method.id)}
+                          className="sr-only"
+                        />
+                        <div className="flex min-w-0 items-center gap-3.5">
+                          <span
+                            className={cn(
+                              'flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border text-brand-charcoal',
+                              selected ? 'border-brand-charcoal bg-neutral-50' : 'border-brand-border bg-white',
+                            )}
+                          >
+                            <Icon name={PAYMENT_ICON[method.id] ?? 'card'} className="h-4 w-4" />
+                          </span>
+                          <div className="min-w-0">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="text-sm font-semibold text-brand-charcoal">{method.label}</span>
+                              {method.badge && (
+                                <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-700">
+                                  {method.badge}
+                                </span>
+                              )}
+                            </div>
+                            <p className="mt-0.5 truncate text-xs text-brand-muted">{method.note}</p>
+                          </div>
                         </div>
-                        <p className="mt-0.5 truncate text-xs text-brand-muted">{method.note}</p>
-                      </div>
+
+                        <span
+                          aria-hidden="true"
+                          className={cn(
+                            'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition',
+                            selected ? 'border-brand-charcoal' : 'border-brand-muted/50',
+                          )}
+                        >
+                          {selected && <span className="h-2.5 w-2.5 rounded-full bg-brand-charcoal" />}
+                        </span>
+                      </label>
+                    )
+                  })}
+                </div>
+
+                {!showcase.codEnabled && (
+                  <p className="mt-3 text-xs text-brand-muted">
+                    Cash on Delivery is currently turned off. Please pay online with Razorpay.
+                  </p>
+                )}
+
+                {/* Optional Gift Wrap toggle */}
+                <div className="mt-4 border-t border-brand-border/70 pt-3">
+                  <Checkbox
+                    checked={giftWrap}
+                    onChange={(event) => setGiftWrap(event.target.checked)}
+                    label={`Add luxury satin gift box wrap (+${formatPrice(GIFT_WRAP_FEE)})`}
+                  />
+                </div>
+              </div>
+
+              {/* Price Details Card (prominent on mobile right under payment) */}
+              <div className="rounded-2xl border border-brand-border bg-white p-4 shadow-xs sm:p-5 lg:hidden">
+                <h3 className="text-sm font-bold text-brand-charcoal">Price Breakdown</h3>
+                <dl className="mt-3 space-y-2 text-xs">
+                  <div className="flex justify-between">
+                    <dt className="text-brand-muted">Items Subtotal ({summary.itemCount} items)</dt>
+                    <dd className="font-semibold tabular-nums text-brand-charcoal">{formatPrice(summary.subtotal)}</dd>
+                  </div>
+                  {summary.couponDiscount > 0 && (
+                    <div className="flex justify-between">
+                      <dt className="text-brand-muted">Coupon Discount ({couponCode})</dt>
+                      <dd className="font-semibold tabular-nums text-emerald-700">-{formatPrice(summary.couponDiscount)}</dd>
                     </div>
+                  )}
+                  <div className="flex justify-between">
+                    <dt className="text-brand-muted">Delivery</dt>
+                    <dd className="font-semibold tabular-nums text-brand-charcoal">
+                      {totalDelivery === 0 ? 'Complimentary' : formatPrice(totalDelivery)}
+                    </dd>
+                  </div>
+                  {summary.giftWrapFee > 0 && (
+                    <div className="flex justify-between">
+                      <dt className="text-brand-muted">Gift Box Wrap</dt>
+                      <dd className="font-semibold tabular-nums text-brand-charcoal">{formatPrice(summary.giftWrapFee)}</dd>
+                    </div>
+                  )}
+                  {codFee > 0 && (
+                    <div className="flex justify-between">
+                      <dt className="text-brand-muted">COD Handling</dt>
+                      <dd className="font-semibold tabular-nums text-brand-charcoal">{formatPrice(codFee)}</dd>
+                    </div>
+                  )}
+                  <div className="flex justify-between border-t border-brand-border/80 pt-2 text-sm font-bold">
+                    <dt className="text-brand-charcoal">Total Amount</dt>
+                    <dd className="tabular-nums text-brand-charcoal">{formatPrice(payable)}</dd>
+                  </div>
+                </dl>
+              </div>
 
-                    <span
-                      aria-hidden="true"
-                      className={cn(
-                        'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition',
-                        selected ? 'border-brand-charcoal' : 'border-brand-muted/50',
-                      )}
-                    >
-                      {selected && <span className="h-2.5 w-2.5 rounded-full bg-brand-charcoal" />}
-                    </span>
-                  </label>
-                )
-              })}
-            </div>
-
-            {!showcase.codEnabled && (
-              <p className="mt-3 text-xs text-brand-muted">
-                Cash on Delivery is currently turned off. Please pay online with Razorpay.
-              </p>
-            )}
-          </section>
+              {/* Action Button (Desktop inline / Fallback) */}
+              <div className="hidden lg:block pt-2">
+                <button
+                  type="button"
+                  disabled={placing}
+                  onClick={placeOrder}
+                  className="flex w-full items-center justify-center gap-2 rounded-xl bg-brand-charcoal px-6 py-4 text-base font-semibold text-white shadow-md transition hover:bg-brand-goldDark disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  <Icon name="lock" className="h-4 w-4" />
+                  <span>
+                    {placing
+                      ? 'Processing Order...'
+                      : `${paymentMethod === 'cod' ? 'Place Order' : 'Pay'} ${formatPrice(payable)}`}
+                  </span>
+                </button>
+              </div>
+            </section>
+          )}
         </div>
 
-        {/* ─────────── RIGHT COLUMN: Current Order Summary Card ─────────── */}
-        <aside className="rounded-2xl border border-brand-border/80 bg-[#F6F6F6] p-6 lg:sticky lg:top-24">
+        {/* ─────────── RIGHT COLUMN: CURRENT ORDER SUMMARY (DESKTOP) ─────────── */}
+        <aside className="hidden rounded-2xl border border-brand-border/80 bg-[#F6F6F6] p-6 lg:block lg:sticky lg:top-24">
           <h2 className="text-xl font-semibold text-brand-charcoal">Current Order</h2>
           <p className="mt-1 text-xs text-brand-muted">The sum of all total items & savings for your bag</p>
 
@@ -768,15 +951,6 @@ export function CheckoutPage() {
               </li>
             ))}
           </ul>
-
-          {/* Optional Gift Wrap toggle */}
-          <div className="mt-4 border-t border-brand-border/80 pt-3.5">
-            <Checkbox
-              checked={giftWrap}
-              onChange={(event) => setGiftWrap(event.target.checked)}
-              label={`Add satin gift box wrap (+${formatPrice(GIFT_WRAP_FEE)})`}
-            />
-          </div>
 
           {/* Subtotal row */}
           <div className="mt-4 flex items-baseline justify-between border-t border-brand-border/80 pt-4">
@@ -829,16 +1003,31 @@ export function CheckoutPage() {
             </div>
           </dl>
 
-          {/* Rounded pill Pay / Place Order button */}
-          <button
-            type="submit"
-            disabled={placing}
-            className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-brand-charcoal px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-goldDark disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {placing
-              ? 'Processing Order...'
-              : `${paymentMethod === 'cod' ? 'Place Order' : 'Pay'} ${formatPrice(payable)}`}
-          </button>
+          {/* Desktop Right CTA Button */}
+          {step === 2 ? (
+            <button
+              type="button"
+              onClick={handleProceedToPayment}
+              className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-brand-charcoal px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-goldDark"
+            >
+              <span>Continue To Payment</span>
+              <Icon name="arrow-right" className="h-4 w-4" />
+            </button>
+          ) : (
+            <button
+              type="button"
+              disabled={placing}
+              onClick={placeOrder}
+              className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-brand-charcoal px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-goldDark disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <Icon name="lock" className="h-4 w-4" />
+              <span>
+                {placing
+                  ? 'Processing Order...'
+                  : `${paymentMethod === 'cod' ? 'Place Order' : 'Pay'} ${formatPrice(payable)}`}
+              </span>
+            </button>
+          )}
 
           <p className="mt-3.5 flex items-center justify-center gap-1.5 text-xs text-brand-muted">
             <Icon name="lock" className="h-3.5 w-3.5" />
@@ -849,7 +1038,38 @@ export function CheckoutPage() {
             </Link>
           </p>
         </aside>
-      </form>
+      </div>
+
+      {/* ─────────── MOBILE STICKY BOTTOM ACTION BAR (ZERO SCROLLING) ─────────── */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-brand-border bg-white/95 px-4 py-3 shadow-[0_-6px_20px_rgba(0,0,0,0.08)] backdrop-blur-md lg:hidden">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <span className="block text-[11px] font-medium text-brand-muted">Total Payable</span>
+            <span className="text-lg font-bold tabular-nums text-brand-charcoal">{formatPrice(payable)}</span>
+          </div>
+
+          {step === 2 ? (
+            <button
+              type="button"
+              onClick={handleProceedToPayment}
+              className="flex items-center gap-2 rounded-full bg-brand-charcoal px-6 py-3 text-sm font-semibold text-white shadow-md transition active:scale-95"
+            >
+              <span>Continue</span>
+              <Icon name="arrow-right" className="h-4 w-4" />
+            </button>
+          ) : (
+            <button
+              type="button"
+              disabled={placing}
+              onClick={placeOrder}
+              className="flex items-center gap-2 rounded-full bg-brand-charcoal px-6 py-3 text-sm font-semibold text-white shadow-md transition active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <Icon name="lock" className="h-4 w-4" />
+              <span>{placing ? 'Processing...' : paymentMethod === 'cod' ? 'Place Order' : 'Pay Now'}</span>
+            </button>
+          )}
+        </div>
+      </div>
     </div>
   )
 }
