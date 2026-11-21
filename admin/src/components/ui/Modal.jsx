@@ -29,13 +29,21 @@ export function useScrollLock(active) {
 
 /** Escape closes, and Tab cycles within the panel rather than escaping it. */
 function useDialogBehaviour(open, onClose, panelRef) {
+  const onCloseRef = useRef(onClose)
+  onCloseRef.current = onClose
+
+  const hasFocusedRef = useRef(false)
+
   useEffect(() => {
-    if (!open) return undefined
+    if (!open) {
+      hasFocusedRef.current = false
+      return undefined
+    }
 
     const onKeyDown = (event) => {
       if (event.key === 'Escape') {
         event.stopPropagation()
-        onClose()
+        onCloseRef.current?.()
         return
       }
       if (event.key !== 'Tab') return
@@ -59,19 +67,28 @@ function useDialogBehaviour(open, onClose, panelRef) {
     }
 
     document.addEventListener('keydown', onKeyDown)
-    // Move focus in, so the trap has somewhere to start and a keyboard user is
-    // not left behind on the page underneath.
-    const timer = setTimeout(() => {
-      const panel = panelRef.current
-      const target = panel?.querySelector('[data-autofocus], input, button')
-      target?.focus()
-    }, 30)
+
+    // Move focus into the modal ONCE upon opening.
+    // If the user already has focus inside an input in the modal, NEVER steal or reset focus!
+    let timer = null
+    if (!hasFocusedRef.current) {
+      hasFocusedRef.current = true
+      timer = setTimeout(() => {
+        const panel = panelRef.current
+        if (!panel) return
+        if (panel.contains(document.activeElement)) return
+        const target =
+          panel.querySelector('[data-autofocus]') ??
+          panel.querySelector('input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled])')
+        target?.focus?.()
+      }, 50)
+    }
 
     return () => {
       document.removeEventListener('keydown', onKeyDown)
-      clearTimeout(timer)
+      if (timer) clearTimeout(timer)
     }
-  }, [open, onClose, panelRef])
+  }, [open, panelRef])
 }
 
 /** Centred dialog for forms. */

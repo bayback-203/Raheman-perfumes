@@ -37,12 +37,20 @@ function useScrollLock(active) {
 
 /** Calls `onClose` on Escape, and traps Tab focus inside the panel. */
 function useDialogBehaviour(open, onClose, panelRef) {
+  const onCloseRef = useRef(onClose)
+  onCloseRef.current = onClose
+
+  const hasFocusedRef = useRef(false)
+
   useEffect(() => {
-    if (!open) return undefined
+    if (!open) {
+      hasFocusedRef.current = false
+      return undefined
+    }
 
     const onKeyDown = (event) => {
       if (event.key === 'Escape') {
-        onClose?.()
+        onCloseRef.current?.()
         return
       }
       if (event.key !== 'Tab' || !panelRef.current) return
@@ -64,16 +72,23 @@ function useDialogBehaviour(open, onClose, panelRef) {
     }
 
     document.addEventListener('keydown', onKeyDown)
-    const timer = setTimeout(() => {
-      const target = panelRef.current?.querySelector('[data-autofocus]') ?? panelRef.current
-      target?.focus?.()
-    }, 40)
+
+    let timer = null
+    if (!hasFocusedRef.current) {
+      hasFocusedRef.current = true
+      timer = setTimeout(() => {
+        if (!panelRef.current) return
+        if (panelRef.current.contains(document.activeElement)) return
+        const target = panelRef.current.querySelector('[data-autofocus]') ?? panelRef.current
+        target?.focus?.()
+      }, 40)
+    }
 
     return () => {
       document.removeEventListener('keydown', onKeyDown)
-      clearTimeout(timer)
+      if (timer) clearTimeout(timer)
     }
-  }, [open, onClose, panelRef])
+  }, [open, panelRef])
 }
 
 /** Centred modal dialog. Renders into a portal above everything else. */
