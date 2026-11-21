@@ -258,8 +258,8 @@ export function OrderTrackingPage() {
                     tracking.status === 'Cancelled'
                       ? 'text-rose-700'
                       : tracking.status === 'Delivered'
-                      ? 'text-emerald-700'
-                      : 'text-[#2D6A4F]',
+                        ? 'text-emerald-700'
+                        : 'text-[#2D6A4F]',
                   )}
                 >
                   {tracking.status}
@@ -413,12 +413,12 @@ export function OrderTrackingPage() {
                   {tracking.status === 'Delivered'
                     ? 'Delivered'
                     : tracking.status === 'Cancelled'
-                    ? 'Order Cancelled'
-                    : currentStage >= 3
-                    ? "It's on the Way!"
-                    : currentStage === 2
-                    ? 'Packed & Ready for Courier'
-                    : 'Order Confirmed & Processing'}
+                      ? 'Order Cancelled'
+                      : currentStage >= 3
+                        ? "It's on the Way!"
+                        : currentStage === 2
+                          ? 'Packed & Ready for Courier'
+                          : 'Order Confirmed & Processing'}
                 </p>
                 <p className="mt-1 text-sm font-bold text-brand-charcoal">
                   Delivery Estimate:{' '}
@@ -447,10 +447,10 @@ export function OrderTrackingPage() {
                           currentStage >= 4
                             ? 'calc(100% - 1.5rem)'
                             : currentStage === 3
-                            ? '66%'
-                            : currentStage === 2
-                            ? '33%'
-                            : '0%',
+                              ? '66%'
+                              : currentStage === 2
+                                ? '33%'
+                                : '0%',
                       }}
                     />
 
@@ -494,8 +494,8 @@ export function OrderTrackingPage() {
                             ? shortDate(packedEvent.timestamp)
                             : 'Completed'
                           : currentStage === 1
-                          ? 'In Atelier'
-                          : 'Pending'}
+                            ? 'In Atelier'
+                            : 'Pending'}
                       </span>
                     </div>
 
@@ -548,8 +548,8 @@ export function OrderTrackingPage() {
                             ? shortDate(deliveredEvent.timestamp)
                             : 'Delivered'
                           : tracking.expectedDelivery
-                          ? shortDate(tracking.expectedDelivery)
-                          : 'Standard (3-5 days)'}
+                            ? shortDate(tracking.expectedDelivery)
+                            : 'Standard (3-5 days)'}
                       </span>
                     </div>
                   </div>
@@ -637,8 +637,8 @@ export function OrderTrackingPage() {
                               tracking.status === 'Cancelled'
                                 ? 'text-rose-700'
                                 : tracking.status === 'Delivered'
-                                ? 'text-emerald-700'
-                                : 'text-[#2D6A4F]',
+                                  ? 'text-emerald-700'
+                                  : 'text-[#2D6A4F]',
                             )}
                           >
                             {tracking.status}
@@ -745,12 +745,12 @@ export function OrderTrackingPage() {
                       {tracking.status === 'Delivered'
                         ? 'Package has been delivered to your destination.'
                         : currentStage >= 3
-                        ? `Your parcel is in transit${tracking.courier ? ` with ${tracking.courier}` : ''}. Live hub scans will update as it progresses through transit hubs.`
-                        : currentStage === 2
-                        ? 'Your order has been hand-packed and sealed with tamper-evident packaging at the atelier. Awaiting courier pickup.'
-                        : currentStage === 0
-                        ? 'This order has been cancelled.'
-                        : 'Your order has been confirmed and payment verified. Our team is compounding and preparing your fragrance for packing.'}
+                          ? `Your parcel is in transit${tracking.courier ? ` with ${tracking.courier}` : ''}. Live hub scans will update as it progresses through transit hubs.`
+                          : currentStage === 2
+                            ? 'Your order has been hand-packed and sealed with tamper-evident packaging at the atelier. Awaiting courier pickup.'
+                            : currentStage === 0
+                              ? 'This order has been cancelled.'
+                              : 'Your order has been confirmed and payment verified. Our team is compounding and preparing your fragrance for packing.'}
                     </p>
                   )}
                 </div>

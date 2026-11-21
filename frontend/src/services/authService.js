@@ -129,6 +129,13 @@ export const authService = {
   validateCoupon: (code, subtotal) =>
     api.mutate('/coupons/validate', { method: 'POST', body: { code, subtotal } }),
 
+  /* ──────────────────────────────────────────────────────── payments ──── */
+
+  getRazorpayConfig: () => api.get('/payments/razorpay/config'),
+
+  createRazorpayOrder: (payload) =>
+    api.mutate('/payments/razorpay/create-order', { method: 'POST', body: payload }),
+
   /* ──────────────────────────────────────────────────────── wishlist ──── */
 
   wishlist: () => api.get('/account/wishlist'),

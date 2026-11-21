@@ -10,6 +10,7 @@ import accountRoutes from './account.js'
 import adminRoutes from './admin.js'
 import * as orders from '../services/orders.js'
 import * as media from '../services/media.js'
+import { isRazorpayConfigured, getRazorpayKeyId } from '../services/razorpay.js'
 import { publicMedia, publicOrder, publicTracking } from '../lib/views.js'
 
 /**
@@ -82,7 +83,10 @@ router.post(
           .object({
             method: z.string().trim().max(30).optional(),
             status: z.enum(['Paid', 'COD Pending', 'Refunded', 'Failed']).optional(),
-            txnRef: z.string().trim().max(60).optional(),
+            txnRef: z.string().trim().max(100).optional(),
+            razorpay_payment_id: z.string().trim().max(100).optional(),
+            razorpay_order_id: z.string().trim().max(100).optional(),
+            razorpay_signature: z.string().trim().max(200).optional(),
           })
           .optional(),
         notes: z.string().trim().max(500).optional(),
@@ -93,6 +97,50 @@ router.post(
   asyncHandler(async (req, res) => {
     const order = await orders.place(req.body, { customer: req.auth.customer })
     res.status(201).json({ order: publicOrder(order), tracking: publicTracking(order) })
+  }),
+)
+
+/**
+ * Public Razorpay gateway status & keyId check.
+ */
+router.get('/payments/razorpay/config', (req, res) => {
+  res.json({
+    configured: isRazorpayConfigured(),
+    keyId: getRazorpayKeyId(),
+  })
+})
+
+/**
+ * Initiate server-side Razorpay order with strict price arithmetic.
+ */
+router.post(
+  '/payments/razorpay/create-order',
+  requireCustomer,
+  validate(
+    'body',
+    z
+      .object({
+        items: z
+          .array(
+            z
+              .object({
+                slug: z.string().trim().optional(),
+                productId: z.string().trim().optional(),
+                size: z.string().trim().optional(),
+                volume: z.string().trim().optional(),
+                qty: z.coerce.number().int().positive().max(20).default(1),
+              })
+              .refine((item) => item.slug || item.productId, { message: 'Each line needs a slug or productId.' }),
+          )
+          .min(1, 'Need at least one item.'),
+        couponCode: z.string().trim().max(30).optional(),
+        giftWrap: z.boolean().optional().default(false),
+      })
+      .strip(),
+  ),
+  asyncHandler(async (req, res) => {
+    const razorpayOrder = await orders.prepareRazorpayOrder(req.body, { customer: req.auth.customer })
+    res.json(razorpayOrder)
   }),
 )
 

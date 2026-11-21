@@ -96,6 +96,7 @@ const orderSchema = new Schema(
       status: { type: String, enum: PAYMENT_STATUSES, default: 'Paid' },
       method: { type: String, default: 'UPI' },
       txnRef: { type: String, default: '' },
+      razorpayOrderId: { type: String, default: '' },
     },
 
     /**

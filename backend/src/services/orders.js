@@ -12,6 +12,7 @@ import { processPostOrderLoyalty } from './repeatAnalysis.js'
 import { sendLoggedEmail } from './mailer.js'
 import { realEmailOf } from '../lib/identity.js'
 import { cache } from '../lib/cache.js'
+import { verifyRazorpaySignature, createRazorpayOrder, isRazorpayConfigured } from './razorpay.js'
 
 /**
  * Placing and moving orders.
@@ -247,12 +248,51 @@ export async function place(input, { customer, actor = null } = {}) {
   // parcel.
   const number = await nextOrderNumber()
   const address = input.address ?? snapshotAddress(customer)
-  const method = input.payment?.method ?? (counter ? 'Cash' : 'UPI')
+  const method = input.payment?.method ?? (counter ? 'Cash' : 'Razorpay')
   const isCod = String(method).trim().toUpperCase() === 'COD'
-  if (!counter && isCod) {
-    const showcase = await getShowcase()
-    if (!showcase.codEnabled) {
-      throw unprocessable('Cash on Delivery is currently turned off. Please choose Online Payment (Razorpay).')
+
+  let paymentRecord = {
+    status: counter ? 'Paid' : (isCod ? 'COD Pending' : 'Paid'),
+    method: isCod ? 'COD' : (counter ? method : 'Razorpay'),
+    txnRef: input.payment?.txnRef ?? '',
+    razorpayOrderId: input.payment?.razorpay_order_id ?? '',
+  }
+
+  if (!counter) {
+    if (isCod) {
+      const showcase = await getShowcase()
+      if (!showcase.codEnabled) {
+        throw unprocessable('Cash on Delivery is currently turned off. Please choose Online Payment (Razorpay).')
+      }
+    } else {
+      // Online payment (Razorpay) — strictly require verified payment approval
+      const p = input.payment ?? {}
+      const paymentId = p.razorpay_payment_id || p.txnRef
+      const orderId = p.razorpay_order_id
+      const signature = p.razorpay_signature
+
+      if (!paymentId || !orderId || !signature) {
+        throw unprocessable(
+          'Online payment verification required. The order cannot be placed until payment is approved on Razorpay.',
+        )
+      }
+
+      const isValid = verifyRazorpaySignature({
+        razorpay_order_id: orderId,
+        razorpay_payment_id: paymentId,
+        razorpay_signature: signature,
+      })
+
+      if (!isValid) {
+        throw unprocessable('Payment verification failed: Invalid Razorpay signature. Nothing has been charged.')
+      }
+
+      paymentRecord = {
+        status: 'Paid',
+        method: 'Razorpay',
+        txnRef: paymentId,
+        razorpayOrderId: orderId,
+      }
     }
   }
 
@@ -268,11 +308,7 @@ export async function place(input, { customer, actor = null } = {}) {
             placedAt: new Date(),
             channel,
             status: counter ? 'Delivered' : 'Pending',
-            payment: {
-              status: counter ? 'Paid' : (input.payment?.status ?? (isCod ? 'COD Pending' : 'Paid')),
-              method,
-              txnRef: input.payment?.txnRef ?? '',
-            },
+            payment: paymentRecord,
             address,
             items,
             pricing,
@@ -851,8 +887,52 @@ export async function processRefundRequest(orderNumber, { action, referenceNote 
   return order
 }
 
+/**
+ * Calculate pricing and initiate a server-to-server Razorpay order.
+ */
+export async function prepareRazorpayOrder(input, { customer }) {
+  if (!customer) throw unprocessable('An order needs a customer.')
+  if (!input.items?.length) throw unprocessable('An order needs at least one item.')
+
+  const resolved = []
+  for (const line of input.items) resolved.push(await resolveLine(line, { counter: false }))
+  const items = resolved.map((entry) => entry.item)
+
+  const stored = await getPricing()
+  let coupon = null
+  if (input.couponCode) {
+    coupon = await Coupon.findOne({ code: String(input.couponCode).trim().toUpperCase() })
+    if (!coupon || !coupon.isLive()) {
+      coupon = null
+    }
+  }
+
+  const pricing = priceOrder({ items, coupon, giftWrap: Boolean(input.giftWrap), rule: stored })
+  const amountInPaise = Math.round(pricing.total * 100)
+
+  const rzp = await createRazorpayOrder({
+    amountInPaise,
+    currency: 'INR',
+    receipt: `rcpt_${Date.now().toString(36)}`,
+    notes: {
+      customerEmail: customer.email,
+      customerName: customer.name || 'Customer',
+      itemsCount: items.length,
+    },
+  })
+
+  return {
+    orderId: rzp.orderId,
+    amount: rzp.amount,
+    currency: rzp.currency,
+    keyId: rzp.keyId,
+    payable: pricing.total,
+  }
+}
+
 export default {
   place,
+  prepareRazorpayOrder,
   adminList,
   adminOne,
   forCustomer,

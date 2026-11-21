@@ -26,6 +26,22 @@ const PAYMENT_ICON = {
   cod: 'truck',
 }
 
+/** Dynamic loader for the official Razorpay Checkout SDK script */
+function loadRazorpayScript() {
+  return new Promise((resolve) => {
+    if (window.Razorpay) {
+      resolve(true)
+      return
+    }
+    const script = document.createElement('script')
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js'
+    script.async = true
+    script.onload = () => resolve(true)
+    script.onerror = () => resolve(false)
+    document.body.appendChild(script)
+  })
+}
+
 /** Framed icon input field card matching the clean two-column customer info style. */
 function CheckoutFieldCard({ icon, label, value, onChange, error, type = 'text', required = false, placeholder = '' }) {
   return (
@@ -312,9 +328,6 @@ export function CheckoutPage() {
       return
     }
 
-    placingRef.current = true
-    setPlacing(true)
-
     const draft = {
       items: items.map((item) => ({
         slug: item.slug,
@@ -333,60 +346,189 @@ export function CheckoutPage() {
         pincode: shipping.pincode,
       },
       couponCode: couponCode ?? undefined,
-      payment: { method: paymentMethod },
       notes,
     }
 
-    const signature = JSON.stringify(draft)
-    if (orderKeyRef.current.signature !== signature || !orderKeyRef.current.key) {
+    // ──────────────── CASH ON DELIVERY FLOW ────────────────
+    if (paymentMethod === 'cod') {
+      placingRef.current = true
+      setPlacing(true)
+
       const token =
         typeof crypto !== 'undefined' && crypto.randomUUID
           ? crypto.randomUUID()
           : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`
-      orderKeyRef.current = { signature, key: `ord-${token}` }
-    }
 
-    let result
-    try {
-      result = await authService.placeOrder(draft, { idempotencyKey: orderKeyRef.current.key })
-    } catch (error) {
-      placingRef.current = false
-      setPlacing(false)
-
-      if (error.status === 401) {
-        toast({
-          title: 'Please sign in',
-          description: 'An order needs an account so you can follow it. Your bag is safe.',
-          tone: 'error',
-        })
-        navigate('/sign-in?next=/checkout', NAV_TRANSITION)
+      let result
+      try {
+        result = await authService.placeOrder(
+          { ...draft, payment: { method: 'cod' } },
+          { idempotencyKey: `ord-cod-${token}` },
+        )
+      } catch (error) {
+        placingRef.current = false
+        setPlacing(false)
+        if (error.status === 401) {
+          toast({
+            title: 'Please sign in',
+            description: 'An order needs an account so you can follow it. Your bag is safe.',
+            tone: 'error',
+          })
+          navigate('/sign-in?next=/checkout', NAV_TRANSITION)
+          return
+        }
+        toast({ title: 'Order not placed', description: error.message, tone: 'error' })
         return
       }
 
-      toast({ title: 'Order not placed', description: error.message, tone: 'error' })
+      const order = result.data?.order
+      if (!order?.id) {
+        placingRef.current = false
+        setPlacing(false)
+        toast({ title: 'Order not placed', description: 'No confirmation received.', tone: 'error' })
+        return
+      }
+
+      placingRef.current = false
+      setPlacing(false)
+      addOrder(order)
+      clearCart()
+      toast({
+        title: `Order ${order.id} placed`,
+        description: 'Cash on Delivery order confirmed. Details sent to your email.',
+      })
+      navigate(`/track-order?order=${order.id}`, NAV_TRANSITION)
       return
     }
 
-    const order = result.data?.order
-    if (!order?.id) {
+    // ──────────────── REAL RAZORPAY PAYMENT FLOW ────────────────
+    // Orders will NEVER be placed without verified approval from Razorpay!
+    placingRef.current = true
+    setPlacing(true)
+
+    let rzpData
+    try {
+      rzpData = await authService.createRazorpayOrder({
+        items: draft.items,
+        couponCode: draft.couponCode,
+        giftWrap,
+      })
+    } catch (err) {
       placingRef.current = false
       setPlacing(false)
       toast({
-        title: 'Order not placed',
-        description: 'The confirmation came back without an order number. Nothing has been charged.',
+        title: 'Payment Gateway Not Ready',
+        description: err.message || 'Razorpay payment could not be initiated. Please ensure keys are configured.',
         tone: 'error',
       })
       return
     }
 
-    orderKeyRef.current = { signature: '', key: '' }
-    addOrder(order)
-    clearCart()
-    toast({
-      title: `Order ${order.id} confirmed`,
-      description: 'Your order email is on its way with delivery details.',
+    const scriptLoaded = await loadRazorpayScript()
+    if (!scriptLoaded) {
+      placingRef.current = false
+      setPlacing(false)
+      toast({
+        title: 'Network Error',
+        description: 'Could not load Razorpay payment window. Please check your internet connection.',
+        tone: 'error',
+      })
+      return
+    }
+
+    const options = {
+      key: rzpData.keyId,
+      amount: rzpData.amount,
+      currency: rzpData.currency || 'INR',
+      name: 'Raheman Perfumes',
+      description: 'Luxury Fragrance Order',
+      image: '/logo-gold-transparent.png',
+      order_id: rzpData.orderId,
+      prefill: {
+        name: `${contact.firstName} ${contact.lastName}`.trim(),
+        email: contact.email,
+        contact: contact.phone,
+      },
+      notes: {
+        address: formattedAddress,
+      },
+      theme: {
+        color: '#1A1613',
+      },
+      modal: {
+        ondismiss: () => {
+          placingRef.current = false
+          setPlacing(false)
+          toast({
+            title: 'Payment Incomplete',
+            description: 'You closed the payment window. The order was not placed and your bag is saved.',
+            tone: 'error',
+          })
+        },
+      },
+      handler: async function (response) {
+        // Payment approved by Razorpay! Now submit to backend with cryptographic credentials for HMAC verification
+        const verifiedDraft = {
+          ...draft,
+          payment: {
+            method: 'razorpay',
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_signature: response.razorpay_signature,
+          },
+        }
+
+        let result
+        try {
+          result = await authService.placeOrder(verifiedDraft, {
+            idempotencyKey: `ord-${response.razorpay_payment_id}`,
+          })
+        } catch (error) {
+          placingRef.current = false
+          setPlacing(false)
+          toast({
+            title: 'Order verification failed',
+            description: error.message || 'Payment received but order verification failed. Please contact support.',
+            tone: 'error',
+          })
+          return
+        }
+
+        const order = result.data?.order
+        if (!order?.id) {
+          placingRef.current = false
+          setPlacing(false)
+          toast({
+            title: 'Order not placed',
+            description: 'The confirmation came back without an order number.',
+            tone: 'error',
+          })
+          return
+        }
+
+        placingRef.current = false
+        setPlacing(false)
+        addOrder(order)
+        clearCart()
+        toast({
+          title: `Order ${order.id} Confirmed`,
+          description: 'Payment approved! Your order confirmation email is on its way.',
+        })
+        navigate(`/track-order?order=${order.id}`, NAV_TRANSITION)
+      },
+    }
+
+    const rzpInstance = new window.Razorpay(options)
+    rzpInstance.on('payment.failed', function (resp) {
+      placingRef.current = false
+      setPlacing(false)
+      toast({
+        title: 'Payment Failed',
+        description: resp.error?.description || 'Your payment was declined by the bank or UPI.',
+        tone: 'error',
+      })
     })
-    navigate(`/track-order?order=${order.id}`, NAV_TRANSITION)
+    rzpInstance.open()
   }
 
   return (
