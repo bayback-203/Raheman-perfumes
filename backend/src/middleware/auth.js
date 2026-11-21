@@ -72,130 +72,180 @@ export function signToken(user, { absoluteExpiry } = {}) {
   )
 }
 
-  export function setSessionCookie(res, token, roleOverride) {
-    let role = roleOverride
-    if (!role && token) {
-      try {
-        const decoded = jwt.decode(token)
-        role = decoded?.role
-      } catch {
-        // ignore
-      }
-    }
-    const isStaff = isStaffUser(role)
-    const maxAgeMs = isStaff
-      ? (config.staffSessionDays || 7) * 24 * 60 * 60 * 1000
-      : config.sessionIdleHours * 60 * 60 * 1000
+export const STAFF_COOKIE = 'rehman_staff_session'
 
-    const isCrossDomain = config.isProduction || config.cookieSecure
-    res.cookie(config.sessionCookie, token, {
-      httpOnly: true,
-      sameSite: isCrossDomain ? 'none' : 'lax',
-      secure: isCrossDomain ? true : config.cookieSecure,
-      maxAge: maxAgeMs,
-      path: '/',
-    })
+export function setSessionCookie(res, token, roleOverride) {
+  let role = roleOverride
+  if (!role && token) {
+    try {
+      const decoded = jwt.decode(token)
+      role = decoded?.role
+    } catch {
+      // ignore
+    }
+  }
+  const isStaff = isStaffUser(role)
+  const maxAgeMs = isStaff
+    ? (config.staffSessionDays || 7) * 24 * 60 * 60 * 1000
+    : config.sessionIdleHours * 60 * 60 * 1000
+
+  const isCrossDomain = config.isProduction || config.cookieSecure
+  const cookieOpts = {
+    httpOnly: true,
+    sameSite: isCrossDomain ? 'none' : 'lax',
+    secure: isCrossDomain ? true : config.cookieSecure,
+    path: '/',
   }
 
-  export function clearSessionCookie(res) {
-    const isCrossDomain = config.isProduction || config.cookieSecure
-    res.clearCookie(config.sessionCookie, {
-      httpOnly: true,
-      sameSite: isCrossDomain ? 'none' : 'lax',
-      secure: isCrossDomain ? true : config.cookieSecure,
-      path: '/',
+  res.cookie(config.sessionCookie, token, {
+    ...cookieOpts,
+    maxAge: maxAgeMs,
+  })
+
+  if (isStaff) {
+    res.cookie(STAFF_COOKIE, token, {
+      ...cookieOpts,
+      maxAge: (config.staffSessionDays || 7) * 24 * 60 * 60 * 1000,
     })
   }
+}
 
-  /**
-   * The 401 a guard raises when there is no usable session.
-   */
-    function refusal(reason, role) {
-      if (reason !== 'expired') return unauthorized('Please sign in to continue.')
-      const isStaff = isStaffUser(role)
-      const message = isStaff
-        ? 'Your session ended after 7 days. Please sign in again.'
-        : `Your session ended. For your security, sessions sign out after ${config.sessionIdleHours} hours of inactivity — please sign in again.`
-      return unauthorized(message, { code: 'session_expired' })
+export function clearSessionCookie(res) {
+  const isCrossDomain = config.isProduction || config.cookieSecure
+  const cookieOpts = {
+    httpOnly: true,
+    sameSite: isCrossDomain ? 'none' : 'lax',
+    secure: isCrossDomain ? true : config.cookieSecure,
+    path: '/',
+  }
+  res.clearCookie(config.sessionCookie, cookieOpts)
+  res.clearCookie(STAFF_COOKIE, cookieOpts)
+}
+
+/**
+ * The 401 a guard raises when there is no usable session.
+ */
+function refusal(reason, role) {
+  if (reason !== 'expired') return unauthorized('Please sign in to continue.')
+  const isStaff = isStaffUser(role)
+  const message = isStaff
+    ? 'Your session ended after 7 days. Please sign in again.'
+    : `Your session ended. For your security, sessions sign out after ${config.sessionIdleHours} hours of inactivity — please sign in again.`
+  return unauthorized(message, { code: 'session_expired' })
+}
+
+/**
+ * Verify token and load user.
+ */
+async function resolveToken(token, res) {
+  if (!token) return { session: null, reason: 'absent' }
+
+  let payload
+  try {
+    payload = jwt.verify(token, config.jwtSecret)
+  } catch {
+    const decoded = jwt.decode(token)
+    return { session: null, reason: 'expired', role: decoded?.role }
+  }
+
+  const absolute = Number(payload.abs)
+  if (Number.isFinite(absolute) && absolute > 0 && absolute * 1000 <= Date.now()) {
+    return { session: null, reason: 'expired', role: payload.role }
+  }
+
+  const user = await User.findById(payload.sub).select('+passwordHash').populate('customer')
+  if (!user) return { session: null, reason: 'expired', role: payload.role }
+  if ((payload.v ?? 0) !== (user.tokenVersion ?? 0)) return { session: null, reason: 'expired', role: payload.role }
+
+  renewIfStale(res, user, payload, absolute)
+  return { session: { user, customer: user.customer ?? null, payload }, reason: null, role: user.role }
+}
+
+/**
+ * Read the cookie and load the user it names.
+ */
+async function resolveSession(req, res) {
+  const isStaffRequest =
+    req.originalUrl?.includes('/admin') ||
+    req.baseUrl?.includes('/admin') ||
+    req.headers?.['x-admin'] ||
+    req.headers?.referer?.includes('admin') ||
+    req.headers?.origin?.includes('admin')
+
+  const staffToken = req.cookies?.[STAFF_COOKIE]
+  const standardToken = req.cookies?.[config.sessionCookie]
+
+  if (isStaffRequest && staffToken) {
+    const resolvedStaff = await resolveToken(staffToken, res)
+    if (resolvedStaff.session && isStaffUser(resolvedStaff.role)) {
+      return resolvedStaff
     }
+  }
 
-    /**
-     * Read the cookie and load the user it names.
-     */
-    async function resolveSession(req, res) {
-      const token = req.cookies?.[config.sessionCookie]
-      if (!token) return { session: null, reason: 'absent' }
+  const resolved = await resolveToken(standardToken, res)
+  if (!resolved.session && staffToken) {
+    return resolveToken(staffToken, res)
+  }
+  return resolved
+}
 
-      let payload
-      try {
-        payload = jwt.verify(token, config.jwtSecret)
-      } catch {
-        const decoded = jwt.decode(token)
-        return { session: null, reason: 'expired', role: decoded?.role }
-      }
+/**
+ * Slide the session forward on activity.
+ */
+function renewIfStale(res, user, payload, absolute) {
+  if (!res) return
+  const issuedAt = Number(payload.iat) * 1000
+  if (!Number.isFinite(issuedAt) || Date.now() - issuedAt < RENEW_AFTER_MS) return
+  setSessionCookie(res, signToken(user, { absoluteExpiry: absolute }), user.role)
+}
 
-      const absolute = Number(payload.abs)
-      if (Number.isFinite(absolute) && absolute > 0 && absolute * 1000 <= Date.now()) {
-        return { session: null, reason: 'expired', role: payload.role }
-      }
+/** Attach `req.auth` when a valid session exists; never reject. */
+export const optionalAuth = asyncHandler(async (req, res, next) => {
+  const resolved = await resolveSession(req, res)
+  req.auth = resolved.session
+  req.sessionReason = resolved.reason
+  req.sessionRole = resolved.role
+  next()
+})
 
-      const user = await User.findById(payload.sub).select('+passwordHash').populate('customer')
-      if (!user) return { session: null, reason: 'expired', role: payload.role }
-      if ((payload.v ?? 0) !== (user.tokenVersion ?? 0)) return { session: null, reason: 'expired', role: payload.role }
+/** Reject unless a valid session exists. */
+export const requireAuth = asyncHandler(async (req, res, next) => {
+  if (!req.auth) {
+    const resolved = await resolveSession(req, res)
+    req.auth = resolved.session
+    req.sessionReason = resolved.reason
+    req.sessionRole = resolved.role
+  }
+  if (!req.auth) throw refusal(req.sessionReason, req.sessionRole)
+  next()
+})
 
-      renewIfStale(res, user, payload, absolute)
-      return { session: { user, customer: user.customer ?? null, payload }, reason: null, role: user.role }
-    }
-
-    /**
-     * Slide the session forward on activity.
-     */
-    function renewIfStale(res, user, payload, absolute) {
-      if (!res) return
-      const issuedAt = Number(payload.iat) * 1000
-      if (!Number.isFinite(issuedAt) || Date.now() - issuedAt < RENEW_AFTER_MS) return
-      setSessionCookie(res, signToken(user, { absoluteExpiry: absolute }), user.role)
-    }
-
-    /** Attach `req.auth` when a valid session exists; never reject. */
-    export const optionalAuth = asyncHandler(async (req, res, next) => {
-      const resolved = await resolveSession(req, res)
-      req.auth = resolved.session
-      req.sessionReason = resolved.reason
-      req.sessionRole = resolved.role
-      next()
-    })
-
-    /** Reject unless a valid session exists. */
-    export const requireAuth = asyncHandler(async (req, res, next) => {
+/**
+ * Reject unless the signed-in account holds one of `roles`.
+ */
+export const requireRole =
+  (...roles) =>
+    asyncHandler(async (req, res, next) => {
       if (!req.auth) {
         const resolved = await resolveSession(req, res)
         req.auth = resolved.session
         req.sessionReason = resolved.reason
         req.sessionRole = resolved.role
       }
+      if ((!req.auth || !roles.includes(req.auth.user.role)) && req.cookies?.[STAFF_COOKIE]) {
+        const staffResolved = await resolveToken(req.cookies[STAFF_COOKIE], res)
+        if (staffResolved.session && roles.includes(staffResolved.session.user.role)) {
+          req.auth = staffResolved.session
+          req.sessionReason = null
+          req.sessionRole = staffResolved.role
+        }
+      }
       if (!req.auth) throw refusal(req.sessionReason, req.sessionRole)
+      if (!roles.includes(req.auth.user.role)) {
+        throw forbidden(`This action needs ${roles.length > 1 ? 'one of these roles' : 'the role'}: ${roles.join(', ')}.`)
+      }
       next()
     })
-
-    /**
-     * Reject unless the signed-in account holds one of `roles`.
-     */
-    export const requireRole =
-      (...roles) =>
-        asyncHandler(async (req, res, next) => {
-          if (!req.auth) {
-            const resolved = await resolveSession(req, res)
-            req.auth = resolved.session
-            req.sessionReason = resolved.reason
-            req.sessionRole = resolved.role
-          }
-          if (!req.auth) throw refusal(req.sessionReason, req.sessionRole)
-          if (!roles.includes(req.auth.user.role)) {
-            throw forbidden(`This action needs ${roles.length > 1 ? 'one of these roles' : 'the role'}: ${roles.join(', ')}.`)
-          }
-          next()
-        })
 
     /** Any staff role at all. */
     export const requireStaff = requireRole(...STAFF_ROLES)

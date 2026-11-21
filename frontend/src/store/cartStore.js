@@ -83,6 +83,8 @@ export function groupCartItems(items = []) {
 const initialState = {
   items: [],
   pricingSynced: false,
+  shippingFee: STANDARD_SHIPPING_FEE,
+  freeShippingOver: FREE_SHIPPING_THRESHOLD,
   couponCode: null,
   coupon: null,
   giftWrap: false,
@@ -97,8 +99,14 @@ export const useCartStore = create(
 
       async syncPricing() {
         try {
-          await productService.pricing()
-          set({ pricingSynced: true })
+          const pricing = await productService.pricing()
+          if (pricing) {
+            set({
+              pricingSynced: true,
+              shippingFee: typeof pricing.shippingFee === 'number' ? pricing.shippingFee : STANDARD_SHIPPING_FEE,
+              freeShippingOver: typeof pricing.freeShippingOver === 'number' ? pricing.freeShippingOver : FREE_SHIPPING_THRESHOLD,
+            })
+          }
         } catch {
           // Ignore transient network failure
         }
@@ -260,8 +268,10 @@ export const useCartStore = create(
         const coupon = state.coupon ?? null
         const couponDiscount = Math.min(subtotal, couponDiscountOf(coupon, subtotal))
         const afterCoupon = Math.max(0, subtotal - couponDiscount)
+        const threshold = typeof state.freeShippingOver === 'number' ? state.freeShippingOver : FREE_SHIPPING_THRESHOLD
+        const fee = typeof state.shippingFee === 'number' ? state.shippingFee : STANDARD_SHIPPING_FEE
         const shipping =
-          afterCoupon === 0 || afterCoupon >= FREE_SHIPPING_THRESHOLD ? 0 : STANDARD_SHIPPING_FEE
+          afterCoupon === 0 || afterCoupon >= threshold ? 0 : fee
         const giftWrapFee = state.giftWrap ? GIFT_WRAP_FEE : 0
         const gst = Math.round((afterCoupon * 18) / 118)
         const total = afterCoupon + shipping + giftWrapFee
@@ -276,6 +286,8 @@ export const useCartStore = create(
           couponDiscount,
           couponCode: coupon?.code ?? null,
           shipping,
+          freeShippingOver: threshold,
+          shippingFee: fee,
           giftWrapFee,
           gst,
           total,
@@ -283,7 +295,7 @@ export const useCartStore = create(
           savings: productSavings + couponDiscount,
           loyaltyPoints: total >= LOYALTY_ORDER_THRESHOLD ? LOYALTY_POINTS_PER_ORDER : 0,
           hasFreeReward: state.items.some((item) => item.isLoyaltyReward || item.id === FREE_ATTAR_REWARD.id),
-          freeShippingGap: Math.max(0, FREE_SHIPPING_THRESHOLD - afterCoupon),
+          freeShippingGap: Math.max(0, threshold - afterCoupon),
         }
       },
     }),

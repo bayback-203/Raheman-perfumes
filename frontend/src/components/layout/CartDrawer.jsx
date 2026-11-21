@@ -15,9 +15,10 @@ import { FlaconStage } from '@/components/product/FlaconArt'
 import { productImage } from '@/data/productImages'
 
 /** Progress rail toward the free-shipping threshold. */
-function ShippingProgress({ subtotal }) {
-  const remaining = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal)
-  const percent = Math.min(100, Math.round((subtotal / FREE_SHIPPING_THRESHOLD) * 100))
+function ShippingProgress({ subtotal, threshold = FREE_SHIPPING_THRESHOLD }) {
+  const limit = typeof threshold === 'number' && threshold > 0 ? threshold : FREE_SHIPPING_THRESHOLD
+  const remaining = Math.max(0, limit - subtotal)
+  const percent = Math.min(100, Math.round((subtotal / limit) * 100))
   const unlocked = remaining === 0
 
   return (
@@ -162,7 +163,7 @@ export function CartDrawer() {
         </div>
       ) : (
         <>
-          <ShippingProgress subtotal={summary.subtotal} />
+          <ShippingProgress subtotal={summary.subtotal} threshold={summary.freeShippingOver} />
           <DrawerLoyaltyBanner />
 
           <div className="flex-1 overflow-y-auto px-5 py-4">
