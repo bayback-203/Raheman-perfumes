@@ -825,15 +825,15 @@ export function OrderTrackingPage() {
       )}
       </div>
 
-      {/* ──────────────── EXCLUSIVE PRINT-ONLY TAX INVOICE ──────────────── */}
-      {tracking && (
+      {/* ──────────────── EXCLUSIVE PRINT-ONLY TAX INVOICE (ONLY WHEN MODAL CLOSED) ──────────────── */}
+      {tracking && !showInvoiceModal && (
         <div className="hidden print:block">
           <TaxInvoice tracking={tracking} />
         </div>
       )}
 
       {/* ──────────────── INTERACTIVE TAX INVOICE PREVIEW MODAL ──────────────── */}
-      {tracking && (
+      {tracking && showInvoiceModal && (
         <TaxInvoiceModal
           tracking={tracking}
           open={showInvoiceModal}
