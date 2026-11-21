@@ -66,8 +66,11 @@ export const FREE_SHIPPING_THRESHOLD = 999
 export const STANDARD_SHIPPING_FEE = 79
 export const GIFT_WRAP_FEE = 149
 
-/** Loyalty: 1 point per ₹100 spent. */
-export const LOYALTY_POINTS_PER_RUPEE = 1 / 100
+/** Loyalty: 1 point per order above ₹799; 10 points unlock Free 5ml Attar reward. */
+export const LOYALTY_ORDER_THRESHOLD = 799
+export const LOYALTY_POINTS_PER_ORDER = 1
+export const LOYALTY_REWARD_POINTS_COST = 10
+export const LOYALTY_POINTS_PER_RUPEE = 0
 
 /**
  * Dates, in the shop's own timezone.

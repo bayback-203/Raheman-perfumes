@@ -1,4 +1,12 @@
-import { rupees, FREE_SHIPPING_THRESHOLD, STANDARD_SHIPPING_FEE, GIFT_WRAP_FEE, LOYALTY_POINTS_PER_RUPEE } from './format.js'
+import {
+  rupees,
+  FREE_SHIPPING_THRESHOLD,
+  STANDARD_SHIPPING_FEE,
+  GIFT_WRAP_FEE,
+  LOYALTY_ORDER_THRESHOLD,
+  LOYALTY_POINTS_PER_ORDER,
+  LOYALTY_POINTS_PER_RUPEE,
+} from './format.js'
 
 /**
  * The pricing authority.
@@ -130,7 +138,7 @@ export function priceOrder({ items = [], coupon = null, giftWrap = false, rule =
     gst,
     total,
     savings: discount,
-    loyaltyPoints: Math.floor(afterCoupon * LOYALTY_POINTS_PER_RUPEE),
+    loyaltyPoints: total >= LOYALTY_ORDER_THRESHOLD ? LOYALTY_POINTS_PER_ORDER : 0,
     freeShippingGap: Math.max(0, freeShippingOver - afterCoupon),
     coupon: coupon
       ? {

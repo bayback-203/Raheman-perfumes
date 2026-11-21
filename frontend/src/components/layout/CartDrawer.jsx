@@ -4,6 +4,7 @@ import cn from '@/lib/cn'
 import { formatPrice, FREE_SHIPPING_THRESHOLD } from '@/lib/format'
 import useUiStore from '@/store/uiStore'
 import useCartStore, { groupCartItems } from '@/store/cartStore'
+import useAuthStore from '@/store/authStore'
 import { useShowcase } from '@/store/catalogueStore'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
@@ -38,6 +39,70 @@ function ShippingProgress({ subtotal }) {
           style={{ width: `${percent}%` }}
         />
       </div>
+    </div>
+  )
+}
+
+/** Drawer compact loyalty progress & reward unlock banner. */
+function DrawerLoyaltyBanner() {
+  const user = useAuthStore((state) => state.user)
+  const addFreeAttarReward = useCartStore((state) => state.addFreeAttarReward)
+  const removeFreeAttarReward = useCartStore((state) => state.removeFreeAttarReward)
+  const hasReward = useCartStore((state) => state.hasFreeAttarReward())
+  const points = user?.loyaltyPoints ?? 0
+
+  if (!user) {
+    return (
+      <div className="border-b border-brand-border/60 bg-brand-cream/30 px-5 py-2.5 text-body-xs text-brand-muted flex items-center gap-1.5">
+        <Icon name="award" className="h-3.5 w-3.5 text-brand-goldDark shrink-0" />
+        <span>Order &gt; ₹799 to get 1 point · 10 pts = Free 5ml Attar</span>
+      </div>
+    )
+  }
+
+  if (points >= 10) {
+    if (hasReward) {
+      return (
+        <div className="border-b border-amber-200 bg-amber-50 px-5 py-2.5 flex items-center justify-between text-body-xs text-amber-950">
+          <span className="flex items-center gap-1.5 font-semibold">
+            <Icon name="gift" className="h-4 w-4 text-amber-700" /> Free 5ml Attar Claimed
+          </span>
+          <button
+            type="button"
+            onClick={removeFreeAttarReward}
+            className="text-[11px] font-bold uppercase text-amber-900 underline hover:no-underline"
+          >
+            Remove
+          </button>
+        </div>
+      )
+    }
+
+    return (
+      <div className="border-b border-brand-gold/40 bg-gradient-to-r from-amber-50 via-brand-cream/80 to-amber-50 px-5 py-2.5 flex items-center justify-between gap-3 shadow-xs">
+        <div className="min-w-0">
+          <p className="text-body-xs font-bold text-brand-charcoal flex items-center gap-1">
+            <Icon name="crown" className="h-3.5 w-3.5 text-brand-goldDark" /> Free 5ml Attar Unlocked!
+          </p>
+          <p className="text-[11px] text-brand-muted">You have {points} pts (costs 10 pts)</p>
+        </div>
+        <button
+          type="button"
+          onClick={() => addFreeAttarReward()}
+          className="rounded-lg bg-brand-charcoal px-3 py-1.5 text-xs font-bold text-white shadow-sm hover:bg-brand-goldDark shrink-0 transition"
+        >
+          + Add Free
+        </button>
+      </div>
+    )
+  }
+
+  return (
+    <div className="border-b border-brand-border/60 bg-brand-cream/40 px-5 py-2 flex items-center justify-between text-body-xs text-brand-muted">
+      <span className="flex items-center gap-1.5">
+        <Icon name="award" className="h-3.5 w-3.5 text-brand-goldDark" /> {points}/10 pts to Free 5ml Attar
+      </span>
+      <span className="text-[11px] text-brand-charcoal font-medium">Orders &gt; ₹799 (+1 pt)</span>
     </div>
   )
 }
@@ -98,47 +163,63 @@ export function CartDrawer() {
       ) : (
         <>
           <ShippingProgress subtotal={summary.subtotal} />
+          <DrawerLoyaltyBanner />
 
           <div className="flex-1 overflow-y-auto px-5 py-4">
             <ul className="space-y-4">
-              {entries.map(({ item }) => (
-                <li key={item.id} className="flex gap-3.5">
-                  <Link to={`/product/${item.slug}`} onClick={closeCartDrawer} className="w-16 shrink-0">
-                    <FlaconStage tier={item.tier} seed={item.slug} label={item.name} image={productImage(item)} compact />
-                  </Link>
-
-                  <div className="flex min-w-0 flex-1 flex-col">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0">
-                        <TierBadge tier={item.tier} size="sm" />
-                        <p className="mt-1 truncate text-body-sm font-semibold text-brand-charcoal">{item.name}</p>
-                        <p className="text-body-sm text-brand-muted">{item.volume}</p>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => removeItem(item.id)}
-                        aria-label={`Remove ${item.name}`}
-                        className="shrink-0 rounded p-1 text-brand-muted transition hover:bg-brand-cream hover:text-tier-original"
-                      >
-                        <Icon name="trash" className="h-3.5 w-3.5" />
-                      </button>
+              {entries.map(({ item }) => {
+                const isReward = item.isLoyaltyReward || item.id === 'reward:free-5ml-attar'
+                return (
+                  <li key={item.id} className="flex gap-3.5">
+                    <div className="w-16 shrink-0">
+                      <FlaconStage tier={item.tier} seed={item.slug} label={item.name} image={productImage(item)} compact />
                     </div>
 
-                    <div className="mt-2.5 flex items-center justify-between gap-3">
-                      <QuantityStepper
-                        value={item.quantity}
-                        onChange={(next) => (next < item.quantity ? decrement(item.id) : increment(item.id))}
-                        size="sm"
-                      />
-                      <div className="text-right">
-                        <span className="text-body-sm font-semibold text-brand-charcoal">
-                          {formatPrice(item.price * item.quantity)}
-                        </span>
+                    <div className="flex min-w-0 flex-1 flex-col">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          {isReward ? (
+                            <span className="rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-bold uppercase text-amber-800">
+                              10 Pts Gift
+                            </span>
+                          ) : (
+                            <TierBadge tier={item.tier} size="sm" />
+                          )}
+                          <p className="mt-1 truncate text-body-sm font-semibold text-brand-charcoal">{item.name}</p>
+                          <p className="text-body-sm text-brand-muted">{item.volume}</p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeItem(item.id)}
+                          aria-label={`Remove ${item.name}`}
+                          className="shrink-0 rounded p-1 text-brand-muted transition hover:bg-brand-cream hover:text-tier-original"
+                        >
+                          <Icon name="trash" className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+
+                      <div className="mt-2.5 flex items-center justify-between gap-3">
+                        {isReward ? (
+                          <span className="text-[11px] font-medium text-amber-800 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded">
+                            Qty: 1 (Complimentary)
+                          </span>
+                        ) : (
+                          <QuantityStepper
+                            value={item.quantity}
+                            onChange={(next) => (next < item.quantity ? decrement(item.id) : increment(item.id))}
+                            size="sm"
+                          />
+                        )}
+                        <div className="text-right">
+                          <span className={cn('text-body-sm font-semibold', isReward ? 'text-emerald-700' : 'text-brand-charcoal')}>
+                            {isReward ? 'FREE' : formatPrice(item.price * item.quantity)}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </li>
-              ))}
+                  </li>
+                )
+              })}
             </ul>
           </div>
 
@@ -158,6 +239,18 @@ export function CartDrawer() {
                 <dt className="text-brand-muted">Shipping</dt>
                 <dd className="font-semibold text-brand-charcoal">
                   {summary.shipping === 0 ? 'Complimentary' : formatPrice(summary.shipping)}
+                </dd>
+              </div>
+              {summary.hasFreeReward && (
+                <div className="flex items-center justify-between text-amber-800 pt-1 border-t border-brand-border/60">
+                  <dt className="flex items-center gap-1 font-medium">🎁 Free 5ml Attar</dt>
+                  <dd className="font-semibold">-10 Points</dd>
+                </div>
+              )}
+              <div className="flex items-center justify-between border-t border-brand-border/60 pt-1 text-brand-charcoal">
+                <dt className="text-brand-muted">Points earned</dt>
+                <dd className={cn('font-semibold', summary.loyaltyPoints > 0 ? 'text-emerald-700' : 'text-brand-muted')}>
+                  {summary.loyaltyPoints > 0 ? '+1 Point' : '0 Pts (Min ₹799)'}
                 </dd>
               </div>
             </dl>

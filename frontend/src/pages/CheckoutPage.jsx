@@ -333,6 +333,7 @@ export function CheckoutPage() {
         slug: item.slug,
         size: item.volume,
         qty: item.quantity,
+        isLoyaltyReward: Boolean(item.isLoyaltyReward),
       })),
       address: {
         name: `${contact.firstName} ${contact.lastName}`.trim(),
@@ -393,6 +394,7 @@ export function CheckoutPage() {
       setPlacing(false)
       addOrder(order)
       clearCart()
+      useAuthStore.getState().restore().catch(() => {})
       toast({
         title: `Order ${order.id} placed`,
         description: 'Cash on Delivery order confirmed. Details sent to your email.',
@@ -510,6 +512,7 @@ export function CheckoutPage() {
         setPlacing(false)
         addOrder(order)
         clearCart()
+        useAuthStore.getState().restore().catch(() => {})
         toast({
           title: `Order ${order.id} Confirmed`,
           description: 'Payment approved! Your order confirmation email is on its way.',
@@ -1048,50 +1051,59 @@ export function CheckoutPage() {
 
           {/* Compact Line-Item White Sub-Cards with live + / - steppers */}
           <ul className="mt-5 space-y-3">
-            {entries.map(({ item }) => (
-              <li
-                key={item.id}
-                className="flex items-center justify-between gap-3 rounded-xl border border-brand-border/70 bg-white p-3"
-              >
-                <div className="flex min-w-0 items-center gap-3">
-                  <Link
-                    to={`/product/${item.slug}`}
-                    className="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-[#F9F9F9] p-1"
-                  >
-                    <FlaconStage
-                      tier={item.tier}
-                      seed={item.slug}
-                      label={item.name}
-                      image={productImage(item)}
-                      compact
-                    />
-                  </Link>
-                  <div className="min-w-0">
-                    <Link
-                      to={`/product/${item.slug}`}
-                      className="block truncate text-sm font-semibold text-brand-charcoal hover:text-brand-goldDark"
-                    >
-                      {item.name}
-                    </Link>
-                    <div className="mt-0.5 flex flex-wrap items-center gap-1 text-xs text-brand-muted">
-                      <span>{item.volume} · Quantity : {item.quantity}</span>
+            {entries.map(({ item }) => {
+              const isReward = item.isLoyaltyReward || item.id === 'reward:free-5ml-attar'
+              return (
+                <li
+                  key={item.id}
+                  className={cn(
+                    'flex items-center justify-between gap-3 rounded-xl border p-3',
+                    isReward ? 'border-amber-300 bg-amber-50/50' : 'border-brand-border/70 bg-white',
+                  )}
+                >
+                  <div className="flex min-w-0 items-center gap-3">
+                    <div className="h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-[#F9F9F9] p-1">
+                      <FlaconStage
+                        tier={item.tier}
+                        seed={item.slug}
+                        label={item.name}
+                        image={productImage(item)}
+                        compact
+                      />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="block truncate text-sm font-semibold text-brand-charcoal">
+                        {item.name}
+                      </p>
+                      <div className="mt-0.5 flex flex-wrap items-center gap-1.5 text-xs text-brand-muted">
+                        <span>{item.volume} · Qty: {item.quantity}</span>
+                        {isReward && (
+                          <span className="rounded bg-amber-100 px-1.5 py-0.2 text-[10px] font-bold uppercase text-amber-800">
+                            10 Pts Gift
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="flex shrink-0 flex-col items-end gap-2">
-                  <span className="text-sm font-semibold tabular-nums text-brand-charcoal">
-                    {formatPrice(item.price * item.quantity)}
-                  </span>
-                  <MiniQtyStepper
-                    count={item.quantity}
-                    itemLabel={item.name}
-                    onIncrement={() => increment(item.id)}
-                    onDecrement={() => decrement(item.id)}
-                  />
-                </div>
-              </li>
-            ))}
+                  <div className="flex shrink-0 flex-col items-end gap-2">
+                    <span className={cn('text-sm font-semibold tabular-nums', isReward ? 'text-emerald-700' : 'text-brand-charcoal')}>
+                      {isReward ? 'FREE (₹0)' : formatPrice(item.price * item.quantity)}
+                    </span>
+                    {!isReward ? (
+                      <MiniQtyStepper
+                        count={item.quantity}
+                        itemLabel={item.name}
+                        onIncrement={() => increment(item.id)}
+                        onDecrement={() => decrement(item.id)}
+                      />
+                    ) : (
+                      <span className="text-[11px] font-medium text-amber-800">Complimentary</span>
+                    )}
+                  </div>
+                </li>
+              )
+            })}
           </ul>
 
           {/* Subtotal row */}
@@ -1142,6 +1154,24 @@ export function CheckoutPage() {
             <div className="flex justify-between">
               <dt className="text-brand-muted">GST (Included)</dt>
               <dd className="font-medium tabular-nums text-brand-charcoal">{formatPrice(summary.gst)}</dd>
+            </div>
+            {summary.hasFreeReward && (
+              <div className="flex justify-between text-amber-800 font-medium pt-1 border-t border-brand-border/60">
+                <dt className="flex items-center gap-1.5">
+                  <Icon name="gift" className="h-4 w-4 text-amber-600" />
+                  Free 5ml Attar Redeemed
+                </dt>
+                <dd className="font-semibold tabular-nums">-10 Points</dd>
+              </div>
+            )}
+            <div className="flex justify-between text-brand-charcoal pt-1 border-t border-brand-border/60">
+              <dt className="flex items-center gap-1.5 text-brand-muted">
+                <Icon name="award" className="h-4 w-4 text-brand-goldDark" />
+                Loyalty Point Earned
+              </dt>
+              <dd className={cn('tabular-nums font-semibold', summary.loyaltyPoints > 0 ? 'text-emerald-700' : 'text-brand-muted')}>
+                {summary.loyaltyPoints > 0 ? '+1 Point (Order ≥ ₹799)' : '0 Points (Min ₹799)'}
+              </dd>
             </div>
           </dl>
 

@@ -57,8 +57,10 @@ router.post(
                 size: z.string().trim().optional(),
                 volume: z.string().trim().optional(),
                 qty: z.coerce.number().int().positive().max(20).default(1),
+                isLoyaltyReward: z.boolean().optional(),
                 note: z.string().trim().max(200).optional(),
                 comboId: z.string().trim().max(80).optional(),
+                isLoyaltyReward: z.boolean().optional(),
               })
               .refine((item) => item.slug || item.productId, { message: 'Each line needs a slug or a productId.' }),
           )
@@ -129,6 +131,7 @@ router.post(
                 size: z.string().trim().optional(),
                 volume: z.string().trim().optional(),
                 qty: z.coerce.number().int().positive().max(20).default(1),
+                isLoyaltyReward: z.boolean().optional(),
               })
               .refine((item) => item.slug || item.productId, { message: 'Each line needs a slug or productId.' }),
           )

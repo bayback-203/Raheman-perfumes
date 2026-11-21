@@ -7,8 +7,29 @@ import {
   FREE_SHIPPING_THRESHOLD,
   STANDARD_SHIPPING_FEE,
   GIFT_WRAP_FEE,
+  LOYALTY_ORDER_THRESHOLD,
+  LOYALTY_POINTS_PER_ORDER,
+  LOYALTY_REWARD_POINTS_COST,
   LOYALTY_POINTS_PER_RUPEE,
 } from '@/lib/format'
+
+/** Exclusive 10-points loyalty reward pure attar bottle (5ml, ₹0). */
+export const FREE_ATTAR_REWARD = {
+  id: 'reward:free-5ml-attar',
+  productId: 'free-5ml-attar-reward',
+  slug: 'pure-artisan-attar-5ml',
+  name: 'Pure Artisan Attar (Loyalty Reward)',
+  brand: 'Raheman Atelier',
+  tier: 'Attar',
+  volume: '5ml',
+  price: 0,
+  mrp: 399,
+  notes: ['Royal Oud', 'Taif Rose', 'Mysore Sandalwood'],
+  images: ['/rehman-amber-bottle-transparent.png'],
+  kind: 'loyalty_reward',
+  isLoyaltyReward: true,
+  quantity: 1,
+}
 
 /** A stable key for a cart line. */
 export function lineKey(item) {
@@ -134,6 +155,11 @@ export const useCartStore = create(
       },
 
       updateQuantity(lineId, quantity) {
+        const item = get().items.find((entry) => entry.id === lineId)
+        if (item?.isLoyaltyReward || lineId === FREE_ATTAR_REWARD.id) {
+          if (quantity < 1) return get().removeItem(lineId)
+          return
+        }
         const parsed = Math.floor(Number(quantity))
         if (!Number.isFinite(parsed)) return
         if (parsed < 1) return get().removeItem(lineId)
@@ -145,12 +171,35 @@ export const useCartStore = create(
 
       increment(lineId) {
         const item = get().items.find((entry) => entry.id === lineId)
+        if (item?.isLoyaltyReward || lineId === FREE_ATTAR_REWARD.id) return
         if (item) get().updateQuantity(lineId, item.quantity + 1)
       },
 
       decrement(lineId) {
         const item = get().items.find((entry) => entry.id === lineId)
+        if (item?.isLoyaltyReward || lineId === FREE_ATTAR_REWARD.id) {
+          return get().removeItem(lineId)
+        }
         if (item) get().updateQuantity(lineId, item.quantity - 1)
+      },
+
+      addFreeAttarReward() {
+        set((state) => {
+          if (state.items.some((item) => item.id === FREE_ATTAR_REWARD.id || item.isLoyaltyReward)) {
+            return state
+          }
+          return { items: [FREE_ATTAR_REWARD, ...state.items] }
+        })
+      },
+
+      removeFreeAttarReward() {
+        set((state) => ({
+          items: state.items.filter((item) => item.id !== FREE_ATTAR_REWARD.id && !item.isLoyaltyReward),
+        }))
+      },
+
+      hasFreeAttarReward() {
+        return get().items.some((item) => item.id === FREE_ATTAR_REWARD.id || item.isLoyaltyReward)
       },
 
       removeItem(lineId) {
@@ -232,7 +281,8 @@ export const useCartStore = create(
           total,
           payable: total,
           savings: productSavings + couponDiscount,
-          loyaltyPoints: Math.floor(afterCoupon * LOYALTY_POINTS_PER_RUPEE),
+          loyaltyPoints: total >= LOYALTY_ORDER_THRESHOLD ? LOYALTY_POINTS_PER_ORDER : 0,
+          hasFreeReward: state.items.some((item) => item.isLoyaltyReward || item.id === FREE_ATTAR_REWARD.id),
           freeShippingGap: Math.max(0, FREE_SHIPPING_THRESHOLD - afterCoupon),
         }
       },

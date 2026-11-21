@@ -12,6 +12,11 @@ import { processPostOrderLoyalty } from './repeatAnalysis.js'
 import { sendLoggedEmail } from './mailer.js'
 import { realEmailOf } from '../lib/identity.js'
 import { cache } from '../lib/cache.js'
+import {
+  LOYALTY_ORDER_THRESHOLD,
+  LOYALTY_POINTS_PER_ORDER,
+  LOYALTY_REWARD_POINTS_COST,
+} from '../lib/format.js'
 import { verifyRazorpaySignature, createRazorpayOrder, isRazorpayConfigured } from './razorpay.js'
 
 /**
@@ -85,6 +90,33 @@ function assertTransition(order, to) {
  * fragrance that only overrun together.
  */
 async function resolveLine(line, { counter = false } = {}) {
+  // Complimentary 10-points loyalty reward (Free 5ml Pure Attar)
+  const isReward =
+    Boolean(line.isLoyaltyReward) ||
+    line.slug === 'pure-artisan-attar-5ml' ||
+    line.productId === 'free-5ml-attar-reward'
+
+  if (isReward) {
+    return {
+      product: null,
+      isLoyaltyReward: true,
+      item: {
+        product: null,
+        name: 'Pure Artisan Attar (Loyalty Reward)',
+        sku: 'RP-ATT-5ML-FREE',
+        slug: 'pure-artisan-attar-5ml',
+        image: '/rehman-amber-bottle-transparent.png',
+        volume: '5ml',
+        qty: 1,
+        unitPrice: 0,
+        lineTotal: 0,
+        meta: 'Complimentary 10-Points Loyalty Reward',
+        note: 'Free 5ml Artisan Attar Gift',
+        comboId: '',
+      },
+    }
+  }
+
   const product = line.productId
     ? await Product.findById(line.productId).populate('images')
     : await Product.findOne({ slug: String(line.slug ?? '').toLowerCase() }).populate('images')
@@ -198,6 +230,7 @@ export async function place(input, { customer, actor = null } = {}) {
   // (e.g. two sizes or duplicate bottles), ensure cumulative stock suffices.
   const qtyByProduct = new Map()
   for (const { product, item } of resolved) {
+    if (!product) continue // Skip non-inventory promotional gifts / loyalty reward lines
     const key = String(product._id)
     const entry = qtyByProduct.get(key) ?? { product, qty: 0 }
     entry.qty += item.qty
@@ -210,6 +243,17 @@ export async function place(input, { customer, actor = null } = {}) {
         available > 0
           ? `${product.name} has only ${available} left — your order asks for ${qty}.`
           : `${product.name} is currently sold out.`,
+      )
+    }
+  }
+
+  // Verify loyalty reward eligibility if present in basket
+  const hasLoyaltyReward = resolved.some((entry) => entry.isLoyaltyReward)
+  if (hasLoyaltyReward) {
+    const pts = Number(customer?.loyaltyPoints) || 0
+    if (pts < LOYALTY_REWARD_POINTS_COST) {
+      throw unprocessable(
+        `You need at least ${LOYALTY_REWARD_POINTS_COST} loyalty points to claim the Free 5ml Attar reward. You currently have ${pts} points.`,
       )
     }
   }
@@ -356,6 +400,24 @@ export async function place(input, { customer, actor = null } = {}) {
         }
       }
 
+      if (hasLoyaltyReward) {
+        const deductResult = await Customer.updateOne(
+          { _id: customer._id, loyaltyPoints: { $gte: LOYALTY_REWARD_POINTS_COST } },
+          { $inc: { loyaltyPoints: -LOYALTY_REWARD_POINTS_COST } },
+        ).session(session)
+        if (deductResult.matchedCount === 0) {
+          throw conflict('Insufficient loyalty points to claim the Free 5ml Attar reward.')
+        }
+      }
+
+      // Customer earns 1 loyalty point for every order above ₹799
+      if (customer?._id && pricing.total >= LOYALTY_ORDER_THRESHOLD) {
+        await Customer.updateOne(
+          { _id: customer._id },
+          { $inc: { loyaltyPoints: LOYALTY_POINTS_PER_ORDER } },
+        ).session(session)
+      }
+
       // Record outbox domain event atomically in same transaction
       await recordEvent(
         'OrderPlaced',
@@ -373,6 +435,13 @@ export async function place(input, { customer, actor = null } = {}) {
 
       order = created
     })
+
+    if (customer) {
+      let pointDelta = 0
+      if (hasLoyaltyReward) pointDelta -= LOYALTY_REWARD_POINTS_COST
+      if (pricing.total >= LOYALTY_ORDER_THRESHOLD) pointDelta += LOYALTY_POINTS_PER_ORDER
+      customer.loyaltyPoints = Math.max(0, (customer.loyaltyPoints ?? 0) + pointDelta)
+    }
 
     const amount = `₹${pricing.total.toLocaleString('en-IN')}`
     await logOrder(
@@ -765,6 +834,18 @@ export async function cancelByCustomer(customerId, orderNumber, { upiId = '', re
           : 'Order cancelled by customer before packing.',
         at: new Date(),
       })
+      // Reverse loyalty points adjustment on cancellation
+      const hadReward = (txOrder.items ?? []).some((item) => item.unitPrice === 0 && item.slug === 'pure-artisan-attar-5ml')
+      let pointAdjustment = 0
+      if (hadReward) pointAdjustment += LOYALTY_REWARD_POINTS_COST
+      if ((txOrder.pricing?.total ?? 0) >= LOYALTY_ORDER_THRESHOLD) pointAdjustment -= LOYALTY_POINTS_PER_ORDER
+      if (pointAdjustment !== 0 && txOrder.customer) {
+        await Customer.updateOne(
+          { _id: txOrder.customer },
+          { $inc: { loyaltyPoints: pointAdjustment } },
+        ).session(session)
+      }
+
       await txOrder.save({ session })
       committedOrder = txOrder
     })
