@@ -378,15 +378,17 @@ export function ProductCard({
   )
 }
 
-/** Responsive product grid — uniform Bestsellers card dimensions everywhere. */
+/** Responsive product grid — supports 2, 3, 4, 5, or 6 items per row. */
 export function ProductGrid({ products = [], columns = 5, variant = 'grid', showTier = true, onAdd, onToggleWishlist, isWishlisted, className }) {
   const colClass = {
     2: 'grid-cols-2',
     3: 'grid-cols-2 lg:grid-cols-3',
-    4: 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4',
-    5: 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5',
-    6: 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5',
-  }[columns] ?? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'
+    4: 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4',
+    5: 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5',
+    6: 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6',
+  }[columns] ?? 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'
+
+  const gapClass = columns === 6 ? 'gap-3.5 sm:gap-4' : 'gap-5'
 
   if (variant === 'list') {
     return (
@@ -406,7 +408,7 @@ export function ProductGrid({ products = [], columns = 5, variant = 'grid', show
   }
 
   return (
-    <div className={cn('grid items-stretch gap-5', colClass, className)}>
+    <div className={cn('grid items-stretch', colClass, gapClass, className)}>
       {products.map((product) => (
         <ProductCard
           key={product.id}

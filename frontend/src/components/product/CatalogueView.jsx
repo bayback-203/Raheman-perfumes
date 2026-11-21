@@ -3,7 +3,6 @@ import cn from '@/lib/cn'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { Breadcrumbs } from '@/components/ui/SectionHeading'
-import { SegmentedControl } from '@/components/ui/Form'
 import { Pagination, PaginationBar } from '@/components/ui/Pagination'
 import { EmptyState, Skeleton } from '@/components/ui/Feedback'
 import { Drawer } from '@/components/ui/Modal'
@@ -11,6 +10,105 @@ import { ProductGrid } from '@/components/product/ProductCard'
 import { FilterSidebar, SortSelect } from '@/components/product/FilterSidebar'
 import { useShopActions } from '@/components/home/Showcase'
 import { useCatalogueUnavailable } from '@/store/catalogueStore'
+
+/**
+ * Modern luxury density & layout controller:
+ * Supports choosing 4, 5, or 6 items in a row (with visual |||| bars) + list view.
+ */
+function DensityControl({ variant, onVariantChange, columns, onColumnsChange, className }) {
+  const options = [
+    { cols: 4, label: '4 in a row', bars: 4 },
+    { cols: 5, label: '5 in a row', bars: 5 },
+    { cols: 6, label: '6 in a row', bars: 6 },
+  ]
+
+  return (
+    <div
+      role="group"
+      aria-label="Grid layout density"
+      className={cn(
+        'inline-flex items-center rounded-lg border border-brand-border/90 bg-white p-0.5 shadow-xs',
+        className,
+      )}
+    >
+      {/* 4, 5, 6 per row controls (shown on tablet/desktop) */}
+      <div className="hidden sm:flex items-center gap-0.5">
+        {options.map(({ cols, label, bars }) => {
+          const isActive = variant === 'grid' && columns === cols
+          return (
+            <button
+              key={cols}
+              type="button"
+              onClick={() => {
+                onVariantChange('grid')
+                onColumnsChange(cols)
+              }}
+              title={label}
+              aria-label={label}
+              className={cn(
+                'group relative flex h-7 items-center gap-1.5 rounded-md px-2 text-xs font-semibold transition-all duration-200 cursor-pointer select-none',
+                isActive
+                  ? 'bg-brand-charcoal text-white shadow-xs'
+                  : 'text-brand-muted hover:bg-neutral-100/80 hover:text-brand-charcoal',
+              )}
+            >
+              {/* Vertical Bars Icon (||||, |||||, ||||||) */}
+              <span className="flex items-center gap-[2px] h-3" aria-hidden="true">
+                {Array.from({ length: bars }).map((_, i) => (
+                  <span
+                    key={i}
+                    className={cn(
+                      'w-[2px] h-full rounded-[0.5px] transition-colors',
+                      isActive ? 'bg-brand-gold' : 'bg-brand-muted/70 group-hover:bg-brand-charcoal',
+                    )}
+                  />
+                ))}
+              </span>
+              <span className={cn('text-[11px] font-bold tracking-tight', isActive ? 'text-amber-100' : '')}>
+                {cols}
+              </span>
+            </button>
+          )
+        })}
+      </div>
+
+      {/* Mobile standard grid toggle */}
+      <button
+        type="button"
+        onClick={() => onVariantChange('grid')}
+        title="Grid view"
+        aria-label="Grid view"
+        className={cn(
+          'flex sm:hidden h-7 w-7 items-center justify-center rounded-md transition-all duration-200 cursor-pointer',
+          variant === 'grid'
+            ? 'bg-brand-charcoal text-white shadow-xs'
+            : 'text-brand-muted hover:bg-neutral-100/80 hover:text-brand-charcoal',
+        )}
+      >
+        <Icon name="grid" className={cn('h-3.5 w-3.5', variant === 'grid' ? 'text-brand-gold' : '')} />
+      </button>
+
+      {/* Subtle divider */}
+      <span className="mx-0.5 h-3.5 w-px bg-brand-border/80" aria-hidden="true" />
+
+      {/* List view toggle */}
+      <button
+        type="button"
+        onClick={() => onVariantChange('list')}
+        title="List view"
+        aria-label="List view"
+        className={cn(
+          'flex h-7 w-7 items-center justify-center rounded-md transition-all duration-200 cursor-pointer',
+          variant === 'list'
+            ? 'bg-brand-charcoal text-white shadow-xs'
+            : 'text-brand-muted hover:bg-neutral-100/80 hover:text-brand-charcoal',
+        )}
+      >
+        <Icon name="list" className={cn('h-3.5 w-3.5', variant === 'list' ? 'text-brand-gold' : '')} />
+      </button>
+    </div>
+  )
+}
 
 /** Active filter chips with individual remove buttons. */
 export function ActiveChips({ chips, onRemove, onClear }) {
@@ -40,9 +138,15 @@ export function ActiveChips({ chips, onRemove, onClear }) {
 }
 
 /** Skeleton grid shown while a catalogue read is in flight. */
-export function CatalogueSkeleton({ count = 10 }) {
+export function CatalogueSkeleton({ count = 10, columns = 5 }) {
+  const colClass = {
+    4: 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4',
+    5: 'grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5',
+    6: 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6',
+  }[columns] ?? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'
+
   return (
-    <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+    <div className={cn('grid gap-5', colClass)}>
       {Array.from({ length: count }).map((_, index) => (
         <div key={index} className="card-surface overflow-hidden">
           <Skeleton className="aspect-square rounded-none" />
@@ -79,6 +183,22 @@ export function CatalogueView({
   lockTier = false,
 }) {
   const [variant, setVariant] = useState('grid')
+  const [columns, setColumns] = useState(() => {
+    try {
+      const saved = Number(localStorage.getItem('rp_grid_columns'))
+      return [4, 5, 6].includes(saved) ? saved : 5
+    } catch {
+      return 5
+    }
+  })
+
+  const handleColumnsChange = (cols) => {
+    setColumns(cols)
+    try {
+      localStorage.setItem('rp_grid_columns', String(cols))
+    } catch {}
+  }
+
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
   const [desktopFiltersOpen, setDesktopFiltersOpen] = useState(false)
   const { onAdd, onToggleWishlist, isWishlisted } = useShopActions()
@@ -196,16 +316,13 @@ export function CatalogueView({
               </p>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5 sm:gap-3">
               <SortSelect value={sort} onChange={setSort} />
-              <SegmentedControl
-                value={variant}
-                onChange={setVariant}
-                size="sm"
-                options={[
-                  { value: 'grid', icon: 'grid', title: 'Grid view' },
-                  { value: 'list', icon: 'list', title: 'List view' },
-                ]}
+              <DensityControl
+                variant={variant}
+                onVariantChange={setVariant}
+                columns={columns}
+                onColumnsChange={handleColumnsChange}
               />
             </div>
           </div>
@@ -220,7 +337,7 @@ export function CatalogueView({
           <div className="flex flex-1 flex-col pt-3.5 sm:pt-4" ref={resultsRef}>
             {loading ? (
               <div className="flex-1 pb-10">
-                <CatalogueSkeleton count={pageSize > 12 ? 12 : pageSize} />
+                <CatalogueSkeleton count={pageSize > 12 ? 12 : pageSize} columns={columns} />
               </div>
             ) : products.length === 0 ? (
               <>
@@ -252,7 +369,7 @@ export function CatalogueView({
                   <ProductGrid
                     products={products}
                     variant={variant}
-                    columns={5}
+                    columns={columns}
                     showTier
                     onAdd={onAdd}
                     onToggleWishlist={onToggleWishlist}

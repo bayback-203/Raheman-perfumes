@@ -406,20 +406,28 @@ export function FilterSidebar({
 /** Sort control that pairs with the sidebar in the catalogue toolbar. */
 export function SortSelect({ value, onChange, className }) {
   return (
-    <label className={cn('flex items-center gap-2', className)}>
-      <span className="sr-only sm:not-sr-only text-label-sm font-bold uppercase text-brand-muted">Sort</span>
-      <select
-        value={value}
-        onChange={(event) => onChange?.(event.target.value)}
-        className="field w-auto py-2 pr-9 text-body-sm font-semibold"
-      >
-        {SORT_OPTIONS.map((option) => (
-          <option key={option.id} value={option.id}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-    </label>
+    <div className={cn('inline-flex items-center gap-2', className)}>
+      <span className="hidden text-[11px] font-bold uppercase tracking-[0.16em] text-brand-muted sm:inline-block">
+        Sort
+      </span>
+      <div className="relative inline-flex items-center">
+        <select
+          value={value}
+          onChange={(event) => onChange?.(event.target.value)}
+          aria-label="Sort products"
+          className="appearance-none cursor-pointer rounded-lg border border-brand-border/90 bg-white py-1.5 pl-3.5 pr-8 text-xs font-semibold text-brand-charcoal shadow-xs transition-all duration-200 hover:border-brand-gold hover:bg-neutral-50/60 focus:border-brand-charcoal focus:outline-none focus:ring-1 focus:ring-brand-charcoal"
+        >
+          {SORT_OPTIONS.map((option) => (
+            <option key={option.id} value={option.id}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+        <span className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-brand-muted">
+          <Icon name="chevron-down" className="h-3.5 w-3.5" strokeWidth={2.5} />
+        </span>
+      </div>
+    </div>
   )
 }
 
