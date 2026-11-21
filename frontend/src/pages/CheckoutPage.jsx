@@ -331,6 +331,7 @@ export function CheckoutPage() {
     const draft = {
       items: items.map((item) => ({
         slug: item.slug,
+        productId: item.productId,
         size: item.volume,
         qty: item.quantity,
         isLoyaltyReward: Boolean(item.isLoyaltyReward),
