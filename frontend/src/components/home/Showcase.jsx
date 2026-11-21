@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import cn from '@/lib/cn'
 import useCartStore from '@/store/cartStore'
 import useWishlistStore from '@/store/wishlistStore'
 import useUiStore, { toast } from '@/store/uiStore'
@@ -98,67 +99,188 @@ export function useShopActions() {
   }
 }
 
-/** Best sellers manually chosen by Admin, rendered as a slideable single row. */
+const BESTSELLER_TABS = [
+  { id: 'all', label: 'All Mix', icon: 'grid', to: '/shop', shopLabel: 'Shop All' },
+  { id: 'him', label: 'Him', icon: 'user', to: '/shop/men', shopLabel: "Shop Men's" },
+  { id: 'her', label: 'Her', icon: 'sparkle', to: '/shop/women', shopLabel: "Shop Women's" },
+  { id: 'attar', label: 'Attar', icon: 'crown', to: '/shop/attars', shopLabel: 'Shop Attars' },
+  { id: 'bakhoor', label: 'Bakhoor', icon: 'flame', to: '/shop/bakhoor', shopLabel: 'Shop Bakhoor' },
+]
+
+function matchesBestsellerTab(product, tabId) {
+  if (!product) return false
+  if (tabId === 'all') return true
+
+  const gender = String(product.gender || '').toLowerCase()
+  const tier = String(product.tier || '').toLowerCase()
+  const category = String(product.category || '').toLowerCase()
+  const subCategory = String(product.subCategory || '').toLowerCase()
+  const name = String(product.name || '').toLowerCase()
+  const collections = Array.isArray(product.collections)
+    ? product.collections.map((c) => String(c).toLowerCase())
+    : []
+
+  if (tabId === 'him') {
+    return gender === 'men' || gender === 'unisex'
+  }
+  if (tabId === 'her') {
+    return gender === 'women' || gender === 'unisex'
+  }
+  if (tabId === 'attar') {
+    return (
+      tier === 'attar' ||
+      category.includes('attar') ||
+      subCategory.includes('attar') ||
+      name.includes('attar') ||
+      collections.some((c) => c.includes('attar'))
+    )
+  }
+  if (tabId === 'bakhoor') {
+    return (
+      tier === 'bakhoor' ||
+      category.includes('bakhoor') ||
+      subCategory.includes('bakhoor') ||
+      name.includes('bakhoor') ||
+      name.includes('bakhour') ||
+      collections.some((c) => c.includes('bakhoor') || c.includes('bakhour'))
+    )
+  }
+  return true
+}
+
+/** Best sellers manually chosen by Admin, rendered as a slideable single row with category filter tabs. */
 export function BestSellers({ products }) {
   const { onAdd, onToggleWishlist, isWishlisted } = useShopActions()
   const showcase = useShowcase()
   const bestsellers = useBestsellers()
   const catalogue = useCatalogueProducts()
+  const [activeTab, setActiveTab] = useState('all')
 
-  const list = products ?? bestsellers
-  const slider = useRowSlider(list.length)
+  const curatedList = products ?? bestsellers
+
+  // Filter items based on active tab
+  const displayList = useMemo(() => {
+    // 1. Matches from the admin's curated bestsellers list
+    const curatedMatches = curatedList.filter((p) => matchesBestsellerTab(p, activeTab))
+
+    if (activeTab === 'all') {
+      if (curatedMatches.length > 0) return curatedMatches
+      // Fallback if no bestsellers have been picked in admin yet
+      return catalogue.filter((p) => p.bestseller || (p.rating != null && p.rating >= 4.5)).slice(0, 12)
+    }
+
+    if (curatedMatches.length > 0) {
+      return curatedMatches
+    }
+
+    // Fallback: If curated bestsellers don't have items for this specific tab
+    // (e.g. admin has only added 2 spray perfumes to bestsellers and no attars or bakhoor yet),
+    // retrieve matching items from the live catalogue so user sees products instead of an empty box
+    const catalogueMatches = catalogue.filter((p) => matchesBestsellerTab(p, activeTab))
+    return [...catalogueMatches].sort((a, b) => {
+      const aScore = (a.bestseller ? 10 : 0) + (a.rating || 0)
+      const bScore = (b.bestseller ? 10 : 0) + (b.rating || 0)
+      return bScore - aScore
+    })
+  }, [curatedList, catalogue, activeTab])
+
+  const slider = useRowSlider(displayList.length)
+
+  // Smoothly scroll back to start when switching category tabs
+  useEffect(() => {
+    if (slider.trackRef.current) {
+      slider.trackRef.current.scrollTo({ left: 0, behavior: 'smooth' })
+    }
+  }, [activeTab])
 
   if (!products && !showcase.showBestsellers) return null
+
+  const currentTab = BESTSELLER_TABS.find((t) => t.id === activeTab) || BESTSELLER_TABS[0]
+  const totalInShop =
+    activeTab === 'all'
+      ? catalogue.length
+      : catalogue.filter((p) => matchesBestsellerTab(p, activeTab)).length
 
   return (
     <section className="bridal-canvas relative overflow-hidden py-16 lg:py-20">
       <div className="shell relative z-10">
-      <SectionHeading
-        title="The Bestsellers"
-        action={
-          <div className="flex flex-wrap items-center gap-2.5">
-            {list.length > 0 && (
-              <RowSlideControls canPrev={slider.canPrev} canNext={slider.canNext} onSlide={slider.slide} />
-            )}
-            <Button variant="outline" size="sm" to="/shop">
-              {/* Counted, not captioned: this read "Shop All 44" from the day the
-                  bundle was written, and the shop's real size is now whatever the
-                  admin has published. */}
-              Shop All {catalogue.length}
-              <Icon name="arrow-right" className="h-3.5 w-3.5" />
+        <SectionHeading
+          title="The Bestsellers"
+          action={
+            <div className="flex flex-wrap items-center gap-2.5">
+              {displayList.length > 0 && (
+                <RowSlideControls canPrev={slider.canPrev} canNext={slider.canNext} onSlide={slider.slide} />
+              )}
+              <Button variant="outline" size="sm" to={currentTab.to}>
+                {currentTab.shopLabel} {totalInShop > 0 ? totalInShop : ''}
+                <Icon name="arrow-right" className="h-3.5 w-3.5" />
+              </Button>
+            </div>
+          }
+        />
+
+        {/* Bestseller Category Filter Tabs (All Mix, Him, Her, Attar, Bakhoor) */}
+        <div
+          role="tablist"
+          aria-label="Filter bestsellers"
+          className="no-scrollbar mt-4 mb-2 flex items-center gap-2 overflow-x-auto pb-1 pt-1"
+        >
+          {BESTSELLER_TABS.map((tab) => {
+            const isActive = activeTab === tab.id
+            return (
+              <button
+                key={tab.id}
+                type="button"
+                role="tab"
+                aria-selected={isActive}
+                onClick={() => setActiveTab(tab.id)}
+                className={cn(
+                  'inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-200 shrink-0 select-none cursor-pointer',
+                  isActive
+                    ? 'bg-brand-charcoal text-white shadow-sm ring-1 ring-brand-charcoal'
+                    : 'border border-brand-border bg-white/90 text-brand-charcoal hover:border-brand-gold hover:bg-brand-cream/60 hover:text-brand-charcoal'
+                )}
+              >
+                <Icon
+                  name={tab.icon}
+                  className={cn('h-3.5 w-3.5 transition-colors', isActive ? 'text-brand-gold' : 'text-brand-muted')}
+                />
+                <span>{tab.label}</span>
+              </button>
+            )
+          })}
+        </div>
+
+        {displayList.length === 0 ? (
+          <div className="mt-8 rounded-xl border border-dashed border-brand-border bg-brand-cream/40 px-6 py-12 text-center">
+            <p className="text-body-md font-medium text-brand-charcoal">
+              No {currentTab.label.toLowerCase()} bestsellers available right now.
+            </p>
+            <Button variant="outline" size="sm" to={currentTab.to} className="mt-4">
+              Explore {currentTab.label}
             </Button>
           </div>
-        }
-      />
-
-      {list.length === 0 ? (
-        <div className="mt-9 rounded-xl border border-dashed border-brand-border bg-brand-cream/40 px-6 py-12 text-center">
-          <p className="text-body-md font-medium text-brand-charcoal">No bestsellers added yet.</p>
-          <Button variant="outline" size="sm" to="/shop" className="mt-4">
-            Browse Shop
-          </Button>
-        </div>
-      ) : (
-        <div
-          ref={slider.trackRef}
-          className="no-scrollbar mt-9 flex snap-x snap-mandatory items-stretch gap-5 overflow-x-auto pb-3 pt-1 scroll-smooth"
-        >
-          {list.map((product) => (
-            <div
-              key={product.id}
-              className="flex w-[78%] shrink-0 snap-start sm:w-[calc((100%-1.25rem)/2)] md:w-[calc((100%-2.5rem)/3)] lg:w-[calc((100%-3.75rem)/4)] xl:w-[calc((100%-5rem)/5)]"
-            >
-              <ProductCard
-                product={product}
-                showTier
-                onAdd={onAdd}
-                onToggleWishlist={onToggleWishlist}
-                isWishlisted={isWishlisted(product.id)}
-              />
-            </div>
-          ))}
-        </div>
-      )}
+        ) : (
+          <div
+            ref={slider.trackRef}
+            className="no-scrollbar mt-7 flex snap-x snap-mandatory items-stretch gap-5 overflow-x-auto pb-3 pt-1 scroll-smooth"
+          >
+            {displayList.map((product) => (
+              <div
+                key={product.id}
+                className="flex w-[78%] shrink-0 snap-start sm:w-[calc((100%-1.25rem)/2)] md:w-[calc((100%-2.5rem)/3)] lg:w-[calc((100%-3.75rem)/4)] xl:w-[calc((100%-5rem)/5)]"
+              >
+                <ProductCard
+                  product={product}
+                  showTier
+                  onAdd={onAdd}
+                  onToggleWishlist={onToggleWishlist}
+                  isWishlisted={isWishlisted(product.id)}
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )
