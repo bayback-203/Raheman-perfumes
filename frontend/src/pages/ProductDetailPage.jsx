@@ -400,14 +400,14 @@ export function ProductDetailPage() {
             </span>
           </div>
 
-          {/* Clean certification badges */}
+          {/* Quality & formulation badges */}
           <div className="mt-5 grid grid-cols-2 gap-2.5 sm:gap-3">
             <div className="flex items-center gap-2.5 rounded-xl bg-[#F5F5F5] px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3">
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-neutral-300 bg-white text-[9px] font-semibold tracking-wider text-brand-charcoal sm:h-9 sm:w-9 sm:text-[10px]">
-                IFRA
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-neutral-300 bg-white text-brand-charcoal sm:h-9 sm:w-9">
+                <Icon name="shield" className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               </span>
               <span className="whitespace-nowrap text-[10px] font-semibold uppercase tracking-[0.06em] text-brand-charcoal sm:text-[11px] sm:tracking-[0.08em]">
-                IFRA-Certified
+                100% Authentic
               </span>
             </div>
             <div className="flex items-center gap-2.5 rounded-xl bg-[#F5F5F5] px-3 py-2.5 sm:gap-3 sm:px-4 sm:py-3">
