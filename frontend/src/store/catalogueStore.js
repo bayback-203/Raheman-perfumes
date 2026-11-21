@@ -186,9 +186,17 @@ export function useShowcaseProducts(slotKey) {
   )
 }
 
-/** Products manually selected by admin as Bestsellers for the Home page. */
+/** Products manually selected or marked as Bestsellers for the Home page. */
 export function useBestsellers() {
-  return useShowcaseProducts('bestsellerProductIds')
+  const curated = useShowcaseProducts('bestsellerProductIds')
+  const products = useCatalogueProducts()
+  return useMemo(() => {
+    const curatedIds = new Set((curated ?? []).map((p) => p.id || p._id))
+    const tagged = (products ?? []).filter(
+      (p) => (p.bestseller || p.badges?.includes('Bestseller')) && !curatedIds.has(p.id || p._id),
+    )
+    return [...(curated ?? []), ...tagged]
+  }, [curated, products])
 }
 
 /** Draft products saved by admin, surfaced in the homepage Coming Soon shelf. */

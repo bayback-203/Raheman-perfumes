@@ -154,8 +154,21 @@ export async function getPublicShowcase() {
     mongoose.isValidObjectId(id),
   )
 
+  const bestsellerDocs = await Product.find(
+    { status: 'Active', $or: [{ bestseller: true }, { badges: 'Bestseller' }] },
+    '_id',
+  ).lean()
+  const autoBestsellerIds = bestsellerDocs.map((doc) => String(doc._id))
+  const mergedBestsellerIds = [
+    ...showcase.bestsellerProductIds,
+    ...autoBestsellerIds.filter((id) => !showcase.bestsellerProductIds.includes(id)),
+  ]
+
   if (offerAndDealIds.length === 0) {
-    return showcase
+    return {
+      ...showcase,
+      bestsellerProductIds: mergedBestsellerIds,
+    }
   }
 
   const docs = await Product.find(
@@ -167,6 +180,7 @@ export async function getPublicShowcase() {
 
   return {
     ...showcase,
+    bestsellerProductIds: mergedBestsellerIds,
     offerProductIds: showcase.offerProductIds.filter((id) => inStockSet.has(id)),
     homeDealProductIds: showcase.homeDealProductIds.filter((id) => inStockSet.has(id)),
   }
