@@ -34,7 +34,6 @@ export function ShopBanner({ collection, title, eyebrow, imageOverride }) {
     { label: 'All', to: '/shop', active: !collection && !sort },
     { label: 'Bestseller', to: '/shop/best-sellers', icon: 'crown', active: collection === 'best-sellers' },
     { label: 'New Arrivals', to: '/shop?sort=newest', icon: 'sparkle', active: sort === 'newest' },
-    { label: 'Offers', to: '/offers', icon: 'tag', active: collection === 'offers' },
     { label: 'Pure Attars', to: '/shop/attars', icon: 'sparkle', active: collection === 'attars' },
     { label: 'Combos', to: '/combos', icon: 'gift', active: collection === 'combos' },
     { label: 'Bakhoor', to: '/shop/bakhoor', icon: 'flame', active: collection === 'bakhoor' },
