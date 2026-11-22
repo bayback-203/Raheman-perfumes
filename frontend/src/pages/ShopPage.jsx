@@ -27,16 +27,19 @@ const COLLECTION_RULES = {
   attar: { filters: { tier: ['Attar'] }, title: 'Pure Attars & Oils' },
   attars: { filters: { tier: ['Attar'] }, title: 'Pure Attars & Oils' },
   celebrities: {
-    filters: { tier: ['Celebrity'] },
+    filters: {},
     title: 'Celebrities Perfumes',
+    lockTier: true,
   },
   celebrity: {
-    filters: { tier: ['Celebrity'] },
+    filters: {},
     title: 'Celebrities Perfumes',
+    lockTier: true,
   },
   'celebrity-perfumes': {
-    filters: { tier: ['Celebrity'] },
+    filters: {},
     title: 'Celebrities Perfumes',
+    lockTier: true,
   },
   combo: { filters: { tier: ['Combo'] }, title: 'Combos & Gift Sets' },
   combos: { filters: { tier: ['Combo'] }, title: 'Combos & Gift Sets' },
@@ -171,11 +174,12 @@ export function ShopPage() {
       activeNote={activeNote}
       occasionKeywords={activeNote ? null : rule?.occasionKeywords}
       bannerOverride={activeNote?.image}
+      lockTierOverride={rule?.lockTier}
     />
   )
 }
 
-function ShopCatalogue({ title, initialFilters, collection, activeNote, occasionKeywords, bannerOverride }) {
+function ShopCatalogue({ title, initialFilters, collection, activeNote, occasionKeywords, bannerOverride, lockTierOverride }) {
   const allProducts = useCatalogueProducts()
   const celebrityProducts = useCelebrities()
   const bestsellers = useBestsellers()
@@ -225,7 +229,7 @@ function ShopCatalogue({ title, initialFilters, collection, activeNote, occasion
               ? 'No bestsellers available right now'
               : 'Nothing in this collection matches those filters'
         }
-        lockTier={!!initialFilters.tier}
+        lockTier={lockTierOverride ?? !!initialFilters.tier}
       />
     </>
   )
