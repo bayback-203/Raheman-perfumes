@@ -10,9 +10,15 @@ const BANNER_IMAGES = {
   celebrity: '/pillar-originals.jpg?v=4',
   'celebrity-perfumes': '/pillar-originals.jpg?v=4',
   attars: '/pillar-attars.jpg?v=4',
+  attar: '/pillar-attars.jpg?v=4',
   combos: '/pillar-combos.jpg?v=4',
+  combo: '/pillar-combos.jpg?v=4',
   bakhoor: '/pillar-bakhoor.jpg?v=3',
   'best-sellers': '/offer-white.jpg?v=3',
+  bestsellers: '/offer-white.jpg?v=3',
+  bestseller: '/offer-white.jpg?v=3',
+  'new-arrivals': '/pillar-inspired.jpg?v=4',
+  new: '/pillar-inspired.jpg?v=4',
   unisex: '/cat-unisex.jpg?v=3',
   men: '/pillar-originals.jpg?v=4',
   women: '/hero-white.jpg?v=5',
@@ -35,11 +41,36 @@ export function ShopBanner({ collection, title, eyebrow, imageOverride }) {
 
   const pills = [
     { label: 'All', to: '/shop', active: !collection && !sort },
-    { label: 'Bestseller', to: '/shop/best-sellers', icon: 'crown', active: collection === 'best-sellers' },
-    { label: 'New Arrivals', to: '/shop?sort=newest', icon: 'sparkle', active: sort === 'newest' },
-    { label: 'Pure Attars', to: '/shop/attars', icon: 'sparkle', active: collection === 'attars' },
-    { label: 'Combos', to: '/combos', icon: 'gift', active: collection === 'combos' },
-    { label: 'Bakhoor', to: '/shop/bakhoor', icon: 'flame', active: collection === 'bakhoor' },
+    {
+      label: 'Bestseller',
+      to: '/shop/best-sellers',
+      icon: 'crown',
+      active: collection === 'best-sellers' || collection === 'bestsellers' || collection === 'bestseller',
+    },
+    {
+      label: 'New Arrivals',
+      to: '/shop/new-arrivals',
+      icon: 'sparkle',
+      active: collection === 'new-arrivals' || collection === 'new' || sort === 'newest',
+    },
+    {
+      label: 'Pure Attars',
+      to: '/shop/attars',
+      icon: 'sparkle',
+      active: collection === 'attars' || collection === 'attar',
+    },
+    {
+      label: 'Combos',
+      to: '/combos',
+      icon: 'gift',
+      active: collection === 'combos' || collection === 'combo',
+    },
+    {
+      label: 'Bakhoor',
+      to: '/shop/bakhoor',
+      icon: 'flame',
+      active: collection === 'bakhoor',
+    },
   ]
 
   return (

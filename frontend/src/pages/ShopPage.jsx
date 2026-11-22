@@ -4,8 +4,7 @@ import { CatalogueView } from '@/components/product/CatalogueView'
 import { ShopBanner } from '@/components/product/ShopBanner'
 import { useCatalogue } from '@/hooks/useCatalogue'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
-import { useCatalogueProducts, useCategories } from '@/store/catalogueStore'
-import { useCelebrities } from '@/store/catalogueStore'
+import { useCatalogueProducts, useCategories, useCelebrities, useBestsellers, useCombos } from '@/store/catalogueStore'
 import { SHOP_NOTES } from '@/data/content'
 
 /** Collection slug -> how to narrow the catalogue. */
@@ -38,7 +37,11 @@ const COLLECTION_RULES = {
   combo: { filters: { tier: ['Combo'] }, title: 'Combos & Gift Sets' },
   combos: { filters: { tier: ['Combo'] }, title: 'Combos & Gift Sets' },
   bakhoor: { filters: { tier: ['Bakhoor'] }, title: 'Bakhoor' },
-  'best-sellers': { filters: {}, title: 'Bestsellers' },
+  'best-sellers': { filters: { bestseller: true }, title: 'Bestsellers' },
+  bestsellers: { filters: { bestseller: true }, title: 'Bestsellers' },
+  bestseller: { filters: { bestseller: true }, title: 'Bestsellers' },
+  'new-arrivals': { filters: { isNew: true }, title: 'New Arrivals' },
+  new: { filters: { isNew: true }, title: 'New Arrivals' },
   everyday: {
     filters: {},
     title: 'Everyday Perfumes',
@@ -171,14 +174,25 @@ export function ShopPage() {
 function ShopCatalogue({ title, initialFilters, collection, activeNote, occasionKeywords, bannerOverride }) {
   const allProducts = useCatalogueProducts()
   const celebrityProducts = useCelebrities()
+  const bestsellers = useBestsellers()
+  const combos = useCombos()
   const scopedProducts = useMemo(() => {
     if (activeNote) return filterByNote(allProducts, activeNote.keywords)
     if (collection === 'celebrities' || collection === 'celebrity' || collection === 'celebrity-perfumes') {
       return celebrityProducts
     }
+    if (collection === 'best-sellers' || collection === 'bestsellers' || collection === 'bestseller') {
+      return bestsellers
+    }
+    if (collection === 'combos' || collection === 'combo') {
+      return combos
+    }
+    if (collection === 'new-arrivals' || collection === 'new') {
+      return allProducts.filter((p) => p.isNew || p.badges?.includes('New'))
+    }
     if (occasionKeywords) return filterByOccasion(allProducts, collection ?? '', occasionKeywords)
     return null
-  }, [allProducts, activeNote, collection, occasionKeywords, celebrityProducts])
+  }, [allProducts, activeNote, collection, occasionKeywords, celebrityProducts, bestsellers, combos])
 
   // No `baseProducts` for normal pages so the hook reads the live catalogue
   // directly; note routes strictly match Top/Heart/Base notes with zero fallback.
@@ -201,7 +215,9 @@ function ShopCatalogue({ title, initialFilters, collection, activeNote, occasion
         emptyTitle={
           activeNote
             ? `No perfumes with ${activeNote.label} notes right now`
-            : 'Nothing in this collection matches those filters'
+            : collection === 'best-sellers' || collection === 'bestsellers' || collection === 'bestseller'
+              ? 'No bestsellers available right now'
+              : 'Nothing in this collection matches those filters'
         }
         lockTier={!!initialFilters.tier}
       />

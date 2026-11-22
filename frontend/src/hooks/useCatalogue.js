@@ -82,6 +82,10 @@ function matchesFilter(product, key, value) {
       const [min, max] = value
       return product.price >= min && product.price <= max
     }
+    case 'bestseller':
+      return !value || Boolean(product.bestseller || product.badges?.includes('Bestseller'))
+    case 'isNew':
+      return !value || Boolean(product.isNew || product.badges?.includes('New'))
     default:
       return true
   }

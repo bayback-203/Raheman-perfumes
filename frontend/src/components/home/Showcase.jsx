@@ -100,7 +100,7 @@ export function useShopActions() {
 }
 
 const BESTSELLER_TABS = [
-  { id: 'all', label: 'All Mix', icon: 'grid', to: '/shop', shopLabel: 'Shop All' },
+  { id: 'all', label: 'All Mix', icon: 'grid', to: '/shop/best-sellers', shopLabel: 'Shop All' },
   { id: 'him', label: 'Him', icon: 'user', to: '/shop/men', shopLabel: "Shop Men's" },
   { id: 'her', label: 'Her', icon: 'sparkle', to: '/shop/women', shopLabel: "Shop Women's" },
   { id: 'attar', label: 'Attar', icon: 'crown', to: '/shop/attars', shopLabel: 'Shop Attars' },
@@ -175,10 +175,7 @@ export function BestSellers({ products }) {
   if (!products && !showcase.showBestsellers) return null
 
   const currentTab = BESTSELLER_TABS.find((t) => t.id === activeTab) || BESTSELLER_TABS[0]
-  const totalInShop =
-    activeTab === 'all'
-      ? catalogue.length
-      : catalogue.filter((p) => matchesBestsellerTab(p, activeTab)).length
+  const totalInShop = displayList.length
 
   return (
     <section className="bridal-canvas relative overflow-hidden py-16 lg:py-20">
