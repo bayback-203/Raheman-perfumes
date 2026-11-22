@@ -209,7 +209,7 @@ export function Header() {
                           : 'pointer-events-none invisible translate-y-1 opacity-0',
                       )}
                     >
-                      <div className="min-w-[14rem] border border-[#E5D3B3] border-t-2 border-t-brand-gold bg-gradient-to-b from-[#FFFDF9] via-[#FDF7EC] to-[#F9EFE0] py-2 shadow-[0_18px_40px_-14px_rgba(32,22,12,0.18)]">
+                      <div className="min-w-[15.5rem] border border-[#E5D3B3] border-t-2 border-t-brand-gold bg-gradient-to-b from-[#FFFDF9] via-[#FDF7EC] to-[#F9EFE0] py-2 shadow-[0_18px_40px_-14px_rgba(32,22,12,0.18)]">
                         {item.children.map((child) => {
                           const childActive = location.pathname === child.to
                           const isViewAll = child.id === 'view-all'

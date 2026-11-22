@@ -6,6 +6,9 @@ import { Icon } from '@/components/ui/Icon'
 const BANNER_IMAGES = {
   originals: '/pillar-originals.jpg?v=4',
   inspired: '/pillar-inspired.jpg?v=4',
+  celebrities: '/pillar-originals.jpg?v=4',
+  celebrity: '/pillar-originals.jpg?v=4',
+  'celebrity-perfumes': '/pillar-originals.jpg?v=4',
   attars: '/pillar-attars.jpg?v=4',
   combos: '/pillar-combos.jpg?v=4',
   bakhoor: '/pillar-bakhoor.jpg?v=3',
