@@ -29,10 +29,12 @@ export const DEFAULT_SHOWCASE = {
   showCouponsSection: true,
   showMultiBottleOffers: false,
   showCombos: true,
+  showCelebrities: true,
   offerProductIds: [],
   bestsellerProductIds: [],
   homeDealProductIds: [],
   comboProductIds: [],
+  celebrityProductIds: [],
 }
 
 function normalizeShowcase(raw) {
@@ -46,10 +48,12 @@ function normalizeShowcase(raw) {
     showCouponsSection: typeof raw.showCouponsSection === 'boolean' ? raw.showCouponsSection : true,
     showMultiBottleOffers: typeof raw.showMultiBottleOffers === 'boolean' ? raw.showMultiBottleOffers : false,
     showCombos: typeof raw.showCombos === 'boolean' ? raw.showCombos : true,
+    showCelebrities: typeof raw.showCelebrities === 'boolean' ? raw.showCelebrities : true,
     offerProductIds: list(raw.offerProductIds),
     bestsellerProductIds: list(raw.bestsellerProductIds),
     homeDealProductIds: list(raw.homeDealProductIds),
     comboProductIds: list(raw.comboProductIds),
+    celebrityProductIds: list(raw.celebrityProductIds),
   }
 }
 
@@ -211,6 +215,24 @@ export function useCombos() {
     const curatedIds = new Set((curated ?? []).map((p) => p.id || p._id))
     const tagged = (products ?? []).filter(
       (p) => (p.tier === 'Combo' || p.collections?.includes('combos')) && !curatedIds.has(p.id || p._id),
+    )
+    return [...(curated ?? []), ...tagged]
+  }, [curated, products])
+}
+
+/** Products manually selected or marked as Celebrities Perfumes. */
+export function useCelebrities() {
+  const curated = useShowcaseProducts('celebrityProductIds')
+  const products = useCatalogueProducts()
+  return useMemo(() => {
+    const curatedIds = new Set((curated ?? []).map((p) => p.id || p._id))
+    const tagged = (products ?? []).filter(
+      (p) =>
+        (p.collections?.includes('celebrities') ||
+          p.collections?.includes('celebrity') ||
+          String(p.category ?? '').toLowerCase().includes('celebr') ||
+          String(p.categoryName ?? '').toLowerCase().includes('celebr')) &&
+        !curatedIds.has(p.id || p._id),
     )
     return [...(curated ?? []), ...tagged]
   }, [curated, products])

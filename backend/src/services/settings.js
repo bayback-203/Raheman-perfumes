@@ -58,10 +58,12 @@ export const DEFAULT_SHOWCASE = {
   showCouponsSection: true,
   showMultiBottleOffers: false,
   showCombos: true,
+  showCelebrities: true,
   offerProductIds: [],
   bestsellerProductIds: [],
   homeDealProductIds: [],
   comboProductIds: [],
+  celebrityProductIds: [],
 }
 
 function normalizeIdList(values) {
@@ -140,10 +142,13 @@ export async function getShowcase() {
         ? stored.showMultiBottleOffers
         : DEFAULT_SHOWCASE.showMultiBottleOffers,
     showCombos: typeof stored.showCombos === 'boolean' ? stored.showCombos : DEFAULT_SHOWCASE.showCombos,
+    showCelebrities:
+      typeof stored.showCelebrities === 'boolean' ? stored.showCelebrities : DEFAULT_SHOWCASE.showCelebrities,
     offerProductIds: normalizeIdList(stored.offerProductIds),
     bestsellerProductIds: normalizeIdList(stored.bestsellerProductIds),
     homeDealProductIds: normalizeIdList(stored.homeDealProductIds),
     comboProductIds: normalizeIdList(stored.comboProductIds),
+    celebrityProductIds: normalizeIdList(stored.celebrityProductIds),
   }
 }
 
@@ -173,6 +178,7 @@ export async function getPublicShowcase() {
       ...showcase,
       bestsellerProductIds: mergedBestsellerIds,
       comboProductIds: showcase.comboProductIds,
+      celebrityProductIds: showcase.celebrityProductIds,
     }
   }
 
@@ -187,6 +193,7 @@ export async function getPublicShowcase() {
     ...showcase,
     bestsellerProductIds: mergedBestsellerIds,
     comboProductIds: showcase.comboProductIds,
+    celebrityProductIds: showcase.celebrityProductIds,
     offerProductIds: showcase.offerProductIds.filter((id) => inStockSet.has(id)),
     homeDealProductIds: showcase.homeDealProductIds.filter((id) => inStockSet.has(id)),
   }
@@ -350,11 +357,12 @@ export async function updateShowcase(patch = {}) {
     'showCouponsSection',
     'showMultiBottleOffers',
     'showCombos',
+    'showCelebrities',
   ]) {
     if (typeof patch[key] === 'boolean') next[key] = patch[key]
   }
 
-  for (const key of ['offerProductIds', 'bestsellerProductIds', 'homeDealProductIds', 'comboProductIds']) {
+  for (const key of ['offerProductIds', 'bestsellerProductIds', 'homeDealProductIds', 'comboProductIds', 'celebrityProductIds']) {
     if (Array.isArray(patch[key])) next[key] = normalizeIdList(patch[key])
   }
 

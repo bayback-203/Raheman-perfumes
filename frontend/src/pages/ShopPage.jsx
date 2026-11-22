@@ -5,6 +5,7 @@ import { ShopBanner } from '@/components/product/ShopBanner'
 import { useCatalogue } from '@/hooks/useCatalogue'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 import { useCatalogueProducts, useCategories } from '@/store/catalogueStore'
+import { useCelebrities } from '@/store/catalogueStore'
 import { SHOP_NOTES } from '@/data/content'
 
 /** Collection slug -> how to narrow the catalogue. */
@@ -169,11 +170,15 @@ export function ShopPage() {
 
 function ShopCatalogue({ title, initialFilters, collection, activeNote, occasionKeywords, bannerOverride }) {
   const allProducts = useCatalogueProducts()
+  const celebrityProducts = useCelebrities()
   const scopedProducts = useMemo(() => {
     if (activeNote) return filterByNote(allProducts, activeNote.keywords)
+    if (collection === 'celebrities' || collection === 'celebrity' || collection === 'celebrity-perfumes') {
+      return celebrityProducts
+    }
     if (occasionKeywords) return filterByOccasion(allProducts, collection ?? '', occasionKeywords)
     return null
-  }, [allProducts, activeNote, collection, occasionKeywords])
+  }, [allProducts, activeNote, collection, occasionKeywords, celebrityProducts])
 
   // No `baseProducts` for normal pages so the hook reads the live catalogue
   // directly; note routes strictly match Top/Heart/Base notes with zero fallback.

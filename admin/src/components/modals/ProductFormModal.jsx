@@ -12,6 +12,7 @@ import {
   PRODUCT_BADGES,
   PRODUCT_COLLECTIONS,
   COLLECTION_SLUGS,
+  COLLECTION_LABELS,
   LONGEVITY_BANDS,
   PROJECTION_BANDS,
   TIER_CODE,
@@ -154,6 +155,7 @@ function ChipSet({ label, hint, options, value = [], onChange, columns = false, 
         {shown.map((option) => {
           const on = value.includes(option)
           const listed = options.includes(option)
+          const displayLabel = COLLECTION_LABELS?.[option] ?? option
           return (
             <button
               key={option}
@@ -169,7 +171,7 @@ function ChipSet({ label, hint, options, value = [], onChange, columns = false, 
                 !listed && on && 'border-dashed',
               )}
             >
-              {option}
+              {displayLabel}
               {!listed && on && <span className="ml-1.5 font-normal opacity-70">withdrawn</span>}
             </button>
           )

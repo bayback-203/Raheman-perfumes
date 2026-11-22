@@ -23,10 +23,12 @@ const DEFAULT_SHOWCASE = {
   showCouponsSection: true,
   showMultiBottleOffers: true,
   showCombos: true,
+  showCelebrities: true,
   offerProductIds: [],
   bestsellerProductIds: [],
   homeDealProductIds: [],
   comboProductIds: [],
+  celebrityProductIds: [],
 }
 
 const ACCESS_TOGGLES = [
@@ -77,6 +79,13 @@ const ACCESS_TOGGLES = [
     description: 'Control products appearing in the Combos & Gift Sets section.',
     icon: 'package',
   },
+  {
+    key: 'showCelebrities',
+    listKey: 'celebrityProductIds',
+    label: 'Celebrities Perfumes Page',
+    description: 'Control products appearing in the Celebrities Perfumes section.',
+    icon: 'crown',
+  },
 ]
 
 const SHOWCASE_SECTIONS = [
@@ -118,6 +127,16 @@ const SHOWCASE_SECTIONS = [
       'Manually add and order products on the /combos page. Products marked with Type: Combo in the product catalog also appear here automatically.',
     emptyTitle: 'No Combos selected',
     emptyDescription: 'Pick products above to showcase them in Combos & Gift Sets, or mark products with Type: Combo in Products.',
+  },
+  {
+    key: 'celebrityProductIds',
+    toggleKey: 'showCelebrities',
+    inStockOnly: false,
+    title: 'Celebrities Perfumes Page — Showcased Products',
+    description:
+      'Manually add and order products on the /shop/celebrities page. Products tagged with Collection "Celebrities Perfumes" in the product catalog also appear here automatically.',
+    emptyTitle: 'No Celebrities Perfumes selected',
+    emptyDescription: 'Pick products above to showcase them in Celebrities Perfumes, or tag products with Collection: Celebrities Perfumes in Products.',
   },
 ]
 

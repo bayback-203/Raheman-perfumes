@@ -77,6 +77,27 @@ export const PRODUCT_COLLECTIONS = [
 /** Every slug above, flat — for validating a record that arrived from elsewhere. */
 export const COLLECTION_SLUGS = PRODUCT_COLLECTIONS.flatMap((entry) => entry.slugs)
 
+/** User-friendly display names for collection chips in Admin Product Form. */
+export const COLLECTION_LABELS = {
+  originals: 'Original Perfumes',
+  inspired: 'Inspired Perfumes',
+  mixing: 'Mixing Perfumes',
+  attars: 'Pure Attars',
+  combos: 'Combos & Gift Sets',
+  vault: 'Special Offers (Vault)',
+  'best-sellers': 'Best Sellers',
+  celebrities: 'Celebrities Perfumes',
+  men: 'Perfume for Men',
+  women: 'Perfume for Women',
+  unisex: 'Unisex',
+  fresh: 'Fresh',
+  floral: 'Floral',
+  woody: 'Woody',
+  oriental: 'Oriental',
+  oud: 'Oud',
+  leather: 'Leather',
+}
+
 /**
  * The longevity and projection bands the product page prints.
  *
