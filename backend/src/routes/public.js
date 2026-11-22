@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { z } from 'zod'
 import validate from '../middleware/validate.js'
 import { asyncHandler } from '../middleware/asyncHandler.js'
+import { optionalAuth } from '../middleware/auth.js'
 import { cacheResponse } from '../lib/cache.js'
 import * as products from '../services/products.js'
 import * as taxonomy from '../services/taxonomy.js'
@@ -206,8 +207,15 @@ router.post(
  */
 router.get(
   '/orders/track/:number',
+  optionalAuth,
   asyncHandler(async (req, res) => {
-    res.json(await orders.tracking(req.params.number))
+    res.json(
+      await orders.tracking(req.params.number, {
+        user: req.auth?.user,
+        customer: req.auth?.customer,
+        phone: req.query.phone,
+      }),
+    )
   }),
 )
 

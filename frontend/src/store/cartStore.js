@@ -60,6 +60,7 @@ function buildCartLine(product, { quantity = 1, volume, price, mrp } = {}) {
     notes: product.notes ?? [],
     images: imageUrls(product),
     kind: 'product',
+    stockLeft: product.stockLeft ?? product.stock ?? 99,
     quantity: safeQty,
   }
 }
@@ -117,17 +118,25 @@ export const useCartStore = create(
         const line = buildCartLine(product, { quantity, volume, price, mrp })
         const safeQty = line.quantity
 
+        const { byId, bySlug } = useCatalogueStore.getState()
+        const catalogueProduct = bySlug[line.slug] ?? byId[line.productId]
+        const availableStock = Math.max(
+          1,
+          catalogueProduct?.stockLeft ?? catalogueProduct?.stock ?? product?.stockLeft ?? product?.stock ?? line.stockLeft ?? 99,
+        )
+
         set((state) => {
           const key = lineKey(line)
           const existing = state.items.find((item) => lineKey(item) === key)
           if (existing) {
+            const nextQty = Math.min(availableStock, existing.quantity + safeQty)
             return {
               items: state.items.map((item) =>
-                lineKey(item) === key ? { ...item, quantity: Math.min(99, item.quantity + safeQty) } : item,
+                lineKey(item) === key ? { ...item, quantity: nextQty, stockLeft: availableStock } : item,
               ),
             }
           }
-          return { items: [...state.items, line] }
+          return { items: [...state.items, { ...line, stockLeft: availableStock, quantity: Math.min(availableStock, line.quantity) }] }
         })
         return { line, silent }
       },
@@ -171,16 +180,36 @@ export const useCartStore = create(
         const parsed = Math.floor(Number(quantity))
         if (!Number.isFinite(parsed)) return
         if (parsed < 1) return get().removeItem(lineId)
-        const capped = Math.min(99, parsed)
+
+        const { byId, bySlug } = useCatalogueStore.getState()
+        const catalogueProduct = bySlug[item?.slug] ?? byId[item?.productId]
+        const availableStock = Math.max(
+          1,
+          catalogueProduct?.stockLeft ?? catalogueProduct?.stock ?? item?.stockLeft ?? 99,
+        )
+        const capped = Math.min(availableStock, parsed)
+
         set((state) => ({
-          items: state.items.map((item) => (item.id === lineId ? { ...item, quantity: capped } : item)),
+          items: state.items.map((entry) =>
+            entry.id === lineId ? { ...entry, quantity: capped, stockLeft: availableStock } : entry,
+          ),
         }))
       },
 
       increment(lineId) {
         const item = get().items.find((entry) => entry.id === lineId)
         if (item?.isLoyaltyReward || lineId === FREE_ATTAR_REWARD.id) return
-        if (item) get().updateQuantity(lineId, item.quantity + 1)
+        if (!item) return
+
+        const { byId, bySlug } = useCatalogueStore.getState()
+        const catalogueProduct = bySlug[item?.slug] ?? byId[item?.productId]
+        const availableStock = Math.max(
+          1,
+          catalogueProduct?.stockLeft ?? catalogueProduct?.stock ?? item?.stockLeft ?? 99,
+        )
+        if (item.quantity >= availableStock) return
+
+        get().updateQuantity(lineId, item.quantity + 1)
       },
 
       decrement(lineId) {
@@ -357,6 +386,14 @@ function couponDiscountOf(coupon, subtotal) {
   }
 
   return Math.max(0, Math.min(amount, base))
+}
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('storage', (event) => {
+    if (event.key === 'rehman.cart') {
+      useCartStore.persist?.rehydrate?.()
+    }
+  })
 }
 
 export default useCartStore

@@ -54,11 +54,11 @@ export function Footer({ flush = false }) {
               +91 98201 12345
             </a>
             <a
-              href="mailto:atelier@rehmanperfume.in"
+              href="mailto:atelier@rahemanperfumes.in"
               className="flex items-center gap-2 text-body-sm text-brand-cream/65 transition hover:text-brand-gold"
             >
               <Icon name="mail" className="h-3.5 w-3.5" />
-              atelier@rehmanperfume.in
+              atelier@rahemanperfumes.in
             </a>
           </div>
         </div>

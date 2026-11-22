@@ -171,6 +171,10 @@ export const useCatalogueProducts = () => useCatalogueStore((state) => state.pro
 export const useCategories = () => useCatalogueStore((state) => state.categories)
 export const useBrands = () => useCatalogueStore((state) => state.brands)
 
+/** True while catalogue is loading from the server. */
+export const useCatalogueLoading = () =>
+  useCatalogueStore((state) => state.status === 'idle' || state.status === 'loading')
+
 /** True once a hydrate attempt has finished and the server never answered. */
 export const useCatalogueUnavailable = () => useCatalogueStore((state) => state.status === 'unavailable')
 

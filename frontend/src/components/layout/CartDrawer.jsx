@@ -5,7 +5,7 @@ import { formatPrice, FREE_SHIPPING_THRESHOLD } from '@/lib/format'
 import useUiStore from '@/store/uiStore'
 import useCartStore, { groupCartItems } from '@/store/cartStore'
 import useAuthStore from '@/store/authStore'
-import { useShowcase } from '@/store/catalogueStore'
+import { useShowcase, useCatalogueStore } from '@/store/catalogueStore'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { Drawer } from '@/components/ui/Modal'
@@ -141,6 +141,8 @@ function DrawerLoyaltyBanner() {
 export function CartDrawer() {
   const { cartDrawerOpen, closeCartDrawer } = useUiStore()
   const showcase = useShowcase()
+  const bySlug = useCatalogueStore((state) => state.bySlug)
+  const byId = useCatalogueStore((state) => state.byId)
   const items = useCartStore((state) => state.items)
   const increment = useCartStore((state) => state.increment)
   const decrement = useCartStore((state) => state.decrement)
@@ -234,11 +236,30 @@ export function CartDrawer() {
                             Qty: 1 (Complimentary)
                           </span>
                         ) : (
-                          <QuantityStepper
-                            value={item.quantity}
-                            onChange={(next) => (next < item.quantity ? decrement(item.id) : increment(item.id))}
-                            size="sm"
-                          />
+                          <div className="flex flex-col items-start gap-1">
+                            {(() => {
+                              const catalogueProduct = bySlug[item.slug] ?? byId[item.productId]
+                              const maxStock = Math.max(
+                                1,
+                                catalogueProduct?.stockLeft ?? catalogueProduct?.stock ?? item.stockLeft ?? 99,
+                              )
+                              return (
+                                <>
+                                  <QuantityStepper
+                                    value={item.quantity}
+                                    max={maxStock}
+                                    onChange={(next) => (next < item.quantity ? decrement(item.id) : increment(item.id))}
+                                    size="sm"
+                                  />
+                                  {item.quantity >= maxStock && (
+                                    <span className="text-[10px] font-semibold text-amber-700">
+                                      Max stock reached ({maxStock})
+                                    </span>
+                                  )}
+                                </>
+                              )
+                            })()}
+                          </div>
                         )}
                         <div className="text-right">
                           <span className={cn('text-body-sm font-semibold', isReward ? 'text-emerald-700' : 'text-brand-charcoal')}>

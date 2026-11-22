@@ -481,12 +481,16 @@
   }
 }
 
+::view-transition {
+  background-color: #FFFFFF;
+}
+
 ::view-transition-old(root) {
-  animation: route-dissolve-out 380ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: route-dissolve-out 140ms ease-out both;
 }
 
 ::view-transition-new(root) {
-  animation: route-dissolve-in 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: route-dissolve-in 180ms ease-in both;
 }
 
 /* Browsers without View Transitions — Firefox, today — never run the rules

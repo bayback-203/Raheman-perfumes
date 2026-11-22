@@ -5,6 +5,7 @@ import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
 import { Breadcrumbs } from '@/components/ui/SectionHeading'
 import { Accordion } from '@/components/ui/Accordion'
+import { Modal } from '@/components/ui/Modal'
 import { Input, Textarea, Select } from '@/components/ui/Form'
 import { toast } from '@/store/uiStore'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
@@ -320,6 +321,12 @@ const PAGES = {
               'Same wood, different climate, very different smell. Learn what makes Cambodian oud sweet and smooth while Hindi oud is strong and earthy.',
             date: '2026-08-14',
             readTime: '7 min read',
+            body: [
+              'Oud, known scientifically as Aquilaria agallocha, transforms into liquid gold only when the tree is naturally inoculated with specialized fungal flora. Yet, an oud connoisseur can blind-smell Cambodian agarwood and distinguish it within seconds from wild Assam Hindi oud.',
+              'The secret lies in the microclimate and traditional distillation techniques. Cambodian oud trees flourish along the humid, tropical coastal ranges of Koh Kong and Pursat. During hydro-distillation, the resin yields high concentrations of balsamic esters and sweet sesquiterpenes. The initial aroma greets the senses with sun-drenched dried apricots, wild fig, caramelized dates, and a glowing golden honey undertone with almost zero aggressive funk.',
+              'By contrast, Hindi Oud distilled in Assam undergoes an ancestral water fermentation period in earthen copper degs. This traditional process produces a powerfully masculine, animalic, barnyard, and rich dark leather sillage that gradually melts into dark smokey vetiver and ancient forest floor over 12 hours.',
+              'At Raheman Perfumes, we celebrate both traditions: pairing Cambodian sweetness with our modern European luxury formulas, while honoring pure Hindi oud in our limited-batch heritage attars.',
+            ],
           },
           {
             tag: 'Guide',
@@ -328,6 +335,13 @@ const PAGES = {
               'What you smell in the first 10 minutes is different from what stays after 4 hours. Here is a simple way to test a perfume before buying.',
             date: '2026-07-29',
             readTime: '6 min read',
+            body: [
+              'Every master fragrance is an olfactory pyramid of evaporative physics. When you spray a fine French parfum, the lighter molecules with lower boiling points take flight first, while dense resins linger on your skin until dawn.',
+              'Top Notes (0–15 Minutes): These are your first impression. Volatile citrus fruits (bergamot, frozen lemon, pink grapefruit) and aromatic herbs (mint, cardamom, lavender) burst forth immediately. Never judge a perfume solely on its opening spray.',
+              'Heart / Middle Notes (30 Minutes – 4 Hours): As the bright top notes evaporate, the true character of the fragrance emerges. Floral accords (Taif rose, night-blooming jasmine), spices (cinnamon, nutmeg), and sweet gourmand elements bloom here, defining the emotion of your scent trail.',
+              'Base Notes (4 Hours – 24 Hours): The foundation and anchor. Composed of heavyweight molecules like aged Indian sandalwood, dark oud, Madagascar vanilla, ambergris, and tonka bean. The base notes bond with your personal skin lipids to create your unique sillage.',
+              'Pro tip from our perfumers: When sampling a fragrance, spray on your inner forearm and wait at least 45 minutes before deciding. Let the heart and base speak.',
+            ],
           },
           {
             tag: 'Craft',
@@ -336,6 +350,12 @@ const PAGES = {
               'Letting a freshly mixed bottle sit in cool dark glass helps the oils settle together so the smell is smoother and stays longer.',
             date: '2026-07-02',
             readTime: '5 min read',
+            body: [
+              'In commercial mass production, perfumes are mixed and rushed to retail shelves within 48 hours. In haute parfumerie, however, patience is an essential ingredient.',
+              'Maceration and maturation are biochemical phenomena. When pure concentrated perfume oils are combined with perfumer’s alcohol, microscopic chemical bonds take weeks to stabilize into cohesive molecular clusters.',
+              'During the first 21 to 30 days of cold dark resting in ultraviolet-shielded glass flacons, sharp alcoholic edges soften. Volatile terpenes gently dissolve into heavier fixatives, removing harsh chemical spikes and producing a remarkably smooth, velvety texture on the skin.',
+              'At Raheman Atelier, all our signature perfumes are cold-rested for a minimum of 4 weeks prior to hand-pouring, ensuring unparalleled depth and longevity in every single bottle.',
+            ],
           },
           {
             tag: 'Buying',
@@ -344,6 +364,12 @@ const PAGES = {
               'A practical guide to matching top, heart, and base notes with Indian weather and daily occasions.',
             date: '2026-06-18',
             readTime: '6 min read',
+            body: [
+              'Finding your signature scent is not about following fleeting celebrity trends; it is about matching your fragrance profile with your daily lifestyle, climate, and body chemistry.',
+              'For Hot & Humid Days: High heat accelerates evaporation. Heavy sweet vanillas or dense leathers can become cloying and overwhelming. Instead, gravitate toward crisp aquatic, frozen citrus, marine, and green vetiver compositions that stay fresh and uplifting all day.',
+              'For Evenings & Formal Occasions: When temperatures drop, opt for scents with projection and presence: spiced cardamom, amber resin, rich smoky oud, and Madagascar vanilla.',
+              'Testing Etiquette: Always test on clean, unscented skin. Do not rub your wrists together after spraying, as friction creates heat that bruises the delicate top volatile molecules and distorts the intended scent profile.',
+            ],
           },
           {
             tag: 'Care',
@@ -352,6 +378,11 @@ const PAGES = {
               'High heat and humidity can weaken fresh scents fast. Keep bottles in a cool, dark drawer away from windows.',
             date: '2026-05-30',
             readTime: '4 min read',
+            body: [
+              'Indian summers bring intense heat and fluctuating humidity that can quietly ruin even the most expensive luxury fragrance if stored improperly.',
+              'The three enemies of fine perfume are direct UV light, fluctuating heat, and high moisture. Bathrooms are notoriously the worst place to keep your perfumes: hot shower steam and humidity seep into atomizers and cause oxidation.',
+              'Best Practice: Store your bottles in their original packaging or in an ambient dark bedroom wardrobe or drawer. Keep temperatures steady between 18°C and 25°C. When protected from light and heat, pure oil perfumes can retain their peak brilliance for 5 to 10 years.',
+            ],
           },
           {
             tag: 'Oils',
@@ -360,6 +391,12 @@ const PAGES = {
               'Pure sandalwood oil grows slowly and is often mixed with fillers by cheap sellers. Here is what we check before buying.',
             date: '2026-05-09',
             readTime: '6 min read',
+            body: [
+              'True Mysore Sandalwood (Santalum album) is one of the most revered and adulterated natural essences in the global fragrance industry.',
+              'Synthetic substitutes like Polysantol or Javanol offer immediate woody projection, but they lack the multidimensional creamy, buttery, milky warmth that develops only from 30-year-old mature heartwood.',
+              'How to spot authenticity: Authentic sandalwood oil has a thick, viscous honey-like golden drape. When applied to the skin, its opening is surprisingly subtle, soft, and milky. As body heat warms the oil over 2 hours, it expands into an enveloping aura of celestial creamy warmth that lasts on fabric for days.',
+              'We ethically source our pure sandalwood heartwood oil from sustainable, certified plantations with government oversight, ensuring pure heritage quality in every drop.',
+            ],
           },
         ],
       },
@@ -730,23 +767,66 @@ function Section({ section }) {
         </div>
       )}
 
-      {section.kind === 'posts' && (
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {section.items.map((post) => (
-            <article key={post.title} className="card-surface card-lift flex flex-col p-6">
-              <span className="text-label-sm font-bold uppercase tracking-wider text-brand-goldDark">{post.tag}</span>
-              <h3 className="mt-3 font-serif text-xl font-semibold leading-snug text-brand-charcoal">{post.title}</h3>
-              <p className="mt-3 flex-1 text-body-sm leading-relaxed text-brand-muted">{post.excerpt}</p>
-              <p className="mt-5 flex items-center gap-3 border-t border-brand-border pt-4 text-body-sm text-brand-muted">
-                <span>{new Date(post.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
-                <span aria-hidden="true">·</span>
-                <span>{post.readTime}</span>
-              </p>
-            </article>
-          ))}
-        </div>
-      )}
+      {section.kind === 'posts' && <PostsSection section={section} />}
     </section>
+  )
+}
+
+function PostsSection({ section }) {
+  const [activePost, setActivePost] = useState(null)
+
+  return (
+    <>
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {section.items.map((post) => (
+          <article
+            key={post.title}
+            onClick={() => setActivePost(post)}
+            className="card-surface card-lift group flex flex-col p-6 cursor-pointer transition hover:border-brand-gold/60 hover:shadow-md"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-label-sm font-bold uppercase tracking-wider text-brand-goldDark">{post.tag}</span>
+              <span className="text-xs font-semibold text-brand-goldDark group-hover:translate-x-0.5 transition-transform">
+                Read Guide →
+              </span>
+            </div>
+            <h3 className="mt-3 font-serif text-xl font-semibold leading-snug text-brand-charcoal transition-colors group-hover:text-brand-goldDark">
+              {post.title}
+            </h3>
+            <p className="mt-3 flex-1 text-body-sm leading-relaxed text-brand-muted">{post.excerpt}</p>
+            <p className="mt-5 flex items-center gap-3 border-t border-brand-border pt-4 text-body-sm text-brand-muted">
+              <span>{new Date(post.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+              <span aria-hidden="true">·</span>
+              <span>{post.readTime}</span>
+            </p>
+          </article>
+        ))}
+      </div>
+
+      <Modal
+        open={Boolean(activePost)}
+        onClose={() => setActivePost(null)}
+        title={activePost?.title}
+        size="lg"
+      >
+        {activePost && (
+          <div className="space-y-4 pt-1 text-brand-charcoal">
+            <div className="flex items-center gap-3 border-b border-brand-border/70 pb-3 text-xs text-brand-muted">
+              <span className="font-bold uppercase tracking-wider text-brand-goldDark">{activePost.tag}</span>
+              <span>·</span>
+              <span>{new Date(activePost.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' })}</span>
+              <span>·</span>
+              <span>{activePost.readTime}</span>
+            </div>
+            <div className="space-y-3.5 text-sm leading-relaxed text-ink-variant">
+              {(activePost.body || [activePost.excerpt]).map((paragraph, idx) => (
+                <p key={idx}>{paragraph}</p>
+              ))}
+            </div>
+          </div>
+        )}
+      </Modal>
+    </>
   )
 }
 

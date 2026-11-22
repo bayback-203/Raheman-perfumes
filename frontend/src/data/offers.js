@@ -10,8 +10,8 @@ import { formatPrice } from '@/lib/format'
 /** Hero banner copy for the offers page. */
 export const OFFER_HERO = {
   eyebrow: 'Special Offer',
-  title: 'UP TO 30% OFF Selected Perfumes',
-  subtitle: 'Grab handmade perfumes made with pure oil before stock runs out.',
+  title: 'Exclusive Offers on Selected Fragrances',
+  subtitle: 'Artisan fragrances compounded with pure French oils at exclusive pricing.',
   spotlight: 'Special Discount Collection',
   spotlightNote: 'Popular amber & oud perfume blends',
   badge: 'Limited Time Offers',

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import { Coupon, Customer, Order, ORDER_FLOW, Product, onlineStockOf } from '../models/index.js'
+import { isStaffUser } from '../middleware/auth.js'
 import { priceOrder } from '../lib/pricing.js'
 import { nextOrderNumber } from '../lib/orderNumber.js'
 import { conflict, forbidden, notFound, unprocessable } from '../middleware/error.js'
@@ -581,9 +582,48 @@ export async function publicOneFor(customerId, number) {
  * tracking page and show a *fictional* parcel for a mistyped number, which is
  * worse than showing nothing.
  */
-export async function tracking(number) {
+export async function tracking(number, { user = null, customer = null, phone = '' } = {}) {
   const order = await Order.findOne({ number: String(number ?? '').toUpperCase() })
-  return order ? publicTracking(order) : null
+  if (!order) return null
+
+  let verified = false
+
+  // 1. Staff users always have verified full access
+  if (user && isStaffUser(user.role)) {
+    verified = true
+  }
+
+  // 2. Customer owns the order (account match)
+  if (!verified && (customer || user)) {
+    const customerId = String(customer?._id || user?.customer || '')
+    const orderCustomerId = String(order.customer?._id || order.customer || '')
+    if (customerId && orderCustomerId && customerId === orderCustomerId) {
+      verified = true
+    }
+    if (!verified && user?.email && order.address?.email) {
+      if (user.email.toLowerCase() === order.address.email.toLowerCase()) {
+        verified = true
+      }
+    }
+  }
+
+  // 3. Mobile phone verification (digits match exact or last 4/10 digits)
+  if (!verified && phone) {
+    const cleanInput = String(phone).replace(/\D/g, '')
+    const cleanOrderPhone = String(order.address?.phone || '').replace(/\D/g, '')
+    if (cleanInput.length >= 4 && cleanOrderPhone.length >= 4) {
+      if (
+        cleanInput === cleanOrderPhone ||
+        cleanOrderPhone.endsWith(cleanInput) ||
+        cleanInput.endsWith(cleanOrderPhone) ||
+        (cleanInput.length >= 10 && cleanOrderPhone.slice(-10) === cleanInput.slice(-10))
+      ) {
+        verified = true
+      }
+    }
+  }
+
+  return publicTracking(order, { verified })
 }
 
 /* ──────────────────────────────────────────────────────────── writes ──── */

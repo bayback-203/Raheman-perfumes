@@ -4,7 +4,14 @@ import { CatalogueView } from '@/components/product/CatalogueView'
 import { ShopBanner } from '@/components/product/ShopBanner'
 import { useCatalogue } from '@/hooks/useCatalogue'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
-import { useCatalogueProducts, useCategories, useCelebrities, useBestsellers, useCombos } from '@/store/catalogueStore'
+import {
+  useCatalogueProducts,
+  useCategories,
+  useCelebrities,
+  useBestsellers,
+  useCombos,
+  useCatalogueLoading,
+} from '@/store/catalogueStore'
 import { SHOP_NOTES } from '@/data/content'
 
 /** Collection slug -> how to narrow the catalogue. */
@@ -173,6 +180,7 @@ function ShopCatalogue({ title, initialFilters, collection, activeNote, occasion
   const celebrityProducts = useCelebrities()
   const bestsellers = useBestsellers()
   const combos = useCombos()
+  const catalogueLoading = useCatalogueLoading()
   const scopedProducts = useMemo(() => {
     if (activeNote) return filterByNote(allProducts, activeNote.keywords)
     if (collection === 'celebrities' || collection === 'celebrity' || collection === 'celebrity-perfumes') {
@@ -209,6 +217,7 @@ function ShopCatalogue({ title, initialFilters, collection, activeNote, occasion
 
       <CatalogueView
         catalogue={catalogue}
+        loading={catalogueLoading}
         emptyTitle={
           activeNote
             ? `No perfumes with ${activeNote.label} notes right now`
@@ -225,6 +234,7 @@ function ShopCatalogue({ title, initialFilters, collection, activeNote, occasion
 /** Dedicated Originals page (route `/shop/originals` renders ShopPage). */
 export function OriginalPerfumesPage() {
   const products = useCatalogueProducts()
+  const catalogueLoading = useCatalogueLoading()
   const originals = useMemo(() => products.filter((product) => product.tier === 'Original'), [products])
 
   const catalogue = useCatalogue({
@@ -244,6 +254,7 @@ export function OriginalPerfumesPage() {
 
       <CatalogueView
         catalogue={catalogue}
+        loading={catalogueLoading}
         lockTier
       />
     </>
@@ -253,6 +264,7 @@ export function OriginalPerfumesPage() {
 /** Dedicated Inspired & Mixing page. */
 export function InspiredMixingPage() {
   const products = useCatalogueProducts()
+  const catalogueLoading = useCatalogueLoading()
   const inspired = useMemo(
     () => products.filter((product) => product.tier === 'Inspired' || product.tier === 'Mixed'),
     [products],
@@ -271,6 +283,7 @@ export function InspiredMixingPage() {
 
       <CatalogueView
         catalogue={catalogue}
+        loading={catalogueLoading}
         lockTier
       />
     </>

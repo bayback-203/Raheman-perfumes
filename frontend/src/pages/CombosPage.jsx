@@ -2,15 +2,14 @@ import { ShopBanner } from '@/components/product/ShopBanner'
 import { CatalogueView } from '@/components/product/CatalogueView'
 import { useCatalogue } from '@/hooks/useCatalogue'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
-import { useCombos } from '@/store/catalogueStore'
+import { useCombos, useCatalogueLoading } from '@/store/catalogueStore'
 
 /**
  * Curated Combos & Gift Sets page (`/combos`).
- * Admin can create 2-perfume combo packs in the Admin Panel under Type: Combo
- * or choose products directly in Website Display.
  */
 export function CombosPage() {
   const dedicatedCombos = useCombos()
+  const loading = useCatalogueLoading()
 
   const catalogue = useCatalogue({
     baseProducts: dedicatedCombos,
@@ -29,8 +28,9 @@ export function CombosPage() {
 
       <CatalogueView
         catalogue={catalogue}
-        emptyTitle="No combo sets added yet"
-        emptyDescription="Admin can add 2-perfume combo packs in the Admin Panel or choose them in Website Display to display them here."
+        loading={loading}
+        emptyTitle="Curated Combo Sets Coming Soon"
+        emptyDescription="Exclusive 2-perfume combo gift sets are currently being prepared by our master perfumers. Explore our single fragrances or check back shortly."
         lockTier
       />
     </>

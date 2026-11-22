@@ -538,7 +538,25 @@ const STAGE_DESCRIPTIONS = [
  * information, so those are rows (`shipmentEvents`) and the timeline is built
  * from them.
  */
-export function publicTracking(doc) {
+function maskName(name) {
+  if (!name) return 'Valued Customer'
+  const parts = String(name).trim().split(/\s+/)
+  return parts
+    .map((p) => {
+      if (p.length <= 1) return p
+      return p[0] + '*'.repeat(Math.min(4, p.length - 1))
+    })
+    .join(' ')
+}
+
+function maskPhone(phone) {
+  if (!phone) return ''
+  const digits = String(phone).replace(/\D/g, '')
+  if (digits.length <= 4) return '••••'
+  return '••••••' + digits.slice(-4)
+}
+
+export function publicTracking(doc, { verified = false } = {}) {
   const events = [...(doc.shipmentEvents ?? [])].sort((a, b) => new Date(a.at) - new Date(b.at))
   const stage = doc.status === 'Cancelled' ? -1 : TIMELINE_STAGES.length - 1 - [...TIMELINE_STAGES].reverse().indexOf(stageNameFor(doc.status))
 
@@ -644,11 +662,38 @@ export function publicTracking(doc) {
     checkpoints = synthetic
   }
 
+  const isVerified = Boolean(verified)
+
+  const destination = isVerified
+    ? {
+        name: doc.address?.name ?? '',
+        line1: doc.address?.line1 ?? '',
+        line2: doc.address?.line2 ?? '',
+        area: doc.address?.area ?? '',
+        city: doc.address?.city ?? '',
+        district: doc.address?.district ?? '',
+        state: doc.address?.state ?? '',
+        pincode: doc.address?.pincode ?? '',
+        phone: doc.address?.phone ?? '',
+      }
+    : {
+        name: maskName(doc.address?.name),
+        line1: '•••••••• (Enter mobile number to view address)',
+        line2: '',
+        area: '',
+        city: doc.address?.city ?? '',
+        district: doc.address?.district ?? '',
+        state: doc.address?.state ?? '',
+        pincode: doc.address?.pincode ? `••${String(doc.address.pincode).slice(-4)}` : '',
+        phone: maskPhone(doc.address?.phone),
+      }
+
   return {
     orderId: doc.number,
+    verified: isVerified,
     placedAt: doc.placedAt,
     placedLabel: istLabel(doc.placedAt),
-    consignee: doc.address?.name ?? '',
+    consignee: isVerified ? (doc.address?.name ?? '') : maskName(doc.address?.name),
     status: shopperStatus(doc),
     stage: stage + 1,
     totalStages: TIMELINE_STAGES.length,
@@ -658,20 +703,10 @@ export function publicTracking(doc) {
     expectedDelivery: doc.tracking?.expectedDelivery ? istLabel(doc.tracking.expectedDelivery) : '',
     transitNote: doc.tracking?.transitNote ?? '',
     sealNote: doc.tracking?.sealNote ?? '',
-    destination: {
-      name: doc.address?.name ?? '',
-      line1: doc.address?.line1 ?? '',
-      line2: doc.address?.line2 ?? '',
-      area: doc.address?.area ?? '',
-      city: doc.address?.city ?? '',
-      district: doc.address?.district ?? '',
-      state: doc.address?.state ?? '',
-      pincode: doc.address?.pincode ?? '',
-      phone: doc.address?.phone ?? '',
-    },
+    destination,
     payment: {
       method: doc.payment?.method ?? '',
-      txnRef: doc.payment?.txnRef ?? '',
+      txnRef: isVerified ? (doc.payment?.txnRef ?? '') : '••••••••',
       status: doc.payment?.status === 'Paid' ? 'Prepaid' : (doc.payment?.status ?? ''),
     },
     refundStatus: doc.refund?.status ?? 'None',

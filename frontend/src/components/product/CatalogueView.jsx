@@ -311,8 +311,14 @@ export function CatalogueView({
                 </>
               )}
               <p className="text-body-sm text-brand-muted">
-                <span className="font-semibold text-brand-charcoal">{total}</span>{' '}
-                {total === 1 ? 'fragrance' : 'fragrances'}
+                {loading ? (
+                  <span>Loading fragrances…</span>
+                ) : (
+                  <>
+                    <span className="font-semibold text-brand-charcoal">{total}</span>{' '}
+                    {total === 1 ? 'fragrance' : 'fragrances'}
+                  </>
+                )}
               </p>
             </div>
 

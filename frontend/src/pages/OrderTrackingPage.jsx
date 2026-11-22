@@ -64,6 +64,29 @@ export function OrderTrackingPage() {
   const [tracking, setTracking] = useState(null)
   const [showScanHistory, setShowScanHistory] = useState(false)
   const [showInvoiceModal, setShowInvoiceModal] = useState(false)
+  const [verifyPhone, setVerifyPhone] = useState('')
+  const [unlocking, setUnlocking] = useState(false)
+  const [unlockError, setUnlockError] = useState('')
+
+  const handleUnlock = async (e) => {
+    e?.preventDefault()
+    if (!verifyPhone.trim()) return
+    setUnlocking(true)
+    setUnlockError('')
+    try {
+      const found = await orderService.track(initial || tracking?.orderId, verifyPhone.trim())
+      if (found?.verified) {
+        setTracking(found)
+        setUnlockError('')
+      } else {
+        setUnlockError('Mobile number does not match this order. Please verify and try again.')
+      }
+    } catch {
+      setUnlockError('Verification is temporarily unavailable. Please try again.')
+    } finally {
+      setUnlocking(false)
+    }
+  }
 
   // If no order is specified in the URL, but the user has past orders, auto-load their latest order
   useEffect(() => {
@@ -167,7 +190,7 @@ export function OrderTrackingPage() {
             <span className="font-semibold text-brand-charcoal">Order Details</span>
           </nav>
 
-          {tracking && (
+          {tracking && tracking.verified && (
             <button
               type="button"
               onClick={() => setShowInvoiceModal(true)}
@@ -184,13 +207,13 @@ export function OrderTrackingPage() {
           <div className="mx-auto mt-6 max-w-xl">
             <h1 className="font-serif text-3xl font-bold text-brand-charcoal">Track Your Order</h1>
             <p className="mt-1 text-sm text-brand-muted">
-              Enter your order reference number (e.g. RP0001) from your order confirmation email or SMS.
+              Enter your order reference number (e.g. RP-102938) from your order confirmation email or SMS.
             </p>
             <form onSubmit={submit} className="mt-5 flex gap-2">
               <Input
                 value={query}
                 onChange={(e) => setQuery(e.target.value.toUpperCase())}
-                placeholder="Order number e.g. RP0001, RP0005"
+                placeholder="Order number e.g. RP-102938"
                 aria-label="Order number"
                 icon="package"
                 error={error}
@@ -223,6 +246,40 @@ export function OrderTrackingPage() {
         {/* ──────────────── B&H STYLE ORDER DETAILS & TRACKING VIEW ──────────────── */}
         {tracking && (
           <div className="mt-6">
+            {!tracking.verified && (
+              <div className="mb-6 rounded-xl border border-amber-200/90 bg-amber-50/80 p-4 text-xs text-amber-950 shadow-xs">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <Icon name="lock" className="h-4 w-4 shrink-0 text-amber-700" />
+                    <div>
+                      <p className="font-bold text-amber-900">Delivery Address Masked for Customer Privacy</p>
+                      <p className="text-amber-800/90">
+                        Enter the mobile number linked with this order to view full delivery address &amp; access the tax invoice.
+                      </p>
+                    </div>
+                  </div>
+                  <form onSubmit={handleUnlock} className="flex items-center gap-2 shrink-0">
+                    <input
+                      type="tel"
+                      value={verifyPhone}
+                      onChange={(e) => setVerifyPhone(e.target.value)}
+                      placeholder="Mobile number"
+                      aria-label="Mobile number for verification"
+                      className="h-8 w-36 rounded-md border border-amber-300 bg-white px-2.5 text-xs font-mono text-brand-charcoal focus:outline-none focus:ring-1 focus:ring-amber-500"
+                    />
+                    <button
+                      type="submit"
+                      disabled={unlocking}
+                      className="h-8 rounded-md bg-amber-800 px-3 text-xs font-bold text-white transition hover:bg-amber-900 disabled:opacity-50"
+                    >
+                      {unlocking ? 'Verifying…' : 'Unlock'}
+                    </button>
+                  </form>
+                </div>
+                {unlockError && <p className="mt-2 text-[11px] font-semibold text-rose-700">{unlockError}</p>}
+              </div>
+            )}
+
             {/* Top Title & Order Support Button */}
             <div className="flex flex-wrap items-start justify-between gap-4">
               <h1 className="font-serif text-3xl font-bold tracking-tight text-brand-charcoal">
@@ -360,13 +417,18 @@ export function OrderTrackingPage() {
                   </p>
 
                   <div className="mt-2.5 flex flex-wrap items-center gap-2">
-                    {tracking.courier ? (
+                    {currentStage === 4 || tracking.status === 'Delivered' ? (
+                      <span className="inline-flex items-center gap-1.5 rounded border border-emerald-300 bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-900">
+                        <Icon name="check-circle" className="h-3.5 w-3.5 text-emerald-700" />
+                        Delivered Successfully
+                      </span>
+                    ) : tracking.courier ? (
                       <span className="inline-flex items-center gap-1.5 rounded bg-brand-charcoal px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-white">
                         <Icon name="truck" className="h-3.5 w-3.5 text-brand-gold" />
                         {tracking.courier}
                         {tracking.transitNote ? ` · ${tracking.transitNote}` : ''}
                       </span>
-                    ) : currentStage >= 3 ? (
+                    ) : currentStage === 3 ? (
                       <span className="inline-flex items-center gap-1.5 rounded bg-brand-charcoal px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-white">
                         <Icon name="truck" className="h-3.5 w-3.5 text-brand-gold" />
                         In Transit · En Route

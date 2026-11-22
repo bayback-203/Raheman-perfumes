@@ -11,18 +11,12 @@ import api from '@/lib/api'
  */
 export const orderService = {
   /**
-   * Look up one consignment.
-   *
-   * Resolves the tracking view, or **`null` when the server knows no such
-   * order** — deliberately not an error, because a mistyped number is an
-   * ordinary thing for a shopper to do and should read as "no such order"
-   * rather than as a fault. A `throw` therefore means something different and
-   * much more specific: the server never answered.
-   *
-   * There is nothing bundled to fall back to: the server's answer, or its
-   * silence, is the entire truth this page has.
+   * Look up one consignment. Optionally verify with mobile phone number to unlock full details.
    */
-  track: (number) => api.get(`/orders/track/${encodeURIComponent(number)}`),
+  track: (number, phone = '') => {
+    const q = phone ? `?phone=${encodeURIComponent(phone)}` : ''
+    return api.get(`/orders/track/${encodeURIComponent(number)}${q}`)
+  },
 }
 
 export default orderService

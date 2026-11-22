@@ -135,9 +135,17 @@ export const useWishlistStore = create(
           })
       },
     }),
-    { name: 'rehman.wishlist', storage: createJSONStorage(() => sessionStorage), version: 1 },
+    { name: 'rehman.wishlist', storage: createJSONStorage(() => localStorage), version: 1 },
   ),
 )
+
+if (typeof window !== 'undefined') {
+  window.addEventListener('storage', (event) => {
+    if (event.key === 'rehman.wishlist') {
+      useWishlistStore.persist?.rehydrate?.()
+    }
+  })
+}
 
 export default useWishlistStore
 

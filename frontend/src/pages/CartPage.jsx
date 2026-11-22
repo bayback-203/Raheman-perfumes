@@ -466,6 +466,7 @@ export function CartPage() {
   const syncPricing = useCartStore((state) => state.syncPricing)
   const clearCart = useCartStore((state) => state.clearCart)
   const byId = useCatalogueStore((state) => state.byId)
+  const bySlug = useCatalogueStore((state) => state.bySlug)
   const summary = useCartStore((state) => state.summary())
 
   useEffect(() => {
@@ -560,11 +561,31 @@ export function CartPage() {
                           Qty: 1 (Complimentary Gift)
                         </span>
                       ) : (
-                        <QuantityStepper
-                          value={item.quantity}
-                          max={Math.min(20, byId[item.productId]?.stockLeft ?? 20)}
-                          onChange={(next) => (next < item.quantity ? decrement(item.id) : increment(item.id))}
-                        />
+                        (() => {
+                          const maxStock = Math.max(
+                            1,
+                            bySlug[item.slug]?.stockLeft ??
+                              bySlug[item.slug]?.stock ??
+                              byId[item.productId]?.stockLeft ??
+                              byId[item.productId]?.stock ??
+                              item.stockLeft ??
+                              99,
+                          )
+                          return (
+                            <div className="flex flex-col items-start gap-1">
+                              <QuantityStepper
+                                value={item.quantity}
+                                max={maxStock}
+                                onChange={(next) => (next < item.quantity ? decrement(item.id) : increment(item.id))}
+                              />
+                              {item.quantity >= maxStock && (
+                                <span className="text-[11px] font-semibold text-amber-700">
+                                  Max limit reached ({maxStock} in stock)
+                                </span>
+                              )}
+                            </div>
+                          )
+                        })()
                       )}
                       <div className="text-right">
                         <p className="text-body-lg font-semibold text-brand-charcoal">
