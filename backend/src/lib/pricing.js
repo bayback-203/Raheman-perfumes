@@ -121,7 +121,15 @@ export function priceOrder({ items = [], coupon = null, giftWrap = false, rule =
   // An empty basket is not charged for delivery, and once discounts have taken
   // the order past the threshold the delivery is complimentary — both as the
   // cart does it, measured after the discount rather than before.
-  const shipping = afterCoupon === 0 || afterCoupon >= freeShippingOver ? 0 : shippingFee
+  const hasFreeShipping = shippingFee > 0 && freeShippingOver > shippingFee && freeShippingOver > 1
+  const shipping =
+    shippingFee === 0
+      ? 0
+      : afterCoupon === 0
+        ? 0
+        : hasFreeShipping && afterCoupon >= freeShippingOver
+          ? 0
+          : shippingFee
   const wrap = giftWrap ? giftWrapFee : 0
   const gst = Math.round((afterCoupon * GST_RATE) / GST_DIVISOR)
   const total = afterCoupon + shipping + wrap
@@ -139,7 +147,7 @@ export function priceOrder({ items = [], coupon = null, giftWrap = false, rule =
     total,
     savings: discount,
     loyaltyPoints: total >= LOYALTY_ORDER_THRESHOLD ? LOYALTY_POINTS_PER_ORDER : 0,
-    freeShippingGap: Math.max(0, freeShippingOver - afterCoupon),
+    freeShippingGap: hasFreeShipping ? Math.max(0, freeShippingOver - afterCoupon) : 0,
     coupon: coupon
       ? {
           code: coupon.code,

@@ -818,6 +818,7 @@ export function CheckoutPage() {
               <div className="grid gap-2.5 sm:grid-cols-2">
                 {SHIPPING_METHODS.map((method) => {
                   const selected = shippingMethod === method.id
+                  const methodCost = method.id === 'standard' ? summary.shipping : summary.shipping + (method.price ?? 0)
                   return (
                     <label
                       key={method.id}
@@ -839,7 +840,7 @@ export function CheckoutPage() {
                       <div className="min-w-0">
                         <p className="text-xs font-semibold text-brand-charcoal">{method.name}</p>
                         <p className="mt-0.5 text-[11px] text-brand-muted">
-                          {method.eta} · {method.price === 0 ? 'Complimentary' : formatPrice(method.price)}
+                          {method.eta} · {methodCost === 0 ? 'Complimentary' : formatPrice(methodCost)}
                         </p>
                       </div>
                       <span

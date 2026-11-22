@@ -29,7 +29,7 @@ const PAGES = {
       {
         kind: 'cards',
         items: [
-          { icon: 'truck', image: '/promise-delivery.jpg', title: 'Standard Surface', body: 'Complimentary standard delivery available across India. Delivered in 4–6 working days.' },
+          { icon: 'truck', image: '/promise-delivery.jpg', title: 'Standard Surface', body: 'Standard delivery available across India. Delivered safely in 4–6 working days.' },
           { icon: 'plane', image: '/studio.png', title: 'Express Air', body: '₹149 flat. Next-day metro delivery when ordered before 14:00 IST.' },
         ],
       },

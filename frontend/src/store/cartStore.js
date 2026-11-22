@@ -270,8 +270,15 @@ export const useCartStore = create(
         const afterCoupon = Math.max(0, subtotal - couponDiscount)
         const threshold = typeof state.freeShippingOver === 'number' ? state.freeShippingOver : FREE_SHIPPING_THRESHOLD
         const fee = typeof state.shippingFee === 'number' ? state.shippingFee : STANDARD_SHIPPING_FEE
+        const hasFreeShipping = fee > 0 && threshold > fee && threshold > 1
         const shipping =
-          afterCoupon === 0 || afterCoupon >= threshold ? 0 : fee
+          fee === 0
+            ? 0
+            : afterCoupon === 0
+              ? 0
+              : hasFreeShipping && afterCoupon >= threshold
+                ? 0
+                : fee
         const giftWrapFee = state.giftWrap ? GIFT_WRAP_FEE : 0
         const gst = Math.round((afterCoupon * 18) / 118)
         const total = afterCoupon + shipping + giftWrapFee
@@ -288,6 +295,7 @@ export const useCartStore = create(
           shipping,
           freeShippingOver: threshold,
           shippingFee: fee,
+          hasFreeShipping,
           giftWrapFee,
           gst,
           total,
@@ -295,7 +303,7 @@ export const useCartStore = create(
           savings: productSavings + couponDiscount,
           loyaltyPoints: total >= LOYALTY_ORDER_THRESHOLD ? LOYALTY_POINTS_PER_ORDER : 0,
           hasFreeReward: state.items.some((item) => item.isLoyaltyReward || item.id === FREE_ATTAR_REWARD.id),
-          freeShippingGap: Math.max(0, threshold - afterCoupon),
+          freeShippingGap: hasFreeShipping ? Math.max(0, threshold - afterCoupon) : 0,
         }
       },
     }),

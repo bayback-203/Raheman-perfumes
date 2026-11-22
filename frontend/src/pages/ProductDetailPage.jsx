@@ -21,14 +21,6 @@ import { useDocumentTitle } from '@/hooks/useDocumentTitle'
 import { productService, relatedProducts } from '@/services/productService'
 import { useCatalogueStore, useCatalogueProducts, useShowcase } from '@/store/catalogueStore'
 import { ratingBreakdown } from '@/lib/reviews'
-import { FREE_SHIPPING_THRESHOLD } from '@/lib/format'
-
-const DELIVERY_PROMISE = [
-  { icon: 'truck', title: 'Complimentary Delivery Available', note: '4–6 working days across India' },
-  { icon: 'shield', title: '100% Genuine & Authentic', note: 'Sourced directly from official suppliers' },
-  { icon: 'sparkle', title: '30%+ oil strength', note: 'Pure French oils & long lasting' },
-  { icon: 'shield', title: 'Tamper-proof seal', note: 'Safe 3-layer protective packaging' },
-]
 
 /** Note pyramid rendered as three columns. */
 function NotePyramid({ notes }) {
@@ -152,9 +144,28 @@ export function ProductDetailPage() {
   }, [syncPricing])
 
   const currentPrice = variant?.price ?? product?.price ?? 0
-  const isFreeDeliveryAll = shippingFee === 0 || (typeof freeShippingOver === 'number' && freeShippingOver <= 1)
-  const qualifiesForFreeDelivery = typeof freeShippingOver === 'number' && currentPrice >= freeShippingOver
-  const shippingGap = typeof freeShippingOver === 'number' ? Math.max(0, freeShippingOver - currentPrice) : 0
+  const isFreeDeliveryAll = shippingFee === 0
+  const hasFreeShipping = typeof freeShippingOver === 'number' && freeShippingOver > shippingFee && freeShippingOver > 1
+  const qualifiesForFreeDelivery = isFreeDeliveryAll || (hasFreeShipping && currentPrice >= freeShippingOver)
+  const shippingGap = hasFreeShipping ? Math.max(0, freeShippingOver - currentPrice) : 0
+
+  const deliveryPromise = useMemo(
+    () => [
+      {
+        icon: 'truck',
+        title: isFreeDeliveryAll
+          ? 'Complimentary Delivery'
+          : hasFreeShipping
+            ? `Free Delivery over ${formatPrice(freeShippingOver)}`
+            : `Standard Delivery ${formatPrice(shippingFee)}`,
+        note: '4–6 working days across India',
+      },
+      { icon: 'shield', title: '100% Genuine & Authentic', note: 'Sourced directly from official suppliers' },
+      { icon: 'sparkle', title: '30%+ oil strength', note: 'Pure French oils & long lasting' },
+      { icon: 'shield', title: 'Tamper-proof seal', note: 'Safe 3-layer protective packaging' },
+    ],
+    [isFreeDeliveryAll, hasFreeShipping, freeShippingOver, shippingFee],
+  )
 
   // Relatives are drawn from the live catalogue: the rail sits under the
   // fragrance the shopper is looking at, and a bundled sibling that has been
@@ -506,12 +517,17 @@ export function ProductDetailPage() {
             ) : qualifiesForFreeDelivery ? (
               <p className="mt-3 flex items-center gap-2 text-body-sm font-medium text-emerald-700">
                 <Icon name="truck" className="h-4 w-4" />
-                Qualifies for Complimentary Free Delivery
+                Qualifies for Free Delivery (Orders above {formatPrice(freeShippingOver)})
               </p>
-            ) : shippingGap > 0 ? (
+            ) : hasFreeShipping && shippingGap > 0 ? (
               <p className="mt-3 flex items-center gap-2 text-body-sm text-ink-variant">
                 <Icon name="truck" className="h-4 w-4 text-brand-charcoal" />
-                Add {formatPrice(shippingGap)} more for free delivery
+                Standard Delivery: {formatPrice(shippingFee)} (Add {formatPrice(shippingGap)} more for Free Delivery)
+              </p>
+            ) : shippingFee > 0 ? (
+              <p className="mt-3 flex items-center gap-2 text-body-sm font-medium text-brand-charcoal">
+                <Icon name="truck" className="h-4 w-4 text-brand-charcoal" />
+                Standard Delivery: {formatPrice(shippingFee)}
               </p>
             ) : null}
           </div>
@@ -600,9 +616,10 @@ export function ProductDetailPage() {
               <p>
                 {isFreeDeliveryAll
                   ? 'Complimentary free delivery on all orders, typically 4–6 working days.'
-                  : typeof freeShippingOver === 'number' && freeShippingOver > 1
-                    ? `Free delivery on orders above ₹${freeShippingOver}, typically 4–6 working days.`
-                    : 'Complimentary standard delivery available across India.'} Express delivery available at checkout. Perfumes travel safely in sealed bubble packaging with a tamper-proof seal.
+                  : hasFreeShipping
+                    ? `Standard delivery is ${formatPrice(shippingFee)}. Free delivery on orders above ${formatPrice(freeShippingOver)}, typically 4–6 working days.`
+                    : `Standard delivery is ${formatPrice(shippingFee)}, typically 4–6 working days.`}{' '}
+                Express delivery available at checkout. Perfumes travel safely in sealed bubble packaging with a tamper-proof seal.
               </p>
               <div className="mt-3 rounded-md border border-brand-gold/30 bg-brand-gold/5 p-3 text-xs leading-relaxed text-brand-charcoal">
                 <span className="font-semibold uppercase tracking-wider text-brand-goldDark">Strict No Return Policy:</span>
@@ -616,7 +633,7 @@ export function ProductDetailPage() {
 
         {/* Trust / delivery promise cards — rendered BELOW price & details on phones, under gallery on desktop */}
         <ul className="grid grid-cols-2 gap-2.5 sm:gap-3 lg:col-start-1 lg:row-start-2 lg:self-start">
-          {DELIVERY_PROMISE.map((item) => (
+          {deliveryPromise.map((item) => (
             <li
               key={item.title}
               className="flex items-start gap-2 rounded-xl border border-brand-border bg-white p-3 sm:gap-2.5 sm:p-3.5"

@@ -387,6 +387,11 @@ export function OrderSummary({ children, cta, className }) {
           <Icon name="truck" className="h-3.5 w-3.5 text-brand-goldDark" />
           Add {formatPrice(summary.freeShippingGap)} more for free delivery
         </p>
+      ) : summary.shipping > 0 ? (
+        <p className="mt-2 flex items-center gap-2 text-body-sm text-brand-charcoal">
+          <Icon name="truck" className="h-3.5 w-3.5 text-brand-goldDark" />
+          Standard delivery: {formatPrice(summary.shipping)}
+        </p>
       ) : summary.shipping === 0 ? (
         <p className="mt-2 flex items-center gap-2 text-body-sm font-medium text-emerald-700">
           <Icon name="check-circle" className="h-3.5 w-3.5" />

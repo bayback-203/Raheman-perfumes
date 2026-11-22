@@ -15,8 +15,38 @@ import { FlaconStage } from '@/components/product/FlaconArt'
 import { productImage } from '@/data/productImages'
 
 /** Progress rail toward the free-shipping threshold. */
-function ShippingProgress({ subtotal, threshold = FREE_SHIPPING_THRESHOLD }) {
-  const limit = typeof threshold === 'number' && threshold > 0 ? threshold : FREE_SHIPPING_THRESHOLD
+function ShippingProgress({ subtotal, threshold = FREE_SHIPPING_THRESHOLD, shippingFee = 0 }) {
+  const isFreeAll = shippingFee === 0
+  const hasFreeShipping =
+    typeof shippingFee === 'number' &&
+    shippingFee > 0 &&
+    typeof threshold === 'number' &&
+    threshold > shippingFee &&
+    threshold > 1
+
+  if (isFreeAll) {
+    return (
+      <div className="border-b border-brand-border bg-emerald-50/50 px-5 py-2.5">
+        <p className="flex items-center gap-2 text-body-sm font-medium text-emerald-800">
+          <Icon name="check-circle" className="h-4 w-4 shrink-0 text-emerald-600" />
+          <span>Complimentary delivery included on all orders.</span>
+        </p>
+      </div>
+    )
+  }
+
+  if (!hasFreeShipping) {
+    return (
+      <div className="border-b border-brand-border bg-brand-cream/60 px-5 py-2.5">
+        <p className="flex items-center gap-2 text-body-sm text-brand-charcoal">
+          <Icon name="truck" className="h-4 w-4 shrink-0 text-brand-goldDark" />
+          <span>Standard delivery: <strong>{formatPrice(shippingFee)}</strong></span>
+        </p>
+      </div>
+    )
+  }
+
+  const limit = threshold
   const remaining = Math.max(0, limit - subtotal)
   const percent = Math.min(100, Math.round((subtotal / limit) * 100))
   const unlocked = remaining === 0
@@ -26,7 +56,7 @@ function ShippingProgress({ subtotal, threshold = FREE_SHIPPING_THRESHOLD }) {
       <p className="flex items-center gap-2 text-body-sm text-ink-variant">
         <Icon name={unlocked ? 'check-circle' : 'truck'} className="h-4 w-4 shrink-0 text-brand-goldDark" />
         {unlocked ? (
-          <span className="font-semibold">Complimentary shipping unlocked.</span>
+          <span className="font-semibold text-emerald-800">Complimentary shipping unlocked.</span>
         ) : (
           <span>
             Add <span className="font-semibold text-brand-charcoal">{formatPrice(remaining)}</span> more for free
@@ -162,7 +192,7 @@ export function CartDrawer() {
         </div>
       ) : (
         <>
-          <ShippingProgress subtotal={summary.subtotal} threshold={summary.freeShippingOver} />
+          <ShippingProgress subtotal={summary.subtotal} threshold={summary.freeShippingOver} shippingFee={summary.shippingFee} />
           <DrawerLoyaltyBanner />
 
           <div className="flex-1 overflow-y-auto px-5 py-4">
