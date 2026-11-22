@@ -158,31 +158,10 @@ export function BestSellers({ products }) {
 
   const curatedList = products ?? bestsellers
 
-  // Filter items based on active tab
+  // Filter items based on active tab — strictly what admin selected or marked as Bestseller
   const displayList = useMemo(() => {
-    // 1. Matches from the admin's curated bestsellers list
-    const curatedMatches = curatedList.filter((p) => matchesBestsellerTab(p, activeTab))
-
-    if (activeTab === 'all') {
-      if (curatedMatches.length > 0) return curatedMatches
-      // Fallback if no bestsellers have been picked in admin yet
-      return catalogue.filter((p) => p.bestseller || (p.rating != null && p.rating >= 4.5)).slice(0, 12)
-    }
-
-    if (curatedMatches.length > 0) {
-      return curatedMatches
-    }
-
-    // Fallback: If curated bestsellers don't have items for this specific tab
-    // (e.g. admin has only added 2 spray perfumes to bestsellers and no attars or bakhoor yet),
-    // retrieve matching items from the live catalogue so user sees products instead of an empty box
-    const catalogueMatches = catalogue.filter((p) => matchesBestsellerTab(p, activeTab))
-    return [...catalogueMatches].sort((a, b) => {
-      const aScore = (a.bestseller ? 10 : 0) + (a.rating || 0)
-      const bScore = (b.bestseller ? 10 : 0) + (b.rating || 0)
-      return bScore - aScore
-    })
-  }, [curatedList, catalogue, activeTab])
+    return curatedList.filter((p) => matchesBestsellerTab(p, activeTab))
+  }, [curatedList, activeTab])
 
   const slider = useRowSlider(displayList.length)
 

@@ -57,9 +57,11 @@ export const DEFAULT_SHOWCASE = {
   showOffersProducts: true,
   showCouponsSection: true,
   showMultiBottleOffers: false,
+  showCombos: true,
   offerProductIds: [],
   bestsellerProductIds: [],
   homeDealProductIds: [],
+  comboProductIds: [],
 }
 
 function normalizeIdList(values) {
@@ -137,9 +139,11 @@ export async function getShowcase() {
       typeof stored.showMultiBottleOffers === 'boolean'
         ? stored.showMultiBottleOffers
         : DEFAULT_SHOWCASE.showMultiBottleOffers,
+    showCombos: typeof stored.showCombos === 'boolean' ? stored.showCombos : DEFAULT_SHOWCASE.showCombos,
     offerProductIds: normalizeIdList(stored.offerProductIds),
     bestsellerProductIds: normalizeIdList(stored.bestsellerProductIds),
     homeDealProductIds: normalizeIdList(stored.homeDealProductIds),
+    comboProductIds: normalizeIdList(stored.comboProductIds),
   }
 }
 
@@ -168,6 +172,7 @@ export async function getPublicShowcase() {
     return {
       ...showcase,
       bestsellerProductIds: mergedBestsellerIds,
+      comboProductIds: showcase.comboProductIds,
     }
   }
 
@@ -181,6 +186,7 @@ export async function getPublicShowcase() {
   return {
     ...showcase,
     bestsellerProductIds: mergedBestsellerIds,
+    comboProductIds: showcase.comboProductIds,
     offerProductIds: showcase.offerProductIds.filter((id) => inStockSet.has(id)),
     homeDealProductIds: showcase.homeDealProductIds.filter((id) => inStockSet.has(id)),
   }
@@ -343,11 +349,12 @@ export async function updateShowcase(patch = {}) {
     'showOffersProducts',
     'showCouponsSection',
     'showMultiBottleOffers',
+    'showCombos',
   ]) {
     if (typeof patch[key] === 'boolean') next[key] = patch[key]
   }
 
-  for (const key of ['offerProductIds', 'bestsellerProductIds', 'homeDealProductIds']) {
+  for (const key of ['offerProductIds', 'bestsellerProductIds', 'homeDealProductIds', 'comboProductIds']) {
     if (Array.isArray(patch[key])) next[key] = normalizeIdList(patch[key])
   }
 

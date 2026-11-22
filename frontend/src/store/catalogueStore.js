@@ -28,9 +28,11 @@ export const DEFAULT_SHOWCASE = {
   showOffersProducts: true,
   showCouponsSection: true,
   showMultiBottleOffers: false,
+  showCombos: true,
   offerProductIds: [],
   bestsellerProductIds: [],
   homeDealProductIds: [],
+  comboProductIds: [],
 }
 
 function normalizeShowcase(raw) {
@@ -43,9 +45,11 @@ function normalizeShowcase(raw) {
     showOffersProducts: typeof raw.showOffersProducts === 'boolean' ? raw.showOffersProducts : true,
     showCouponsSection: typeof raw.showCouponsSection === 'boolean' ? raw.showCouponsSection : true,
     showMultiBottleOffers: typeof raw.showMultiBottleOffers === 'boolean' ? raw.showMultiBottleOffers : false,
+    showCombos: typeof raw.showCombos === 'boolean' ? raw.showCombos : true,
     offerProductIds: list(raw.offerProductIds),
     bestsellerProductIds: list(raw.bestsellerProductIds),
     homeDealProductIds: list(raw.homeDealProductIds),
+    comboProductIds: list(raw.comboProductIds),
   }
 }
 
@@ -194,6 +198,19 @@ export function useBestsellers() {
     const curatedIds = new Set((curated ?? []).map((p) => p.id || p._id))
     const tagged = (products ?? []).filter(
       (p) => (p.bestseller || p.badges?.includes('Bestseller')) && !curatedIds.has(p.id || p._id),
+    )
+    return [...(curated ?? []), ...tagged]
+  }, [curated, products])
+}
+
+/** Products manually selected or marked as Combos for the Combos page. */
+export function useCombos() {
+  const curated = useShowcaseProducts('comboProductIds')
+  const products = useCatalogueProducts()
+  return useMemo(() => {
+    const curatedIds = new Set((curated ?? []).map((p) => p.id || p._id))
+    const tagged = (products ?? []).filter(
+      (p) => (p.tier === 'Combo' || p.collections?.includes('combos')) && !curatedIds.has(p.id || p._id),
     )
     return [...(curated ?? []), ...tagged]
   }, [curated, products])

@@ -114,7 +114,7 @@ function filterByOccasion(products, slug, keywords) {
       .toLowerCase()
     return keywords.some((kw) => haystack.includes(kw))
   })
-  return matched.length > 0 ? matched : products
+  return matched
 }
 
 /**

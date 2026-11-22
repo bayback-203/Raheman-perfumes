@@ -22,9 +22,11 @@ const DEFAULT_SHOWCASE = {
   showOffersProducts: true,
   showCouponsSection: true,
   showMultiBottleOffers: true,
+  showCombos: true,
   offerProductIds: [],
   bestsellerProductIds: [],
   homeDealProductIds: [],
+  comboProductIds: [],
 }
 
 const ACCESS_TOGGLES = [
@@ -68,6 +70,13 @@ const ACCESS_TOGGLES = [
     description: 'Show or hide the Buy 2+, 3+, 4+ bottle extra savings section on the Offers page.',
     icon: 'gift',
   },
+  {
+    key: 'showCombos',
+    listKey: 'comboProductIds',
+    label: 'Combos Page — Curated Combos',
+    description: 'Control products appearing in the Combos & Gift Sets section.',
+    icon: 'package',
+  },
 ]
 
 const SHOWCASE_SECTIONS = [
@@ -99,6 +108,16 @@ const SHOWCASE_SECTIONS = [
       'Manually add and order the in-stock perfumes shown in the "Best Discounts Right Now" offer area on the Home page. Out-of-stock items are hidden automatically.',
     emptyTitle: 'No Home discount products selected',
     emptyDescription: 'Pick in-stock products above to showcase them in the Home page discount offer area.',
+  },
+  {
+    key: 'comboProductIds',
+    toggleKey: 'showCombos',
+    inStockOnly: false,
+    title: 'Combos Page — Curated Combos & Gift Sets',
+    description:
+      'Manually add and order products on the /combos page. Products marked with Type: Combo in the product catalog also appear here automatically.',
+    emptyTitle: 'No Combos selected',
+    emptyDescription: 'Pick products above to showcase them in Combos & Gift Sets, or mark products with Type: Combo in Products.',
   },
 ]
 

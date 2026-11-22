@@ -1098,9 +1098,11 @@ router.patch(
         showOffersProducts: z.boolean().optional(),
         showCouponsSection: z.boolean().optional(),
         showMultiBottleOffers: z.boolean().optional(),
+        showCombos: z.boolean().optional(),
         offerProductIds: showcaseIdList,
         bestsellerProductIds: showcaseIdList,
         homeDealProductIds: showcaseIdList,
+        comboProductIds: showcaseIdList,
       })
       .strip(),
   ),
