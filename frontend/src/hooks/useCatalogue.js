@@ -206,6 +206,10 @@ export function useCatalogue({
         if (isEmpty(value)) return []
         if (key === 'price') return [{ key, value, label: `Under ₹${value[1].toLocaleString('en-IN')}` }]
         if (key === 'inStock') return [{ key, value, label: 'In stock' }]
+        if (key === 'bestseller') return value ? [{ key, value, label: 'Bestseller' }] : []
+        if (key === 'isNew') return value ? [{ key, value, label: 'New Arrivals' }] : []
+        if (typeof value === 'boolean') return value ? [{ key, value, label: key }] : []
+        if (!Array.isArray(value)) return [{ key, value, label: String(value) }]
         return value.map((entry) => ({ key, value: entry, label: entry }))
       }),
     [filters],
@@ -213,7 +217,11 @@ export function useCatalogue({
 
   const removeChip = useCallback(
     (chip) => {
-      if (chip.key === 'price' || chip.key === 'inStock') {
+      if (chip.key === 'price' || chip.key === 'inStock' || typeof filters[chip.key] === 'boolean') {
+        updateFilters({ ...filters, [chip.key]: undefined })
+        return
+      }
+      if (!Array.isArray(filters[chip.key])) {
         updateFilters({ ...filters, [chip.key]: undefined })
         return
       }

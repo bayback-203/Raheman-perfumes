@@ -83,19 +83,22 @@ export function FilterSidebar({
   const patch = (key, value) => onChange?.({ ...filters, [key]: value })
 
   const toggleIn = (key, value) => {
-    const current = filters[key] ?? []
+    const raw = filters[key]
+    const current = Array.isArray(raw) ? raw : []
     const next = current.includes(value) ? current.filter((entry) => entry !== value) : [...current, value]
     patch(key, next.length ? next : undefined)
   }
 
   const activeCount =
-    (filters.tier?.length ?? 0) +
-    (filters.family?.length ?? 0) +
-    (filters.brand?.length ?? 0) +
-    (filters.gender?.length ?? 0) +
-    (filters.concentration?.length ?? 0) +
+    (Array.isArray(filters.tier) ? filters.tier.length : 0) +
+    (Array.isArray(filters.family) ? filters.family.length : 0) +
+    (Array.isArray(filters.brand) ? filters.brand.length : 0) +
+    (Array.isArray(filters.gender) ? filters.gender.length : 0) +
+    (Array.isArray(filters.concentration) ? filters.concentration.length : 0) +
     (filters.inStock ? 1 : 0) +
-    (filters.price ? 1 : 0)
+    (filters.price ? 1 : 0) +
+    (filters.bestseller ? 1 : 0) +
+    (filters.isNew ? 1 : 0)
 
   const minPrice = filters.price?.[0] ?? priceBounds[0]
   const maxPrice = filters.price?.[1] ?? priceBounds[1]
@@ -135,8 +138,8 @@ export function FilterSidebar({
   }
 
   const facetLabel = (key) => {
-    const list = filters[key]
-    if (!list?.length) return undefined
+    const list = Array.isArray(filters[key]) ? filters[key] : []
+    if (!list.length) return undefined
     return `${list.length} selected`
   }
 
@@ -192,7 +195,7 @@ export function FilterSidebar({
           {TIER_LIST.map((tier) => (
             <Checkbox
               key={tier.id}
-              checked={(filters.tier ?? []).includes(tier.id)}
+              checked={(Array.isArray(filters.tier) ? filters.tier : []).includes(tier.id)}
               onChange={() => toggleIn('tier', tier.id)}
               label={
                 <span className="flex w-full items-start justify-between gap-3">
@@ -219,7 +222,7 @@ export function FilterSidebar({
               return (
                 <Checkbox
                   key={id}
-                  checked={(filters.family ?? []).includes(id)}
+                  checked={(Array.isArray(filters.family) ? filters.family : []).includes(id)}
                   onChange={() => toggleIn('family', id)}
                   label={
                     <span className="flex w-full items-center justify-between gap-3">
@@ -330,7 +333,7 @@ export function FilterSidebar({
               return (
                 <Checkbox
                   key={id}
-                  checked={(filters.brand ?? []).includes(id)}
+                  checked={(Array.isArray(filters.brand) ? filters.brand : []).includes(id)}
                   onChange={() => toggleIn('brand', id)}
                   label={
                     <span className="flex w-full items-center justify-between gap-3">
@@ -352,7 +355,7 @@ export function FilterSidebar({
           {GENDERS.map((gender) => (
             <Checkbox
               key={gender.id}
-              checked={(filters.gender ?? []).includes(gender.id)}
+              checked={(Array.isArray(filters.gender) ? filters.gender : []).includes(gender.id)}
               onChange={() => toggleIn('gender', gender.id)}
               label={
                 <span className="flex w-full items-center justify-between gap-3">
@@ -377,7 +380,7 @@ export function FilterSidebar({
           {CONCENTRATIONS.map((entry) => (
             <Checkbox
               key={entry.id}
-              checked={(filters.concentration ?? []).includes(entry.id) || (filters.concentration ?? []).includes(entry.label)}
+              checked={(Array.isArray(filters.concentration) ? filters.concentration : []).includes(entry.id) || (Array.isArray(filters.concentration) ? filters.concentration : []).includes(entry.label)}
               onChange={() => toggleIn('concentration', entry.id)}
               label={
                 <span className="flex flex-col">
