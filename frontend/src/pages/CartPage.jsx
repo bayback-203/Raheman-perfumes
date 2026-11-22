@@ -167,7 +167,7 @@ function LoyaltyBanner() {
             <Icon name="award" className="h-5 w-5" />
           </span>
           <p className="text-body-xs text-brand-charcoal">
-            <Link to="/auth/signin" className="font-semibold text-brand-goldDark underline underline-offset-2">Sign in</Link> to earn 1 loyalty point on every order above ₹799. Collect 10 points to unlock a <strong>Free 5ml Pure Attar</strong>!
+            <Link to="/auth/signin" className="font-semibold text-brand-goldDark underline underline-offset-2">Sign in</Link> to view and earn loyalty points on your order.
           </p>
         </div>
       </div>
@@ -254,7 +254,7 @@ function LoyaltyBanner() {
             Loyalty Progress: {points}/10 Points
           </p>
           <p className="text-body-xs text-brand-muted">
-            Earn 1 point on every order above ₹799. Reach 10 points for a <strong>Free 5ml Attar</strong>!
+            Unlock exclusive complimentary rewards as you collect points.
           </p>
         </div>
       </div>
@@ -266,7 +266,7 @@ function LoyaltyBanner() {
           />
         </div>
         <p className="mt-1 text-right text-[11px] font-medium text-brand-muted">
-          {10 - points} more {10 - points === 1 ? 'order' : 'orders'} &gt; ₹799
+          {Math.max(0, 10 - points)} pts left to unlock reward
         </p>
       </div>
     </div>
@@ -340,7 +340,7 @@ export function OrderSummary({ children, cta, className }) {
             Loyalty point earned
           </dt>
           <dd className={cn('font-semibold tabular-nums', summary.loyaltyPoints > 0 ? 'text-emerald-700' : 'text-brand-muted')}>
-            {summary.loyaltyPoints > 0 ? '+1 Point (Order ≥ ₹799)' : '0 Points (Min ₹799)'}
+            {summary.loyaltyPoints > 0 ? '+1 Point' : '0 Points'}
           </dd>
         </div>
       </dl>

@@ -693,7 +693,7 @@ function RewardsTab() {
       <PanelBanner
         icon="award"
         title="Rewards & Loyalty"
-        description="Earn 1 loyalty point for every order above ₹799. Score 10 points to unlock a Free 5ml Pure Attar."
+        description="View your loyalty points balance and unlock complimentary rewards."
       />
 
       <div className="space-y-6 p-6 sm:p-8">
@@ -706,9 +706,6 @@ function RewardsTab() {
                 {user?.tier ?? 'Patron Member'}
               </Chip>
               <p className="mt-4 font-serif text-3xl font-semibold text-brand-charcoal">{points} Points</p>
-              <p className="mt-1 text-body-sm text-brand-muted">
-                1 point earned for every order above ₹799.
-              </p>
             </div>
 
             <div className="w-full max-w-xs">
@@ -727,8 +724,8 @@ function RewardsTab() {
               </div>
               <p className="mt-2 text-body-xs text-brand-muted">
                 {unlocked
-                  ? 'You qualify for a Free 5ml Pure Attar with your next order!'
-                  : `Need ${10 - points} more order${10 - points === 1 ? '' : 's'} above ₹799 to unlock Free 5ml Attar.`}
+                  ? 'Complimentary reward unlocked with your next order!'
+                  : `${Math.max(0, 10 - points)} more points needed to unlock reward.`}
               </p>
             </div>
           </div>
@@ -778,42 +775,6 @@ function RewardsTab() {
               )}
             </div>
           )}
-        </div>
-
-        {/* How it Works Stepper */}
-        <div className="rounded-xl border border-brand-border bg-white p-6">
-          <h3 className="text-label-md font-bold uppercase tracking-widest text-brand-charcoal">
-            How The Loyalty Program Works
-          </h3>
-          <div className="mt-5 grid gap-4 sm:grid-cols-3">
-            <div className="rounded-lg border border-brand-border/70 bg-brand-cream/30 p-4">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-charcoal text-xs font-bold text-white">
-                1
-              </span>
-              <h4 className="mt-3 text-body-sm font-semibold text-brand-charcoal">Order Above ₹799</h4>
-              <p className="mt-1 text-body-xs text-brand-muted">
-                Every online or counter order with a final total above ₹799 earns you 1 point.
-              </p>
-            </div>
-            <div className="rounded-lg border border-brand-border/70 bg-brand-cream/30 p-4">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-charcoal text-xs font-bold text-white">
-                2
-              </span>
-              <h4 className="mt-3 text-body-sm font-semibold text-brand-charcoal">Score 10 Points</h4>
-              <p className="mt-1 text-body-xs text-brand-muted">
-                Accumulate 10 points in your account to unlock the exclusive complimentary reward.
-              </p>
-            </div>
-            <div className="rounded-lg border border-brand-border/70 bg-brand-cream/30 p-4">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-brand-charcoal text-xs font-bold text-white">
-                3
-              </span>
-              <h4 className="mt-3 text-body-sm font-semibold text-brand-charcoal">Free 5ml Attar</h4>
-              <p className="mt-1 text-body-xs text-brand-muted">
-                1-click add to cart offer adds a pure 5ml artisan attar bottle to your order at ₹0!
-              </p>
-            </div>
-          </div>
         </div>
 
         {/* Reward Showcase & Links */}

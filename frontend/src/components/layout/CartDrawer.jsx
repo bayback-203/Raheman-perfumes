@@ -54,9 +54,9 @@ function DrawerLoyaltyBanner() {
 
   if (!user) {
     return (
-      <div className="border-b border-brand-border/60 bg-brand-cream/30 px-5 py-2.5 text-body-xs text-brand-muted flex items-center gap-1.5">
+      <div className="border-b border-brand-border/60 bg-brand-cream/30 px-5 py-2 text-body-xs text-brand-muted flex items-center gap-1.5">
         <Icon name="award" className="h-3.5 w-3.5 text-brand-goldDark shrink-0" />
-        <span>Order &gt; ₹799 to get 1 point · 10 pts = Free 5ml Attar</span>
+        <span>Members earn loyalty points with every order</span>
       </div>
     )
   }
@@ -101,9 +101,8 @@ function DrawerLoyaltyBanner() {
   return (
     <div className="border-b border-brand-border/60 bg-brand-cream/40 px-5 py-2 flex items-center justify-between text-body-xs text-brand-muted">
       <span className="flex items-center gap-1.5">
-        <Icon name="award" className="h-3.5 w-3.5 text-brand-goldDark" /> {points}/10 pts to Free 5ml Attar
+        <Icon name="award" className="h-3.5 w-3.5 text-brand-goldDark" /> {points}/10 points collected
       </span>
-      <span className="text-[11px] text-brand-charcoal font-medium">Orders &gt; ₹799 (+1 pt)</span>
     </div>
   )
 }
@@ -251,7 +250,7 @@ export function CartDrawer() {
               <div className="flex items-center justify-between border-t border-brand-border/60 pt-1 text-brand-charcoal">
                 <dt className="text-brand-muted">Points earned</dt>
                 <dd className={cn('font-semibold', summary.loyaltyPoints > 0 ? 'text-emerald-700' : 'text-brand-muted')}>
-                  {summary.loyaltyPoints > 0 ? '+1 Point' : '0 Pts (Min ₹799)'}
+                  {summary.loyaltyPoints > 0 ? '+1 Point' : '0 Points'}
                 </dd>
               </div>
             </dl>

@@ -1174,7 +1174,7 @@ export function CheckoutPage() {
                 Loyalty Point Earned
               </dt>
               <dd className={cn('tabular-nums font-semibold', summary.loyaltyPoints > 0 ? 'text-emerald-700' : 'text-brand-muted')}>
-                {summary.loyaltyPoints > 0 ? '+1 Point (Order ≥ ₹799)' : '0 Points (Min ₹799)'}
+                {summary.loyaltyPoints > 0 ? '+1 Point' : '0 Points'}
               </dd>
             </div>
           </dl>
