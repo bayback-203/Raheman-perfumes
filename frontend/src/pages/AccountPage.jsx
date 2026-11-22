@@ -16,7 +16,7 @@ import { EmptyState } from '@/components/ui/Feedback'
 import { FlaconStage } from '@/components/product/FlaconArt'
 import { productImage } from '@/data/productImages'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
-import { ORDER_STATUS } from '@/data/account'
+import { ORDER_STATUS, formatOrderStatus } from '@/data/account'
 import { AddressFields, districtsMatch } from '@/components/ui/AddressFields'
 import { pincodeDetails } from '@/services/postalApi'
 import { useCatalogueStore } from '@/store/catalogueStore'
@@ -166,10 +166,10 @@ function OverviewTab({ onTab }) {
                     <span
                       className={cn(
                         'rounded-full border px-3 py-1 text-label-sm font-bold uppercase',
-                        ORDER_STATUS[order.status] ?? 'border-brand-border text-brand-muted',
+                        ORDER_STATUS[formatOrderStatus(order.status)] ?? ORDER_STATUS[order.status] ?? 'border-brand-border text-brand-muted',
                       )}
                     >
-                      {order.status}
+                      {formatOrderStatus(order.status)}
                     </span>
                     {order.canTrack && (
                       <Button variant="ghost" size="sm" className="border border-brand-border" to={`/track-order?order=${order.id}`}>
@@ -300,8 +300,8 @@ function OrdersTab() {
         ) : (
           <ul className="space-y-5">
             {orders.map((order) => {
-              // Strictly allowed ONLY before Packed (`Processing` / raw `Pending`)
-              const cancellable = order.canCancel ?? order.status === 'Processing'
+              // Strictly allowed ONLY before Packed (`Processing` / raw `Pending` / `Order Confirmed`)
+              const cancellable = order.canCancel ?? ['Processing', 'Pending', 'Order Confirmed'].includes(order.status)
               const packedOrAfter = ['Packaging', 'In Transit'].includes(order.status)
               const refund = order.refund
               return (
@@ -317,28 +317,35 @@ function OrdersTab() {
                     <span
                       className={cn(
                         'rounded-full border px-3 py-1 text-label-sm font-bold uppercase',
-                        ORDER_STATUS[order.status] ?? 'border-brand-border text-brand-muted',
+                        ORDER_STATUS[formatOrderStatus(order.status)] ?? ORDER_STATUS[order.status] ?? 'border-brand-border text-brand-muted',
                       )}
                     >
-                      {order.status}
+                      {formatOrderStatus(order.status)}
                     </span>
                   </div>
 
                   <ul className="divide-y divide-brand-border">
                     {order.items.map((item) => (
-                      <li key={`${order.id}-${item.slug}-${item.volume}`} className="flex items-center gap-4 px-5 py-4">
-                        <span className="w-12 shrink-0">
-                          <FlaconStage tier="Inspired" seed={item.slug} label={item.name} image={productImage(item)} compact />
-                        </span>
-                        <span className="min-w-0 flex-1">
-                          <span className="block truncate text-body-sm font-semibold text-brand-charcoal">{item.name}</span>
-                          <span className="block text-body-sm text-brand-muted">
-                            {item.volume} · Qty {item.qty}
+                      <li key={`${order.id}-${item.slug}-${item.volume}`}>
+                        <Link
+                          to={item.slug ? `/product/${item.slug}` : '#'}
+                          className="group flex items-center gap-4 px-5 py-4 transition-colors hover:bg-brand-cream/40"
+                        >
+                          <span className="w-12 shrink-0 transition-transform group-hover:scale-105">
+                            <FlaconStage tier="Inspired" seed={item.slug} label={item.name} image={productImage(item)} compact />
                           </span>
-                        </span>
-                        <span className="shrink-0 text-body-sm font-semibold text-brand-charcoal">
-                          {formatPrice(item.price * item.qty)}
-                        </span>
+                          <span className="min-w-0 flex-1">
+                            <span className="block truncate text-body-sm font-semibold text-brand-charcoal transition-colors group-hover:text-brand-goldDark">
+                              {item.name}
+                            </span>
+                            <span className="block text-body-sm text-brand-muted">
+                              {item.volume} · Qty {item.qty}
+                            </span>
+                          </span>
+                          <span className="shrink-0 text-body-sm font-semibold text-brand-charcoal">
+                            {formatPrice(item.price * item.qty)}
+                          </span>
+                        </Link>
                       </li>
                     ))}
                   </ul>

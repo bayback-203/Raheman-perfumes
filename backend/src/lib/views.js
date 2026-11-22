@@ -380,7 +380,7 @@ export const sessionUser = (user) => ({
 export function shopperStatus(order) {
   switch (order.status) {
     case 'Pending':
-      return 'Processing'
+      return 'Order Confirmed'
     case 'Packed':
       return 'Packaging'
     case 'Shipped':

@@ -13,7 +13,7 @@ import { EmptyState } from '@/components/ui/Feedback'
 import { FlaconStage } from '@/components/product/FlaconArt'
 import { productImage } from '@/data/productImages'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
-import { ORDER_STATUS } from '@/data/account'
+import { ORDER_STATUS, formatOrderStatus } from '@/data/account'
 import { TaxInvoice, TaxInvoiceModal } from '@/components/order/TaxInvoice'
 
 /** Helper to extract short formatted date e.g. 'OCT 19' */
@@ -418,7 +418,7 @@ export function OrderTrackingPage() {
                           ? "It's on the Way!"
                           : currentStage === 2
                             ? 'Packed & Ready for Courier'
-                            : 'Order Confirmed & Processing'}
+                            : 'Order Confirmed'}
                   </p>
                   <p className="mt-1 text-sm font-bold text-brand-charcoal">
                     Delivery Estimate:{' '}
@@ -641,7 +641,7 @@ export function OrderTrackingPage() {
                                     : 'text-[#2D6A4F]',
                               )}
                             >
-                              {tracking.status}
+                              {formatOrderStatus(tracking.status)}
                             </span>
                           </td>
 
