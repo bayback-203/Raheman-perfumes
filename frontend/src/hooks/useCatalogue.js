@@ -48,20 +48,44 @@ function countsFor(products, key, accessor, filters) {
 }
 
 export function resolveProductTier(p) {
-  if (p?.tier) return p.tier
-  if (p?.collections?.includes('combos')) return 'Combo'
-  if (p?.collections?.includes('attars') || /attar/i.test(p?.category ?? '')) return 'Attar'
-  return 'Original'
+  const tiers = []
+  if (p?.tier) tiers.push(p.tier)
+  if (
+    p?.collections?.includes('celebrities') ||
+    p?.collections?.includes('celebrity') ||
+    /celebr/i.test(p?.category ?? '') ||
+    /celebr/i.test(p?.categoryName ?? '')
+  ) {
+    tiers.push('Celebrity')
+  }
+  if (p?.collections?.includes('combos')) tiers.push('Combo')
+  if (p?.collections?.includes('attars') || /attar/i.test(p?.category ?? '')) tiers.push('Attar')
+  if (p?.collections?.includes('inspired')) tiers.push('Inspired')
+  if (p?.collections?.includes('originals')) tiers.push('Original')
+  if (!tiers.length) tiers.push('Original')
+  return [...new Set(tiers)]
 }
 
 function matchesFilter(product, key, value) {
   switch (key) {
     case 'tier':
       return value.some((v) => {
-        const t = resolveProductTier(product)
-        if (v === 'Attar') return t === 'Attar' || /attar/i.test(product.category ?? '') || product.collections?.includes('attars')
-        if (v === 'Combo') return t === 'Combo' || product.collections?.includes('combos')
-        return t === v
+        const tiers = resolveProductTier(product)
+        if (v === 'Attar') return tiers.includes('Attar') || /attar/i.test(product.category ?? '') || product.collections?.includes('attars')
+        if (v === 'Combo') return tiers.includes('Combo') || product.collections?.includes('combos')
+        if (v === 'Celebrity' || v === 'celebrities') {
+          return (
+            tiers.includes('Celebrity') ||
+            product.tier === 'Celebrity' ||
+            product.collections?.includes('celebrities') ||
+            product.collections?.includes('celebrity') ||
+            /celebr/i.test(product.category ?? '') ||
+            /celebr/i.test(product.categoryName ?? '')
+          )
+        }
+        if (v === 'Inspired') return tiers.includes('Inspired') || product.tier === 'Inspired' || product.collections?.includes('inspired')
+        if (v === 'Original') return tiers.includes('Original') || product.tier === 'Original' || product.collections?.includes('originals')
+        return tiers.includes(v)
       })
     case 'family':
       return value.includes(product.family)

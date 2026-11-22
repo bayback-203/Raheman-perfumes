@@ -47,6 +47,17 @@ export const TIERS = {
     border: 'border-amber-700/25',
     solid: 'bg-amber-800 text-white',
   },
+  Celebrity: {
+    id: 'Celebrity',
+    label: 'Celebrities Perfumes',
+    tagline: 'Celebrity Edition',
+    description:
+      'Iconic fragrances worn and inspired by world-famous celebrities and style icons.',
+    text: 'text-purple-800',
+    surface: 'bg-purple-50',
+    border: 'border-purple-700/25',
+    solid: 'bg-purple-800 text-white',
+  },
   Combo: {
     id: 'Combo',
     label: 'Combo Sets',

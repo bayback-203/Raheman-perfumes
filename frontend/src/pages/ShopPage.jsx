@@ -20,19 +20,16 @@ const COLLECTION_RULES = {
   attar: { filters: { tier: ['Attar'] }, title: 'Pure Attars & Oils' },
   attars: { filters: { tier: ['Attar'] }, title: 'Pure Attars & Oils' },
   celebrities: {
-    filters: {},
+    filters: { tier: ['Celebrity'] },
     title: 'Celebrities Perfumes',
-    occasionKeywords: ['celebrity', 'celebrities', 'iconic', 'star', 'vip', 'luxury', 'signature', 'famous', 'bestseller', 'exclusive'],
   },
   celebrity: {
-    filters: {},
+    filters: { tier: ['Celebrity'] },
     title: 'Celebrities Perfumes',
-    occasionKeywords: ['celebrity', 'celebrities', 'iconic', 'star', 'vip', 'luxury', 'signature', 'famous', 'bestseller', 'exclusive'],
   },
   'celebrity-perfumes': {
-    filters: {},
+    filters: { tier: ['Celebrity'] },
     title: 'Celebrities Perfumes',
-    occasionKeywords: ['celebrity', 'celebrities', 'iconic', 'star', 'vip', 'luxury', 'signature', 'famous', 'bestseller', 'exclusive'],
   },
   combo: { filters: { tier: ['Combo'] }, title: 'Combos & Gift Sets' },
   combos: { filters: { tier: ['Combo'] }, title: 'Combos & Gift Sets' },
@@ -242,6 +239,7 @@ export function OriginalPerfumesPage() {
     <>
       <ShopBanner
         title="Original Branded Perfumes"
+        collection="originals"
       />
 
       <CatalogueView
@@ -268,6 +266,7 @@ export function InspiredMixingPage() {
     <>
       <ShopBanner
         title="Inspired Blends & Mixing Perfumes"
+        collection="inspired"
       />
 
       <CatalogueView

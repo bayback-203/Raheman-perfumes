@@ -48,16 +48,28 @@ export function ShopBanner({ collection, title, eyebrow, imageOverride }) {
       active: collection === 'best-sellers' || collection === 'bestsellers' || collection === 'bestseller',
     },
     {
-      label: 'New Arrivals',
-      to: '/shop/new-arrivals',
+      label: 'Originals',
+      to: '/shop/originals',
+      icon: 'award',
+      active: collection === 'originals' || collection === 'original',
+    },
+    {
+      label: 'Inspired',
+      to: '/shop/inspired',
       icon: 'sparkle',
-      active: collection === 'new-arrivals' || collection === 'new' || sort === 'newest',
+      active: collection === 'inspired',
     },
     {
       label: 'Pure Attars',
       to: '/shop/attars',
       icon: 'sparkle',
       active: collection === 'attars' || collection === 'attar',
+    },
+    {
+      label: 'Celebrities',
+      to: '/shop/celebrities',
+      icon: 'star',
+      active: collection === 'celebrities' || collection === 'celebrity' || collection === 'celebrity-perfumes',
     },
     {
       label: 'Combos',
@@ -70,6 +82,12 @@ export function ShopBanner({ collection, title, eyebrow, imageOverride }) {
       to: '/shop/bakhoor',
       icon: 'flame',
       active: collection === 'bakhoor',
+    },
+    {
+      label: 'New Arrivals',
+      to: '/shop/new-arrivals',
+      icon: 'sparkle',
+      active: collection === 'new-arrivals' || collection === 'new' || sort === 'newest',
     },
   ]
 
