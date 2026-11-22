@@ -227,11 +227,11 @@ export const SHIPPING_METHODS = [
   {
     id: 'standard',
     name: 'Standard Courier Delivery',
-    description: 'Free safe delivery with bubble wrap packing.',
+    description: 'Safe delivery with tamper-proof protective packing.',
     carrier: 'Delhivery / Bluedart Surface',
-    price: 0,
+    price: 15,
     eta: '4–6 working days',
-    tag: 'FREE',
+    tag: 'STANDARD',
   },
   {
     id: 'express',
@@ -274,7 +274,7 @@ export const HOME_FAQ = [
     id: 'shipping',
     question: 'Do you deliver across India?',
     answer:
-      'Yes \u2014 we deliver to every working pin code in India. Free shipping is available across India with express delivery at checkout. Perfumes travel safely in sealed bubble packaging by road or air.',
+      'Yes — we deliver to every serviceable pin code in India. Standard delivery is ₹15, with complimentary free delivery on orders above ₹999. Express air delivery is also available at checkout. Perfumes travel safely in 3-layer protective bubble packaging with a tamper-proof seal.',
   },
   {
     id: 'return-policy',

@@ -338,7 +338,7 @@ export const useCartStore = create(
     }),
     {
       name: 'rehman.cart',
-      storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(() => localStorage),
       // v2: the bundled coupon table is gone. A persisted code with no validated
       // rule behind it would price as nothing, so the stale pair is dropped
       // together — the shopper re-applies the code and the server re-decides.

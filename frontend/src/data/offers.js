@@ -85,7 +85,7 @@ export const OFFER_TERMS = [
   {
     id: 'dispatch',
     title: 'Delivery Times & Safe Packing',
-    body: 'Free standard delivery on qualifying orders (usually 4–6 working days). Fast air delivery is available at checkout. Every order comes with a tamper-proof seal.',
+    body: 'Standard delivery is ₹15, with complimentary free delivery on orders above ₹999 (typically 4–6 working days). Fast air delivery is available at checkout. Every order comes with a tamper-proof seal.',
   },
 ]
 

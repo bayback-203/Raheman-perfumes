@@ -328,80 +328,98 @@ export function OrderTrackingPage() {
                 </p>
                 <p className="text-brand-muted">
                   Total Items:{' '}
-                  <span className="font-medium text-brand-charcoal">{totalItemCount}</span>
+                  <span className="font-medium text-brand-charcoal">{totalItemCount || tracking.itemCount || 1}</span>
                 </p>
               </div>
 
               {/* Column 2: Ship To & Payment Information */}
-              <div className="space-y-4 text-brand-charcoal">
-                <div>
-                  <p className="font-bold text-brand-charcoal">Ship To</p>
-                  <p className="mt-1 font-semibold text-brand-charcoal">
-                    {tracking.destination?.name || tracking.consignee || 'Valued Customer'}
-                  </p>
-                  <p className="mt-0.5 leading-relaxed text-brand-muted">
-                    {tracking.destination?.line1}
-                    {tracking.destination?.line2 ? `, ${tracking.destination?.line2}` : ''}
-                    <br />
-                    {tracking.destination?.city}
-                    {tracking.destination?.state ? `, ${tracking.destination.state}` : ''}{' '}
-                    {tracking.destination?.pincode}
-                  </p>
-                  {tracking.destination?.phone && (
-                    <p className="mt-1 font-mono text-brand-muted">{tracking.destination.phone}</p>
-                  )}
-                </div>
-
-                <div>
-                  <p className="font-bold text-brand-charcoal">Payment Information</p>
-                  <div className="mt-1 flex items-center gap-2 text-brand-charcoal">
-                    <Icon name="credit-card" className="h-4 w-4 text-brand-goldDark" />
-                    <span className="font-medium">
-                      {tracking.payment?.method || 'Online Payment'}
-                    </span>
-                    <span className="text-brand-muted">·</span>
-                    <span className="font-semibold font-mono">
-                      {formatPrice(tracking.amounts?.total)}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Column 3: Order Summary */}
-              <div className="text-brand-charcoal">
-                <p className="font-bold text-brand-charcoal">Order Summary</p>
-                <div className="mt-2 space-y-1.5 border-t border-brand-border/40 pt-2 text-xs">
-                  <div className="flex items-center justify-between">
-                    <span className="text-brand-muted">Subtotal</span>
-                    <span className="tabular-nums font-medium">
-                      {formatPrice(tracking.amounts?.subtotal)}
-                    </span>
-                  </div>
-
-                  {tracking.amounts?.discount !== 0 && (
-                    <div className="flex items-center justify-between text-emerald-700">
-                      <span>Discount</span>
-                      <span className="tabular-nums font-medium">
-                        -{formatPrice(Math.abs(tracking.amounts?.discount))}
-                      </span>
+              {tracking.verified ? (
+                <>
+                  <div className="space-y-4 text-brand-charcoal">
+                    <div>
+                      <p className="font-bold text-brand-charcoal">Ship To</p>
+                      <p className="mt-1 font-semibold text-brand-charcoal">
+                        {tracking.destination?.name || tracking.consignee || 'Valued Customer'}
+                      </p>
+                      <p className="mt-0.5 leading-relaxed text-brand-muted">
+                        {tracking.destination?.line1}
+                        {tracking.destination?.line2 ? `, ${tracking.destination?.line2}` : ''}
+                        <br />
+                        {tracking.destination?.city}
+                        {tracking.destination?.state ? `, ${tracking.destination.state}` : ''}{' '}
+                        {tracking.destination?.pincode}
+                      </p>
+                      {tracking.destination?.phone && (
+                        <p className="mt-1 font-mono text-brand-muted">{tracking.destination.phone}</p>
+                      )}
                     </div>
-                  )}
 
-                  <div className="flex items-center justify-between">
-                    <span className="text-brand-muted">Shipping</span>
-                    <span className="tabular-nums font-medium">
-                      {tracking.amounts?.shipping === 0 ? 'FREE' : formatPrice(tracking.amounts?.shipping)}
-                    </span>
+                    <div>
+                      <p className="font-bold text-brand-charcoal">Payment Information</p>
+                      <div className="mt-1 flex items-center gap-2 text-brand-charcoal">
+                        <Icon name="credit-card" className="h-4 w-4 text-brand-goldDark" />
+                        <span className="font-medium">
+                          {tracking.payment?.method || 'Online Payment'}
+                        </span>
+                        {tracking.amounts?.total != null && (
+                          <>
+                            <span className="text-brand-muted">·</span>
+                            <span className="font-semibold font-mono">
+                              {formatPrice(tracking.amounts?.total)}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="flex items-center justify-between border-t border-brand-border/70 pt-2 text-sm font-bold text-brand-charcoal">
-                    <span>Total</span>
-                    <span className="tabular-nums text-base">
-                      {formatPrice(tracking.amounts?.total)}
-                    </span>
+                  {/* Column 3: Order Summary */}
+                  <div className="text-brand-charcoal">
+                    <p className="font-bold text-brand-charcoal">Order Summary</p>
+                    <div className="mt-2 space-y-1.5 border-t border-brand-border/40 pt-2 text-xs">
+                      <div className="flex items-center justify-between">
+                        <span className="text-brand-muted">Subtotal</span>
+                        <span className="tabular-nums font-medium">
+                          {formatPrice(tracking.amounts?.subtotal)}
+                        </span>
+                      </div>
+
+                      {tracking.amounts?.discount !== 0 && (
+                        <div className="flex items-center justify-between text-emerald-700">
+                          <span>Discount</span>
+                          <span className="tabular-nums font-medium">
+                            -{formatPrice(Math.abs(tracking.amounts?.discount))}
+                          </span>
+                        </div>
+                      )}
+
+                      <div className="flex items-center justify-between">
+                        <span className="text-brand-muted">Shipping</span>
+                        <span className="tabular-nums font-medium">
+                          {tracking.amounts?.shipping === 0 ? 'FREE' : formatPrice(tracking.amounts?.shipping)}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center justify-between border-t border-brand-border/70 pt-2 text-sm font-bold text-brand-charcoal">
+                        <span>Total</span>
+                        <span className="tabular-nums text-base">
+                          {formatPrice(tracking.amounts?.total)}
+                        </span>
+                      </div>
+                    </div>
                   </div>
+                </>
+              ) : (
+                <div className="sm:col-span-2 rounded-lg border border-neutral-200/80 bg-neutral-50/70 p-4 text-xs text-brand-muted flex flex-col justify-center">
+                  <div className="flex items-center gap-2 text-brand-charcoal font-semibold mb-1">
+                    <Icon name="shield" className="h-4 w-4 text-brand-goldDark" />
+                    <span>Customer Privacy Protected</span>
+                  </div>
+                  <p>
+                    Delivery destination, payment method, order total, and item breakdown are masked for guest searches. Enter your verified mobile number above to unlock full details and invoice.
+                  </p>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* ──────────────── THE SHIPMENT / TRACKING CARD ──────────────── */}
@@ -645,6 +663,7 @@ export function OrderTrackingPage() {
 
               {/* Package Products Table (B&H Style) */}
               <div className="p-6">
+                {tracking.verified && tracking.items?.length > 0 ? (
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs">
                     <thead>
@@ -740,6 +759,15 @@ export function OrderTrackingPage() {
                     </tbody>
                   </table>
                 </div>
+                ) : (
+                  <div className="rounded-lg border border-dashed border-brand-border bg-neutral-50/50 p-6 text-center">
+                    <Icon name="lock" className="mx-auto h-5 w-5 text-brand-goldDark" />
+                    <p className="mt-2 text-xs font-semibold text-brand-charcoal">Fragrance Items Protected</p>
+                    <p className="mt-1 text-[11px] text-brand-muted">
+                      Verify the mobile number linked with this order above to view products and access invoice.
+                    </p>
+                  </div>
+                )}
 
                 {/* Free Inclusions Banner if any */}
                 {tracking.inclusions?.length > 0 && (

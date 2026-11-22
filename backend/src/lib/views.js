@@ -557,6 +557,7 @@ function maskPhone(phone) {
 }
 
 export function publicTracking(doc, { verified = false } = {}) {
+  const isVerified = Boolean(verified)
   const events = [...(doc.shipmentEvents ?? [])].sort((a, b) => new Date(a.at) - new Date(b.at))
   const stage = doc.status === 'Cancelled' ? -1 : TIMELINE_STAGES.length - 1 - [...TIMELINE_STAGES].reverse().indexOf(stageNameFor(doc.status))
 
@@ -603,7 +604,9 @@ export function publicTracking(doc, { verified = false } = {}) {
       synthetic.push({
         id: 'cp-delivered',
         title: 'Delivered',
-        description: `Delivered to ${doc.address?.name || 'Customer'}${doc.address?.city ? ` in ${doc.address.city}` : ''}. Tamper-evident seal intact.`,
+        description: isVerified
+          ? `Delivered to ${doc.address?.name || 'Customer'}${doc.address?.city ? ` in ${doc.address.city}` : ''}. Tamper-evident seal intact.`
+          : 'Delivered to recipient with tamper-evident seal intact.',
         timestamp: istStamp(updatedDate),
       })
       synthetic.push({
@@ -662,8 +665,6 @@ export function publicTracking(doc, { verified = false } = {}) {
     checkpoints = synthetic
   }
 
-  const isVerified = Boolean(verified)
-
   const destination = isVerified
     ? {
         name: doc.address?.name ?? '',
@@ -676,24 +677,14 @@ export function publicTracking(doc, { verified = false } = {}) {
         pincode: doc.address?.pincode ?? '',
         phone: doc.address?.phone ?? '',
       }
-    : {
-        name: maskName(doc.address?.name),
-        line1: '•••••••• (Enter mobile number to view address)',
-        line2: '',
-        area: '',
-        city: doc.address?.city ?? '',
-        district: doc.address?.district ?? '',
-        state: doc.address?.state ?? '',
-        pincode: doc.address?.pincode ? `••${String(doc.address.pincode).slice(-4)}` : '',
-        phone: maskPhone(doc.address?.phone),
-      }
+    : null
 
   return {
     orderId: doc.number,
     verified: isVerified,
     placedAt: doc.placedAt,
     placedLabel: istLabel(doc.placedAt),
-    consignee: isVerified ? (doc.address?.name ?? '') : maskName(doc.address?.name),
+    consignee: isVerified ? (doc.address?.name ?? '') : 'Customer',
     status: shopperStatus(doc),
     stage: stage + 1,
     totalStages: TIMELINE_STAGES.length,
@@ -704,34 +695,41 @@ export function publicTracking(doc, { verified = false } = {}) {
     transitNote: doc.tracking?.transitNote ?? '',
     sealNote: doc.tracking?.sealNote ?? '',
     destination,
-    payment: {
-      method: doc.payment?.method ?? '',
-      txnRef: isVerified ? (doc.payment?.txnRef ?? '') : '••••••••',
-      status: doc.payment?.status === 'Paid' ? 'Prepaid' : (doc.payment?.status ?? ''),
-    },
+    payment: isVerified
+      ? {
+          method: doc.payment?.method ?? '',
+          txnRef: doc.payment?.txnRef ?? '',
+          status: doc.payment?.status === 'Paid' ? 'Prepaid' : (doc.payment?.status ?? ''),
+        }
+      : null,
     refundStatus: doc.refund?.status ?? 'None',
     // Negative, as the tracking page renders it against the subtotal.
-    amounts: {
-      subtotal: doc.pricing?.subtotal ?? 0,
-      discount: -(doc.pricing?.discount ?? 0),
-      shipping: doc.pricing?.shipping ?? 0,
-      total: doc.pricing?.total ?? 0,
-    },
-    items: (doc.items ?? []).map((item) => ({
-      id: String(item._id),
-      slug: item.slug,
-      name: item.name,
-      image: item.image ?? '',
-      kind: 'Fragrance',
-      volume: item.volume,
-      qty: item.qty,
-      price: item.unitPrice,
-      meta: item.meta,
-      note: item.note,
-    })),
+    amounts: isVerified
+      ? {
+          subtotal: doc.pricing?.subtotal ?? 0,
+          discount: -(doc.pricing?.discount ?? 0),
+          shipping: doc.pricing?.shipping ?? 0,
+          total: doc.pricing?.total ?? 0,
+        }
+      : null,
+    itemCount: (doc.items ?? []).reduce((sum, item) => sum + (Number(item.qty) || 1), 0),
+    items: isVerified
+      ? (doc.items ?? []).map((item) => ({
+          id: String(item._id),
+          slug: item.slug,
+          name: item.name,
+          image: item.image ?? '',
+          kind: 'Fragrance',
+          volume: item.volume,
+          qty: item.qty,
+          price: item.unitPrice,
+          meta: item.meta,
+          note: item.note,
+        }))
+      : [],
     timeline,
     checkpoints,
-    inclusions: doc.inclusions ?? [],
+    inclusions: isVerified ? (doc.inclusions ?? []) : [],
   }
 }
 
