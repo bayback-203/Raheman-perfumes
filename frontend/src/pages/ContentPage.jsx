@@ -70,27 +70,108 @@ const PAGES = {
 
   'return-refund': {
     eyebrow: 'Customer Care',
-    title: 'No Return Policy',
+    title: 'Return, Refund & Cancellation Policy',
     subtitle:
-      'All sales are strictly final once packed or delivered. Please review your order details carefully before checkout.',
-    updated: '2026-11-17',
+      'At Raheman Perfumes, we are dedicated to crafting an exceptional luxury fragrance experience. Please review our policies regarding product hygiene, transit damage claims, refunds, and order cancellations.',
+    updated: '2026-11-24',
     sections: [
       {
-        kind: 'prose',
-        heading: 'Strict No Return, No Exchange & No Replacement Policy',
-        body: [
-          'Raheman Perfumes maintains a strict No Return, No Exchange, and No Replacement Policy on all products once an order is packed or delivered.',
-          'Perfumes, concentrated perfume oils, and pure attars are personal care products. Once an order is packed, dispatched, or delivered, it cannot be returned, exchanged, replaced, or refunded under any circumstances.',
-          'Please review product descriptions, fragrance notes, bottle sizes, and shipping details carefully prior to placing your order. All purchases are final.',
+        kind: 'cards',
+        items: [
+          {
+            icon: 'clock',
+            title: 'Report Within 24 Hours',
+            body: 'In the rare case of transit damage, broken flacons, leakage, or defective items, report to our team within 24 hours of delivery.',
+          },
+          {
+            icon: 'shield',
+            title: 'Unboxing Video Required',
+            body: 'To claim a refund or replacement for damaged, broken, or leaked goods, an uncut unboxing video showing outer packaging is mandatory.',
+          },
+          {
+            icon: 'phone',
+            title: 'Dedicated Customer Care',
+            body: 'Reach us via WhatsApp at +91 98201 12345 or email atelier@rahemanperfumes.in for prompt resolution within 3–4 business days.',
+          },
         ],
       },
       {
         kind: 'prose',
-        heading: 'Order Cancellation (Before Packing Only)',
+        heading: 'Return & Hygiene Policy',
         body: [
-          'You can cancel an order ONLY while it is in Confirmed / Processing status — before our fulfillment team packs the parcel. To cancel, go to My Account → Orders and click Cancel Order.',
-          'Once your parcel is marked as Packed or Shipped, cancellation is permanently locked and the order cannot be cancelled, recalled, returned, or refunded.',
-          'For prepaid orders (UPI / Card / Net Banking / Razorpay) cancelled before packing, enter your UPI ID during cancellation. The Shop Owner will verify and manually transfer your refund to your UPI ID within 2–3 working days.',
+          'We want you to enjoy the timeless essence of our fragrances. Due to personal hygiene reasons and the nature of fine perfumery products, we do not accept returns or exchanges once a product has been delivered, opened, unsealed, or used.',
+          'Perfumes, concentrated perfume oils, and pure attars are personal care items. If you receive a product that is damaged, broken, leaking, or incorrectly shipped, you are fully entitled to an immediate replacement or refund subject to the verification terms below.',
+          'Product Sensitivities & Patch Test: Our artisanal perfumes contain pure French oils, natural botanical extracts, and up to 40% oil concentrations. While formulated to the highest international quality standards, individual skin chemistry and sensitivities vary. We are not responsible for reactions caused by sensitivities to specific fragrance ingredients. Please conduct a skin patch test before full use. We do not accept returns or process refunds based on personal scent preferences or skin allergies.',
+        ],
+      },
+      {
+        kind: 'steps',
+        heading: 'How to Claim for Damaged, Broken, or Leaked Goods',
+        items: [
+          {
+            title: 'Refuse Damaged Outer Parcels on Delivery',
+            body: 'If the courier parcel arrives visibly crushed, tampered with, or leaking upon delivery, please refuse the package immediately from the courier partner and notify our team.',
+          },
+          {
+            title: 'Record an Uncut Unboxing Video',
+            body: 'To claim a replacement or refund for damaged, cracked, leaking flacons or missing items, you must provide a continuous, uncut unboxing video showing the outer shipping label, sealed carton, and the product in its original packaging as unboxed.',
+          },
+          {
+            title: 'Contact Customer Care Within 24 Hours',
+            body: 'Reach out to our Customer Care team at atelier@rahemanperfumes.in or WhatsApp +91 98201 12345 within 24 hours of delivery with subject line "Refund/Damage Claim for Order [Order Number]" attaching your unboxing video and photos.',
+          },
+          {
+            title: 'Verification & Resolution Within 3–4 Days',
+            body: 'Our verification team will inspect your claim within 3–4 working days. Once accepted, a complimentary replacement flacon will be dispatched or a full refund initiated.',
+          },
+        ],
+      },
+      {
+        kind: 'prose',
+        heading: 'Non-Delivery Issues',
+        body: [
+          'If your tracking status is updated to "Delivered" but you have not received your parcel, you must notify our Customer Care team within 48 hours of the delivery status update. Claims reported after 48 hours will not be eligible for courier investigation or refund.',
+          'Upon notification, our internal logistics desk will launch a priority courier investigation with the carrier partner (Delhivery, Bluedart, etc.). You will receive a formal resolution within 3–4 working days.',
+        ],
+      },
+      {
+        kind: 'table',
+        heading: 'Refund Timelines & Payment Methods',
+        columns: ['Claim / Order Scenario', 'Eligibility Requirement', 'Verification Time', 'Refund Processing Timeline'],
+        rows: [
+          [
+            'Prepaid Order Cancelled Before Packing',
+            'Cancelled via My Account before warehouse packing begins',
+            'Immediate',
+            '4–5 business days to original payment method',
+          ],
+          [
+            'Damaged, Leaked, or Defective Item',
+            'Unboxing video reported within 24 hours of delivery',
+            '3–4 business days',
+            '5–6 business days (Original card/UPI or replacement)',
+          ],
+          [
+            'Cash on Delivery (COD) Approved Refund',
+            'Verified damage/defect claim on COD delivery',
+            '3–4 business days',
+            '5–6 business days to your provided Bank Account (NEFT/IMPS) or UPI',
+          ],
+          [
+            'Courier Non-Delivery Investigation',
+            'Reported within 48 hours of marked delivery',
+            '3–4 business days',
+            '100% full refund to original payment source upon courier confirmation',
+          ],
+        ],
+      },
+      {
+        kind: 'prose',
+        heading: 'Order Cancellation Policy',
+        body: [
+          'Before Dispatch: You may cancel your order at any time before it is packed and dispatched from our atelier warehouse. For prepaid orders (UPI, Credit/Debit Card, Net Banking), a 100% full refund will be initiated to your original payment method within 4–5 business days.',
+          'After Dispatch: Once an order has been packed and handed to our courier partner with an assigned tracking AWB, it is in transit and cannot be cancelled or recalled en route. However, you may refuse to accept the delivery at your doorstep. Once the returned parcel reaches our facility and passes basic quality checks, the applicable refund will be processed to the original payment method.',
+          'How to Cancel: Visit My Account → Orders to cancel orders in Processing status, or WhatsApp our concierge team at +91 98201 12345 with your order number.',
         ],
       },
       {
@@ -98,16 +179,24 @@ const PAGES = {
         heading: 'Frequently Asked Questions',
         items: [
           {
-            title: 'Can I return, exchange, or replace a perfume after delivery?',
-            body: 'No. All sales are strictly final once packed or delivered. We do not offer returns, exchanges, replacements, or refunds under any circumstances.',
+            title: 'Can I return or exchange a perfume if I do not like the smell?',
+            body: 'No. Due to hygiene, safety regulations, and the intimate nature of personal fragrances, we do not accept returns or exchanges for opened, used, or delivered bottles based on personal scent preference. We recommend reviewing the detailed note breakdown on the product page or trying 12ml/30ml travel sizes first.',
           },
           {
-            title: 'Can I cancel my order before it ships?',
-            body: 'Yes, you can cancel your order from My Account as long as it is in Confirmed or Processing status before parcel packing begins. Once packed or shipped, cancellation is permanently closed.',
+            title: 'Why is an uncut unboxing video mandatory for damage claims?',
+            body: 'Fine glass flacons and concentrated perfume oils require strict transit verification to ensure issues are resolved fairly and quickly with our shipping carriers. An uncut video clearly displaying the shipping label and unboxing guarantees immediate approval for replacement or refund.',
           },
           {
-            title: 'How do I receive a refund if I cancel an order before packing?',
-            body: 'For prepaid orders cancelled before packing, provide your UPI ID in the cancellation modal. The Shop Owner reviews and transfers the refund directly to your UPI ID within 2–3 working days.',
+            title: 'How long do refunds take to reflect in my account?',
+            body: 'Once a refund is approved by our team, prepaid refunds (Credit/Debit Card, Net Banking, UPI) typically reflect in your account within 5–6 business days. For COD orders, refunds are credited directly to your shared Bank Account via IMPS/NEFT or UPI within 5–6 working days.',
+          },
+          {
+            title: 'What should I do if my tracking status says "Delivered" but I never got it?',
+            body: 'Please contact our Customer Care within 48 hours of the delivery notification. We will open an escalation ticket with the courier service to trace GPS coordinates and delivery proof, providing a resolution within 3–4 working days.',
+          },
+          {
+            title: 'Can I cancel an order after it has been shipped?',
+            body: 'Orders in transit cannot be recalled. If you no longer need the package, simply refuse the delivery when the courier partner attempts handover. Once returned to our warehouse, your refund will be initiated.',
           },
         ],
       },
@@ -867,7 +956,7 @@ export function ContentPage() {
             </Link>
             ,{' '}
             <Link to="/pages/return-refund" className="link-underline text-brand-goldDark">
-              No Return Policy
+              Return & Refund Policy
             </Link>{' '}
             and{' '}
             <Link to="/pages/faqs" className="link-underline text-brand-goldDark">

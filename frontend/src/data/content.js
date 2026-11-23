@@ -71,7 +71,7 @@ export const FOOTER_COLUMNS = [
     links: [
       { label: 'Track Order', to: '/track-order' },
       { label: 'Shipping Policy', to: '/pages/shipping-policy' },
-      { label: 'No Return Policy', to: '/pages/return-refund' },
+      { label: 'Return & Refund Policy', to: '/pages/return-refund' },
       { label: 'Fragrance FAQs', to: '/pages/faqs' },
       { label: 'Bottle Size Guide', to: '/pages/size-guide' },
       { label: 'Contact Us', to: '/pages/contact' },
@@ -281,9 +281,9 @@ export const HOME_FAQ = [
   },
   {
     id: 'return-policy',
-    question: 'What is your return and exchange policy?',
+    question: 'What is your return, refund and cancellation policy?',
     answer:
-      'All sales are strictly final. We follow a firm No Return, No Exchange, and No Replacement Policy once an order is packed or delivered.',
+      'Due to personal hygiene reasons and health safety, delivered, opened or used perfumes cannot be returned or exchanged. However, in the rare case of transit damage, broken flacons, or leakage reported within 24 hours with an unboxing video, we provide an immediate complimentary replacement or full refund within 5–6 business days. Orders may also be cancelled before warehouse dispatch.',
   },
 ]
 

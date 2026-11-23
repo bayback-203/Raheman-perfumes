@@ -446,7 +446,7 @@ function OrdersTab() {
                       <span className="ml-auto text-body-sm text-brand-muted">
                         Parcel is packed — cancellation is locked.{' '}
                         <Link to="/pages/return-refund" className="link-underline text-brand-goldDark">
-                          No Return Policy
+                          Return & Refund Policy
                         </Link>
                       </span>
                     ) : null}
