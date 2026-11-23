@@ -24,11 +24,13 @@ const DEFAULT_SHOWCASE = {
   showMultiBottleOffers: true,
   showCombos: true,
   showCelebrities: true,
+  showCarPerfumes: true,
   offerProductIds: [],
   bestsellerProductIds: [],
   homeDealProductIds: [],
   comboProductIds: [],
   celebrityProductIds: [],
+  carPerfumeProductIds: [],
 }
 
 const ACCESS_TOGGLES = [
@@ -86,6 +88,13 @@ const ACCESS_TOGGLES = [
     description: 'Control products appearing in the Celebrities Perfumes section.',
     icon: 'crown',
   },
+  {
+    key: 'showCarPerfumes',
+    listKey: 'carPerfumeProductIds',
+    label: 'Car Perfumes Page',
+    description: 'Control products appearing in the Car Perfumes section.',
+    icon: 'sparkle',
+  },
 ]
 
 const SHOWCASE_SECTIONS = [
@@ -137,6 +146,16 @@ const SHOWCASE_SECTIONS = [
       'Manually add and order products on the /shop/celebrities page. Products tagged with Collection "Celebrities Perfumes" in the product catalog also appear here automatically.',
     emptyTitle: 'No Celebrities Perfumes selected',
     emptyDescription: 'Pick products above to showcase them in Celebrities Perfumes, or tag products with Collection: Celebrities Perfumes in Products.',
+  },
+  {
+    key: 'carPerfumeProductIds',
+    toggleKey: 'showCarPerfumes',
+    inStockOnly: false,
+    title: 'Car Perfumes Page — Showcased Products',
+    description:
+      'Manually add and order products on the /shop/car-perfumes page. Products tagged with Collection "Car Perfumes" or Type "Car Perfume" in the product catalog also appear here automatically.',
+    emptyTitle: 'No Car Perfumes selected',
+    emptyDescription: 'Pick products above to showcase them in Car Perfumes, or tag products with Collection: Car Perfumes or Type: Car Perfume in Products.',
   },
 ]
 

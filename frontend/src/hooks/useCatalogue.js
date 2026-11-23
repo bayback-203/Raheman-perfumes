@@ -58,6 +58,16 @@ export function resolveProductTier(p) {
   ) {
     tiers.push('Celebrity')
   }
+  if (
+    p?.collections?.includes('car-perfumes') ||
+    p?.collections?.includes('car-perfume') ||
+    p?.collections?.includes('car') ||
+    /car/i.test(p?.category ?? '') ||
+    /car/i.test(p?.categoryName ?? '') ||
+    p?.tier === 'Car Perfume'
+  ) {
+    tiers.push('Car Perfume')
+  }
   if (p?.collections?.includes('combos')) tiers.push('Combo')
   if (p?.collections?.includes('attars') || /attar/i.test(p?.category ?? '')) tiers.push('Attar')
   if (p?.collections?.includes('inspired')) tiers.push('Inspired')
@@ -81,6 +91,17 @@ function matchesFilter(product, key, value) {
             product.collections?.includes('celebrity') ||
             /celebr/i.test(product.category ?? '') ||
             /celebr/i.test(product.categoryName ?? '')
+          )
+        }
+        if (v === 'Car Perfume' || v === 'car-perfumes' || v === 'car-perfume' || v === 'CarPerfume') {
+          return (
+            tiers.includes('Car Perfume') ||
+            product.tier === 'Car Perfume' ||
+            product.collections?.includes('car-perfumes') ||
+            product.collections?.includes('car-perfume') ||
+            product.collections?.includes('car') ||
+            /car/i.test(product.category ?? '') ||
+            /car/i.test(product.categoryName ?? '')
           )
         }
         if (v === 'Inspired') return tiers.includes('Inspired') || product.tier === 'Inspired' || product.collections?.includes('inspired')

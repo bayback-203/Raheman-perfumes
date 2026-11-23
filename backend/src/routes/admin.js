@@ -1100,11 +1100,13 @@ router.patch(
         showMultiBottleOffers: z.boolean().optional(),
         showCombos: z.boolean().optional(),
         showCelebrities: z.boolean().optional(),
+        showCarPerfumes: z.boolean().optional(),
         offerProductIds: showcaseIdList,
         bestsellerProductIds: showcaseIdList,
         homeDealProductIds: showcaseIdList,
         comboProductIds: showcaseIdList,
         celebrityProductIds: showcaseIdList,
+        carPerfumeProductIds: showcaseIdList,
       })
       .strip(),
   ),

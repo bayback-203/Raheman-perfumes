@@ -30,11 +30,13 @@ export const DEFAULT_SHOWCASE = {
   showMultiBottleOffers: false,
   showCombos: true,
   showCelebrities: true,
+  showCarPerfumes: true,
   offerProductIds: [],
   bestsellerProductIds: [],
   homeDealProductIds: [],
   comboProductIds: [],
   celebrityProductIds: [],
+  carPerfumeProductIds: [],
 }
 
 function normalizeShowcase(raw) {
@@ -49,11 +51,13 @@ function normalizeShowcase(raw) {
     showMultiBottleOffers: typeof raw.showMultiBottleOffers === 'boolean' ? raw.showMultiBottleOffers : false,
     showCombos: typeof raw.showCombos === 'boolean' ? raw.showCombos : true,
     showCelebrities: typeof raw.showCelebrities === 'boolean' ? raw.showCelebrities : true,
+    showCarPerfumes: typeof raw.showCarPerfumes === 'boolean' ? raw.showCarPerfumes : true,
     offerProductIds: list(raw.offerProductIds),
     bestsellerProductIds: list(raw.bestsellerProductIds),
     homeDealProductIds: list(raw.homeDealProductIds),
     comboProductIds: list(raw.comboProductIds),
     celebrityProductIds: list(raw.celebrityProductIds),
+    carPerfumeProductIds: list(raw.carPerfumeProductIds),
   }
 }
 
@@ -236,6 +240,26 @@ export function useCelebrities() {
           p.collections?.includes('celebrity') ||
           String(p.category ?? '').toLowerCase().includes('celebr') ||
           String(p.categoryName ?? '').toLowerCase().includes('celebr')) &&
+        !curatedIds.has(p.id || p._id),
+    )
+    return [...(curated ?? []), ...tagged]
+  }, [curated, products])
+}
+
+/** Products manually selected or marked as Car Perfumes. */
+export function useCarPerfumes() {
+  const curated = useShowcaseProducts('carPerfumeProductIds')
+  const products = useCatalogueProducts()
+  return useMemo(() => {
+    const curatedIds = new Set((curated ?? []).map((p) => p.id || p._id))
+    const tagged = (products ?? []).filter(
+      (p) =>
+        (p.tier === 'Car Perfume' ||
+          p.collections?.includes('car-perfumes') ||
+          p.collections?.includes('car-perfume') ||
+          p.collections?.includes('car') ||
+          String(p.category ?? '').toLowerCase().includes('car') ||
+          String(p.categoryName ?? '').toLowerCase().includes('car')) &&
         !curatedIds.has(p.id || p._id),
     )
     return [...(curated ?? []), ...tagged]

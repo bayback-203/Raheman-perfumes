@@ -16,6 +16,7 @@ export const TIER_CODE = {
   Attar: 'ATT',
   Combo: 'CMB',
   Bakhoor: 'BKH',
+  'Car Perfume': 'CAR',
 }
 
 /** Share of the selling price that goes on the cost of goods, per tier. */
@@ -26,6 +27,7 @@ export const TIER_COST_RATIO = {
   Attar: 0.4,
   Combo: 0.55,
   Bakhoor: 0.45,
+  'Car Perfume': 0.35,
 }
 
 /**
@@ -69,7 +71,7 @@ export const PRODUCT_STATUSES = ['Active', 'Draft', 'Archived']
  * one that has a page.
  */
 export const PRODUCT_COLLECTIONS = [
-  { group: 'Shop pages', slugs: ['originals', 'inspired', 'mixing', 'attars', 'combos', 'vault', 'best-sellers', 'celebrities'] },
+  { group: 'Shop pages', slugs: ['originals', 'inspired', 'mixing', 'attars', 'combos', 'vault', 'best-sellers', 'celebrities', 'car-perfumes'] },
   { group: 'Audience', slugs: ['men', 'women', 'unisex'] },
   { group: 'Scent families', slugs: ['fresh', 'floral', 'woody', 'oriental', 'oud', 'leather'] },
 ]
@@ -87,6 +89,7 @@ export const COLLECTION_LABELS = {
   vault: 'Special Offers (Vault)',
   'best-sellers': 'Best Sellers',
   celebrities: 'Celebrities Perfumes',
+  'car-perfumes': 'Car Perfumes',
   men: 'Perfume for Men',
   women: 'Perfume for Women',
   unisex: 'Unisex',

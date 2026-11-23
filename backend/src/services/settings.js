@@ -59,11 +59,13 @@ export const DEFAULT_SHOWCASE = {
   showMultiBottleOffers: false,
   showCombos: true,
   showCelebrities: true,
+  showCarPerfumes: true,
   offerProductIds: [],
   bestsellerProductIds: [],
   homeDealProductIds: [],
   comboProductIds: [],
   celebrityProductIds: [],
+  carPerfumeProductIds: [],
 }
 
 function normalizeIdList(values) {
@@ -144,11 +146,14 @@ export async function getShowcase() {
     showCombos: typeof stored.showCombos === 'boolean' ? stored.showCombos : DEFAULT_SHOWCASE.showCombos,
     showCelebrities:
       typeof stored.showCelebrities === 'boolean' ? stored.showCelebrities : DEFAULT_SHOWCASE.showCelebrities,
+    showCarPerfumes:
+      typeof stored.showCarPerfumes === 'boolean' ? stored.showCarPerfumes : DEFAULT_SHOWCASE.showCarPerfumes,
     offerProductIds: normalizeIdList(stored.offerProductIds),
     bestsellerProductIds: normalizeIdList(stored.bestsellerProductIds),
     homeDealProductIds: normalizeIdList(stored.homeDealProductIds),
     comboProductIds: normalizeIdList(stored.comboProductIds),
     celebrityProductIds: normalizeIdList(stored.celebrityProductIds),
+    carPerfumeProductIds: normalizeIdList(stored.carPerfumeProductIds),
   }
 }
 
@@ -179,6 +184,7 @@ export async function getPublicShowcase() {
       bestsellerProductIds: mergedBestsellerIds,
       comboProductIds: showcase.comboProductIds,
       celebrityProductIds: showcase.celebrityProductIds,
+      carPerfumeProductIds: showcase.carPerfumeProductIds,
     }
   }
 
@@ -194,6 +200,7 @@ export async function getPublicShowcase() {
     bestsellerProductIds: mergedBestsellerIds,
     comboProductIds: showcase.comboProductIds,
     celebrityProductIds: showcase.celebrityProductIds,
+    carPerfumeProductIds: showcase.carPerfumeProductIds,
     offerProductIds: showcase.offerProductIds.filter((id) => inStockSet.has(id)),
     homeDealProductIds: showcase.homeDealProductIds.filter((id) => inStockSet.has(id)),
   }
@@ -358,11 +365,12 @@ export async function updateShowcase(patch = {}) {
     'showMultiBottleOffers',
     'showCombos',
     'showCelebrities',
+    'showCarPerfumes',
   ]) {
     if (typeof patch[key] === 'boolean') next[key] = patch[key]
   }
 
-  for (const key of ['offerProductIds', 'bestsellerProductIds', 'homeDealProductIds', 'comboProductIds', 'celebrityProductIds']) {
+  for (const key of ['offerProductIds', 'bestsellerProductIds', 'homeDealProductIds', 'comboProductIds', 'celebrityProductIds', 'carPerfumeProductIds']) {
     if (Array.isArray(patch[key])) next[key] = normalizeIdList(patch[key])
   }
 

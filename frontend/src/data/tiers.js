@@ -58,6 +58,28 @@ export const TIERS = {
     border: 'border-purple-700/25',
     solid: 'bg-purple-800 text-white',
   },
+  'Car Perfume': {
+    id: 'Car Perfume',
+    label: 'Car Perfumes',
+    tagline: 'Car & Diffuser',
+    description:
+      'Long-lasting artisan hanging diffusers and car fragrances crafted for your automobile.',
+    text: 'text-sky-800',
+    surface: 'bg-sky-50',
+    border: 'border-sky-700/25',
+    solid: 'bg-sky-800 text-white',
+  },
+  CarPerfume: {
+    id: 'Car Perfume',
+    label: 'Car Perfumes',
+    tagline: 'Car & Diffuser',
+    description:
+      'Long-lasting artisan hanging diffusers and car fragrances crafted for your automobile.',
+    text: 'text-sky-800',
+    surface: 'bg-sky-50',
+    border: 'border-sky-700/25',
+    solid: 'bg-sky-800 text-white',
+  },
   Combo: {
     id: 'Combo',
     label: 'Combo Sets',

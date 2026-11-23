@@ -9,6 +9,9 @@ const BANNER_IMAGES = {
   celebrities: '/pillar-originals.jpg?v=4',
   celebrity: '/pillar-originals.jpg?v=4',
   'celebrity-perfumes': '/pillar-originals.jpg?v=4',
+  'car-perfumes': '/pillar-originals.jpg?v=4',
+  'car-perfume': '/pillar-originals.jpg?v=4',
+  car: '/pillar-originals.jpg?v=4',
   attars: '/pillar-attars.jpg?v=4',
   attar: '/pillar-attars.jpg?v=4',
   combos: '/pillar-combos.jpg?v=4',
@@ -70,6 +73,12 @@ export function ShopBanner({ collection, title, eyebrow, imageOverride }) {
       to: '/shop/celebrities',
       icon: 'star',
       active: collection === 'celebrities' || collection === 'celebrity' || collection === 'celebrity-perfumes',
+    },
+    {
+      label: 'Car Perfumes',
+      to: '/shop/car-perfumes',
+      icon: 'sparkle',
+      active: collection === 'car-perfumes' || collection === 'car-perfume' || collection === 'car',
     },
     {
       label: 'Combos',

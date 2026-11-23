@@ -8,6 +8,7 @@ import {
   useCatalogueProducts,
   useCategories,
   useCelebrities,
+  useCarPerfumes,
   useBestsellers,
   useCombos,
   useCatalogueLoading,
@@ -39,6 +40,21 @@ const COLLECTION_RULES = {
   'celebrity-perfumes': {
     filters: {},
     title: 'Celebrities Perfumes',
+    lockTier: true,
+  },
+  'car-perfumes': {
+    filters: {},
+    title: 'Car Perfumes',
+    lockTier: true,
+  },
+  'car-perfume': {
+    filters: {},
+    title: 'Car Perfumes',
+    lockTier: true,
+  },
+  car: {
+    filters: {},
+    title: 'Car Perfumes',
     lockTier: true,
   },
   combo: { filters: { tier: ['Combo'] }, title: 'Combos & Gift Sets' },
@@ -182,6 +198,7 @@ export function ShopPage() {
 function ShopCatalogue({ title, initialFilters, collection, activeNote, occasionKeywords, bannerOverride, lockTierOverride }) {
   const allProducts = useCatalogueProducts()
   const celebrityProducts = useCelebrities()
+  const carPerfumeProducts = useCarPerfumes()
   const bestsellers = useBestsellers()
   const combos = useCombos()
   const catalogueLoading = useCatalogueLoading()
@@ -189,6 +206,9 @@ function ShopCatalogue({ title, initialFilters, collection, activeNote, occasion
     if (activeNote) return filterByNote(allProducts, activeNote.keywords)
     if (collection === 'celebrities' || collection === 'celebrity' || collection === 'celebrity-perfumes') {
       return celebrityProducts
+    }
+    if (collection === 'car-perfumes' || collection === 'car-perfume' || collection === 'car') {
+      return carPerfumeProducts
     }
     if (collection === 'best-sellers' || collection === 'bestsellers' || collection === 'bestseller') {
       return bestsellers
@@ -201,7 +221,7 @@ function ShopCatalogue({ title, initialFilters, collection, activeNote, occasion
     }
     if (occasionKeywords) return filterByOccasion(allProducts, collection ?? '', occasionKeywords)
     return null
-  }, [allProducts, activeNote, collection, occasionKeywords, celebrityProducts, bestsellers, combos])
+  }, [allProducts, activeNote, collection, occasionKeywords, celebrityProducts, carPerfumeProducts, bestsellers, combos])
 
   // No `baseProducts` for normal pages so the hook reads the live catalogue
   // directly; note routes strictly match Top/Heart/Base notes with zero fallback.
