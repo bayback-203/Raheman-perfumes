@@ -81,7 +81,7 @@ export function clamp(value, min, max) {
 
 /** Free shipping threshold used across cart + checkout summaries. */
 export const FREE_SHIPPING_THRESHOLD = 999
-export const STANDARD_SHIPPING_FEE = 79
+export const STANDARD_SHIPPING_FEE = 15
 export const GIFT_WRAP_FEE = 149
 /** Loyalty: 1 point per order above ₹799; 10 points unlock Free 5ml Attar reward. */
 export const LOYALTY_ORDER_THRESHOLD = 799

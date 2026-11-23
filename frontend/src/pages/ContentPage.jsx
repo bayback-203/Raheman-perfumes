@@ -124,8 +124,8 @@ const PAGES = {
         kind: 'faq',
         heading: 'About Our Perfumes',
         items: [
-          { title: 'What is the difference between Original, Inspired and Mixed?', body: 'Original bottles are genuine branded perfumes bought directly from official distributors. Inspired perfumes are our own versions of famous designer scents, made at 30–35% oil strength. Mixed blends are our in-house custom layers of two or more scents.' },
-          { title: 'How long does a Raheman perfume last on skin?', body: 'Our own perfumes use 30–35% pure perfume oil instead of the usual 15–20%. Expect 8–12 hours on skin and even longer on clothes. One or two sprays are enough.' },
+          { title: 'What is the difference between Original, Inspired and Mixed?', body: 'Original bottles are genuine branded perfumes bought directly from official distributors. Inspired perfumes are our own versions of famous designer scents, made at up to 40% oil concentration. Mixed blends are our in-house custom layers of two or more scents.' },
+          { title: 'How long does a Raheman perfume last on skin?', body: 'Our own perfumes use up to 40% pure perfume oil concentration instead of the usual 15–20%. Expect 8–12 hours on skin and even longer on clothes. One or two sprays are enough.' },
           { title: 'What is an attar, and how is it different?', body: 'An attar is an alcohol-free oil perfume made with pure natural oils like sandalwood or jojoba. Apply a little with the glass stick instead of spraying — it stays warm and lasts for hours.' },
           { title: 'Will an Inspired blend smell like the original?', body: 'It smells very close right from the first spray because it uses matching scent oils. Slight differences can appear hours later since brands use locked formulas, but you get the same feel at a much better price.' },
         ],
@@ -172,7 +172,7 @@ const PAGES = {
         kind: 'prose',
         heading: 'Which Perfume Strength Should I Choose?',
         body: [
-          'Eau de Toilette (EDT) has 8–12% oil and feels light and fresh — good for hot days. Eau de Parfum (EDP) has 15–20% oil and lasts through a workday. Extrait de Parfum has 30–35% oil and is the strong level we use in most of our Inspired perfumes — just two sprays last from morning till night.',
+          'Eau de Toilette (EDT) has 8–12% oil and feels light and fresh — good for hot days. Eau de Parfum (EDP) has 15–20% oil and lasts through a workday. Extrait de Parfum has up to 40% oil concentration and is the ultra-long-lasting strength we use in our Inspired perfumes — just two sprays last from morning till night.',
           'If you are trying a strong oil perfume for the first time, start with 50ml since you need fewer sprays each day.',
         ],
       },

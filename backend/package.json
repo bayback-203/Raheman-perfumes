@@ -19,6 +19,7 @@
     "backfill:barcodes": "node scripts/backfill-barcodes.mjs"
   },
   "dependencies": {
+    "agentmail": "0.5.54",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.5.1",
     "cookie-parser": "^1.4.7",

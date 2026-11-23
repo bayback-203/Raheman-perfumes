@@ -34,8 +34,8 @@ export const SIZE_OPTIONS = ['6ml', '12ml', '30ml', '50ml', '100ml']
 /** Concentration tiers offered across the catalogue. */
 export const CONCENTRATIONS = [
   { id: 'Eau de Parfum', label: 'Eau de Parfum', oil: '18–25%' },
-  { id: 'Extrait de Parfum', label: 'Extrait de Parfum', oil: '30–35%' },
-  { id: 'Grand Extrait Intense', label: 'Grand Extrait Intense', oil: '38–40%' },
+  { id: 'Extrait de Parfum', label: 'Extrait de Parfum', oil: 'Up to 40%' },
+  { id: 'Grand Extrait Intense', label: 'Grand Extrait Intense', oil: 'Up to 40%' },
 ]
 
 export const SORT_OPTIONS = [

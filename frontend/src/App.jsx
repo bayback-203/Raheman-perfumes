@@ -112,12 +112,9 @@ export function App() {
    * that fragrance existed.
    */
   useEffect(() => {
+    useCartStore.getState().syncPricing?.()
     hydrateCatalogue().then(() => {
-      // The cart and the wishlist persist their lines, and a line keeps a
-      // snapshot of what was added. Rows saved before the photograph travelled
-      // with them — or added while this very fetch was still in flight — are
-      // given their picture now, from the list that has just arrived. Cosmetic
-      // only: nothing re-prices a line behind the shopper's back.
+      useCartStore.getState().syncPricing?.()
       useCartStore.getState().backfillImages()
       useWishlistStore.getState().backfillImages()
     })

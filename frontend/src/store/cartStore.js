@@ -244,7 +244,12 @@ export const useCartStore = create(
       },
 
       clearCart() {
-        set({ ...initialState })
+        set((state) => ({
+          ...initialState,
+          shippingFee: state.shippingFee,
+          freeShippingOver: state.freeShippingOver,
+          pricingSynced: state.pricingSynced,
+        }))
       },
 
       /**
@@ -351,12 +356,12 @@ export const useCartStore = create(
       partialize: (state) => ({
         items: state.items,
         couponCode: state.couponCode,
-        // A server coupon is plain data, so it round-trips through storage
-        // happily — and it has to, or a reload would leave the code applied
-        // with no rule to price it by.
         coupon: state.coupon,
         giftWrap: state.giftWrap,
         giftMessage: state.giftMessage,
+        shippingFee: state.shippingFee,
+        freeShippingOver: state.freeShippingOver,
+        pricingSynced: state.pricingSynced,
       }),
     },
   ),

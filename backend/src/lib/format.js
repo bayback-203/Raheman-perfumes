@@ -63,7 +63,7 @@ export const rupees = (value) => Math.round(Number(value) || 0)
  * a deploy.
  */
 export const FREE_SHIPPING_THRESHOLD = 999
-export const STANDARD_SHIPPING_FEE = 79
+export const STANDARD_SHIPPING_FEE = 15
 export const GIFT_WRAP_FEE = 149
 
 /** Loyalty: 1 point per order above ₹799; 10 points unlock Free 5ml Attar reward. */

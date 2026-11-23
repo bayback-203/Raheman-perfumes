@@ -3,7 +3,7 @@
 export const ANNOUNCEMENTS = [
   { id: 'shipping', text: 'Complimentary Free Delivery Available', icon: 'truck' },
   { id: 'authentic', text: '100% Authentic Originals', icon: 'shield' },
-  { id: 'oils', text: '30%+ French Oil Strength', icon: 'sparkle' },
+  { id: 'oils', text: 'Up to 40% Oil Concentration', icon: 'sparkle' },
   { id: 'secure', text: 'Secure Encrypted Payment', icon: 'lock' },
 ]
 
@@ -229,7 +229,7 @@ export const SHIPPING_METHODS = [
     name: 'Standard Courier Delivery',
     description: 'Safe delivery with tamper-proof protective packing.',
     carrier: 'Delhivery / Bluedart Surface',
-    price: 15,
+    price: 0,
     eta: '4–6 working days',
     tag: 'STANDARD',
   },
@@ -262,13 +262,13 @@ export const HOME_FAQ = [
     id: 'inspired',
     question: 'What exactly is an "inspired" fragrance?',
     answer:
-      'An inspired fragrance is our perfumers\u2019 own version of a famous scent, made from pure French oils at 30%+ strength. It is not a copy or a refill of the original \u2014 it is a new blend that smells very close to the one you already love, at a much lower price.',
+      'An inspired fragrance is our perfumers’ own version of a famous scent, made from pure French oils at up to 40% oil concentration. It is not a copy or a refill of the original — it is a new blend that smells very close to the one you already love, at a much lower price.',
   },
   {
     id: 'longevity',
     question: 'How long do the fragrances last?',
     answer:
-      'Our inspired and mixing perfumes are blended at 30%+ oil and last 10–12 hours on skin, longer on clothes. Original branded perfumes last as long as the brand says — we list the details on each product page.',
+      'Our inspired and mixing perfumes are blended with up to 40% oil concentration and last 10–12 hours on skin, longer on clothes. Original branded perfumes last as long as the brand says — we list the details on each product page.',
   },
   {
     id: 'shipping',

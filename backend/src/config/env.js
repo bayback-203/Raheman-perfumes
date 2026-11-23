@@ -138,7 +138,7 @@ export const config = {
     adminEmails: lowerList('GOOGLE_ADMIN_EMAILS'),
   },
   pricing: {
-    shippingFee: num('SHIPPING_FEE', 79),
+    shippingFee: num('SHIPPING_FEE', 15),
     freeShippingOver: num('FREE_SHIPPING_OVER', 999),
   },
   brevo: {

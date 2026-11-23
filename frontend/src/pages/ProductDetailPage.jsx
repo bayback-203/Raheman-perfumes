@@ -161,7 +161,7 @@ export function ProductDetailPage() {
         note: '4–6 working days across India',
       },
       { icon: 'shield', title: '100% Genuine & Authentic', note: 'Sourced directly from official suppliers' },
-      { icon: 'sparkle', title: '30%+ oil strength', note: 'Pure French oils & long lasting' },
+      { icon: 'sparkle', title: 'Up to 40% oil concentration', note: 'Pure French oils & long lasting' },
       { icon: 'shield', title: 'Tamper-proof seal', note: 'Safe 3-layer protective packaging' },
     ],
     [isFreeDeliveryAll, hasFreeShipping, freeShippingOver, shippingFee],
@@ -671,7 +671,7 @@ export function ProductDetailPage() {
               <p className="mt-5 text-body-md leading-relaxed text-brand-muted">
                 {product.tier === 'Original'
                   ? 'This is an authentic branded bottle, sourced directly through official distributors. We do not refill or reseal original bottles.'
-                  : 'Our perfumers recreate this scent from pure French oils at 30%+ strength — a unique blend that smells close to the one you already know.'}
+                  : 'Our perfumers recreate this scent from pure French oils at up to 40% oil concentration — a unique blend that smells close to the one you already know.'}
               </p>
             </div>
           )}
