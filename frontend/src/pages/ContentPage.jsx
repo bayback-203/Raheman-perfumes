@@ -65,6 +65,16 @@ const PAGES = {
           'We ship to the UAE, Singapore, the United Kingdom and the United States through a licensed freight partner. International orders carry a flat ₹2,499 freight charge, and any import duty or customs levy is payable by the recipient on arrival.',
         ],
       },
+      {
+        kind: 'faq',
+        heading: 'Shipping & Delivery FAQs',
+        items: [
+          {
+            title: 'Can I change my delivery address after placing an order?',
+            body: 'No. Once an order is confirmed, the delivery address cannot be changed because automated fulfillment and courier manifest booking begin immediately. If an address was entered incorrectly, please cancel the order from My Account while it is in Confirmed or Processing status and place a new order with the updated address.',
+          },
+        ],
+      },
     ],
   },
 
@@ -302,7 +312,7 @@ const PAGES = {
         heading: 'Before You Write',
         items: [
           { title: 'Where is my order?', body: 'Check the tracking page first — it shows live scan updates from the courier. If your parcel has not moved in 48 hours, message us and we will follow up directly.' },
-          { title: 'Can I change my delivery address?', body: 'Yes, as long as the parcel has not been picked up yet. Send the order number and the new address and we will update the delivery.' },
+          { title: 'Can I change my delivery address?', body: 'No. Once an order is confirmed, the delivery address cannot be changed because fulfillment processing and courier manifest booking begin immediately. Please verify your address carefully before placing your order. If you need to deliver to a different address, you can cancel your order from My Account while it is in Confirmed or Processing status and place a new order with the correct address.' },
           { title: 'Do you take bulk or corporate orders?', body: 'Yes. Wedding favours, corporate gifts and hotel amenities are available in minimum orders of 25 or more with custom labels. Write to us with quantities and a target date.' },
         ],
       },
