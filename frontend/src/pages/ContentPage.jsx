@@ -30,7 +30,7 @@ const PAGES = {
       {
         kind: 'cards',
         items: [
-          { icon: 'truck', image: '/promise-delivery.jpg', title: 'Standard Surface', body: 'Standard delivery at ₹15, with complimentary free delivery on orders above ₹999. Delivered safely in 4–6 working days.' },
+          { icon: 'truck', image: '/promise-delivery.jpg', title: 'Standard Surface', body: 'Standard surface delivery with complimentary shipping available on qualifying orders. Delivered safely in 4–6 working days.' },
           { icon: 'plane', image: '/studio.png', title: 'Express Air', body: '₹149 flat. Next-day metro delivery when ordered before 14:00 IST.' },
         ],
       },

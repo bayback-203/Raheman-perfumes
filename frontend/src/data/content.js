@@ -274,7 +274,7 @@ export const HOME_FAQ = [
     id: 'shipping',
     question: 'Do you deliver across India?',
     answer:
-      'Yes — we deliver to every serviceable pin code in India. Standard delivery is ₹15, with complimentary free delivery on orders above ₹999. Express air delivery is also available at checkout. Perfumes travel safely in 3-layer protective bubble packaging with a tamper-proof seal.',
+      'Yes — we deliver to every serviceable pin code in India. Standard delivery rates and complimentary free delivery options are applied live at checkout based on current store settings. Express air delivery is also available. Perfumes travel safely in 3-layer protective bubble packaging with a tamper-proof seal.',
   },
   {
     id: 'return-policy',
