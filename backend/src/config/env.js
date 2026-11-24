@@ -145,7 +145,7 @@ export const config = {
     apiKey: str('BREVO_API_KEY'),
     senderEmail: str('BREVO_SENDER_EMAIL'),
     senderName: str('BREVO_SENDER_NAME', 'Rehman Perfume'),
-    adminNotificationEmail: str('ADMIN_NOTIFICATION_EMAIL', 'pratikdash9938@gmail.com'),
+    adminNotificationEmail: str('ADMIN_NOTIFICATION_EMAIL', 'rahemanperfumes@gmail.com'),
   },
   keepAlive: {
     enabled: bool('KEEP_ALIVE_ENABLED', true),

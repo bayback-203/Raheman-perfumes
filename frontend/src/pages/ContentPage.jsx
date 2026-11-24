@@ -588,17 +588,85 @@ function ContactForm() {
   const [draft, setDraft] = useState({ name: '', email: '', order: '', topic: 'Order enquiry', message: '' })
   const [errors, setErrors] = useState({})
   const [submitting, setSubmitting] = useState(false)
-  const [sent, setSent] = useState(false)
+  const [sent, setSent] = useState(null) // null | 'whatsapp' | 'email' | 'web'
+  const [choiceOpen, setChoiceOpen] = useState(false)
 
-  const submit = async (event) => {
+  const handleFormSubmit = (event) => {
     event.preventDefault()
     const next = {}
-    if (!draft.name.trim()) next.name = 'Required.'
+    if (!draft.name.trim()) next.name = 'Please enter your name.'
     if (!EMAIL_PATTERN.test(draft.email)) next.email = 'Enter a valid email address.'
     if (draft.message.trim().length < 5) next.message = 'Tell us a little more so we can help properly.'
     setErrors(next)
     if (Object.keys(next).length > 0) return
 
+    // Open choice modal to ask user whether to send via WhatsApp or Email
+    setChoiceOpen(true)
+  }
+
+  const handleSendWhatsApp = () => {
+    // Log to backend in background
+    fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...draft, channel: 'whatsapp' }),
+    }).catch(() => {})
+
+    const text = [
+      `*New Message from Raheman Perfumes Contact Us*`,
+      ``,
+      `*Name:* ${draft.name}`,
+      `*Email:* ${draft.email}`,
+      `*Topic:* ${draft.topic}`,
+      draft.order ? `*Order ID:* ${draft.order}` : null,
+      ``,
+      `*Message:*`,
+      draft.message,
+    ]
+      .filter((line) => line !== null)
+      .join('\n')
+
+    const waUrl = `https://wa.me/917504468885?text=${encodeURIComponent(text)}`
+    window.open(waUrl, '_blank')
+    setChoiceOpen(false)
+    setSent('whatsapp')
+    toast({ title: 'Redirecting to WhatsApp', description: 'Your message and details have been prepared.' })
+  }
+
+  const handleSendEmail = () => {
+    // Log to backend in background
+    fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...draft, channel: 'email' }),
+    }).catch(() => {})
+
+    const subject = `[Raheman Perfumes Contact] ${draft.topic}: ${draft.name}${draft.order ? ` (Order #${draft.order})` : ''}`
+    const body = [
+      `Hello Raheman Perfumes,`,
+      ``,
+      `Name: ${draft.name}`,
+      `Email: ${draft.email}`,
+      `Topic: ${draft.topic}`,
+      draft.order ? `Order Number: ${draft.order}` : null,
+      ``,
+      `Message:`,
+      draft.message,
+      ``,
+      `---`,
+      `Sent from Raheman Perfumes Contact Form`,
+    ]
+      .filter((line) => line !== null)
+      .join('\n')
+
+    const mailtoUrl = `mailto:rahemanperfumes@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    window.location.href = mailtoUrl
+    setChoiceOpen(false)
+    setSent('email')
+    toast({ title: 'Opening Email Client', description: 'Your message has been addressed to rahemanperfumes@gmail.com.' })
+  }
+
+  const handleSendDirect = async () => {
     setSubmitting(true)
     try {
       const res = await fetch('/api/contact', {
@@ -610,7 +678,8 @@ function ContactForm() {
       if (!res.ok) {
         throw new Error(data.message || 'Failed to send message.')
       }
-      setSent(true)
+      setChoiceOpen(false)
+      setSent('web')
       toast({ title: 'Message sent', description: 'Our support team replies within one working day.' })
     } catch (err) {
       toast({
@@ -624,21 +693,29 @@ function ContactForm() {
   }
 
   if (sent) {
+    const channelNotice =
+      sent === 'whatsapp'
+        ? 'Your inquiry was prepared in WhatsApp (+91 75044 68885). Our perfumers will reply to you directly.'
+        : sent === 'email'
+        ? 'Your message was opened in your email client addressed to rahemanperfumes@gmail.com. We reply within one working day.'
+        : `Our team has received your message. Expect a reply at ${draft.email} within one working day.`
+
     return (
       <div className="card-surface flex flex-col items-center p-8 text-center">
         <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-cream text-brand-goldDark">
           <Icon name="check-circle" className="h-6 w-6" />
         </span>
-        <h3 className="mt-4 text-headline-sm font-semibold text-brand-charcoal">Thank you, {draft.name.split(' ')[0]}</h3>
+        <h3 className="mt-4 text-headline-sm font-semibold text-brand-charcoal">
+          Thank you, {draft.name.split(' ')[0]}
+        </h3>
         <p className="mt-2 max-w-md text-body-sm leading-relaxed text-brand-muted">
-          Our team has received your message. Expect a reply at{' '}
-          <span className="font-medium text-brand-charcoal">{draft.email}</span> within one working day.
+          {channelNotice}
         </p>
         <Button
           variant="outline"
           className="mt-6"
           onClick={() => {
-            setSent(false)
+            setSent(null)
             setDraft({ name: '', email: '', order: '', topic: 'Order enquiry', message: '' })
           }}
         >
@@ -649,55 +726,157 @@ function ContactForm() {
   }
 
   return (
-    <form onSubmit={submit} className="card-surface grid gap-4 p-6 sm:grid-cols-2">
-      <Input
-        label="Your name"
-        required
-        value={draft.name}
-        error={errors.name}
-        onChange={(event) => setDraft({ ...draft, name: event.target.value })}
-      />
-      <Input
-        label="Email"
-        type="email"
-        required
-        icon="mail"
-        value={draft.email}
-        error={errors.email}
-        onChange={(event) => setDraft({ ...draft, email: event.target.value })}
-      />
-      <Input
-        label="Order number (optional)"
-        placeholder="Enter order number (optional)"
-        value={draft.order}
-        onChange={(event) => setDraft({ ...draft, order: event.target.value.toUpperCase() })}
-      />
-      <Select
-        label="What is this about?"
-        options={['Order enquiry', 'Bulk & corporate gifting', 'General support', 'Something else']}
-        value={draft.topic}
-        onChange={(event) => setDraft({ ...draft, topic: event.target.value })}
-      />
-      <Textarea
-        containerClassName="sm:col-span-2"
-        label="Message"
-        required
-        rows={5}
-        value={draft.message}
-        error={errors.message}
-        placeholder="Tell us what happened, and what would put it right…"
-        onChange={(event) => setDraft({ ...draft, message: event.target.value.slice(0, 1200) })}
-      />
-      <div className="flex flex-wrap items-center justify-between gap-3 sm:col-span-2">
-        <p className="text-body-sm text-brand-muted">
-          We reply from a monitored inbox — no ticket numbers, no bots.
-        </p>
-        <Button type="submit" variant="primary" loading={submitting} disabled={submitting}>
-          <Icon name="mail" className="h-4 w-4" />
-          {submitting ? 'Sending…' : 'Send Message'}
-        </Button>
-      </div>
-    </form>
+    <>
+      <form onSubmit={handleFormSubmit} className="card-surface grid gap-4 p-6 sm:grid-cols-2">
+        <Input
+          label="Your name"
+          required
+          value={draft.name}
+          error={errors.name}
+          onChange={(event) => setDraft({ ...draft, name: event.target.value })}
+        />
+        <Input
+          label="Email"
+          type="email"
+          required
+          icon="mail"
+          value={draft.email}
+          error={errors.email}
+          onChange={(event) => setDraft({ ...draft, email: event.target.value })}
+        />
+        <Input
+          label="Order number (optional)"
+          placeholder="Enter order number (optional)"
+          value={draft.order}
+          onChange={(event) => setDraft({ ...draft, order: event.target.value.toUpperCase() })}
+        />
+        <Select
+          label="What is this about?"
+          options={['Order enquiry', 'Bulk & corporate gifting', 'General support', 'Something else']}
+          value={draft.topic}
+          onChange={(event) => setDraft({ ...draft, topic: event.target.value })}
+        />
+        <Textarea
+          containerClassName="sm:col-span-2"
+          label="Message"
+          required
+          rows={5}
+          value={draft.message}
+          error={errors.message}
+          placeholder="Tell us what happened, and what would put it right…"
+          onChange={(event) => setDraft({ ...draft, message: event.target.value.slice(0, 1200) })}
+        />
+        <div className="flex flex-wrap items-center justify-between gap-3 sm:col-span-2">
+          <p className="text-body-sm text-brand-muted">
+            Choose to send via WhatsApp (+91 75044 68885) or Email (rahemanperfumes@gmail.com).
+          </p>
+          <Button type="submit" variant="primary" loading={submitting} disabled={submitting}>
+            <Icon name="mail" className="h-4 w-4" />
+            Send Message
+          </Button>
+        </div>
+      </form>
+
+      {/* Choice Modal: Ask whether to send via WhatsApp or Email */}
+      <Modal
+        open={choiceOpen}
+        onClose={() => setChoiceOpen(false)}
+        title="How would you like to send this message?"
+        description="Choose your preferred channel below. Your note, order number, and contact info will be pre-filled automatically."
+        size="md"
+      >
+        <div className="flex flex-col gap-4">
+          {/* Note preview box */}
+          <div className="rounded-xl border border-brand-border/70 bg-brand-cream/30 p-3.5 text-xs text-brand-charcoal">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-brand-border/50 pb-2">
+              <span className="font-semibold">
+                {draft.name} <span className="font-normal text-brand-muted">({draft.email})</span>
+              </span>
+              <span className="rounded bg-brand-gold/15 px-2 py-0.5 text-[10px] font-bold text-brand-goldDark">
+                {draft.topic}
+              </span>
+            </div>
+            {draft.order && (
+              <p className="mt-1.5 font-medium text-brand-muted">
+                Order Reference: <span className="font-bold text-brand-charcoal">{draft.order}</span>
+              </p>
+            )}
+            <p className="mt-2 rounded border border-brand-border/60 bg-white p-2.5 italic text-brand-charcoal/90 line-clamp-3">
+              "{draft.message}"
+            </p>
+          </div>
+
+          {/* Action cards */}
+          <div className="grid gap-3 sm:grid-cols-2">
+            {/* WhatsApp Option */}
+            <button
+              type="button"
+              onClick={handleSendWhatsApp}
+              className="group flex flex-col justify-between rounded-xl border-2 border-emerald-500/40 bg-emerald-50/50 p-4 text-left transition hover:border-emerald-600 hover:bg-emerald-50 hover:shadow-md"
+            >
+              <div>
+                <div className="flex items-center justify-between">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-600 text-white shadow-sm transition group-hover:scale-105">
+                    <Icon name="whatsapp" className="h-5 w-5" />
+                  </span>
+                  <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800">
+                    Instant
+                  </span>
+                </div>
+                <h4 className="mt-3 text-body-md font-bold text-brand-charcoal group-hover:text-emerald-800">
+                  Send via WhatsApp
+                </h4>
+                <p className="mt-1 text-body-xs text-brand-muted">
+                  Opens WhatsApp (+91 75044 68885) with your note ready to send to our perfumers.
+                </p>
+              </div>
+              <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700">
+                Continue on WhatsApp <Icon name="arrow-right" className="h-3.5 w-3.5" />
+              </span>
+            </button>
+
+            {/* Email Option */}
+            <button
+              type="button"
+              onClick={handleSendEmail}
+              className="group flex flex-col justify-between rounded-xl border-2 border-brand-gold/40 bg-brand-cream/40 p-4 text-left transition hover:border-brand-gold hover:bg-brand-cream/80 hover:shadow-md"
+            >
+              <div>
+                <div className="flex items-center justify-between">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-charcoal text-brand-gold shadow-sm transition group-hover:scale-105">
+                    <Icon name="mail" className="h-5 w-5" />
+                  </span>
+                  <span className="rounded-full bg-brand-gold/20 px-2 py-0.5 text-[10px] font-bold text-brand-goldDark">
+                    Official
+                  </span>
+                </div>
+                <h4 className="mt-3 text-body-md font-bold text-brand-charcoal group-hover:text-brand-goldDark">
+                  Send via Email
+                </h4>
+                <p className="mt-1 text-body-xs text-brand-muted">
+                  Opens your mail app addressed to rahemanperfumes@gmail.com with your note formatted.
+                </p>
+              </div>
+              <span className="mt-4 inline-flex items-center gap-1.5 text-xs font-semibold text-brand-goldDark">
+                Open Email App <Icon name="arrow-right" className="h-3.5 w-3.5" />
+              </span>
+            </button>
+          </div>
+
+          {/* Web form fallback */}
+          <div className="border-t border-brand-border/60 pt-3 text-center">
+            <button
+              type="button"
+              onClick={handleSendDirect}
+              disabled={submitting}
+              className="text-xs text-brand-muted hover:text-brand-charcoal underline transition"
+            >
+              {submitting ? 'Submitting to website…' : 'Or send as a website message without opening an app'}
+            </button>
+          </div>
+        </div>
+      </Modal>
+    </>
   )
 }
 

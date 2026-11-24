@@ -240,7 +240,7 @@ router.post(
     const { name, email, phone, order, topic, message } = req.body
     const emailData = await buildContactMessageEmail({ name, email, phone, order, topic, message })
 
-    const adminEmail = config.brevo.adminNotificationEmail || config.brevo.senderEmail || 'pratikdash9938@gmail.com'
+    const adminEmail = config.brevo.adminNotificationEmail || config.brevo.senderEmail || 'rahemanperfumes@gmail.com'
 
     const result = await sendLoggedEmail({
       to: adminEmail,
