@@ -139,12 +139,21 @@ export function Header() {
               <Icon name="search" className="h-[18px] w-[18px]" strokeWidth={1.7} />
             </button>
 
-            <nav className="hidden items-center gap-6 lg:flex xl:gap-8" aria-label="Primary">
+            <nav className="hidden items-center gap-4 lg:flex xl:gap-7 2xl:gap-8" aria-label="Primary">
               {MAIN_NAV.map((item) => {
                 const hasChildren = Array.isArray(item.children) && item.children.length > 0
+                const isClaimedByOtherTopLevel =
+                  hasChildren &&
+                  MAIN_NAV.some(
+                    (other) =>
+                      other.id !== item.id &&
+                      (location.pathname === other.to ||
+                        (other.to !== '/' && location.pathname.startsWith(`${other.to}/`))),
+                  )
                 const active = hasChildren
-                  ? location.pathname === item.to ||
-                    item.children.some((child) => child.to !== '/shop' && location.pathname === child.to)
+                  ? !isClaimedByOtherTopLevel &&
+                    (location.pathname === item.to ||
+                      item.children.some((child) => child.to !== '/shop' && location.pathname === child.to))
                   : isActive(item.to)
 
                 if (!hasChildren) {
@@ -153,7 +162,7 @@ export function Header() {
                       key={item.id}
                       to={item.to}
                       className={cn(
-                        'relative whitespace-nowrap py-1 font-manrope text-label-sm font-semibold uppercase tracking-[0.14em] transition-colors',
+                        'relative whitespace-nowrap py-1 font-manrope text-label-sm font-semibold uppercase tracking-[0.11em] transition-colors xl:tracking-[0.14em]',
                         active ? 'text-brand-goldDark' : 'text-ink-variant hover:text-brand-charcoal',
                         item.accent === 'red' && !active && 'text-tier-original hover:text-tier-original',
                       )}
@@ -182,7 +191,7 @@ export function Header() {
                       to={item.to}
                       onClick={() => setOpenDropdown(null)}
                       className={cn(
-                        'relative inline-flex items-center gap-1.5 whitespace-nowrap py-1 font-manrope text-label-sm font-semibold uppercase tracking-[0.14em] transition-colors',
+                        'relative inline-flex items-center gap-1.5 whitespace-nowrap py-1 font-manrope text-label-sm font-semibold uppercase tracking-[0.11em] transition-colors xl:tracking-[0.14em]',
                         active || isOpen ? 'text-brand-goldDark' : 'text-ink-variant hover:text-brand-charcoal',
                       )}
                     >
