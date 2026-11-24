@@ -69,17 +69,6 @@ export const TIERS = {
     border: 'border-sky-700/25',
     solid: 'bg-sky-800 text-white',
   },
-  CarPerfume: {
-    id: 'Car Perfume',
-    label: 'Car Perfumes',
-    tagline: 'Car & Diffuser',
-    description:
-      'Long-lasting artisan hanging diffusers and car fragrances crafted for your automobile.',
-    text: 'text-sky-800',
-    surface: 'bg-sky-50',
-    border: 'border-sky-700/25',
-    solid: 'bg-sky-800 text-white',
-  },
   Combo: {
     id: 'Combo',
     label: 'Combo Sets',
@@ -104,6 +93,13 @@ export const TIERS = {
   },
 }
 
+// Non-enumerable alias so TIERS.CarPerfume continues to work without duplicating Object.values(TIERS)
+Object.defineProperty(TIERS, 'CarPerfume', {
+  value: TIERS['Car Perfume'],
+  enumerable: false,
+  configurable: true,
+})
+
 /** Extra merchandising flags that sit beside the tier badge. */
 export const FLAGS = {
   Bestseller: { label: 'Bestseller', className: 'bg-amber-600 text-white' },
@@ -112,8 +108,10 @@ export const FLAGS = {
   'Back in Stock': { label: 'Back in Stock', className: 'bg-emerald-700 text-white' },
 }
 
-export const TIER_LIST = Object.values(TIERS)
+export const TIER_LIST = Array.from(new Map(Object.values(TIERS).map((t) => [t.id, t])).values())
 
 export function getTier(id) {
+  if (!id) return TIERS.Original
+  if (id === 'CarPerfume' || id === 'car-perfume' || id === 'car-perfumes') return TIERS['Car Perfume']
   return TIERS[id] ?? TIERS.Original
 }
