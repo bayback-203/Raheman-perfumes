@@ -26,6 +26,8 @@
     @apply bg-white text-brand-charcoal antialiased;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     font-weight: 400;
+    font-size: 16.5px;
+    line-height: 1.6;
     overflow-x: hidden;
   }
 
@@ -101,12 +103,14 @@
     font-weight: 600;
   }
 
-  /* Product Descriptions: Inter 400 */
+  /* Product Descriptions: Inter 400, +20% size */
   .product-description,
   .product-tagline,
   .product-desc {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     font-weight: 400;
+    font-size: 1.12em;
+    line-height: 1.65;
   }
 
   /* Prices: Inter 600 */
@@ -120,7 +124,7 @@
     font-weight: 600;
   }
 
-  /* Instructions / Notes: Inter 400, +15% size */
+  /* Instructions / Notes: Inter 400, +20% size */
   .product-notes,
   .fragrance-notes,
   .notes-pyramid,
@@ -129,7 +133,7 @@
   .how-to-wear {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     font-weight: 400;
-    font-size: 1.15em;
+    font-size: 1.20em;
     line-height: 1.6;
   }
 

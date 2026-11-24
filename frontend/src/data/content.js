@@ -20,7 +20,6 @@ export const MAIN_NAV = [
       { id: 'inspired', label: 'Inspired Perfumes', to: '/shop/inspired' },
       { id: 'attars', label: 'Attar', to: '/shop/attars' },
       { id: 'celebrities', label: 'Celebrities Perfumes', to: '/shop/celebrities' },
-      { id: 'car-perfumes', label: 'Car Perfumes', to: '/shop/car-perfumes' },
       { id: 'combos', label: 'Gift Sets & Combos', to: '/combos' },
       { id: 'bakhoor', label: 'Bakhoor', to: '/shop/bakhoor' },
       { id: 'men', label: 'Perfume for Men', to: '/shop/men' },
@@ -44,7 +43,6 @@ export const MOBILE_NAV = [
   { id: 'inspired', label: 'Inspired Perfumes', to: '/shop/inspired' },
   { id: 'attars', label: 'Attar', to: '/shop/attars' },
   { id: 'celebrities', label: 'Celebrities Perfumes', to: '/shop/celebrities' },
-  { id: 'car-perfumes', label: 'Car Perfumes', to: '/shop/car-perfumes' },
   { id: 'bakhoor', label: 'Bakhoor', to: '/shop/bakhoor' },
   { id: 'offers', label: 'Offers', to: '/offers', accent: 'red' },
   { id: 'track', label: 'Track Order', to: '/track-order' },
@@ -64,7 +62,6 @@ export const FOOTER_COLUMNS = [
       { label: 'Inspired Perfumes', to: '/shop/inspired' },
       { label: 'Attar', to: '/shop/attars' },
       { label: 'Celebrities Perfumes', to: '/shop/celebrities' },
-      { label: 'Car Perfumes', to: '/shop/car-perfumes' },
       { label: 'Combo Sets', to: '/combos' },
       { label: 'Bakhoor', to: '/shop/bakhoor' },
     ],
@@ -75,7 +72,7 @@ export const FOOTER_COLUMNS = [
     links: [
       { label: 'Track Order', to: '/track-order' },
       { label: 'Shipping Policy', to: '/pages/shipping-policy' },
-      { label: 'Return & Refund Policy', to: '/pages/return-refund' },
+      { label: 'No Return Policy', to: '/pages/return-refund' },
       { label: 'Fragrance FAQs', to: '/pages/faqs' },
       { label: 'Bottle Size Guide', to: '/pages/size-guide' },
       { label: 'Contact Us', to: '/pages/contact' },
@@ -285,9 +282,9 @@ export const HOME_FAQ = [
   },
   {
     id: 'return-policy',
-    question: 'What is your return, refund and cancellation policy?',
+    question: 'What is your return and exchange policy?',
     answer:
-      'Due to personal hygiene reasons and health safety, delivered, opened or used perfumes cannot be returned or exchanged. However, in the rare case of transit damage, broken flacons, or leakage reported within 24 hours with an unboxing video, we provide an immediate complimentary replacement or full refund within 5–6 business days. Orders may also be cancelled before warehouse dispatch.',
+      'All sales are strictly final. We follow a firm No Return, No Exchange, and No Replacement Policy once an order is packed or delivered.',
   },
 ]
 

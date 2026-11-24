@@ -476,7 +476,7 @@ export function WhyShopWithUs() {
                 />
               </div>
               <div className="min-w-0">
-                <h3 className="text-xs font-semibold text-brand-charcoal sm:text-body-md">{item.title}</h3>
+                <h3 className="text-sm font-semibold text-brand-charcoal sm:text-body-md">{item.title}</h3>
                 <p className="mt-1 hidden text-body-sm leading-relaxed text-brand-muted sm:block">{item.description}</p>
               </div>
             </li>

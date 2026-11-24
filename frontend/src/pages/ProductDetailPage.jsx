@@ -40,7 +40,7 @@ function NotePyramid({ notes }) {
           <p className="mt-1 text-body-sm text-brand-muted">{row.blurb}</p>
           <ul className="mt-3 space-y-2">
             {row.values.map((note) => (
-              <li key={note} className="flex items-start gap-2.5 font-inter text-[15px] font-normal text-ink-variant sm:text-[16px]">
+              <li key={note} className="flex items-start gap-2.5 font-inter text-[17px] font-normal text-ink-variant sm:text-[18px]">
                 <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-gold" />
                 {note}
               </li>
@@ -265,7 +265,7 @@ export function ProductDetailPage() {
   return (
     <div className="pb-16">
       {/* Main */}
-      <section className="shell grid gap-6 py-5 sm:gap-8 sm:py-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start lg:gap-x-16 lg:gap-y-6 lg:pt-10">
+      <section className="shell grid gap-6 py-5 sm:gap-8 sm:py-8 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-start lg:gap-x-16 lg:gap-y-6 lg:pt-10">
         {/* Gallery */}
         <div className="lg:col-start-1 lg:row-start-1">
           <div
