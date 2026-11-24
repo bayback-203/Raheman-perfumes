@@ -9,6 +9,7 @@ import { Modal } from '@/components/ui/Modal'
 import { Input, Textarea, Select } from '@/components/ui/Form'
 import { toast } from '@/store/uiStore'
 import { useDocumentTitle } from '@/hooks/useDocumentTitle'
+import { api, API_ORIGIN } from '@/lib/api'
 import { NotFoundPage } from './NotFoundPage'
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -605,12 +606,10 @@ function ContactForm() {
   }
 
   const handleSendWhatsApp = () => {
-    // Log to backend in background
-    fetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...draft, channel: 'whatsapp' }),
-    }).catch(() => {})
+    // Log to backend if an active API origin is configured
+    if (API_ORIGIN) {
+      api.post('/contact', { ...draft, channel: 'whatsapp' }).catch(() => {})
+    }
 
     const text = [
       `*New Message from Raheman Perfumes Contact Us*`,
@@ -634,12 +633,10 @@ function ContactForm() {
   }
 
   const handleSendEmail = () => {
-    // Log to backend in background
-    fetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...draft, channel: 'email' }),
-    }).catch(() => {})
+    // Log to backend if an active API origin is configured
+    if (API_ORIGIN) {
+      api.post('/contact', { ...draft, channel: 'email' }).catch(() => {})
+    }
 
     const subject = `[Raheman Perfumes Contact] ${draft.topic}: ${draft.name}${draft.order ? ` (Order #${draft.order})` : ''}`
     const body = [
@@ -669,24 +666,20 @@ function ContactForm() {
   const handleSendDirect = async () => {
     setSubmitting(true)
     try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(draft),
-      })
-      const data = await res.json().catch(() => ({}))
-      if (!res.ok) {
-        throw new Error(data.message || 'Failed to send message.')
+      if (API_ORIGIN) {
+        await api.post('/contact', draft)
+        setChoiceOpen(false)
+        setSent('web')
+        toast({ title: 'Message sent', description: 'Our support team replies within one working day.' })
+      } else {
+        handleSendWhatsApp()
       }
-      setChoiceOpen(false)
-      setSent('web')
-      toast({ title: 'Message sent', description: 'Our support team replies within one working day.' })
     } catch (err) {
       toast({
-        title: 'Could not send message',
-        description: err.message || 'Please check your connection and try again.',
-        tone: 'error',
+        title: 'Connecting to Concierge',
+        description: 'Redirecting to WhatsApp for instant assistance.',
       })
+      handleSendWhatsApp()
     } finally {
       setSubmitting(false)
     }
