@@ -120,13 +120,30 @@ function filterByNote(products, noteTerms) {
   })
 }
 
-/** Match live catalogue items suited to an occasion (by collection tag, family, notes, or copy). */
+/** Match live catalogue items suited to an occasion (by admin explicit occasion tag, collection tag, family, notes, or copy). */
 function filterByOccasion(products, slug, keywords) {
   if (!keywords?.length) return products
-  const matched = products.filter((p) => {
-    if (Array.isArray(p.collections) && p.collections.some((c) => String(c).toLowerCase() === slug)) {
+  const target = String(slug).toLowerCase()
+
+  // 1. Explicit admin occasion matches:
+  // If the admin explicitly marked fragrances for this occasion (in p.occasions or p.collections),
+  // those explicitly justified perfumes take top priority!
+  const explicitMatches = products.filter((p) => {
+    if (Array.isArray(p.occasions) && p.occasions.some((o) => String(o).toLowerCase() === target)) {
       return true
     }
+    if (Array.isArray(p.collections) && p.collections.some((c) => String(c).toLowerCase() === target)) {
+      return true
+    }
+    return false
+  })
+
+  if (explicitMatches.length > 0) {
+    return explicitMatches
+  }
+
+  // Fallback to keyword matching if admin has not yet assigned any products to this occasion
+  const matched = products.filter((p) => {
     const haystack = [
       p.family,
       p.tagline,

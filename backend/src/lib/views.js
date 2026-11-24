@@ -87,6 +87,7 @@ export function publicProduct(doc, stats = null) {
     status: doc.status,
     comingSoon: doc.status === 'Draft',
     collections: doc.collections ?? [],
+    occasions: doc.occasions ?? [],
     images: (doc.images ?? []).map((image) => publicMedia(image)),
   }
 }
@@ -163,6 +164,7 @@ export function adminProduct(doc, stats = null) {
     bestseller: doc.bestseller,
     featured: doc.featured,
     collections: doc.collections ?? [],
+    occasions: doc.occasions ?? [],
     images: (doc.images ?? []).map((image) => publicMedia(image)),
     batch: doc.batch,
     origin: doc.origin,

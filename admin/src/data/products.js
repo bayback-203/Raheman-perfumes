@@ -70,8 +70,20 @@ export const PRODUCT_STATUSES = ['Active', 'Draft', 'Archived']
  * the same idea. There is one spelling of "best-sellers" here, and it is the
  * one that has a page.
  */
+export const OCCASIONS = [
+  { id: 'everyday', label: 'Everyday', blurb: 'Daily wear, versatile, fresh & clean signature' },
+  { id: 'office', label: 'Office', blurb: 'Work, meetings, refined, subtle & professional' },
+  { id: 'party', label: 'Party', blurb: 'Club, celebrations, bold projection & evening' },
+  { id: 'sports', label: 'Sports', blurb: 'Gym, activewear, refreshing aquatic & energetic' },
+  { id: 'date-night', label: 'Date Night', blurb: 'Romantic, sensual, warm amber & close encounters' },
+  { id: 'college', label: 'College', blurb: 'Casual, vibrant, trendy & youthful' },
+]
+
+export const OCCASION_IDS = OCCASIONS.map((o) => o.id)
+
 export const PRODUCT_COLLECTIONS = [
   { group: 'Shop pages', slugs: ['originals', 'inspired', 'mixing', 'attars', 'combos', 'vault', 'best-sellers', 'celebrities', 'car-perfumes'] },
+  { group: 'Occasions (Signature Scents)', slugs: ['everyday', 'office', 'party', 'sports', 'date-night', 'college'] },
   { group: 'Audience', slugs: ['men', 'women', 'unisex'] },
   { group: 'Scent families', slugs: ['fresh', 'floral', 'woody', 'oriental', 'oud', 'leather'] },
 ]
@@ -90,6 +102,12 @@ export const COLLECTION_LABELS = {
   'best-sellers': 'Best Sellers',
   celebrities: 'Celebrities Perfumes',
   'car-perfumes': 'Car Perfumes',
+  everyday: 'Everyday',
+  office: 'Office',
+  party: 'Party',
+  sports: 'Sports',
+  'date-night': 'Date Night',
+  college: 'College',
   men: 'Perfume for Men',
   women: 'Perfume for Women',
   unisex: 'Unisex',

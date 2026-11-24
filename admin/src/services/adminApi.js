@@ -113,6 +113,7 @@ function productBody(record, { brands = [], categories = [] } = {}) {
     bestseller: record.bestseller,
     featured: record.featured,
     collections: record.collections,
+    occasions: record.occasions,
     origin: record.origin,
   }
 

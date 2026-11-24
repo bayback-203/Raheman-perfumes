@@ -154,6 +154,7 @@ const productBody = z
     bestseller: z.boolean().optional(),
     featured: z.boolean().optional(),
     collections: z.array(z.string().max(40)).max(20).optional(),
+    occasions: z.array(z.string().max(40)).max(10).optional(),
     images: z.array(z.string()).max(12).optional(),
     batch: z.string().trim().max(40).optional(),
     origin: z.string().trim().max(60).optional(),

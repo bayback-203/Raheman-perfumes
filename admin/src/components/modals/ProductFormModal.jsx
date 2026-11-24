@@ -13,6 +13,7 @@ import {
   PRODUCT_COLLECTIONS,
   COLLECTION_SLUGS,
   COLLECTION_LABELS,
+  OCCASIONS,
   LONGEVITY_BANDS,
   PROJECTION_BANDS,
   TIER_CODE,
@@ -75,6 +76,7 @@ function blankProduct() {
     bestseller: false,
     featured: false,
     collections: [],
+    occasions: [],
     images: [],
   }
 }
@@ -237,6 +239,7 @@ export function ProductFormModal({ open, onClose, product = null }) {
         volumes: initialVolumes,
         price: product.price ?? initialVolumes[0]?.price ?? '',
         mrp: product.mrp ?? initialVolumes[0]?.mrp ?? '',
+        occasions: Array.isArray(product.occasions) ? product.occasions : [],
       })
     } else {
       setDraft(blankProduct())
@@ -1029,6 +1032,52 @@ export function ProductFormModal({ open, onClose, product = null }) {
               checked={Boolean(draft.featured)}
               onChange={(event) => set('featured')(event.target.checked)}
             />
+          </div>
+        </FieldGroup>
+
+        <FieldGroup
+          title="Occasions & Signature Scents"
+          columns={1}
+          description="Select which occasion(s) this fragrance belongs to. The perfume will appear on the Discover Your Signature Scent collection pages on the storefront."
+        >
+          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+            {OCCASIONS.map((occ) => {
+              const selected = (draft.occasions ?? []).includes(occ.id)
+              return (
+                <button
+                  key={occ.id}
+                  type="button"
+                  onClick={() => {
+                    const current = draft.occasions ?? []
+                    const next = current.includes(occ.id)
+                      ? current.filter((id) => id !== occ.id)
+                      : [...current, occ.id]
+                    set('occasions')(next)
+                  }}
+                  className={cn(
+                    'flex flex-col items-start rounded-lg border p-3 text-left transition',
+                    selected
+                      ? 'border-brand-gold bg-brand-cream/60 shadow-xs ring-1 ring-brand-gold'
+                      : 'border-outline-variant/60 bg-white hover:border-outline hover:bg-surface-low',
+                  )}
+                >
+                  <div className="flex w-full items-center justify-between">
+                    <span className="text-body-sm font-semibold text-ink">{occ.label}</span>
+                    <span
+                      className={cn(
+                        'flex h-4 w-4 items-center justify-center rounded-full border',
+                        selected
+                          ? 'border-brand-gold bg-brand-gold text-white'
+                          : 'border-outline-variant bg-white',
+                      )}
+                    >
+                      {selected && <Icon name="check" className="h-3 w-3 stroke-[3]" />}
+                    </span>
+                  </div>
+                  <span className="mt-1 text-body-xs text-ink-muted">{occ.blurb}</span>
+                </button>
+              )
+            })}
           </div>
         </FieldGroup>
 

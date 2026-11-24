@@ -167,6 +167,7 @@ const productSchema = new Schema(
 
     /** Storefront facet keys. See `Category.holds()` for how they are matched. */
     collections: { type: [String], default: [], index: true },
+    occasions: { type: [String], default: [], index: true },
     images: { type: [ref('Media', { required: false })], default: [] },
 
     batch: { type: String, default: '' },

@@ -372,6 +372,7 @@ export async function update(id, input) {
     'bestseller',
     'featured',
     'collections',
+    'occasions',
     'images',
     'batch',
     'origin',
