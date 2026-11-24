@@ -147,6 +147,14 @@ export function OffersPage() {
       if (tab === 'bakhoor') {
         return product.tier === 'Bakhoor' || product.collections?.includes('bakhoor')
       }
+      if (tab === 'car-perfumes') {
+        return (
+          product.tier === 'Car Perfume' ||
+          product.collections?.includes('car-perfumes') ||
+          product.collections?.includes('car-perfume') ||
+          product.collections?.includes('car')
+        )
+      }
       return false
     })
   }, [offerProducts, tab])

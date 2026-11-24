@@ -22,6 +22,7 @@ export const MAIN_NAV = [
       { id: 'celebrities', label: 'Celebrities Perfumes', to: '/shop/celebrities' },
       { id: 'combos', label: 'Gift Sets & Combos', to: '/combos' },
       { id: 'bakhoor', label: 'Bakhoor', to: '/shop/bakhoor' },
+      { id: 'car-perfumes', label: 'Car Perfumes', to: '/shop/car-perfumes' },
       { id: 'men', label: 'Perfume for Men', to: '/shop/men' },
       { id: 'women', label: 'Perfume for Women', to: '/shop/women' },
       { id: 'unisex', label: 'Unisex', to: '/shop/unisex' },
@@ -44,6 +45,7 @@ export const MOBILE_NAV = [
   { id: 'attars', label: 'Attar', to: '/shop/attars' },
   { id: 'celebrities', label: 'Celebrities Perfumes', to: '/shop/celebrities' },
   { id: 'bakhoor', label: 'Bakhoor', to: '/shop/bakhoor' },
+  { id: 'car-perfumes', label: 'Car Perfumes', to: '/shop/car-perfumes' },
   { id: 'offers', label: 'Offers', to: '/offers', accent: 'red' },
   { id: 'track', label: 'Track Order', to: '/track-order' },
   { id: 'wishlist', label: 'Wishlist', to: '/wishlist' },
@@ -64,6 +66,7 @@ export const FOOTER_COLUMNS = [
       { label: 'Celebrities Perfumes', to: '/shop/celebrities' },
       { label: 'Combo Sets', to: '/combos' },
       { label: 'Bakhoor', to: '/shop/bakhoor' },
+      { label: 'Car Perfumes', to: '/shop/car-perfumes' },
     ],
   },
   {

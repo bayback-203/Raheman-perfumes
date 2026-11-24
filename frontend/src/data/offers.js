@@ -27,6 +27,7 @@ export const OFFER_TABS = [
   { id: 'attars', label: 'Pure Attars' },
   { id: 'combos', label: 'Combo Sets' },
   { id: 'bakhoor', label: 'Bakhoor' },
+  { id: 'car-perfumes', label: 'Car Perfumes' },
 ]
 
 /** Volume-based savings offers. */
