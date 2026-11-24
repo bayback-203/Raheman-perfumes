@@ -44,7 +44,7 @@ export function HomePage() {
         '@type': 'PostalAddress',
         addressCountry: 'IN',
       },
-      telephone: '+91-98201-12345',
+      telephone: '+91-75044-68885',
     })
     document.head.appendChild(script)
     return () => {

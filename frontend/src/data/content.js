@@ -94,7 +94,7 @@ export const FOOTER_COLUMNS = [
 
 export const SOCIAL_LINKS = [
   { id: 'instagram', label: 'Instagram', handle: '@rahemanperfumes', icon: 'instagram', href: 'https://instagram.com/rahemanperfumes' },
-  { id: 'whatsapp', label: 'WhatsApp', handle: 'Chat with a perfumer', icon: 'whatsapp', href: 'https://wa.me/919820112345' },
+  { id: 'whatsapp', label: 'WhatsApp', handle: '+91 75044 68885', icon: 'whatsapp', href: 'https://wa.me/917504468885' },
   { id: 'facebook', label: 'Facebook', handle: 'Raheman Perfumes', icon: 'facebook', href: 'https://facebook.com/rahemanperfumes' },
 ]
 

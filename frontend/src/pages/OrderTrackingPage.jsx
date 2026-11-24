@@ -289,7 +289,7 @@ export function OrderTrackingPage() {
               <Button
                 variant="outline"
                 size="sm"
-                href={`https://wa.me/918260866878?text=${encodeURIComponent(
+                href={`https://wa.me/917504468885?text=${encodeURIComponent(
                   `Hi, I need assistance with Order ${tracking.orderId}`,
                 )}`}
                 target="_blank"
@@ -853,7 +853,7 @@ export function OrderTrackingPage() {
               <p>
                 Need assistance with your package or delivery address?{' '}
                 <a
-                  href="https://wa.me/918260866878"
+                  href="https://wa.me/917504468885"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-semibold text-brand-charcoal underline"

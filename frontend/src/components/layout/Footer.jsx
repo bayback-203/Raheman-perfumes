@@ -47,18 +47,18 @@ export function Footer({ flush = false }) {
 
           <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 lg:mt-6 lg:flex-col lg:gap-y-2">
             <a
-              href="tel:+919820112345"
+              href="tel:+917504468885"
               className="flex items-center gap-2 text-body-sm text-brand-cream/65 transition hover:text-brand-gold"
             >
               <Icon name="phone" className="h-3.5 w-3.5" />
-              +91 98201 12345
+              +91 75044 68885
             </a>
             <a
-              href="mailto:atelier@rahemanperfumes.in"
+              href="mailto:rahemanperfumes@gmail.com"
               className="flex items-center gap-2 text-body-sm text-brand-cream/65 transition hover:text-brand-gold"
             >
               <Icon name="mail" className="h-3.5 w-3.5" />
-              atelier@rahemanperfumes.in
+              rahemanperfumes@gmail.com
             </a>
           </div>
         </div>

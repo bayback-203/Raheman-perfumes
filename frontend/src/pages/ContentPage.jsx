@@ -101,7 +101,7 @@ const PAGES = {
           {
             icon: 'phone',
             title: 'Direct Support',
-            body: 'Reach us via WhatsApp at +91 98201 12345 or email atelier@rahemanperfumes.in for prompt resolution within 3–4 business days.',
+            body: 'Reach us via WhatsApp at +91 75044 68885 or email rahemanperfumes@gmail.com for prompt resolution within 3–4 business days.',
           },
         ],
       },
@@ -129,7 +129,7 @@ const PAGES = {
           },
           {
             title: 'Contact Us Within 24 Hours',
-            body: 'Reach out to our team at atelier@rahemanperfumes.in or WhatsApp +91 98201 12345 within 24 hours of delivery with subject line "Exchange Claim for Order [Order Number]" attaching your unboxing video and photos.',
+            body: 'Reach out to our team at rahemanperfumes@gmail.com or WhatsApp +91 75044 68885 within 24 hours of delivery with subject line "Exchange Claim for Order [Order Number]" attaching your unboxing video and photos.',
           },
           {
             title: 'Verification & Exchange Dispatch (3–4 Days)',
@@ -168,7 +168,7 @@ const PAGES = {
         body: [
           'Before Dispatch: You may cancel your order at any time before it is packed and dispatched from our atelier warehouse. For prepaid orders (UPI, Credit/Debit Card, Net Banking), a 100% full refund will be initiated to your original payment method within 4–5 business days.',
           'After Dispatch: Once an order has been packed and handed to our courier partner with an assigned tracking AWB, it is in transit and cannot be cancelled or recalled en route. However, you may refuse to accept the delivery at your doorstep. Once the returned parcel reaches our facility and passes basic quality checks, the applicable refund will be processed to the original payment method.',
-          'How to Cancel: Visit My Account → Orders to cancel orders in Processing status, or WhatsApp our concierge team at +91 98201 12345 with your order number.',
+          'How to Cancel: Visit My Account → Orders to cancel orders in Processing status, or WhatsApp our concierge team at +91 75044 68885 with your order number.',
         ],
       },
       {
@@ -290,8 +290,8 @@ const PAGES = {
       {
         kind: 'cards',
         items: [
-          { icon: 'phone', image: '/care-concierge.jpg', title: 'Call Or WhatsApp', body: '+91 98201 12345 · Monday to Saturday, 10:00 AM–7:00 PM' },
-          { icon: 'mail', image: '/signin-atelier.jpg?v=3', title: 'Email', body: 'atelier@rahemanperfumes.in · replies within one working day' },
+          { icon: 'phone', image: '/care-concierge.jpg', title: 'Call Or WhatsApp', body: '+91 75044 68885 · Monday to Saturday, 10:00 AM–7:00 PM' },
+          { icon: 'mail', image: '/signin-atelier.jpg?v=3', title: 'Email', body: 'rahemanperfumes@gmail.com · replies within one working day' },
         ],
       },
       {
@@ -532,7 +532,7 @@ const PAGES = {
         kind: 'faq',
         heading: 'Your Rights',
         items: [
-          { title: 'How do I see what you hold about me?', body: 'Write to atelier@rahemanperfumes.in from your registered email address and we will send a full export of your account data within 30 days.' },
+          { title: 'How do I see what you hold about me?', body: 'Write to rahemanperfumes@gmail.com from your registered email address and we will send a full export of your account data within 30 days.' },
           { title: 'How do I delete my account?', body: 'The same address, and the same 30 days. Order records required for tax and warranty purposes are retained for the statutory period, with everything else removed.' },
           { title: 'Do you market to me without asking?', body: 'Never. Promotional and new stock emails are sent only if you opt in, and every email has an easy unsubscribe link.' },
         ],
