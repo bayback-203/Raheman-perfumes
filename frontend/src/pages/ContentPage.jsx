@@ -141,7 +141,7 @@ const PAGES = {
         heading: 'Non-Delivery Issues',
         body: [
           'If your tracking status is updated to "Delivered" but you have not received your parcel, you must notify our team within 48 hours of the delivery status update. Claims reported after 48 hours will not be eligible for courier investigation or refund.',
-          'Upon notification, our internal logistics desk will launch a priority courier investigation with the carrier partner (Delhivery, Bluedart, etc.). You will receive a formal resolution within 3–4 working days.',
+          'Upon notification, our internal logistics desk will launch a priority courier investigation with the carrier partner (Blue Dart, Express Delivery partners, etc.). You will receive a formal resolution within 3–4 working days.',
         ],
       },
       {

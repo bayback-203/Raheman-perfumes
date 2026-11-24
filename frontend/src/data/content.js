@@ -232,7 +232,7 @@ export const SHIPPING_METHODS = [
     id: 'standard',
     name: 'Standard Courier Delivery',
     description: 'Safe delivery with tamper-proof protective packing.',
-    carrier: 'Delhivery / Bluedart Surface',
+    carrier: 'Standard Delivery / Blue Dart Surface',
     price: 0,
     eta: '4–6 working days',
     tag: 'STANDARD',
