@@ -137,7 +137,7 @@ export function ProductCard({
                 )}
               </div>
               <p className="truncate text-label-sm font-bold uppercase text-brand-muted">{brand}</p>
-              <h3 className="mt-1 truncate text-headline-sm font-semibold text-brand-charcoal">
+              <h3 className="mt-1 truncate font-manrope text-headline-sm font-semibold text-brand-charcoal">
                 <Link to={`/product/${slug}`} className="transition-colors hover:text-brand-goldDark">
                   {name}
                 </Link>
@@ -146,7 +146,7 @@ export function ProductCard({
             {WishlistButton}
           </div>
 
-          <p className="mt-2 line-clamp-2 text-body-sm text-brand-muted">
+          <p className="mt-2 line-clamp-2 font-inter text-[14px] font-normal leading-relaxed text-brand-muted">
             {[concentration, defaultVolume, ...(product.notes?.top ?? []).slice(0, 2)].filter(Boolean).join(' • ')}
           </p>
 
@@ -163,9 +163,9 @@ export function ProductCard({
           <div className="mt-auto flex flex-wrap items-end justify-between gap-3 pt-4">
             <div className="flex flex-wrap items-baseline gap-2">
               {percent > 0 && (
-                <span className="text-body-sm font-medium text-[#C81E1E] line-through">{formatPrice(mrp)}</span>
+                <span className="font-inter text-body-sm font-normal text-[#C81E1E] line-through">{formatPrice(mrp)}</span>
               )}
-              <span className="text-headline-sm font-bold text-brand-charcoal">{formatPrice(price)}</span>
+              <span className="font-inter text-headline-sm font-semibold text-brand-charcoal">{formatPrice(price)}</span>
               {percent > 0 && (
                 <span className="text-label-sm font-bold uppercase text-emerald-700">{percent}% OFF</span>
               )}
@@ -202,14 +202,14 @@ export function ProductCard({
           </div>
         </Link>
         <div className="pt-3">
-          <h3 className="truncate text-body-md font-semibold text-brand-charcoal">
+          <h3 className="truncate font-manrope text-body-md font-semibold text-brand-charcoal">
             <Link to={`/product/${slug}`} className="transition-colors hover:text-brand-goldDark">
               {name}
             </Link>
           </h3>
           <p className="mt-0.5 truncate text-body-sm text-brand-muted">{defaultVolume ?? concentration}</p>
           <div className="mt-2 flex items-center justify-between gap-2">
-            <span className="text-body-md font-semibold text-brand-charcoal">{formatPrice(price)}</span>
+            <span className="font-inter text-body-md font-semibold text-brand-charcoal">{formatPrice(price)}</span>
             <button
               type="button"
               onClick={handleAdd}
@@ -327,7 +327,7 @@ export function ProductCard({
         </div>
 
         <div className="flex flex-1 flex-col pt-3 text-left">
-          <h3 className="truncate text-[14.5px] font-medium leading-snug text-brand-charcoal sm:text-[15px]">
+          <h3 className="truncate font-manrope text-[15px] font-semibold leading-snug text-brand-charcoal sm:text-[15.5px]">
             <Link
               to={`/product/${slug}`}
               className="decoration-1 underline-offset-4 transition-colors group-hover:underline"
@@ -339,16 +339,16 @@ export function ProductCard({
           <div className="mt-1 flex flex-wrap items-baseline gap-2">
             {comingSoon ? (
               price > 0 ? (
-                <span className="text-[14.5px] font-medium text-brand-muted">{formatPrice(price)}</span>
+                <span className="font-inter text-[14.5px] font-medium text-brand-muted">{formatPrice(price)}</span>
               ) : (
-                <span className="text-[13.5px] font-medium text-brand-goldDark">Launching Soon</span>
+                <span className="font-inter text-[13.5px] font-medium text-brand-goldDark">Launching Soon</span>
               )
             ) : (
               <>
                 {percent > 0 && (
-                  <span className="text-[13.5px] font-medium text-[#C81E1E] line-through">{formatPrice(mrp)}</span>
+                  <span className="font-inter text-[12.5px] font-normal text-[#C81E1E] line-through">{formatPrice(mrp)}</span>
                 )}
-                <span className="text-[14.5px] font-medium text-brand-charcoal">{formatPrice(price)}</span>
+                <span className="font-inter text-[15px] font-semibold text-brand-charcoal sm:text-[15.5px]">{formatPrice(price)}</span>
               </>
             )}
           </div>

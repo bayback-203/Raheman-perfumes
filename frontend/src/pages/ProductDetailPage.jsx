@@ -38,10 +38,10 @@ function NotePyramid({ notes }) {
         <div key={row.id}>
           <p className="text-label-sm font-bold uppercase tracking-widest text-brand-goldDark">{row.label}</p>
           <p className="mt-1 text-body-sm text-brand-muted">{row.blurb}</p>
-          <ul className="mt-3 space-y-1.5">
+          <ul className="mt-3 space-y-2">
             {row.values.map((note) => (
-              <li key={note} className="flex items-start gap-2 text-body-sm text-ink-variant">
-                <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-brand-gold" />
+              <li key={note} className="flex items-start gap-2.5 font-inter text-[15px] font-normal text-ink-variant sm:text-[16px]">
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-gold" />
                 {note}
               </li>
             ))}
@@ -371,20 +371,20 @@ export function ProductDetailPage() {
           </div>
 
           <p className="mt-4 text-label-sm font-semibold uppercase tracking-[0.16em] text-brand-muted">{product.brand}</p>
-          <h1 className="mt-1.5 text-[26px] font-medium leading-tight tracking-tight text-brand-charcoal sm:text-[32px]">
+          <h1 className="mt-1.5 font-manrope text-[28px] font-semibold leading-tight tracking-tight text-brand-charcoal sm:text-[34px]">
             {product.name}
           </h1>
-          {product.tagline && <p className="mt-1.5 text-body-md text-brand-muted">{product.tagline}</p>}
+          {product.tagline && <p className="mt-1.5 font-inter text-body-md font-normal text-brand-muted">{product.tagline}</p>}
 
           {/* Price block matching sleek modern monochrome luxury PDP */}
           <div className="mt-4">
             <div className="flex flex-wrap items-baseline gap-3">
               {percent > 0 && (
-                <span className="text-[20px] font-medium text-[#C81E1E] line-through sm:text-[22px]">
+                <span className="font-inter text-[18px] font-normal text-[#C81E1E] line-through sm:text-[20px]">
                   {formatPrice(variant.mrp)}
                 </span>
               )}
-              <span className="text-[22px] font-bold text-brand-charcoal sm:text-[26px]">
+              <span className="font-inter text-[24px] font-semibold text-brand-charcoal sm:text-[28px]">
                 {formatPrice(variant?.price ?? product.price)}
               </span>
               {percent > 0 && (
@@ -667,8 +667,8 @@ export function ProductDetailPage() {
         <div className="pt-8">
           {tab === 'description' && (
             <div className="max-w-3xl">
-              <p className="text-body-lg leading-relaxed text-ink-variant">{product.description}</p>
-              <p className="mt-5 text-body-md leading-relaxed text-brand-muted">
+              <p className="font-inter text-body-lg font-normal leading-relaxed text-ink-variant">{product.description}</p>
+              <p className="mt-5 font-inter text-body-md font-normal leading-relaxed text-brand-muted">
                 {product.tier === 'Original'
                   ? 'This is an authentic branded bottle, sourced directly through official distributors. We do not refill or reseal original bottles.'
                   : 'Our perfumers recreate this scent from pure French oils at up to 40% oil concentration — a unique blend that smells close to the one you already know.'}

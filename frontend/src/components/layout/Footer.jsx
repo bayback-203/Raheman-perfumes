@@ -104,7 +104,7 @@ export function Footer({ flush = false }) {
                       <Link
                         to={link.to}
                         onClick={() => setOpenSection(null)}
-                        className="text-body-sm text-brand-cream/65 transition-colors hover:text-brand-ivory"
+                        className="font-manrope text-body-sm font-semibold text-brand-cream/65 transition-colors hover:text-brand-ivory"
                       >
                         {link.label}
                       </Link>

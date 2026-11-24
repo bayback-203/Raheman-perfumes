@@ -140,7 +140,7 @@ export function ShopBanner({ collection, title, eyebrow, imageOverride }) {
           </p>
         )}
 
-        <h1 className="mt-1 font-serif text-xl font-medium tracking-tight text-brand-charcoal sm:text-2xl lg:text-3xl">
+        <h1 className="mt-1 font-cormorant text-2xl font-medium tracking-tight text-brand-charcoal sm:text-3xl lg:text-4xl">
           {title}
         </h1>
 
@@ -152,7 +152,7 @@ export function ShopBanner({ collection, title, eyebrow, imageOverride }) {
                 key={pill.label}
                 to={pill.to}
                 className={cn(
-                  'inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1 text-xs font-semibold transition-all duration-300 sm:px-3.5 sm:py-1.5 sm:text-[13px]',
+                  'inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full font-manrope px-3 py-1 text-xs font-semibold transition-all duration-300 sm:px-3.5 sm:py-1.5 sm:text-[13px]',
                   isActive
                     ? 'bg-gradient-to-r from-[#1A1613] via-[#2C231B] to-[#1A1613] text-[#FDF6E8] shadow-[0_4px_14px_-3px_rgba(20,16,12,0.45)] ring-1 ring-brand-gold/60'
                     : 'border border-[#CDBAA0] bg-white text-brand-charcoal shadow-xs hover:-translate-y-0.5 hover:border-brand-charcoal hover:bg-[#FFFDF7] hover:shadow-sm',

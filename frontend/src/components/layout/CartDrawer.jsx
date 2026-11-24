@@ -217,7 +217,7 @@ export function CartDrawer() {
                           ) : (
                             <TierBadge tier={item.tier} size="sm" />
                           )}
-                          <p className="mt-1 truncate text-body-sm font-semibold text-brand-charcoal">{item.name}</p>
+                          <p className="mt-1 truncate font-manrope text-body-sm font-semibold text-brand-charcoal">{item.name}</p>
                           <p className="text-body-sm text-brand-muted">{item.volume}</p>
                         </div>
                         <button
@@ -262,7 +262,7 @@ export function CartDrawer() {
                           </div>
                         )}
                         <div className="text-right">
-                          <span className={cn('text-body-sm font-semibold', isReward ? 'text-emerald-700' : 'text-brand-charcoal')}>
+                          <span className={cn('font-inter text-body-sm font-semibold', isReward ? 'text-emerald-700' : 'text-brand-charcoal')}>
                             {isReward ? 'FREE' : formatPrice(item.price * item.quantity)}
                           </span>
                         </div>

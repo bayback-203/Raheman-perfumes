@@ -41,7 +41,7 @@ export function CategoryGrid() {
                     className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
-                <h3 className="mt-3 font-serif text-base font-semibold text-brand-charcoal sm:mt-4 sm:text-xl">{category.label}</h3>
+                <h3 className="mt-3 font-manrope text-base font-semibold text-brand-charcoal sm:mt-4 sm:text-xl">{category.label}</h3>
                 {category.blurb && (
                   <p className="mt-1 hidden text-body-sm text-brand-muted sm:block">{category.blurb}</p>
                 )}
@@ -210,7 +210,7 @@ export function SignatureTile({ eyebrow, title, body, to, cta, tier = 'Original'
     >
       <div className="flex flex-col justify-center p-8 lg:p-12">
         <p className="text-label-md font-bold uppercase tracking-[0.18em] text-brand-goldDark">{eyebrow}</p>
-        <h3 className="mt-3 font-serif text-3xl font-medium leading-tight text-brand-charcoal lg:text-headline-xl">
+        <h3 className="mt-3 font-cormorant text-3xl font-semibold leading-tight text-brand-charcoal lg:text-headline-xl">
           {title}
         </h3>
         <p className="mt-4 max-w-md text-body-md leading-relaxed text-brand-muted">{body}</p>

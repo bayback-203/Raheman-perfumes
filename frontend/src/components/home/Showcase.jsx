@@ -333,7 +333,7 @@ export function DealsOfDay() {
       <div className="shell relative z-10">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <h2 className="font-serif text-3xl font-medium text-brand-charcoal lg:text-headline-xl">
+            <h2 className="font-cormorant text-3xl font-semibold text-brand-charcoal lg:text-headline-xl">
               Best Discounts Right Now
             </h2>
           </div>
@@ -386,7 +386,7 @@ export function ShopByNotes() {
     <section className="relative overflow-hidden border-b border-[#EFE3D0] bg-white py-14 lg:py-16">
       <div className="shell relative z-10">
         <div className="flex items-center justify-between gap-4">
-          <h2 className="font-serif text-2xl font-medium uppercase tracking-[0.06em] text-brand-charcoal sm:text-3xl">
+          <h2 className="font-cormorant text-2xl font-semibold uppercase tracking-[0.06em] text-brand-charcoal sm:text-3xl">
             Shop by Notes
           </h2>
           <RowSlideControls canPrev={slider.canPrev} canNext={slider.canNext} onSlide={slider.slide} />
@@ -413,7 +413,7 @@ export function ShopByNotes() {
                     className="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
-                <p className="mt-3 text-[14.5px] font-semibold text-brand-charcoal transition-colors group-hover:text-brand-goldDark sm:text-[15px]">
+                <p className="mt-3 font-inter text-[15px] font-normal text-brand-charcoal transition-colors group-hover:text-brand-goldDark sm:text-[15.5px]">
                   {note.label}
                 </p>
                 <p className="mt-0.5 text-[12.5px] text-brand-muted sm:text-[13px]">

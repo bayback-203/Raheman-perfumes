@@ -57,7 +57,7 @@ export function SectionHeading({
           <span className="mb-2 text-label-md font-bold uppercase text-brand-goldDark">{eyebrow}</span>
         )}
         {title && (
-          <Tag className={cn('text-2xl font-medium sm:text-3xl lg:text-headline-xl', titleTone)}>{title}</Tag>
+          <Tag className={cn('font-cormorant text-2xl font-semibold sm:text-3xl lg:text-headline-xl', titleTone)}>{title}</Tag>
         )}
         {subtitle && (
           <p className={cn('mt-2 max-w-2xl text-body-md', subTone, align === 'center' && 'mx-auto')}>

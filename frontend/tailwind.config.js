@@ -47,8 +47,11 @@ export default {
         },
       },
       fontFamily: {
-        serif: ['"Poppins"', 'system-ui', 'sans-serif'],
-        sans: ['"Poppins"', 'system-ui', 'sans-serif'],
+        cormorant: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        manrope: ['"Manrope"', 'system-ui', '-apple-system', 'sans-serif'],
+        inter: ['"Inter"', 'system-ui', '-apple-system', 'sans-serif'],
+        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        sans: ['"Inter"', 'system-ui', '-apple-system', 'sans-serif'],
       },
       fontSize: {
         'display-lg': ['56px', { lineHeight: '68px', letterSpacing: '-0.02em' }],

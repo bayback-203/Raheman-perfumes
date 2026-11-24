@@ -153,7 +153,7 @@ export function Header() {
                       key={item.id}
                       to={item.to}
                       className={cn(
-                        'relative whitespace-nowrap py-1 text-label-sm font-bold uppercase tracking-[0.14em] transition-colors',
+                        'relative whitespace-nowrap py-1 font-manrope text-label-sm font-semibold uppercase tracking-[0.14em] transition-colors',
                         active ? 'text-brand-goldDark' : 'text-ink-variant hover:text-brand-charcoal',
                         item.accent === 'red' && !active && 'text-tier-original hover:text-tier-original',
                       )}
@@ -182,7 +182,7 @@ export function Header() {
                       to={item.to}
                       onClick={() => setOpenDropdown(null)}
                       className={cn(
-                        'relative inline-flex items-center gap-1.5 whitespace-nowrap py-1 text-label-sm font-bold uppercase tracking-[0.14em] transition-colors',
+                        'relative inline-flex items-center gap-1.5 whitespace-nowrap py-1 font-manrope text-label-sm font-semibold uppercase tracking-[0.14em] transition-colors',
                         active || isOpen ? 'text-brand-goldDark' : 'text-ink-variant hover:text-brand-charcoal',
                       )}
                     >
@@ -219,7 +219,7 @@ export function Header() {
                               to={child.to}
                               onClick={() => setOpenDropdown(null)}
                               className={cn(
-                                'block whitespace-nowrap px-5 py-2.5 text-[14px] font-medium tracking-[0.01em] transition-colors duration-150',
+                                'block whitespace-nowrap px-5 py-2.5 font-manrope text-[14px] font-semibold tracking-[0.01em] transition-colors duration-150',
                                 isViewAll && 'mt-1 border-t border-[#E8D8BC]/80 pt-3 font-semibold text-brand-goldDark',
                                 childActive
                                   ? 'bg-[#F3E5CA]/75 text-brand-goldDark'

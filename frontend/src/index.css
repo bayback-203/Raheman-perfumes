@@ -23,7 +23,9 @@
   }
 
   body {
-    @apply bg-white text-brand-charcoal font-sans antialiased;
+    @apply bg-white text-brand-charcoal antialiased;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-weight: 400;
     overflow-x: hidden;
   }
 
@@ -38,14 +40,97 @@
     }
   }
 
-  /* Clean geometric sans headings matching modern pure-white luxury style */
+  /* --------------------------------------------------------------------------
+     PRESTIGE LUXURY TYPOGRAPHY SYSTEM
+     Hero heading:         Cormorant Garamond 500
+     Section headings:     Cormorant Garamond 600
+     Product names:        Manrope 600
+     Category names:       Manrope 600
+     Navigation:           Manrope 600
+     Product descriptions: Inter 400
+     Prices:               Inter 600
+     Instructions/notes:   Inter 400 (+15% larger)
+     -------------------------------------------------------------------------- */
+
+  /* Hero Headings: Cormorant Garamond 500 */
+  .hero-heading,
+  [data-hero-heading],
+  .font-hero {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 500;
+  }
+
+  /* Section Headings: Cormorant Garamond 600 */
   h1,
   h2,
-  h3,
-  h4,
-  .font-serif-luxury {
-    @apply font-sans;
-    letter-spacing: -0.015em;
+  .section-heading,
+  .font-section-heading,
+  .font-serif {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  /* Product Names: Manrope 600 */
+  .product-name,
+  .product-title,
+  [data-product-name] {
+    font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  /* Category Names: Manrope 600 */
+  .category-name,
+  .category-title,
+  .category-pill,
+  [data-category-name] {
+    font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+    font-weight: 600;
+  }
+
+  /* Navigation: Manrope 600 */
+  nav a,
+  nav button,
+  .nav-link,
+  .mobile-nav-link,
+  .header-nav,
+  header nav,
+  footer nav a {
+    font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+    font-weight: 600;
+  }
+
+  /* Product Descriptions: Inter 400 */
+  .product-description,
+  .product-tagline,
+  .product-desc {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-weight: 400;
+  }
+
+  /* Prices: Inter 600 */
+  .product-price,
+  .price,
+  .price-tag,
+  .tabular-price,
+  .price-value,
+  [data-price] {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-weight: 600;
+  }
+
+  /* Instructions / Notes: Inter 400, +15% size */
+  .product-notes,
+  .fragrance-notes,
+  .notes-pyramid,
+  .note-item,
+  .product-instructions,
+  .how-to-wear {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-weight: 400;
+    font-size: 1.15em;
+    line-height: 1.6;
   }
 
   ::selection {

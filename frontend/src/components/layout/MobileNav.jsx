@@ -41,7 +41,7 @@ export function MobileNav() {
                     to={item.to}
                     onClick={closeMobileMenu}
                     className={cn(
-                      'flex items-center justify-between gap-3 rounded px-3 py-3 text-body-md font-semibold transition',
+                      'flex items-center justify-between gap-3 rounded px-3 py-3 font-manrope text-body-md font-semibold transition',
                       active ? 'bg-neutral-100 text-brand-goldDark' : 'text-brand-charcoal hover:bg-neutral-50',
                     )}
                   >

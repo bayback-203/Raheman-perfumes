@@ -184,7 +184,7 @@ export function OffersPage() {
               <Icon name="tag" className="h-3.5 w-3.5 text-brand-goldDark" />
               {OFFER_HERO.badge}
             </Chip>
-            <h1 className="mt-4 font-serif text-[30px] font-medium leading-[1.15] text-brand-charcoal sm:mt-6 sm:text-[42px]">
+            <h1 className="mt-4 font-cormorant text-[32px] font-medium leading-[1.15] text-brand-charcoal sm:mt-6 sm:text-[44px]">
               {OFFER_HERO.title}
             </h1>
 

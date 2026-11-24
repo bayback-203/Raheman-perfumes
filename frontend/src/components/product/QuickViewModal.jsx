@@ -118,9 +118,9 @@ export function QuickViewModal({
             <TierBadge tier={product.tier} size="sm" />
           </div>
 
-          <h3 className="mt-1 font-serif text-2xl font-medium text-brand-charcoal">{product.name}</h3>
+          <h3 className="mt-1 font-manrope text-2xl font-semibold text-brand-charcoal">{product.name}</h3>
           {product.concentration && (
-            <p className="mt-0.5 text-body-sm text-brand-muted">{product.concentration}</p>
+            <p className="mt-0.5 font-inter text-body-sm font-normal text-brand-muted">{product.concentration}</p>
           )}
 
           <div className="mt-2 flex items-center gap-2">
@@ -132,16 +132,16 @@ export function QuickViewModal({
 
           <div className="mt-4 flex items-baseline gap-2.5">
             {percent > 0 && (
-              <span className="text-base font-medium text-[#C81E1E] line-through">{formatPrice(unitMrp)}</span>
+              <span className="font-inter text-base font-normal text-[#C81E1E] line-through">{formatPrice(unitMrp)}</span>
             )}
-            <span className="text-headline-md font-bold text-brand-charcoal">{formatPrice(unitPrice)}</span>
+            <span className="font-inter text-headline-md font-semibold text-brand-charcoal">{formatPrice(unitPrice)}</span>
             {percent > 0 && (
               <span className="text-label-sm font-bold uppercase text-emerald-700">{percent}% OFF</span>
             )}
           </div>
 
           {product.description && (
-            <p className="mt-3 line-clamp-3 text-body-sm leading-relaxed text-ink-variant">{product.description}</p>
+            <p className="mt-3 line-clamp-3 font-inter text-body-sm font-normal leading-relaxed text-ink-variant">{product.description}</p>
           )}
 
           {allNotes.length > 0 && (
@@ -149,7 +149,7 @@ export function QuickViewModal({
               {allNotes.slice(0, 6).map((note) => (
                 <span
                   key={note}
-                  className="rounded-full border border-brand-border bg-white px-2.5 py-0.5 text-[11px] text-ink-variant"
+                  className="rounded-full border border-brand-border bg-white px-3 py-1 font-inter text-[14px] font-normal text-brand-charcoal shadow-xs"
                 >
                   {note}
                 </span>

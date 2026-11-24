@@ -63,19 +63,19 @@ function TypewriterHeadline() {
 
   return (
     <h1
-      className="relative text-[30px] font-medium leading-[1.12] tracking-tight text-brand-charcoal sm:text-[46px] lg:text-display-lg"
+      className="relative font-cormorant text-[36px] font-medium leading-[1.12] tracking-tight text-brand-charcoal sm:text-[52px] lg:text-display-lg"
       aria-label={`${HERO_LINE_1} ${HERO_LINE_2}`}
     >
       {/* Hidden full text locks the two-line height so surrounding layout never shifts while typing */}
       <span className="invisible select-none" aria-hidden="true">
         {HERO_LINE_1}
-        <span className="mt-1 block font-semibold">{HERO_LINE_2}</span>
+        <span className="mt-1 block font-cormorant font-medium">{HERO_LINE_2}</span>
       </span>
 
       <span className="absolute inset-0" aria-hidden="true">
         {line1Text}
         {cursorOnLine1 && cursor}
-        <span className="mt-1 block font-semibold text-brand-goldDark">
+        <span className="mt-1 block font-cormorant font-medium text-brand-goldDark">
           {line2Text}
           {cursorOnLine2 && cursor}
         </span>
@@ -242,7 +242,7 @@ export function GenderShowcase() {
   return (
     <section className="bridal-canvas relative border-b border-[#EFE3D0] py-14 lg:py-16">
       <div className="shell">
-        <h2 className="text-center font-serif text-2xl font-medium tracking-tight text-brand-charcoal sm:text-3xl lg:text-headline-xl">
+        <h2 className="text-center font-cormorant text-2xl font-semibold tracking-tight text-brand-charcoal sm:text-3xl lg:text-headline-xl">
           Shop by Gender
         </h2>
 
@@ -266,7 +266,7 @@ export function GenderShowcase() {
                 className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/60 via-black/20 to-transparent"
               />
               <div className="absolute inset-x-2 bottom-3 flex items-center justify-center sm:inset-x-5 sm:bottom-5">
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/95 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-brand-charcoal shadow-md backdrop-blur-xs transition-colors duration-200 group-hover:border-brand-gold/60 group-hover:bg-brand-charcoal group-hover:text-[#F6E2B3] sm:px-6 sm:py-2 sm:text-xs">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/95 px-3.5 py-1.5 font-manrope text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-charcoal shadow-md backdrop-blur-xs transition-colors duration-200 group-hover:border-brand-gold/60 group-hover:bg-brand-charcoal group-hover:text-[#F6E2B3] sm:px-6 sm:py-2 sm:text-xs">
                   {segment.label}
                   <Icon name="arrow-right" className="hidden h-3.5 w-3.5 sm:inline-block" />
                 </span>
@@ -284,7 +284,7 @@ export function OccasionGrid() {
   return (
     <section className="relative border-b border-[#EFE3D0] bg-white py-14 lg:py-16">
       <div className="shell">
-        <h2 className="text-center font-serif text-2xl font-medium tracking-tight text-brand-charcoal sm:text-3xl lg:text-headline-xl">
+        <h2 className="text-center font-cormorant text-2xl font-semibold tracking-tight text-brand-charcoal sm:text-3xl lg:text-headline-xl">
           Discover Your Signature Scent
         </h2>
 
@@ -308,7 +308,7 @@ export function OccasionGrid() {
                 className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/50 via-black/15 to-transparent"
               />
               <div className="absolute inset-x-3 bottom-3.5 flex justify-center sm:bottom-4">
-                <span className="inline-block whitespace-nowrap rounded-md border border-brand-border/70 bg-white/95 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-brand-charcoal shadow-md backdrop-blur-xs transition-colors duration-200 group-hover:border-brand-gold/60 group-hover:bg-brand-charcoal group-hover:text-[#F6E2B3]">
+                <span className="inline-block whitespace-nowrap rounded-md border border-brand-border/70 bg-white/95 px-3.5 py-1.5 font-manrope text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-charcoal shadow-md backdrop-blur-xs transition-colors duration-200 group-hover:border-brand-gold/60 group-hover:bg-brand-charcoal group-hover:text-[#F6E2B3]">
                   {occasion.label}
                 </span>
               </div>
