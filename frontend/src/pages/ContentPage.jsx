@@ -589,7 +589,7 @@ function ContactForm() {
   const [draft, setDraft] = useState({ name: '', email: '', order: '', topic: 'Order enquiry', message: '' })
   const [errors, setErrors] = useState({})
   const [submitting, setSubmitting] = useState(false)
-  const [sent, setSent] = useState(null) // null | 'whatsapp' | 'email' | 'web'
+  const [statusNotice, setStatusNotice] = useState(null) // null | 'whatsapp' | 'email' | 'web'
   const [choiceOpen, setChoiceOpen] = useState(false)
 
   const handleFormSubmit = (event) => {
@@ -628,8 +628,8 @@ function ContactForm() {
     const waUrl = `https://wa.me/917504468885?text=${encodeURIComponent(text)}`
     window.open(waUrl, '_blank')
     setChoiceOpen(false)
-    setSent('whatsapp')
-    toast({ title: 'Redirecting to WhatsApp', description: 'Your message and details have been prepared.' })
+    setStatusNotice('whatsapp')
+    toast({ title: 'Opened in WhatsApp', description: 'Your message note was prepared in WhatsApp. Details remain saved below.' })
   }
 
   const handleSendEmail = () => {
@@ -659,8 +659,8 @@ function ContactForm() {
     const mailtoUrl = `mailto:rahemanperfumes@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
     window.location.href = mailtoUrl
     setChoiceOpen(false)
-    setSent('email')
-    toast({ title: 'Opening Email Client', description: 'Your message has been addressed to rahemanperfumes@gmail.com.' })
+    setStatusNotice('email')
+    toast({ title: 'Opened Email Client', description: 'Your message was prepared for rahemanperfumes@gmail.com. Details remain saved below.' })
   }
 
   const handleSendDirect = async () => {
@@ -669,7 +669,7 @@ function ContactForm() {
       if (API_ORIGIN) {
         await api.post('/contact', draft)
         setChoiceOpen(false)
-        setSent('web')
+        setStatusNotice('web')
         toast({ title: 'Message sent', description: 'Our support team replies within one working day.' })
       } else {
         handleSendWhatsApp()
@@ -685,42 +685,66 @@ function ContactForm() {
     }
   }
 
-  if (sent) {
-    const channelNotice =
-      sent === 'whatsapp'
-        ? 'Your inquiry was prepared in WhatsApp (+91 75044 68885). Our perfumers will reply to you directly.'
-        : sent === 'email'
-        ? 'Your message was opened in your email client addressed to rahemanperfumes@gmail.com. We reply within one working day.'
-        : `Our team has received your message. Expect a reply at ${draft.email} within one working day.`
-
-    return (
-      <div className="card-surface flex flex-col items-center p-8 text-center">
-        <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-cream text-brand-goldDark">
-          <Icon name="check-circle" className="h-6 w-6" />
-        </span>
-        <h3 className="mt-4 text-headline-sm font-semibold text-brand-charcoal">
-          Thank you, {draft.name.split(' ')[0]}
-        </h3>
-        <p className="mt-2 max-w-md text-body-sm leading-relaxed text-brand-muted">
-          {channelNotice}
-        </p>
-        <Button
-          variant="outline"
-          className="mt-6"
-          onClick={() => {
-            setSent(null)
-            setDraft({ name: '', email: '', order: '', topic: 'Order enquiry', message: '' })
-          }}
-        >
-          Send Another Message
-        </Button>
-      </div>
-    )
-  }
-
   return (
     <>
       <form onSubmit={handleFormSubmit} className="card-surface grid gap-4 p-6 sm:grid-cols-2">
+        {statusNotice && (
+          <div className="sm:col-span-2 rounded-xl border border-emerald-500/30 bg-emerald-50/80 p-4 text-xs text-emerald-950 shadow-sm transition-all">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-start gap-2.5">
+                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white">
+                  <Icon name={statusNotice === 'whatsapp' ? 'whatsapp' : statusNotice === 'email' ? 'mail' : 'check'} className="h-3 w-3" />
+                </span>
+                <div>
+                  <p className="font-semibold text-emerald-900">
+                    {statusNotice === 'whatsapp' && 'Opened in WhatsApp (+91 75044 68885)'}
+                    {statusNotice === 'email' && 'Opened in Email (rahemanperfumes@gmail.com)'}
+                    {statusNotice === 'web' && 'Message Received'}
+                  </p>
+                  <p className="mt-0.5 text-emerald-800/90 leading-relaxed">
+                    {statusNotice === 'whatsapp' && (
+                      <>
+                        We prepared your note in WhatsApp. If you haven’t sent it yet or want to edit anything, your message details remain safely saved below.
+                      </>
+                    )}
+                    {statusNotice === 'email' && (
+                      <>
+                        We prepared your note in your email app. Your message details remain safely saved below so you can review or re-send anytime.
+                      </>
+                    )}
+                    {statusNotice === 'web' && (
+                      <>
+                        Our concierge team will respond directly to <strong>{draft.email}</strong> within one working day.
+                      </>
+                    )}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setDraft({ name: '', email: '', order: '', topic: 'Order enquiry', message: '' })
+                    setStatusNotice(null)
+                  }}
+                  className="rounded px-2 py-1 text-[11px] font-semibold text-emerald-800 underline hover:bg-emerald-100 hover:text-emerald-950 transition"
+                >
+                  Clear form
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setStatusNotice(null)}
+                  className="rounded p-1 text-emerald-700/70 hover:bg-emerald-100 hover:text-emerald-950 transition"
+                  aria-label="Dismiss banner"
+                  title="Dismiss"
+                >
+                  <Icon name="close" className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <Input
           label="Your name"
           required
