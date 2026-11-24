@@ -82,7 +82,7 @@ export const OCCASIONS = [
 export const OCCASION_IDS = OCCASIONS.map((o) => o.id)
 
 export const PRODUCT_COLLECTIONS = [
-  { group: 'Shop pages', slugs: ['originals', 'inspired', 'mixing', 'attars', 'combos', 'vault', 'best-sellers', 'celebrities', 'car-perfumes'] },
+  { group: 'Shop pages', slugs: ['originals', 'inspired', 'mixing', 'attars', 'combos', 'celebrities', 'bakhoor', 'car-perfumes'] },
   { group: 'Audience', slugs: ['men', 'women', 'unisex'] },
   { group: 'Scent families', slugs: ['fresh', 'floral', 'woody', 'oriental', 'oud', 'leather'] },
 ]
@@ -91,6 +91,8 @@ export const PRODUCT_COLLECTIONS = [
 export const COLLECTION_SLUGS = [
   ...PRODUCT_COLLECTIONS.flatMap((entry) => entry.slugs),
   ...OCCASION_IDS,
+  'best-sellers',
+  'vault',
 ]
 
 /** User-friendly display names for collection chips in Admin Product Form. */
@@ -100,10 +102,11 @@ export const COLLECTION_LABELS = {
   mixing: 'Mixing Perfumes',
   attars: 'Pure Attars',
   combos: 'Combos & Gift Sets',
+  celebrities: 'Celebrities Perfumes',
+  bakhoor: 'Bakhoor',
+  'car-perfumes': 'Car Perfumes',
   vault: 'Special Offers (Vault)',
   'best-sellers': 'Best Sellers',
-  celebrities: 'Celebrities Perfumes',
-  'car-perfumes': 'Car Perfumes',
   everyday: 'Everyday',
   office: 'Office',
   party: 'Party',

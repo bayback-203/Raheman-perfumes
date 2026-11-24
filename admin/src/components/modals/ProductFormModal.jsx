@@ -137,7 +137,18 @@ const toggle = (list, value) => (list.includes(value) ? list.filter((entry) => e
  * would read as a stray there — the same three slugs flagged in every group, each
  * with its own "no longer offered" notice.
  */
-function ChipSet({ label, hint, options, value = [], onChange, columns = false, vocabulary = null, required = false, error = null }) {
+function ChipSet({
+  label,
+  hint,
+  options,
+  value = [],
+  onChange,
+  columns = false,
+  vocabulary = null,
+  required = false,
+  error = null,
+  singleSelect = false,
+}) {
   /*
    * Slugs this product carries that the vocabulary no longer lists.
    *
@@ -151,6 +162,19 @@ function ChipSet({ label, hint, options, value = [], onChange, columns = false, 
   const unrecognised = value.filter((entry) => !known.includes(entry))
   const shown = [...options, ...unrecognised.filter((entry) => !options.includes(entry))]
 
+  const handleToggle = (option) => {
+    if (singleSelect) {
+      const otherValues = value.filter((v) => !options.includes(v))
+      if (value.includes(option)) {
+        onChange(otherValues)
+      } else {
+        onChange([...otherValues, option])
+      }
+    } else {
+      onChange(toggle(value, option))
+    }
+  }
+
   return (
     <div className="w-full">
       {label && (
@@ -158,7 +182,9 @@ function ChipSet({ label, hint, options, value = [], onChange, columns = false, 
           <span className="field-label">{label}</span>
           {required && <span className="text-error font-bold">*</span>}
           {required && (
-            <span className="text-body-xs font-normal text-ink-muted">(Compulsory — select at least one)</span>
+            <span className="text-body-xs font-normal text-ink-muted">
+              {singleSelect ? '(Compulsory — select one)' : '(Compulsory — select at least one)'}
+            </span>
           )}
         </div>
       )}
@@ -173,7 +199,7 @@ function ChipSet({ label, hint, options, value = [], onChange, columns = false, 
               type="button"
               aria-pressed={on}
               title={listed ? undefined : 'No longer a listed collection — click to remove it from this fragrance.'}
-              onClick={() => onChange(toggle(value, option))}
+              onClick={() => handleToggle(option)}
               className={cn(
                 'rounded-full border px-3 py-1 text-body-sm font-medium transition-colors',
                 on
@@ -259,8 +285,30 @@ export function ProductFormModal({ open, onClose, product = null }) {
 
       // Ensure audience in collections if product.gender exists
       const genderSlugMap = { Men: 'men', Women: 'women', Unisex: 'unisex' }
-      const initialCollections = [...(product.collections ?? [])]
+      const tierToShopPageMap = {
+        Original: 'originals',
+        Inspired: 'inspired',
+        Mixed: 'mixing',
+        Attar: 'attars',
+        Combo: 'combos',
+        Bakhoor: 'bakhoor',
+        'Car Perfume': 'car-perfumes',
+      }
+
+      const shopPageSlugs = PRODUCT_COLLECTIONS.find((g) => g.group === 'Shop pages')?.slugs ?? []
       const audienceSlugs = PRODUCT_COLLECTIONS.find((g) => g.group === 'Audience')?.slugs ?? ['men', 'women', 'unisex']
+
+      // Enforce single-select for shop pages: keep the first valid one or tier default
+      const existingShopPages = (product.collections ?? []).filter((s) => shopPageSlugs.includes(s))
+      const chosenShopPage = existingShopPages[0] ?? tierToShopPageMap[product.tier]
+
+      // Filter out legacy tags and other shop pages
+      const otherCollections = (product.collections ?? []).filter(
+        (s) => !shopPageSlugs.includes(s) && s !== 'best-sellers' && s !== 'vault',
+      )
+
+      const initialCollections = chosenShopPage ? [...otherCollections, chosenShopPage] : otherCollections
+
       const genderSlug = genderSlugMap[product.gender]
       if (genderSlug && !initialCollections.some((s) => audienceSlugs.includes(s))) {
         initialCollections.push(genderSlug)
@@ -279,7 +327,8 @@ export function ProductFormModal({ open, onClose, product = null }) {
       setDraft({
         ...blankProduct(),
         gender: 'Unisex',
-        collections: ['unisex'],
+        tier: 'Inspired',
+        collections: ['inspired', 'unisex'],
         occasions: [],
       })
     }
@@ -290,6 +339,36 @@ export function ProductFormModal({ open, onClose, product = null }) {
   }, [open, product, editing])
 
   const set = (key) => (value) => setDraft((current) => ({ ...current, [key]: value }))
+
+  const onTierChange = (value) => {
+    const tierToShopPageMap = {
+      Original: 'originals',
+      Inspired: 'inspired',
+      Mixed: 'mixing',
+      Attar: 'attars',
+      Combo: 'combos',
+      Bakhoor: 'bakhoor',
+      'Car Perfume': 'car-perfumes',
+    }
+    const shopPageSlugs = PRODUCT_COLLECTIONS.find((g) => g.group === 'Shop pages')?.slugs ?? []
+    const mappedSlug = tierToShopPageMap[value]
+    const currentCollections = draft.collections ?? []
+    const nonShopPages = currentCollections.filter((s) => !shopPageSlugs.includes(s))
+    const nextCollections = mappedSlug ? [...nonShopPages, mappedSlug] : nonShopPages
+
+    setDraft((cur) => ({
+      ...cur,
+      tier: value,
+      collections: nextCollections,
+    }))
+
+    setErrors((cur) => {
+      const next = { ...cur }
+      if (next.tier) delete next.tier
+      if (next.shopPages) delete next.shopPages
+      return next
+    })
+  }
 
   const toggleOccasion = (occId) => {
     const currentOccasions = draft.occasions ?? []
@@ -594,11 +673,11 @@ export function ProductFormModal({ open, onClose, product = null }) {
       next.occasions = 'Selecting at least one occasion is compulsory for this fragrance.'
     }
 
-    // Compulsory Collections - Shop Pages
+    // Compulsory Collections - Shop Pages (Must select one)
     const shopPageSlugs = PRODUCT_COLLECTIONS.find((g) => g.group === 'Shop pages')?.slugs ?? []
     const hasShopPage = (draft.collections ?? []).some((s) => shopPageSlugs.includes(s))
     if (!hasShopPage) {
-      next.shopPages = 'Selecting at least one Shop Page collection (e.g. Original Perfumes, Inspired Perfumes, etc.) is compulsory.'
+      next.shopPages = 'Selecting one Shop Page category (e.g. Original Perfumes, Inspired Perfumes, etc.) is compulsory.'
     }
 
     // Compulsory Collections - Audience
@@ -766,10 +845,10 @@ export function ProductFormModal({ open, onClose, product = null }) {
             label="Type"
             required
             value={draft.tier}
-            onChange={(event) => set('tier')(event.target.value)}
+            onChange={(event) => onTierChange(event.target.value)}
             options={TIERS}
             error={errors.tier}
-            hint="Decides the code prefix and the cost we suggest."
+            hint="Decides the code prefix, matching Shop Page, and suggested cost."
           />
           <Select
             label="Category"
@@ -1220,7 +1299,7 @@ export function ProductFormModal({ open, onClose, product = null }) {
             so a slug from another group is not mistaken for a stray; the strays
             themselves get one set of chips of their own below, rather than a
             notice repeated under every group. */}
-        <FieldGroup title="Collections *" columns={1} description="Compulsory: Which shop sections and pages this perfume appears in.">
+        <FieldGroup title="Collections *" columns={1} description="Compulsory: Select one primary shop page category and target audience for this perfume.">
           {PRODUCT_COLLECTIONS.map((group) => {
             const isShopPages = group.group === 'Shop pages'
             const isAudience = group.group === 'Audience'
@@ -1237,6 +1316,7 @@ export function ProductFormModal({ open, onClose, product = null }) {
                 onChange={onCollectionsChange}
                 required={isRequired}
                 error={groupError}
+                singleSelect={isShopPages}
               />
             )
           })}
