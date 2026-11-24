@@ -111,9 +111,8 @@ export function HomePage() {
               <Button variant="primary" to="/pages/faqs">
                 All Fragrance FAQs
               </Button>
-              <Button variant="outline" href="https://wa.me/919820112345">
-                <Icon name="whatsapp" className="h-4 w-4" />
-                Ask a Perfumer
+              <Button variant="outline" to="/pages/contact">
+                Contact Us
               </Button>
             </div>
           </div>
