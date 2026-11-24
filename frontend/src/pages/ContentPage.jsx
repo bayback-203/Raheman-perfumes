@@ -82,7 +82,7 @@ const PAGES = {
     eyebrow: 'Contact Us',
     title: 'Return, Refund & Cancellation Policy',
     subtitle:
-      'At Raheman Perfumes, we are dedicated to crafting an exceptional luxury fragrance experience. Please review our policies regarding product hygiene, transit damage claims, refunds, and order cancellations.',
+      'At Raheman Perfumes, we are dedicated to crafting an exceptional luxury fragrance experience. Please review our policies regarding product hygiene, transit damage claims, exchange replacements, and order cancellations.',
     updated: '2026-11-24',
     sections: [
       {
@@ -91,12 +91,12 @@ const PAGES = {
           {
             icon: 'clock',
             title: 'Report Within 24 Hours',
-            body: 'In the rare case of transit damage, broken flacons, leakage, or defective items, report to our team within 24 hours of delivery.',
+            body: 'In the rare case of transit damage, broken flacons, leakage, or defective items on prepaid orders, report within 24 hours of delivery.',
           },
           {
             icon: 'shield',
             title: 'Unboxing Video Required',
-            body: 'To claim a refund or replacement for damaged, broken, or leaked goods, an uncut unboxing video showing outer packaging is mandatory.',
+            body: 'To claim an exchange replacement for damaged, broken, or leaked goods on prepaid orders, an uncut unboxing video showing outer packaging is mandatory.',
           },
           {
             icon: 'phone',
@@ -110,7 +110,8 @@ const PAGES = {
         heading: 'Return & Hygiene Policy',
         body: [
           'We want you to enjoy the timeless essence of our fragrances. Due to personal hygiene reasons and the nature of fine perfumery products, we do not accept returns or exchanges once a product has been delivered, opened, unsealed, or used.',
-          'Perfumes, concentrated perfume oils, and pure attars are personal care items. If you receive a product that is damaged, broken, leaking, or incorrectly shipped, you are fully entitled to an immediate replacement or refund subject to the verification terms below.',
+          'Perfumes, concentrated perfume oils, and pure attars are personal care items. If you receive a product that is damaged, broken, leaking, or incorrectly shipped on a prepaid order, you are entitled to a complimentary replacement flacon (exchange only, no cash refunds) subject to the unboxing verification terms below.',
+          'Cash on Delivery (COD) Orders: Customers must inspect the parcel condition at their doorstep before handing money to the delivery courier. If the parcel is damaged or tampered with, refuse it immediately before paying. Once a COD parcel is accepted and paid for, returns and refunds are strictly not approved.',
           'Product Sensitivities & Patch Test: Our artisanal perfumes contain pure French oils, natural botanical extracts, and up to 40% oil concentrations. While formulated to the highest international quality standards, individual skin chemistry and sensitivities vary. We are not responsible for reactions caused by sensitivities to specific fragrance ingredients. Please conduct a skin patch test before full use. We do not accept returns or process refunds based on personal scent preferences or skin allergies.',
         ],
       },
@@ -119,59 +120,45 @@ const PAGES = {
         heading: 'How to Claim for Damaged, Broken, or Leaked Goods',
         items: [
           {
-            title: 'Refuse Damaged Outer Parcels on Delivery',
-            body: 'If the courier parcel arrives visibly crushed, tampered with, or leaking upon delivery, please refuse the package immediately from the courier partner and notify our team.',
+            title: 'Check Parcel Before Paying (COD Orders)',
+            body: 'For Cash on Delivery (COD) orders, inspect the package before giving cash to the delivery agent. If the package is tampered with, crushed, or leaking, refuse it immediately at your doorstep. No COD refunds or claims are approved after payment and acceptance.',
           },
           {
-            title: 'Record an Uncut Unboxing Video',
-            body: 'To claim a replacement or refund for damaged, cracked, leaking flacons or missing items, you must provide a continuous, uncut unboxing video showing the outer shipping label, sealed carton, and the product in its original packaging as unboxed.',
+            title: 'Record an Uncut Unboxing Video (Prepaid Orders)',
+            body: 'For prepaid orders, to claim an exchange replacement for damaged, cracked, leaking flacons or missing items, you must provide a continuous, uncut unboxing video showing the outer shipping label, sealed carton, and the product in its original packaging as unboxed.',
           },
           {
             title: 'Contact Us Within 24 Hours',
-            body: 'Reach out to our team at atelier@rahemanperfumes.in or WhatsApp +91 98201 12345 within 24 hours of delivery with subject line "Refund/Damage Claim for Order [Order Number]" attaching your unboxing video and photos.',
+            body: 'Reach out to our team at atelier@rahemanperfumes.in or WhatsApp +91 98201 12345 within 24 hours of delivery with subject line "Exchange Claim for Order [Order Number]" attaching your unboxing video and photos.',
           },
           {
-            title: 'Verification & Resolution Within 3–4 Days',
-            body: 'Our verification team will inspect your claim within 3–4 working days. Once accepted, a complimentary replacement flacon will be dispatched or a full refund initiated.',
+            title: 'Verification & Exchange Dispatch (3–4 Days)',
+            body: 'Our verification team will inspect your uncut unboxing video claim within 3–4 working days. Once verified, a complimentary replacement flacon will be dispatched to your address (exchange only; no cash refunds).',
           },
-        ],
-      },
-      {
-        kind: 'prose',
-        heading: 'Non-Delivery Issues',
-        body: [
-          'If your tracking status is updated to "Delivered" but you have not received your parcel, you must notify our team within 48 hours of the delivery status update. Claims reported after 48 hours will not be eligible for courier investigation or refund.',
-          'Upon notification, our internal logistics desk will launch a priority courier investigation with the carrier partner (Blue Dart, Express Delivery partners, etc.). You will receive a formal resolution within 3–4 working days.',
         ],
       },
       {
         kind: 'table',
-        heading: 'Refund Timelines & Payment Methods',
-        columns: ['Claim / Order Scenario', 'Eligibility Requirement', 'Verification Time', 'Refund Processing Timeline'],
+        heading: 'Resolution Timelines & Policies',
+        columns: ['Claim / Order Scenario', 'Eligibility Requirement', 'Verification Time', 'Resolution Timeline'],
         rows: [
           [
             'Prepaid Order Cancelled Before Packing',
             'Cancelled via My Account before warehouse packing begins',
             'Immediate',
-            '4–5 business days to original payment method',
+            '4–5 business days full refund to original payment method',
           ],
           [
-            'Damaged, Leaked, or Defective Item',
-            'Unboxing video reported within 24 hours of delivery',
+            'Prepaid Damaged, Leaked, or Defective Item',
+            'Continuous uncut unboxing video reported within 24 hours of delivery',
             '3–4 business days',
-            '5–6 business days (Original card/UPI or replacement)',
+            'Complimentary Replacement / Exchange dispatched (No cash refunds)',
           ],
           [
-            'Cash on Delivery (COD) Approved Refund',
-            'Verified damage/defect claim on COD delivery',
-            '3–4 business days',
-            '5–6 business days to your provided Bank Account (NEFT/IMPS) or UPI',
-          ],
-          [
-            'Courier Non-Delivery Investigation',
-            'Reported within 48 hours of marked delivery',
-            '3–4 business days',
-            '100% full refund to original payment source upon courier confirmation',
+            'Cash on Delivery (COD) Parcel Check',
+            'Must inspect outer package before paying courier',
+            'At doorstep',
+            'Refuse parcel before paying if damaged. No post-delivery refunds on COD.',
           ],
         ],
       },
@@ -194,19 +181,19 @@ const PAGES = {
           },
           {
             title: 'Why is an uncut unboxing video mandatory for damage claims?',
-            body: 'Fine glass flacons and concentrated perfume oils require strict transit verification to ensure issues are resolved fairly and quickly with our shipping carriers. An uncut video clearly displaying the shipping label and unboxing guarantees immediate approval for replacement or refund.',
+            body: 'Fine glass flacons and concentrated perfume oils require strict transit verification to ensure issues are resolved fairly and quickly. An uncut video clearly displaying the shipping label and unboxing guarantees immediate approval for an exchange replacement.',
           },
           {
-            title: 'How long do refunds take to reflect in my account?',
-            body: 'Once a refund is approved by our team, prepaid refunds (Credit/Debit Card, Net Banking, UPI) typically reflect in your account within 5–6 business days. For COD orders, refunds are credited directly to your shared Bank Account via IMPS/NEFT or UPI within 5–6 working days.',
+            title: 'Do you offer cash refunds for damaged items?',
+            body: 'For verified damaged, defective, or leaked prepaid orders reported within 24 hours with an unboxing video, we provide a 100% complimentary replacement exchange. Cash refunds are not provided for delivered items. Full refunds are only applicable when cancelling a prepaid order before warehouse packing.',
           },
           {
-            title: 'What should I do if my tracking status says "Delivered" but I never got it?',
-            body: 'Please contact us within 48 hours of the delivery notification. We will open an escalation ticket with the courier service to trace GPS coordinates and delivery proof, providing a resolution within 3–4 working days.',
+            title: 'What is the policy for Cash on Delivery (COD) orders?',
+            body: 'For COD deliveries, please check and verify the parcel condition before giving money to the courier agent. If you notice any damage or tampering, refuse the parcel at your doorstep. We do not approve returns or refunds once a COD parcel has been paid and accepted.',
           },
           {
             title: 'Can I cancel an order after it has been shipped?',
-            body: 'Orders in transit cannot be recalled. If you no longer need the package, simply refuse the delivery when the courier partner attempts handover. Once returned to our warehouse, your refund will be initiated.',
+            body: 'Orders in transit cannot be recalled. If you no longer need the package, simply refuse the delivery when the courier partner attempts handover. Once returned to our warehouse, your order will be processed.',
           },
         ],
       },
