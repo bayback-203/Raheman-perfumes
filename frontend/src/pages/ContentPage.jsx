@@ -21,7 +21,7 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
  */
 const PAGES = {
   'shipping-policy': {
-    eyebrow: 'Customer Care',
+    eyebrow: 'Contact Us',
     title: 'Shipping Policy',
     subtitle:
       'Every bottle ships in a protective box with a tamper-proof seal. Here is how, when and where we deliver.',
@@ -79,7 +79,7 @@ const PAGES = {
   },
 
   'return-refund': {
-    eyebrow: 'Customer Care',
+    eyebrow: 'Contact Us',
     title: 'Return, Refund & Cancellation Policy',
     subtitle:
       'At Raheman Perfumes, we are dedicated to crafting an exceptional luxury fragrance experience. Please review our policies regarding product hygiene, transit damage claims, refunds, and order cancellations.',
@@ -100,7 +100,7 @@ const PAGES = {
           },
           {
             icon: 'phone',
-            title: 'Dedicated Customer Care',
+            title: 'Direct Support',
             body: 'Reach us via WhatsApp at +91 98201 12345 or email atelier@rahemanperfumes.in for prompt resolution within 3–4 business days.',
           },
         ],
@@ -127,8 +127,8 @@ const PAGES = {
             body: 'To claim a replacement or refund for damaged, cracked, leaking flacons or missing items, you must provide a continuous, uncut unboxing video showing the outer shipping label, sealed carton, and the product in its original packaging as unboxed.',
           },
           {
-            title: 'Contact Customer Care Within 24 Hours',
-            body: 'Reach out to our Customer Care team at atelier@rahemanperfumes.in or WhatsApp +91 98201 12345 within 24 hours of delivery with subject line "Refund/Damage Claim for Order [Order Number]" attaching your unboxing video and photos.',
+            title: 'Contact Us Within 24 Hours',
+            body: 'Reach out to our team at atelier@rahemanperfumes.in or WhatsApp +91 98201 12345 within 24 hours of delivery with subject line "Refund/Damage Claim for Order [Order Number]" attaching your unboxing video and photos.',
           },
           {
             title: 'Verification & Resolution Within 3–4 Days',
@@ -140,7 +140,7 @@ const PAGES = {
         kind: 'prose',
         heading: 'Non-Delivery Issues',
         body: [
-          'If your tracking status is updated to "Delivered" but you have not received your parcel, you must notify our Customer Care team within 48 hours of the delivery status update. Claims reported after 48 hours will not be eligible for courier investigation or refund.',
+          'If your tracking status is updated to "Delivered" but you have not received your parcel, you must notify our team within 48 hours of the delivery status update. Claims reported after 48 hours will not be eligible for courier investigation or refund.',
           'Upon notification, our internal logistics desk will launch a priority courier investigation with the carrier partner (Delhivery, Bluedart, etc.). You will receive a formal resolution within 3–4 working days.',
         ],
       },
@@ -202,7 +202,7 @@ const PAGES = {
           },
           {
             title: 'What should I do if my tracking status says "Delivered" but I never got it?',
-            body: 'Please contact our Customer Care within 48 hours of the delivery notification. We will open an escalation ticket with the courier service to trace GPS coordinates and delivery proof, providing a resolution within 3–4 working days.',
+            body: 'Please contact us within 48 hours of the delivery notification. We will open an escalation ticket with the courier service to trace GPS coordinates and delivery proof, providing a resolution within 3–4 working days.',
           },
           {
             title: 'Can I cancel an order after it has been shipped?',
@@ -214,7 +214,7 @@ const PAGES = {
   },
 
   faqs: {
-    eyebrow: 'Customer Care',
+    eyebrow: 'Contact Us',
     title: 'Fragrance FAQs',
     subtitle: 'Oil strength, lasting power, storage and common questions our team answers.',
     updated: '2026-08-01',
@@ -250,7 +250,7 @@ const PAGES = {
   },
 
   'size-guide': {
-    eyebrow: 'Customer Care',
+    eyebrow: 'Contact Us',
     title: 'Bottle Size Guide',
     subtitle: 'How long each volume actually lasts, so you can buy the right one the first time.',
     updated: '2026-08-01',
@@ -294,8 +294,8 @@ const PAGES = {
   },
 
   contact: {
-    eyebrow: 'Customer Care',
-    title: 'Contact Support',
+    eyebrow: 'Contact Us',
+    title: 'Contact Us',
     subtitle: 'Our team reads every message directly. Expect a reply within one working day.',
     updated: '2026-08-01',
     sections: [

@@ -68,7 +68,7 @@ export const FOOTER_COLUMNS = [
   },
   {
     id: 'care',
-    title: 'Customer Care',
+    title: 'Contact Us',
     links: [
       { label: 'Track Order', to: '/track-order' },
       { label: 'Shipping Policy', to: '/pages/shipping-policy' },
