@@ -14,6 +14,7 @@ import {
   COLLECTION_SLUGS,
   COLLECTION_LABELS,
   OCCASIONS,
+  OCCASION_IDS,
   LONGEVITY_BANDS,
   PROJECTION_BANDS,
   TIER_CODE,
@@ -136,7 +137,7 @@ const toggle = (list, value) => (list.includes(value) ? list.filter((entry) => e
  * would read as a stray there — the same three slugs flagged in every group, each
  * with its own "no longer offered" notice.
  */
-function ChipSet({ label, hint, options, value = [], onChange, columns = false, vocabulary = null }) {
+function ChipSet({ label, hint, options, value = [], onChange, columns = false, vocabulary = null, required = false, error = null }) {
   /*
    * Slugs this product carries that the vocabulary no longer lists.
    *
@@ -152,7 +153,15 @@ function ChipSet({ label, hint, options, value = [], onChange, columns = false, 
 
   return (
     <div className="w-full">
-      <span className="field-label">{label}</span>
+      {label && (
+        <div className="flex items-center gap-1.5">
+          <span className="field-label">{label}</span>
+          {required && <span className="text-error font-bold">*</span>}
+          {required && (
+            <span className="text-body-xs font-normal text-ink-muted">(Compulsory — select at least one)</span>
+          )}
+        </div>
+      )}
       <div className={cn('mt-1 flex flex-wrap gap-1.5', columns && 'max-h-40 overflow-y-auto')}>
         {shown.map((option) => {
           const on = value.includes(option)
@@ -179,6 +188,12 @@ function ChipSet({ label, hint, options, value = [], onChange, columns = false, 
           )
         })}
       </div>
+      {error && (
+        <p className="mt-1.5 flex items-center gap-1.5 text-body-sm font-semibold text-error">
+          <Icon name="alert-circle" className="h-4 w-4 shrink-0" />
+          {error}
+        </p>
+      )}
       {hint && <p className="mt-1.5 text-body-sm text-ink-muted">{hint}</p>}
       {unrecognised.length > 0 && (
         <p className="mt-1.5 text-body-sm text-ink-muted">
@@ -233,16 +248,40 @@ export function ProductFormModal({ open, onClose, product = null }) {
               label: 'Full Bottle',
             },
           ]
+
+      // Merge occasions from product.occasions and legacy product.collections
+      const existingOccasions = Array.from(
+        new Set([
+          ...(Array.isArray(product.occasions) ? product.occasions : []),
+          ...(product.collections ?? []).filter((slug) => OCCASION_IDS.includes(slug)),
+        ]),
+      )
+
+      // Ensure audience in collections if product.gender exists
+      const genderSlugMap = { Men: 'men', Women: 'women', Unisex: 'unisex' }
+      const initialCollections = [...(product.collections ?? [])]
+      const audienceSlugs = PRODUCT_COLLECTIONS.find((g) => g.group === 'Audience')?.slugs ?? ['men', 'women', 'unisex']
+      const genderSlug = genderSlugMap[product.gender]
+      if (genderSlug && !initialCollections.some((s) => audienceSlugs.includes(s))) {
+        initialCollections.push(genderSlug)
+      }
+
       setDraft({
         ...blankProduct(),
         ...product,
         volumes: initialVolumes,
         price: product.price ?? initialVolumes[0]?.price ?? '',
         mrp: product.mrp ?? initialVolumes[0]?.mrp ?? '',
-        occasions: Array.isArray(product.occasions) ? product.occasions : [],
+        occasions: existingOccasions,
+        collections: initialCollections,
       })
     } else {
-      setDraft(blankProduct())
+      setDraft({
+        ...blankProduct(),
+        gender: 'Unisex',
+        collections: ['unisex'],
+        occasions: [],
+      })
     }
     setErrors({})
     setSaving(false)
@@ -251,6 +290,77 @@ export function ProductFormModal({ open, onClose, product = null }) {
   }, [open, product, editing])
 
   const set = (key) => (value) => setDraft((current) => ({ ...current, [key]: value }))
+
+  const toggleOccasion = (occId) => {
+    const currentOccasions = draft.occasions ?? []
+    const nextOccasions = currentOccasions.includes(occId)
+      ? currentOccasions.filter((id) => id !== occId)
+      : [...currentOccasions, occId]
+
+    // Synchronize occasion tags with collections
+    const currentCollections = draft.collections ?? []
+    const nonOccasionCollections = currentCollections.filter((c) => !OCCASION_IDS.includes(c))
+    const nextCollections = [...nonOccasionCollections, ...nextOccasions]
+
+    setDraft((cur) => ({
+      ...cur,
+      occasions: nextOccasions,
+      collections: nextCollections,
+    }))
+
+    if (errors.occasions && nextOccasions.length > 0) {
+      setErrors((cur) => {
+        const next = { ...cur }
+        delete next.occasions
+        return next
+      })
+    }
+  }
+
+  const onCollectionsChange = (nextCollections) => {
+    // Preserve occasions in collections
+    const currentOccasions = draft.occasions ?? []
+    const nonOccasionCollections = nextCollections.filter((c) => !OCCASION_IDS.includes(c))
+    const combined = Array.from(new Set([...nonOccasionCollections, ...currentOccasions]))
+
+    setDraft((cur) => ({ ...cur, collections: combined }))
+
+    const shopPageSlugs = PRODUCT_COLLECTIONS.find((g) => g.group === 'Shop pages')?.slugs ?? []
+    const audienceSlugs = PRODUCT_COLLECTIONS.find((g) => g.group === 'Audience')?.slugs ?? []
+
+    setErrors((cur) => {
+      const next = { ...cur }
+      if (next.shopPages && combined.some((s) => shopPageSlugs.includes(s))) {
+        delete next.shopPages
+      }
+      if (next.audience && combined.some((s) => audienceSlugs.includes(s))) {
+        delete next.audience
+      }
+      return next
+    })
+  }
+
+  const onGenderChange = (value) => {
+    const genderSlugMap = { Men: 'men', Women: 'women', Unisex: 'unisex' }
+    const targetSlug = genderSlugMap[value]
+    const audienceSlugs = ['men', 'women', 'unisex']
+    const currentCollections = draft.collections ?? []
+    const nonAudience = currentCollections.filter((s) => !audienceSlugs.includes(s))
+    const nextCollections = targetSlug ? [...nonAudience, targetSlug] : nonAudience
+
+    setDraft((cur) => ({
+      ...cur,
+      gender: value,
+      collections: nextCollections,
+    }))
+
+    setErrors((cur) => {
+      const next = { ...cur }
+      if (next.gender) delete next.gender
+      if (next.audience) delete next.audience
+      return next
+    })
+  }
 
   const updateVolume = (index, field, value) => {
     setDraft((cur) => {
@@ -478,6 +588,26 @@ export function ProductFormModal({ open, onClose, product = null }) {
       next.notesTop = 'At least one fragrance note is required.'
     }
 
+    // Compulsory Occasions
+    const selectedOccasions = draft.occasions ?? []
+    if (selectedOccasions.length === 0) {
+      next.occasions = 'Selecting at least one occasion is compulsory for this fragrance.'
+    }
+
+    // Compulsory Collections - Shop Pages
+    const shopPageSlugs = PRODUCT_COLLECTIONS.find((g) => g.group === 'Shop pages')?.slugs ?? []
+    const hasShopPage = (draft.collections ?? []).some((s) => shopPageSlugs.includes(s))
+    if (!hasShopPage) {
+      next.shopPages = 'Selecting at least one Shop Page collection (e.g. Original Perfumes, Inspired Perfumes, etc.) is compulsory.'
+    }
+
+    // Compulsory Collections - Audience
+    const audienceSlugs = PRODUCT_COLLECTIONS.find((g) => g.group === 'Audience')?.slugs ?? []
+    const hasAudience = (draft.collections ?? []).some((s) => audienceSlugs.includes(s))
+    if (!hasAudience) {
+      next.audience = 'Selecting target audience collection (Perfume for Men, Women, or Unisex) is compulsory.'
+    }
+
     setErrors(next)
     return next
   }
@@ -662,7 +792,7 @@ export function ProductFormModal({ open, onClose, product = null }) {
             label="Sold to"
             required
             value={draft.gender}
-            onChange={(event) => set('gender')(event.target.value)}
+            onChange={(event) => onGenderChange(event.target.value)}
             options={GENDERS}
             error={errors.gender}
           />
@@ -1036,9 +1166,9 @@ export function ProductFormModal({ open, onClose, product = null }) {
         </FieldGroup>
 
         <FieldGroup
-          title="Occasions & Signature Scents"
+          title="Occasions & Signature Scents *"
           columns={1}
-          description="Select which occasion(s) this fragrance belongs to. The perfume will appear on the Discover Your Signature Scent collection pages on the storefront."
+          description="Compulsory: Select which occasion(s) this fragrance belongs to. The perfume will appear on the Discover Your Signature Scent collection pages on the storefront."
         >
           <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
             {OCCASIONS.map((occ) => {
@@ -1047,18 +1177,13 @@ export function ProductFormModal({ open, onClose, product = null }) {
                 <button
                   key={occ.id}
                   type="button"
-                  onClick={() => {
-                    const current = draft.occasions ?? []
-                    const next = current.includes(occ.id)
-                      ? current.filter((id) => id !== occ.id)
-                      : [...current, occ.id]
-                    set('occasions')(next)
-                  }}
+                  onClick={() => toggleOccasion(occ.id)}
                   className={cn(
                     'flex flex-col items-start rounded-lg border p-3 text-left transition',
                     selected
                       ? 'border-brand-gold bg-brand-cream/60 shadow-xs ring-1 ring-brand-gold'
                       : 'border-outline-variant/60 bg-white hover:border-outline hover:bg-surface-low',
+                    errors.occasions && !selected && 'border-error/40',
                   )}
                 >
                   <div className="flex w-full items-center justify-between">
@@ -1079,6 +1204,12 @@ export function ProductFormModal({ open, onClose, product = null }) {
               )
             })}
           </div>
+          {errors.occasions && (
+            <p className="mt-2.5 flex items-center gap-1.5 text-body-sm font-semibold text-error">
+              <Icon name="alert-circle" className="h-4 w-4 shrink-0" />
+              {errors.occasions}
+            </p>
+          )}
         </FieldGroup>
 
         {/* Grouped rather than flat: the first seven are shop pages a shopper can
@@ -1089,24 +1220,33 @@ export function ProductFormModal({ open, onClose, product = null }) {
             so a slug from another group is not mistaken for a stray; the strays
             themselves get one set of chips of their own below, rather than a
             notice repeated under every group. */}
-        <FieldGroup title="Collections" columns={1} description="Which shop sections and pages this perfume appears in.">
-          {PRODUCT_COLLECTIONS.map((group) => (
-            <ChipSet
-              key={group.group}
-              label={group.group}
-              options={group.slugs}
-              vocabulary={collectionVocabulary}
-              value={draft.collections ?? []}
-              onChange={set('collections')}
-            />
-          ))}
+        <FieldGroup title="Collections *" columns={1} description="Compulsory: Which shop sections and pages this perfume appears in.">
+          {PRODUCT_COLLECTIONS.map((group) => {
+            const isShopPages = group.group === 'Shop pages'
+            const isAudience = group.group === 'Audience'
+            const isRequired = isShopPages || isAudience
+            const groupError = isShopPages ? errors.shopPages : isAudience ? errors.audience : null
+
+            return (
+              <ChipSet
+                key={group.group}
+                label={group.group}
+                options={group.slugs}
+                vocabulary={collectionVocabulary}
+                value={draft.collections ?? []}
+                onChange={onCollectionsChange}
+                required={isRequired}
+                error={groupError}
+              />
+            )
+          })}
           {strayCollections.length > 0 && (
             <ChipSet
               label="No longer offered by the shop"
               options={strayCollections}
               vocabulary={collectionVocabulary}
               value={draft.collections ?? []}
-              onChange={set('collections')}
+              onChange={onCollectionsChange}
               hint="Kept so the value survives a save, and drawn last so it is not lost among the slugs above. Click to remove."
             />
           )}

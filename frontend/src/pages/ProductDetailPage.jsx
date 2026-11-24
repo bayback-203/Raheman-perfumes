@@ -405,26 +405,32 @@ export function ProductDetailPage() {
           </div>
 
           {/* Admin-assigned Occasion badges */}
-          {Array.isArray(product.occasions) && product.occasions.length > 0 && (
-            <div className="mt-4 flex flex-wrap items-center gap-2">
-              <span className="text-[12px] font-bold uppercase tracking-wider text-brand-goldDark">
-                Ideal For:
-              </span>
-              {product.occasions.map((occId) => {
-                const match = OCCASIONS.find((o) => o.id === occId || o.id === String(occId).toLowerCase())
-                const label = match?.label ?? occId
-                return (
-                  <Link
-                    key={occId}
-                    to={`/shop/${occId}`}
-                    className="inline-flex items-center rounded-full border border-[#E5D7BF] bg-[#FDF9F2] px-3 py-1 text-[12px] font-semibold text-brand-charcoal transition hover:border-brand-gold hover:text-brand-goldDark"
-                  >
-                    {label}
-                  </Link>
-                )
-              })}
-            </div>
-          )}
+          {(() => {
+            const occasionsList = Array.isArray(product.occasions) && product.occasions.length > 0
+              ? product.occasions
+              : (Array.isArray(product.collections) ? product.collections.filter((c) => OCCASIONS.some((o) => o.id === c)) : [])
+            if (!occasionsList.length) return null
+            return (
+              <div className="mt-4 flex flex-wrap items-center gap-2">
+                <span className="text-[12px] font-bold uppercase tracking-wider text-brand-goldDark">
+                  Ideal For:
+                </span>
+                {occasionsList.map((occId) => {
+                  const match = OCCASIONS.find((o) => o.id === occId || o.id === String(occId).toLowerCase())
+                  const label = match?.label ?? occId
+                  return (
+                    <Link
+                      key={occId}
+                      to={`/shop/${occId}`}
+                      className="inline-flex items-center rounded-full border border-[#E5D7BF] bg-[#FDF9F2] px-3 py-1 text-[12px] font-semibold text-brand-charcoal transition hover:border-brand-gold hover:text-brand-goldDark"
+                    >
+                      {label}
+                    </Link>
+                  )
+                })}
+              </div>
+            )
+          })()}
 
           {/* Minimal 2x2 luxury highlights */}
           <div className="mt-5 grid grid-cols-2 gap-x-4 gap-y-2.5 text-body-sm text-ink-variant">

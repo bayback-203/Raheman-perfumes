@@ -83,13 +83,15 @@ export const OCCASION_IDS = OCCASIONS.map((o) => o.id)
 
 export const PRODUCT_COLLECTIONS = [
   { group: 'Shop pages', slugs: ['originals', 'inspired', 'mixing', 'attars', 'combos', 'vault', 'best-sellers', 'celebrities', 'car-perfumes'] },
-  { group: 'Occasions (Signature Scents)', slugs: ['everyday', 'office', 'party', 'sports', 'date-night', 'college'] },
   { group: 'Audience', slugs: ['men', 'women', 'unisex'] },
   { group: 'Scent families', slugs: ['fresh', 'floral', 'woody', 'oriental', 'oud', 'leather'] },
 ]
 
 /** Every slug above, flat — for validating a record that arrived from elsewhere. */
-export const COLLECTION_SLUGS = PRODUCT_COLLECTIONS.flatMap((entry) => entry.slugs)
+export const COLLECTION_SLUGS = [
+  ...PRODUCT_COLLECTIONS.flatMap((entry) => entry.slugs),
+  ...OCCASION_IDS,
+]
 
 /** User-friendly display names for collection chips in Admin Product Form. */
 export const COLLECTION_LABELS = {
