@@ -10,6 +10,20 @@ export function TierBadge({ tier, size = 'md', showIcon = false, className }) {
   const config = getTier(tier)
   if (!config) return null
 
+  if (config.badgeImage) {
+    const imgSize =
+      size === 'sm' ? 'h-5 sm:h-[22px]' : size === 'lg' ? 'h-7 sm:h-8' : 'h-6 sm:h-7'
+    return (
+      <img
+        src={config.badgeImage}
+        alt={config.label}
+        loading="lazy"
+        decoding="async"
+        className={cn('inline-block w-auto select-none object-contain drop-shadow-sm', imgSize, className)}
+      />
+    )
+  }
+
   const sizing =
     size === 'sm' ? 'px-2 py-0.5 text-[9px]' : size === 'lg' ? 'px-3.5 py-1.5 text-[11px]' : 'px-2.5 py-1'
 

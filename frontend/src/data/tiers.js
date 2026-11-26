@@ -6,6 +6,7 @@ export const TIERS = {
   Original: {
     id: 'Original',
     label: 'Original',
+    badgeImage: '/badges/original.png',
     tagline: '100% Authentic',
     description:
       'Genuine branded perfumes bought directly from official French and Italian suppliers.',
@@ -17,6 +18,7 @@ export const TIERS = {
   Inspired: {
     id: 'Inspired',
     label: 'Inspired',
+    badgeImage: '/badges/inspired.png',
     tagline: 'Inspired Blend',
     description:
       'Popular designer scents remade by us with pure French oils, at a lower price.',
@@ -28,6 +30,7 @@ export const TIERS = {
   Mixed: {
     id: 'Mixed',
     label: 'Mixing',
+    badgeImage: '/badges/mixed.png',
     tagline: 'Layer & Mix',
     description:
       'Two or more scents blended together — layer them yourself or let our team make the mix.',
@@ -39,6 +42,7 @@ export const TIERS = {
   Attar: {
     id: 'Attar',
     label: 'Pure Attar',
+    badgeImage: '/badges/attar.png',
     tagline: 'Alcohol-Free Oil',
     description:
       'Pure concentrated perfume oils, distilled rose, oud and musks crafted without alcohol.',
@@ -50,6 +54,7 @@ export const TIERS = {
   Celebrity: {
     id: 'Celebrity',
     label: 'Celebrities Perfumes',
+    badgeImage: '/badges/celebrity.png',
     tagline: 'Celebrity Edition',
     description:
       'Iconic fragrances worn and inspired by world-famous celebrities and style icons.',
@@ -61,6 +66,7 @@ export const TIERS = {
   'Car Perfume': {
     id: 'Car Perfume',
     label: 'Car Perfumes',
+    badgeImage: '/badges/car-perfume.png',
     tagline: 'Car & Diffuser',
     description:
       'Long-lasting artisan hanging diffusers and car fragrances crafted for your automobile.',
@@ -72,6 +78,7 @@ export const TIERS = {
   Combo: {
     id: 'Combo',
     label: 'Combo Sets',
+    badgeImage: '/badges/combo.png',
     tagline: 'Curated 2-Pack Sets',
     description:
       'Specially paired perfume combos and gift box sets curated by our fragrance atelier.',
@@ -83,6 +90,7 @@ export const TIERS = {
   Bakhoor: {
     id: 'Bakhoor',
     label: 'Bakhoor',
+    badgeImage: '/badges/bakhoor.png',
     tagline: 'Aromatic Oud Incense',
     description:
       'Fragrant oud wood chips steeped in natural oils and resins for rich home scenting.',
