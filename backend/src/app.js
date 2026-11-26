@@ -71,7 +71,11 @@ export function createApp() {
         // that is not a cross-origin request and is allowed through.
         if (!origin || allowedOrigins.has(canonicalOrigin(origin))) return callback(null, true)
         // Allow any Cloudflare Pages deployment subdomain (*.raheman-perfumes.pages.dev and *.raheman-admin.pages.dev)
-        if (/^https:\/\/([a-z0-9-]+\.)?raheman-(perfumes|admin)\.pages\.dev$/i.test(origin)) {
+        // and custom domain origins (rahemanperfumes.in, www.rahemanperfumes.in, admin.rahemanperfumes.in)
+        if (
+          /^https:\/\/([a-z0-9-]+\.)?raheman-(perfumes|admin)\.pages\.dev$/i.test(origin) ||
+          /^https:\/\/([a-z0-9-]+\.)?rahemanperfumes\.in$/i.test(origin)
+        ) {
           return callback(null, true)
         }
         return callback(new Error(`Origin ${origin} is not allowed by CORS_ORIGINS.`))

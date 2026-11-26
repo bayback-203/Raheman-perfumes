@@ -1,4 +1,5 @@
 import api from '@/lib/api'
+import { optimizeImageForUpload } from '@/lib/optimizeImage'
 
 /**
  * The admin's **write** layer, and the pull that fills the store from the server.
@@ -336,19 +337,26 @@ export const adminApi = {
     const list = Array.from(files ?? [])
     if (!list.length) return []
 
-    const form = new FormData()
-    // The field name the server's multer instance is configured for. Both sides
-    // have to agree on it, and `files` is the plural route's own word.
-    list.forEach((file) => form.append('files', file))
-    form.append('ownerType', ownerType)
-    // Only when there is something to attach to. A photograph taken before the
-    // fragrance is saved has no owner yet, and the server reads an absent or
-    // malformed ref as "not attached to anything", which is exactly right.
-    if (isRef(ownerId)) form.append('ownerId', ownerId)
-    if (alt) form.append('alt', alt)
+    const optimized = await Promise.all(list.map((file) => optimizeImageForUpload(file)))
 
-    const payload = await api.upload('/admin/uploads/batch', form)
-    return asList(payload, 'media')
+    // Upload files one at a time so each request stays well below proxy body caps (e.g. Nginx 1 MB).
+    const uploaded = []
+    for (const file of optimized) {
+      const form = new FormData()
+      // The field name the server's multer instance is configured for. Both sides
+      // have to agree on it, and `files` is the plural route's own word.
+      form.append('files', file)
+      form.append('ownerType', ownerType)
+      // Only when there is something to attach to. A photograph taken before the
+      // fragrance is saved has no owner yet, and the server reads an absent or
+      // malformed ref as "not attached to anything", which is exactly right.
+      if (isRef(ownerId)) form.append('ownerId', ownerId)
+      if (alt) form.append('alt', alt)
+
+      const payload = await api.upload('/admin/uploads/batch', form)
+      uploaded.push(...asList(payload, 'media'))
+    }
+    return uploaded
   },
 
   /**
