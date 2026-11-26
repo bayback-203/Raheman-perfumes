@@ -144,6 +144,7 @@ export function Hero() {
                 src={src}
                 alt=""
                 decoding="async"
+                referrerPolicy="no-referrer"
                 className={cn(
                   'absolute inset-0 h-full w-full transition-opacity duration-1000 ease-in-out',
                   isDefault ? 'object-contain' : 'object-cover object-left',
@@ -185,6 +186,7 @@ export function Hero() {
                 src={src}
                 alt="Luxury crystal perfume bottle on white marble framed by ornamental grass, roses, jasmine, blood orange, citrus, fig, aqua splash, oud wood, and cinnamon sticks"
                 decoding="async"
+                referrerPolicy="no-referrer"
                 className={cn(
                   'absolute inset-0 h-full w-full transition-opacity duration-1000 ease-in-out',
                   isDefault ? 'object-contain' : 'object-cover object-center',
@@ -229,6 +231,7 @@ export function Hero() {
                 src={src}
                 alt="Luxury crystal perfume bottle on white marble framed by roses, citrus, fig, oud wood, and cinnamon sticks"
                 decoding="async"
+                referrerPolicy="no-referrer"
                 className={cn(
                   'absolute bottom-0 left-0 right-0 h-[104vw] max-h-[460px] w-full transition-opacity duration-1000 ease-in-out',
                   isDefault ? 'object-cover object-right-bottom' : 'object-cover object-center',

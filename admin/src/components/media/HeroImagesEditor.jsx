@@ -22,10 +22,12 @@ export function HeroImagesEditor({ heroImages = [], onChange, disabled = false }
   const replaceIndexRef = useRef(null)
 
   const [uploading, setUploading] = useState(false)
+  const [verifyingUrl, setVerifyingUrl] = useState(false)
   const [dragging, setDragging] = useState(false)
   const [error, setError] = useState('')
   const [urlInput, setUrlInput] = useState('')
   const [showUrlForm, setShowUrlForm] = useState(false)
+  const [brokenSlides, setBrokenSlides] = useState({})
 
   const images = Array.isArray(heroImages) ? heroImages.slice(0, MAX_HERO_IMAGES) : []
   const room = Math.max(0, MAX_HERO_IMAGES - images.length)
@@ -119,9 +121,44 @@ export function HeroImagesEditor({ heroImages = [], onChange, disabled = false }
     }
   }
 
-  const addByUrl = () => {
-    const clean = urlInput.trim()
-    if (!clean) return
+  const normalizePastedUrl = (raw) => {
+    let clean = String(raw || '').trim().replace(/^['"]|['"]$/g, '')
+    if (!clean) return ''
+    try {
+      if (/google\.[a-z.]+\/imgres/i.test(clean)) {
+        const parsed = new URL(clean)
+        const direct = parsed.searchParams.get('imgurl')
+        if (direct) clean = direct
+      }
+    } catch {
+      // ignore URL parse error and proceed with trimmed string
+    }
+    if (!/^https?:\/\//i.test(clean) && !clean.startsWith('/') && !clean.startsWith('data:image/')) {
+      clean = `https://${clean}`
+    }
+    return clean
+  }
+
+  const probeImageUrl = (src) =>
+    new Promise((resolve) => {
+      const img = new Image()
+      let settled = false
+      const finish = (ok) => {
+        if (settled) return
+        settled = true
+        clearTimeout(timer)
+        resolve(ok)
+      }
+      const timer = setTimeout(() => finish(false), 8000)
+      img.referrerPolicy = 'no-referrer'
+      img.onload = () => finish(true)
+      img.onerror = () => finish(false)
+      img.src = resolveImageUrl(src)
+    })
+
+  const addByUrl = async () => {
+    const clean = normalizePastedUrl(urlInput)
+    if (!clean || verifyingUrl) return
     setError('')
     if (images.length >= MAX_HERO_IMAGES) {
       setError(`Maximum ${MAX_HERO_IMAGES} hero images allowed.`)
@@ -131,6 +168,18 @@ export function HeroImagesEditor({ heroImages = [], onChange, disabled = false }
       setError('This image URL is already added.')
       return
     }
+
+    setVerifyingUrl(true)
+    const ok = await probeImageUrl(clean)
+    setVerifyingUrl(false)
+
+    if (!ok) {
+      setError(
+        'Could not load an image from that link. Make sure it is a direct image URL (right-click the image → Copy image address), or upload the image file instead.',
+      )
+      return
+    }
+
     onChange([...images, clean])
     setUrlInput('')
     setShowUrlForm(false)
@@ -186,11 +235,29 @@ export function HeroImagesEditor({ heroImages = [], onChange, disabled = false }
               className="group relative flex flex-col overflow-hidden rounded-lg border border-outline-variant bg-brand-paper shadow-sm"
             >
               <div className="relative aspect-[16/9] w-full overflow-hidden bg-surface-low">
-                <img
-                  src={resolveImageUrl(url)}
-                  alt={`Hero slide ${index + 1}`}
-                  className="h-full w-full object-cover"
-                />
+                {brokenSlides[url] ? (
+                  <div className="flex h-full w-full flex-col items-center justify-center gap-1 px-4 text-center text-ink-muted">
+                    <Icon name="alert-circle" className="h-5 w-5 text-error" />
+                    <span className="text-label-sm font-medium text-error">Image failed to load</span>
+                    <span className="text-[11px]">Click Replace to upload a file or paste a direct image URL</span>
+                  </div>
+                ) : (
+                  <img
+                    src={resolveImageUrl(url)}
+                    alt={`Hero slide ${index + 1}`}
+                    referrerPolicy="no-referrer"
+                    onError={() => setBrokenSlides((prev) => ({ ...prev, [url]: true }))}
+                    onLoad={() =>
+                      setBrokenSlides((prev) => {
+                        if (!prev[url]) return prev
+                        const next = { ...prev }
+                        delete next[url]
+                        return next
+                      })
+                    }
+                    className="h-full w-full object-cover"
+                  />
+                )}
                 <span className="absolute left-2 top-2 rounded bg-shell-obsidian/80 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-brand-ivory">
                   Slide {index + 1}
                 </span>
@@ -290,14 +357,20 @@ export function HeroImagesEditor({ heroImages = [], onChange, disabled = false }
       {!disabled && showUrlForm && room > 0 && (
         <div className="flex flex-col gap-2 rounded border border-outline-variant/70 bg-surface-low/40 p-3 sm:flex-row sm:items-end">
           <Input
-            label="Image URL"
+            label="Direct Image URL"
             placeholder="https://..."
             value={urlInput}
             onChange={(e) => setUrlInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault()
+                addByUrl()
+              }
+            }}
             containerClassName="flex-1"
           />
-          <Button variant="gold" size="sm" onClick={addByUrl} disabled={!urlInput.trim()}>
-            Add URL
+          <Button variant="gold" size="sm" loading={verifyingUrl} onClick={addByUrl} disabled={!urlInput.trim() || verifyingUrl}>
+            {verifyingUrl ? 'Checking…' : 'Add URL'}
           </Button>
         </div>
       )}
