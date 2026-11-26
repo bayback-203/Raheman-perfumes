@@ -6,6 +6,7 @@ import useCartStore from '@/store/cartStore'
 import { toast } from '@/store/uiStore'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
+import { EmptyState } from '@/components/ui/Feedback'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Accordion } from '@/components/ui/Accordion'
 import { Tabs } from '@/components/ui/Tabs'
@@ -212,22 +213,20 @@ export function OffersPage() {
 
           <div className="pt-8">
             {filteredVault.length === 0 ? (
-              <p className="py-12 text-center text-body-md text-brand-muted">
-                {unavailable
-                  ? 'The store could not be reached, so there is nothing to list here right now.'
-                  : offerProducts.length === 0
-                    ? 'No special offer perfumes are listed right now —'
-                    : 'No special deals in this category right now. Try another tab, or'}
-                {!unavailable && (
-                  <>
-                    {' '}
-                    <Link to="/shop" className="link-underline text-brand-goldDark">
-                      browse the full collection
-                    </Link>
-                    .
-                  </>
-                )}
-              </p>
+              <EmptyState
+                image={unavailable ? '/states/state-server-down.svg' : '/states/state-no-offers.svg'}
+                title={
+                  unavailable
+                    ? 'Temporarily Unable to Load Deals'
+                    : offerProducts.length === 0
+                      ? 'Special Offers Coming Soon'
+                      : 'No deals in this category right now'
+                }
+                actionLabel={unavailable ? 'Try Again' : 'Browse Full Collection'}
+                actionTo={unavailable ? undefined : '/shop'}
+                onAction={unavailable ? () => window.location.reload() : undefined}
+                className="py-10"
+              />
             ) : (
               <div className="grid grid-cols-2 items-stretch gap-5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
                 {filteredVault.map((product) => (
@@ -247,11 +246,13 @@ export function OffersPage() {
 
             <div className="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {coupons.length === 0 ? (
-                <p className="py-8 text-center text-body-md text-brand-muted sm:col-span-2 lg:col-span-3">
-                  {unavailable
-                    ? 'The store could not be reached, so no codes can be shown.'
-                    : 'No coupon codes are active right now — check back soon.'}
-                </p>
+                <div className="sm:col-span-2 lg:col-span-3">
+                  <EmptyState
+                    image={unavailable ? '/states/state-server-down.svg' : '/states/state-no-offers.svg'}
+                    title={unavailable ? 'Temporarily Unable to Load Coupons' : 'No active coupon codes right now'}
+                    className="py-8"
+                  />
+                </div>
               ) : (
                 coupons.map((coupon) => (
                   <CouponCard key={coupon.code} coupon={coupon} subtotal={subtotal} />

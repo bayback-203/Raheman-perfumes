@@ -15,10 +15,16 @@ export function NotFoundPage() {
   useDocumentTitle('Page Not Found')
 
   return (
-    <div className="shell flex min-h-[70vh] flex-col items-center justify-center py-20 text-center">
-      <p className="font-serif text-[92px] font-medium leading-none text-brand-gold/35 sm:text-[128px]">404</p>
+    <div className="shell flex min-h-[70vh] flex-col items-center justify-center py-16 text-center">
+      <img
+        src="/states/state-not-found.svg"
+        alt=""
+        aria-hidden="true"
+        className="mb-3 h-40 w-auto max-w-[240px] object-contain drop-shadow-[0_12px_28px_rgba(200,155,60,0.16)] sm:h-48"
+      />
+      <p className="font-serif text-[72px] font-medium leading-none text-brand-gold/45 sm:text-[96px]">404</p>
 
-      <h1 className="-mt-4 font-serif text-3xl font-medium text-brand-charcoal lg:text-headline-xl">
+      <h1 className="-mt-2 font-serif text-3xl font-medium text-brand-charcoal lg:text-headline-xl">
         Page not found
       </h1>
       <p className="mt-3 max-w-lg text-body-md leading-relaxed text-brand-muted">

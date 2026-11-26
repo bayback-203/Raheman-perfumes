@@ -29,8 +29,9 @@ export function CombosPage() {
       <CatalogueView
         catalogue={catalogue}
         loading={loading}
+        emptyImage="/states/state-combos-coming.png"
         emptyTitle="Curated Combo Sets Coming Soon"
-        emptyDescription="Exclusive 2-perfume combo gift sets are currently being prepared by our master perfumers. Explore our single fragrances or check back shortly."
+        emptyDescription="Exclusive 2-perfume combo gift sets are being prepared by our perfumers."
         lockTier
       />
     </>

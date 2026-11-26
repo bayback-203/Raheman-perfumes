@@ -5,6 +5,7 @@ import useWishlistStore from '@/store/wishlistStore'
 import useUiStore, { toast } from '@/store/uiStore'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
+import { EmptyState } from '@/components/ui/Feedback'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { ProductCard } from '@/components/product/ProductCard'
 import {
@@ -224,13 +225,14 @@ export function BestSellers({ products }) {
         </div>
 
         {displayList.length === 0 ? (
-          <div className="mt-8 rounded-xl border border-dashed border-brand-border bg-brand-cream/40 px-6 py-12 text-center">
-            <p className="text-body-md font-medium text-brand-charcoal">
-              No {currentTab.label.toLowerCase()} bestsellers available right now.
-            </p>
-            <Button variant="outline" size="sm" to={currentTab.to} className="mt-4">
-              Explore {currentTab.label}
-            </Button>
+          <div className="mt-8 rounded-xl border border-dashed border-brand-border bg-brand-cream/40">
+            <EmptyState
+              image="/states/state-coming-soon.svg"
+              title={`No ${currentTab.label.toLowerCase()} bestsellers right now`}
+              actionLabel={`Explore ${currentTab.label}`}
+              actionTo={currentTab.to}
+              className="py-10"
+            />
           </div>
         ) : (
           <div
@@ -339,11 +341,14 @@ export function DealsOfDay() {
         </div>
 
         {featuredDeals.length === 0 ? (
-          <div className="mt-9 rounded-xl border border-dashed border-brand-border bg-neutral-50/70 px-6 py-10 text-center">
-            <p className="text-body-md font-medium text-brand-charcoal">No in-stock discount offers available right now.</p>
-            <Button variant="gold" size="sm" to="/offers" className="mt-4">
-              View Offers Page
-            </Button>
+          <div className="mt-9 rounded-xl border border-dashed border-brand-border bg-neutral-50/70">
+            <EmptyState
+              image="/states/state-no-offers.svg"
+              title="Exclusive deals arriving soon"
+              actionLabel="View Offers Page"
+              actionTo="/offers"
+              className="py-10"
+            />
           </div>
         ) : (
           <div

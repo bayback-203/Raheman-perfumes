@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 220" fill="none">
+  <defs>
+    <radialGradient id="halo" cx="50%" cy="54%" r="44%">
+      <stop offset="0%" stop-color="#EBBBC6" stop-opacity="0.28"/>
+      <stop offset="70%" stop-color="#D8B878" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#D8B878" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EBCE95"/>
+      <stop offset="50%" stop-color="#C89B3C"/>
+      <stop offset="100%" stop-color="#9A7222"/>
+    </linearGradient>
+    <filter id="shadow" x="-15%" y="-15%" width="130%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#8C6D2E" flood-opacity="0.14"/>
+    </filter>
+  </defs>
+  <ellipse cx="140" cy="116" rx="108" ry="82" fill="url(#halo)"/>
+  <ellipse cx="140" cy="182" rx="68" ry="8" fill="#C89B3C" fill-opacity="0.14"/>
+  <g filter="url(#shadow)">
+    <!-- Heart tray base -->
+    <path d="M140 168 C140 168 78 134 78 96 C78 76 94 64 111 64 C124 64 134 71 140 80 C146 71 156 64 169 64 C186 64 202 76 202 96 C202 134 140 168 140 168 Z" fill="#FFFDF8" stroke="url(#gold)" stroke-width="2.4"/>
+    <path d="M140 156 C140 156 90 127 90 97 C90 82 101 74 113 74 C124 74 133 81 140 90 C147 81 156 74 167 74 C179 74 190 82 190 97 C190 127 140 156 140 156 Z" fill="#FAF4E8" stroke="#E5CE9A" stroke-width="1"/>
+    <!-- Miniature attar crystal flacon inside -->
+    <rect x="126" y="96" width="28" height="36" rx="6" fill="#FFFFFF" stroke="url(#gold)" stroke-width="1.5"/>
+    <rect x="130" y="109" width="20" height="19" rx="3" fill="#F2D89C" fill-opacity="0.72"/>
+    <polygon points="140,76 148,88 132,88" fill="url(#gold)"/>
+    <rect x="134" y="88" width="12" height="8" fill="#1A1817"/>
+  </g>
+  <!-- Rose petals -->
+  <path d="M74 154 C64 144 68 134 78 138 C84 140 84 150 74 154 Z" fill="#EBBBC6" fill-opacity="0.8"/>
+  <path d="M206 144 C216 136 222 146 214 154 C208 158 202 152 206 144 Z" fill="#EBBBC6" fill-opacity="0.75"/>
+  <path d="M204 60 L206 66 L212 68 L206 70 L204 76 L202 70 L196 68 L202 66 Z" fill="url(#gold)"/>
+</svg>

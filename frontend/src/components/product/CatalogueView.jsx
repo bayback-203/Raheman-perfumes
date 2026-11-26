@@ -178,6 +178,7 @@ export function CatalogueView({
   loading = false,
   emptyTitle = 'No fragrances match these filters',
   emptyDescription = 'Try loosening a filter or clearing the refinement panel to see the full collection.',
+  emptyImage,
   onClearFiltersOverride,
   layout = 'sidebar',
   lockTier = false,
@@ -349,15 +350,36 @@ export function CatalogueView({
               <>
                 <div className="flex-1 pb-10">
                   <EmptyState
-                    icon="search"
-                    title={unavailable ? 'The shop could not be reached' : emptyTitle}
+                    image={
+                      unavailable
+                        ? '/states/state-server-down.svg'
+                        : activeChips.length > 0
+                          ? '/states/state-empty-search.svg'
+                          : emptyImage || '/states/state-coming-soon.svg'
+                    }
+                    title={unavailable ? 'Temporarily Unable to Load' : emptyTitle}
                     description={
                       unavailable
-                        ? 'No catalogue is loaded because the server did not answer — nothing here is invented. Check your connection and reload to see what is listed.'
-                        : emptyDescription
+                        ? 'Please check your connection and refresh the page.'
+                        : activeChips.length > 0
+                          ? emptyDescription
+                          : undefined
                     }
-                    actionLabel={unavailable ? undefined : 'Clear Filters'}
-                    onAction={unavailable ? undefined : handleClear}
+                    actionLabel={
+                      unavailable
+                        ? 'Try Again'
+                        : activeChips.length > 0
+                          ? 'Clear Filters'
+                          : 'Browse All Perfumes'
+                    }
+                    actionTo={!unavailable && activeChips.length === 0 ? '/shop' : undefined}
+                    onAction={
+                      unavailable
+                        ? () => window.location.reload()
+                        : activeChips.length > 0
+                          ? handleClear
+                          : undefined
+                    }
                   />
                 </div>
                 <div className="mt-auto space-y-3 border-t border-[#EFE5D5] pt-5 pb-2.5">

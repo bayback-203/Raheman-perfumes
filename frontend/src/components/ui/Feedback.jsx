@@ -112,18 +112,45 @@ export function DiscountRibbon({ percent, className }) {
   )
 }
 
+const EMPTY_STATE_IMAGES = {
+  bag: '/states/state-empty-bag.svg',
+  heart: '/states/state-empty-wishlist.svg',
+  search: '/states/state-empty-search.svg',
+  package: '/states/state-no-orders.svg',
+  star: '/states/state-no-reviews.svg',
+  'map-pin': '/states/state-empty-addresses.svg',
+  tag: '/states/state-no-offers.svg',
+  server: '/states/state-server-down.svg',
+  combos: '/states/state-combos-coming.png',
+  coming: '/states/state-coming-soon.svg',
+  user: '/states/state-empty-addresses.svg',
+}
+
 /**
  * Empty state shared by the cart, wishlist, search results and order tracking.
- * Always offers a way forward rather than dead-ending the shopper.
+ * Displays a bespoke transparent luxury illustration alongside a clear action.
  */
-export function EmptyState({ icon = 'bag', title, description, actionLabel, actionTo, onAction, secondary, className }) {
+export function EmptyState({ icon = 'bag', image, title, description, actionLabel, actionTo, onAction, secondary, className }) {
+  const illustration = image || EMPTY_STATE_IMAGES[icon]
+
   return (
-    <div className={cn('flex flex-col items-center justify-center px-6 py-16 text-center', className)}>
-      <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-full border border-brand-border bg-white">
-        <Icon name={icon} className="h-7 w-7 text-brand-goldDark" strokeWidth={1.5} />
-      </div>
-      <h3 className="text-headline-sm font-semibold text-brand-charcoal">{title}</h3>
-      {description && <p className="mt-2 max-w-md text-body-md text-brand-muted">{description}</p>}
+    <div className={cn('flex flex-col items-center justify-center px-6 py-14 text-center', className)}>
+      {illustration ? (
+        <img
+          src={illustration}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          decoding="async"
+          className="mb-4 h-36 w-auto max-w-[220px] object-contain drop-shadow-[0_10px_24px_rgba(200,155,60,0.14)] sm:h-44 sm:max-w-[260px]"
+        />
+      ) : (
+        <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-full border border-brand-border bg-white">
+          <Icon name={icon} className="h-7 w-7 text-brand-goldDark" strokeWidth={1.5} />
+        </div>
+      )}
+      <h3 className="font-cormorant text-2xl font-semibold text-brand-charcoal sm:text-headline-md">{title}</h3>
+      {description && <p className="mt-2 max-w-md text-body-sm leading-relaxed text-brand-muted sm:text-body-md">{description}</p>}
       {(actionLabel || secondary) && (
         <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
           {actionLabel && (

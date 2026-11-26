@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 220" fill="none">
+  <defs>
+    <radialGradient id="halo" cx="50%" cy="54%" r="44%">
+      <stop offset="0%" stop-color="#D8B878" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#D8B878" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EBCE95"/>
+      <stop offset="50%" stop-color="#C89B3C"/>
+      <stop offset="100%" stop-color="#9A7222"/>
+    </linearGradient>
+    <filter id="shadow" x="-15%" y="-15%" width="130%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#8C6D2E" flood-opacity="0.14"/>
+    </filter>
+  </defs>
+  <ellipse cx="140" cy="116" rx="108" ry="82" fill="url(#halo)"/>
+  <ellipse cx="140" cy="182" rx="68" ry="8" fill="#C89B3C" fill-opacity="0.14"/>
+  <g filter="url(#shadow)">
+    <!-- Two crossed ivory blotter strips -->
+    <rect x="86" y="74" width="24" height="96" rx="4" transform="rotate(-14 98 122)" fill="#FFFDF8" stroke="url(#gold)" stroke-width="1.5"/>
+    <rect x="116" y="72" width="24" height="96" rx="4" transform="rotate(8 128 120)" fill="#FAF4E6" stroke="url(#gold)" stroke-width="1.5"/>
+    <!-- Gold fountain pen -->
+    <path d="M168 158 L194 82 L206 86 L180 162 L170 166 Z" fill="url(#gold)" stroke="#9A7222" stroke-width="1.2"/>
+    <polygon points="170,166 168,158 180,162" fill="#1A1817"/>
+    <circle cx="198" cy="84" r="3" fill="#FFFDF8"/>
+  </g>
+  <path d="M74 96 L76 102 L82 104 L76 106 L74 112 L72 106 L66 104 L72 102 Z" fill="url(#gold)"/>
+</svg>

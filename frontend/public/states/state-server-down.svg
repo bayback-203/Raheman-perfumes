@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 220" fill="none">
+  <defs>
+    <radialGradient id="halo" cx="50%" cy="54%" r="44%">
+      <stop offset="0%" stop-color="#D8B878" stop-opacity="0.22"/>
+      <stop offset="70%" stop-color="#F6E2B3" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#D8B878" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E7CC92"/>
+      <stop offset="50%" stop-color="#C89B3C"/>
+      <stop offset="100%" stop-color="#9A7222"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.88"/>
+      <stop offset="50%" stop-color="#FAF5EA" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#EAD8B4" stop-opacity="0.35"/>
+    </linearGradient>
+    <filter id="shadow" x="-15%" y="-15%" width="130%" height="140%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#8C6D2E" flood-opacity="0.14"/>
+    </filter>
+  </defs>
+  <ellipse cx="140" cy="120" rx="108" ry="84" fill="url(#halo)"/>
+  <ellipse cx="140" cy="184" rx="68" ry="9" fill="#C89B3C" fill-opacity="0.14"/>
+  <!-- Marble plinth -->
+  <g filter="url(#shadow)">
+    <rect x="76" y="164" width="128" height="14" rx="7" fill="#FAF6EE" stroke="url(#gold)" stroke-width="1.4"/>
+    <!-- Glass cloche dome -->
+    <path d="M90 164 V104 C90 71 112 48 140 48 C168 48 190 71 190 104 V164 Z" fill="url(#glass)" stroke="url(#gold)" stroke-width="1.6"/>
+    <!-- Top finial knob -->
+    <circle cx="140" cy="40" r="7" fill="url(#gold)"/>
+    <circle cx="140" cy="40" r="3" fill="#FFFDF8" fill-opacity="0.6"/>
+    <!-- Bottle sleeping inside dome -->
+    <rect x="118" y="106" width="44" height="50" rx="6" fill="#FFFDF9" stroke="url(#gold)" stroke-width="1.4"/>
+    <rect x="124" y="122" width="32" height="28" rx="3" fill="#F2DFB4" fill-opacity="0.6"/>
+    <rect x="131" y="92" width="18" height="14" rx="2" fill="url(#gold)"/>
+    <rect x="128" y="80" width="24" height="12" rx="4" fill="#1A1817"/>
+    <!-- Reflection streak -->
+    <path d="M104 150 V105 C104 82 117 64 134 59" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-opacity="0.8"/>
+  </g>
+  <!-- Signal waves / pause motif top right -->
+  <g transform="translate(198 44)" stroke="url(#gold)" stroke-width="2" stroke-linecap="round">
+    <circle cx="14" cy="14" r="14" fill="#FFFFFF" fill-opacity="0.92"/>
+    <path d="M9 10 L19 18 M19 10 L9 18" stroke="#9A7222" stroke-width="1.8"/>
+  </g>
+  <!-- Botanical sparkles -->
+  <path d="M62 84 L64.5 91 L71 93.5 L64.5 96 L62 103 L59.5 96 L53 93.5 L59.5 91 Z" fill="url(#gold)" fill-opacity="0.75"/>
+  <circle cx="214" cy="128" r="3" fill="#D8B878" fill-opacity="0.7"/>
+</svg>
