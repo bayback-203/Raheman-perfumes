@@ -731,28 +731,64 @@
 }
 
 /* Midnight Cosmic (Dark Starry Sky) — toggled from Admin -> Website Display / Settings */
+html[data-theme='midnight'] {
+  color-scheme: dark;
+}
+
+html[data-theme='midnight'] ::view-transition {
+  background-color: #060d1d;
+}
+
+html[data-theme='midnight'] ::selection {
+  background-color: #d8b878;
+  color: #070e1e;
+}
+
 html[data-theme='midnight'] body {
   background-color: #060d1d;
   background-image:
-    linear-gradient(180deg, rgba(6, 13, 29, 0.46) 0%, rgba(7, 15, 34, 0.34) 50%, rgba(5, 10, 24, 0.62) 100%),
+    linear-gradient(180deg, rgba(4, 10, 24, 0.56) 0%, rgba(7, 15, 34, 0.42) 50%, rgba(4, 9, 22, 0.7) 100%),
     url('/theme-midnight.jpg');
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
-  color: #f4efe6;
+  color: #f5f0e6;
 }
 
+/* ── Section bands & crisp alternating visual separation ─────────────── */
 html[data-theme='midnight'] .bridal-canvas,
-html[data-theme='midnight'] .bridal-banner,
-html[data-theme='midnight'] section.bg-white,
-html[data-theme='midnight'] section[class*='bg-gradient-to-'] {
-  background: transparent !important;
-  border-color: rgba(216, 184, 120, 0.18) !important;
+html[data-theme='midnight'] section.bg-white {
+  background: linear-gradient(180deg, rgba(5, 11, 26, 0.36) 0%, rgba(8, 17, 38, 0.52) 100%) !important;
+  border-color: rgba(216, 184, 120, 0.22) !important;
 }
 
+html[data-theme='midnight'] .bridal-banner,
+html[data-theme='midnight'] section[class*='bg-gradient-to-'],
+html[data-theme='midnight'] section.border-y {
+  background: linear-gradient(180deg, rgba(12, 24, 54, 0.76) 0%, rgba(7, 15, 35, 0.68) 100%) !important;
+  border-color: rgba(216, 184, 120, 0.3) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(216, 184, 120, 0.1),
+    inset 0 -1px 0 rgba(216, 184, 120, 0.06) !important;
+}
+
+/* Soften pastel decorative corner blobs so they glow like cosmic nebula mist */
+html[data-theme='midnight'] .hero-aura-pink,
+html[data-theme='midnight'] div[class*='bg-[#FAD9E2]'],
+html[data-theme='midnight'] div[class*='from-[#FAD9E2]'] {
+  background: radial-gradient(circle, rgba(56, 97, 178, 0.22) 0%, transparent 72%) !important;
+}
+
+html[data-theme='midnight'] .hero-aura-gold,
+html[data-theme='midnight'] div[class*='bg-[#F3DFB4]'],
+html[data-theme='midnight'] div[class*='from-[#F5E1B8]'] {
+  background: radial-gradient(circle, rgba(216, 184, 120, 0.14) 0%, transparent 72%) !important;
+}
+
+/* ── Hero Banner & Dark Left Spotlight ──────────────────────────────── */
 html[data-theme='midnight'] .hero-section {
-  background: transparent !important;
-  border-color: rgba(216, 184, 120, 0.2) !important;
+  background: #060d1d !important;
+  border-color: rgba(216, 184, 120, 0.25) !important;
 }
 
 html[data-theme='midnight'] .hero-backdrop,
@@ -760,137 +796,409 @@ html[data-theme='midnight'] .hero-mobile-custom-wrap {
   background-color: #060d1d !important;
 }
 
+html[data-theme='midnight'] .hero-default-top-fade {
+  background: linear-gradient(to bottom, rgba(4, 10, 24, 0.88), transparent) !important;
+}
+
+html[data-theme='midnight'] .hero-mist-radial-default,
+html[data-theme='midnight'] .hero-mist-radial-custom {
+  background: radial-gradient(
+    44% 58% at 24% 50%,
+    rgba(4, 10, 24, 0.92) 0%,
+    rgba(5, 12, 28, 0.72) 48%,
+    rgba(6, 13, 29, 0.22) 78%,
+    rgba(6, 13, 29, 0) 100%
+  ) !important;
+}
+
 html[data-theme='midnight'] .hero-custom-scrim-x {
   background: linear-gradient(
     to right,
-    rgba(6, 13, 29, 0.72) 0%,
-    rgba(6, 13, 29, 0.48) 30%,
-    rgba(6, 13, 29, 0.14) 52%,
+    rgba(4, 10, 24, 0.92) 0%,
+    rgba(5, 12, 28, 0.76) 30%,
+    rgba(6, 13, 29, 0.34) 50%,
     rgba(6, 13, 29, 0) 70%
-  );
+  ) !important;
 }
 
 html[data-theme='midnight'] .hero-custom-scrim-y {
   background: linear-gradient(
     to bottom,
-    rgba(6, 13, 29, 0.72) 0%,
-    rgba(6, 13, 29, 0.28) 55%,
+    rgba(4, 10, 24, 0.9) 0%,
+    rgba(5, 12, 28, 0.44) 60%,
     rgba(6, 13, 29, 0) 100%
-  );
+  ) !important;
 }
 
-html[data-theme='midnight'] .hero-mist-radial-custom {
-  background: radial-gradient(
-    36% 48% at 25% 50%,
-    rgba(6, 13, 29, 0.48) 0%,
-    rgba(6, 13, 29, 0.24) 48%,
-    rgba(6, 13, 29, 0) 100%
-  );
+html[data-theme='midnight'] [class*='sm:from-white/90'] {
+  background: linear-gradient(
+    to right,
+    rgba(4, 10, 24, 0.9) 0%,
+    rgba(5, 12, 28, 0.56) 52%,
+    transparent 100%
+  ) !important;
 }
 
 html[data-theme='midnight'] .hero-mobile-feather-top {
-  background: linear-gradient(to bottom, #071024, transparent);
+  background: linear-gradient(to bottom, #060d1d, transparent);
 }
 
 html[data-theme='midnight'] .hero-mobile-feather-bottom {
-  background: linear-gradient(to top, #071024, transparent);
+  background: linear-gradient(to top, #060d1d, transparent);
 }
 
+html[data-theme='midnight'] .hero-slide-dots {
+  background-color: rgba(7, 15, 34, 0.88) !important;
+  border-color: rgba(216, 184, 120, 0.36) !important;
+}
+
+html[data-theme='midnight'] .hero-slide-dots button {
+  background-color: rgba(245, 240, 230, 0.35) !important;
+}
+
+html[data-theme='midnight'] .hero-slide-dots button[aria-selected='true'] {
+  background-color: #e6c987 !important;
+}
+
+/* ── Sticky Header, Dropdowns & Search Overlay ──────────────────────── */
 html[data-theme='midnight'] header.site-header-transparent {
-  background: linear-gradient(to bottom, rgba(6, 13, 29, 0.62), transparent);
+  background: linear-gradient(
+    to bottom,
+    rgba(4, 10, 24, 0.92) 0%,
+    rgba(5, 12, 28, 0.62) 68%,
+    rgba(6, 13, 29, 0) 100%
+  ) !important;
+  backdrop-filter: blur(8px);
 }
 
 html[data-theme='midnight'] header.site-header-scrolled {
-  background-color: rgba(7, 15, 34, 0.88) !important;
-  border-color: rgba(216, 184, 120, 0.25) !important;
+  background-color: rgba(5, 11, 26, 0.95) !important;
+  border-color: rgba(216, 184, 120, 0.28) !important;
+  backdrop-filter: blur(16px);
+}
+
+html[data-theme='midnight'] header nav a.text-tier-original {
+  color: #fca5a5 !important;
+}
+
+html[data-theme='midnight'] .header-dropdown-panel {
+  background: linear-gradient(180deg, rgba(10, 20, 44, 0.98) 0%, rgba(5, 11, 26, 0.99) 100%) !important;
+  border-color: rgba(216, 184, 120, 0.34) !important;
+  border-top-color: #d8b878 !important;
+  box-shadow: 0 24px 48px -12px rgba(2, 6, 18, 0.88) !important;
   backdrop-filter: blur(14px);
 }
 
+html[data-theme='midnight'] .header-dropdown-panel a {
+  color: #f5f0e6 !important;
+}
+
+html[data-theme='midnight'] .header-dropdown-panel a:hover,
+html[data-theme='midnight'] .header-dropdown-panel a[class*='bg-[#F3E5CA]'] {
+  background-color: rgba(216, 184, 120, 0.16) !important;
+  color: #e6c987 !important;
+}
+
+html[data-theme='midnight'] .header-dropdown-panel a.border-t {
+  border-top-color: rgba(216, 184, 120, 0.24) !important;
+  color: #e6c987 !important;
+}
+
+html[data-theme='midnight'] .header-search-panel {
+  background-color: rgba(9, 19, 43, 0.98) !important;
+  border-color: rgba(216, 184, 120, 0.32) !important;
+  backdrop-filter: blur(14px);
+}
+
+html[data-theme='midnight'] .header-search-panel a:hover,
+html[data-theme='midnight'] .header-search-footer {
+  background-color: rgba(16, 31, 66, 0.95) !important;
+  color: #e6c987 !important;
+}
+
+html[data-theme='midnight'] .header-search-footer:hover {
+  background-color: rgba(24, 44, 90, 0.98) !important;
+}
+
+html[data-theme='midnight'] div[class*='bg-white/98'] {
+  background-color: rgba(5, 11, 26, 0.97) !important;
+}
+
+/* ── Product Cards, Category Tiles & Cosmic Glass Surfaces ──────────── */
+html[data-theme='midnight'] .product-card,
 html[data-theme='midnight'] .card-surface,
 html[data-theme='midnight'] aside.bg-white,
 html[data-theme='midnight'] div[role='dialog'],
-html[data-theme='midnight'] header div.bg-white,
-html[data-theme='midnight'] .bg-white\/95,
-html[data-theme='midnight'] .bg-white\/90,
-html[data-theme='midnight'] .bg-white\/85,
-html[data-theme='midnight'] .bg-white\/80,
-html[data-theme='midnight'] .bg-brand-ivory,
-html[data-theme='midnight'] .bg-brand-cream,
 html[data-theme='midnight'] li.bg-gradient-to-b,
 html[data-theme='midnight'] a.bg-gradient-to-b,
-html[data-theme='midnight'] div.bg-brand-cream\/40 {
-  background: rgba(10, 20, 44, 0.86) !important;
+html[data-theme='midnight'] a.bg-white,
+html[data-theme='midnight'] section.bg-white.rounded-xl {
+  background: linear-gradient(170deg, rgba(14, 27, 58, 0.94) 0%, rgba(8, 16, 37, 0.98) 100%) !important;
   border-color: rgba(216, 184, 120, 0.28) !important;
+  box-shadow:
+    0 14px 34px -12px rgba(2, 6, 18, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
   backdrop-filter: blur(12px);
 }
 
+html[data-theme='midnight'] .product-card:hover,
+html[data-theme='midnight'] .card-lift:hover,
+html[data-theme='midnight'] li.bg-gradient-to-b:hover,
+html[data-theme='midnight'] a.bg-gradient-to-b:hover {
+  border-color: rgba(216, 184, 120, 0.68) !important;
+  box-shadow:
+    0 20px 44px -10px rgba(216, 184, 120, 0.22),
+    0 0 0 1px rgba(216, 184, 120, 0.22) !important;
+}
+
+/* Inner studio frame inside ProductCard remains crisp luminous pearl for white-background bottles */
+html[data-theme='midnight'] .product-card-stage {
+  background: linear-gradient(145deg, #ffffff 0%, #faf5eb 100%) !important;
+  border-color: rgba(216, 184, 120, 0.34) !important;
+}
+
+html[data-theme='midnight'] .product-card-discount {
+  background: linear-gradient(135deg, rgba(8, 16, 36, 0.94), rgba(16, 30, 62, 0.94)) !important;
+  border-color: rgba(216, 184, 120, 0.58) !important;
+  color: #f5dfb0 !important;
+}
+
+html[data-theme='midnight'] .product-card-action-btn,
+html[data-theme='midnight'] .row-slider-btn {
+  background-color: rgba(8, 16, 36, 0.92) !important;
+  border-color: rgba(216, 184, 120, 0.45) !important;
+  color: #f5f0e6 !important;
+}
+
+html[data-theme='midnight'] .product-card-action-btn.is-wishlisted {
+  border-color: rgba(251, 113, 133, 0.6) !important;
+  color: #fb7185 !important;
+}
+
+html[data-theme='midnight'] .product-card-action-btn:not(:disabled):hover,
+html[data-theme='midnight'] .row-slider-btn:not(:disabled):hover {
+  background-color: #d8b878 !important;
+  border-color: #d8b878 !important;
+  color: #070e1e !important;
+}
+
+/* Remaining light panels, drawers, chips, cards across Catalogue / Checkout / Account / Cart */
+html[data-theme='midnight'] :not(#printable-tax-invoice):not(#printable-tax-invoice *) > .bg-white,
+html[data-theme='midnight'] .bg-white:not(body):not(section):not(.product-card-stage):not(.hero-mobile-custom-wrap):not(.brand-marquee *):not(#printable-tax-invoice),
+html[data-theme='midnight'] .bg-white\/95:not(.product-card-action-btn),
+html[data-theme='midnight'] .bg-white\/90,
+html[data-theme='midnight'] .bg-white\/85,
+html[data-theme='midnight'] .bg-white\/80,
+html[data-theme='midnight'] .bg-white\/70,
+html[data-theme='midnight'] .bg-white\/55,
+html[data-theme='midnight'] .bg-white\/50,
+html[data-theme='midnight'] .bg-white\/40,
+html[data-theme='midnight'] .bg-brand-ivory,
+html[data-theme='midnight'] .bg-brand-cream,
+html[data-theme='midnight'] .bg-brand-cream\/30,
+html[data-theme='midnight'] .bg-brand-cream\/40,
+html[data-theme='midnight'] .bg-neutral-50,
+html[data-theme='midnight'] .bg-neutral-50\/70,
+html[data-theme='midnight'] .bg-neutral-50\/50,
+html[data-theme='midnight'] .bg-neutral-100,
+html[data-theme='midnight'] .bg-\[\#FAFAFA\],
+html[data-theme='midnight'] .bg-\[\#F9F9F9\],
+html[data-theme='midnight'] .bg-\[\#F6F6F6\],
+html[data-theme='midnight'] .bg-\[\#F5F5F5\],
+html[data-theme='midnight'] .bg-\[\#F8F4EE\],
+html[data-theme='midnight'] .bg-\[\#FAF7EE\],
+html[data-theme='midnight'] .bg-\[\#FDF9F2\],
+html[data-theme='midnight'] .bg-\[\#F9F7F3\],
+html[data-theme='midnight'] div[class*='from-amber-50'] {
+  background: rgba(11, 22, 48, 0.88) !important;
+  border-color: rgba(216, 184, 120, 0.28) !important;
+}
+
+/* Keep printable tax invoice always white/high-contrast */
+html[data-theme='midnight'] #printable-tax-invoice,
+html[data-theme='midnight'] #printable-tax-invoice * {
+  color: revert !important;
+}
+
+html[data-theme='midnight'] #printable-tax-invoice,
+html[data-theme='midnight'] #printable-tax-invoice > div {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+}
+
+/* ── Typography & Semantic Contrast ─────────────────────────────────── */
 html[data-theme='midnight'] .text-brand-charcoal,
 html[data-theme='midnight'] .text-ink,
 html[data-theme='midnight'] .text-ink-variant,
 html[data-theme='midnight'] h1,
 html[data-theme='midnight'] h2,
-html[data-theme='midnight'] h3 {
-  color: #f7f2e8 !important;
+html[data-theme='midnight'] h3,
+html[data-theme='midnight'] h4 {
+  color: #f6f1e7 !important;
 }
 
 html[data-theme='midnight'] .text-brand-muted,
-html[data-theme='midnight'] .text-ink-muted {
-  color: rgba(220, 228, 244, 0.74) !important;
+html[data-theme='midnight'] .text-ink-muted,
+html[data-theme='midnight'] .eyebrow {
+  color: rgba(216, 224, 242, 0.74) !important;
 }
 
 html[data-theme='midnight'] .text-brand-goldDark {
   color: #e6c987 !important;
 }
 
+html[data-theme='midnight'] .line-through {
+  color: #fca5a5 !important;
+}
+
+html[data-theme='midnight'] .text-emerald-700,
+html[data-theme='midnight'] .text-emerald-800 {
+  color: #6ee7b7 !important;
+}
+
+/* Tab & section "|" separators */
+html[data-theme='midnight'] [role='tablist'] span[aria-hidden='true'] {
+  color: rgba(216, 184, 120, 0.35) !important;
+}
+
+/* Provenance tier chips on dark backgrounds */
+html[data-theme='midnight'] .tier-chip.bg-tier-originalSurface,
+html[data-theme='midnight'] .bg-tier-originalSurface {
+  background-color: rgba(92, 19, 29, 0.35) !important;
+  color: #fda4af !important;
+  border-color: rgba(253, 164, 175, 0.35) !important;
+}
+
+html[data-theme='midnight'] .tier-chip.bg-tier-inspiredSurface,
+html[data-theme='midnight'] .bg-tier-inspiredSurface {
+  background-color: rgba(59, 35, 84, 0.45) !important;
+  color: #d8b4fe !important;
+  border-color: rgba(216, 180, 254, 0.35) !important;
+}
+
+html[data-theme='midnight'] .tier-chip.bg-tier-mixedSurface,
+html[data-theme='midnight'] .bg-tier-mixedSurface {
+  background-color: rgba(140, 79, 26, 0.35) !important;
+  color: #fcd34d !important;
+  border-color: rgba(252, 211, 77, 0.35) !important;
+}
+
+html[data-theme='midnight'] .tier-chip.bg-amber-50,
+html[data-theme='midnight'] .bg-amber-50 {
+  background-color: rgba(146, 64, 14, 0.35) !important;
+  color: #fcd34d !important;
+  border-color: rgba(252, 211, 77, 0.35) !important;
+}
+
+html[data-theme='midnight'] .tier-chip.bg-purple-50,
+html[data-theme='midnight'] .bg-purple-50 {
+  background-color: rgba(88, 28, 135, 0.4) !important;
+  color: #e9d5ff !important;
+  border-color: rgba(233, 213, 255, 0.35) !important;
+}
+
+html[data-theme='midnight'] .tier-chip.bg-sky-50,
+html[data-theme='midnight'] .bg-sky-50 {
+  background-color: rgba(7, 89, 133, 0.4) !important;
+  color: #bae6fd !important;
+  border-color: rgba(186, 230, 253, 0.35) !important;
+}
+
+/* ── Borders & Dividers ─────────────────────────────────────────────── */
 html[data-theme='midnight'] .border-brand-border,
+html[data-theme='midnight'] .border-neutral-200,
+html[data-theme='midnight'] .border-neutral-300,
 html[data-theme='midnight'] .border-\[\#EFE3D0\],
 html[data-theme='midnight'] .border-\[\#EFE3CF\],
 html[data-theme='midnight'] .border-\[\#ECE0CC\],
+html[data-theme='midnight'] .border-\[\#EFE5D5\],
 html[data-theme='midnight'] .border-\[\#E9DAC1\],
-html[data-theme='midnight'] .border-\[\#E9D9BF\] {
-  border-color: rgba(216, 184, 120, 0.22) !important;
+html[data-theme='midnight'] .border-\[\#E9D9BF\],
+html[data-theme='midnight'] .border-\[\#F0E7D5\],
+html[data-theme='midnight'] .border-\[\#E5D7BF\] {
+  border-color: rgba(216, 184, 120, 0.24) !important;
 }
 
-html[data-theme='midnight'] .btn-primary {
-  background-color: #d8b878 !important;
+html[data-theme='midnight'] .divide-brand-border > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgba(216, 184, 120, 0.18) !important;
+}
+
+/* ── Buttons & Active Dark-Charcoal Pills ───────────────────────────── */
+html[data-theme='midnight'] button.bg-brand-charcoal,
+html[data-theme='midnight'] a.bg-brand-charcoal,
+html[data-theme='midnight'] button.bg-\[\#11100F\],
+html[data-theme='midnight'] .btn-primary,
+html[data-theme='midnight'] .btn-gold,
+html[data-theme='midnight'] .btn-white {
+  background: linear-gradient(135deg, #e2c382 0%, #c89b3c 100%) !important;
+  border-color: #ebd094 !important;
   color: #070e1e !important;
 }
 
-html[data-theme='midnight'] .btn-primary:hover {
-  background-color: #ebd094 !important;
+html[data-theme='midnight'] button.bg-brand-charcoal:hover,
+html[data-theme='midnight'] a.bg-brand-charcoal:hover,
+html[data-theme='midnight'] .btn-primary:hover,
+html[data-theme='midnight'] .btn-gold:hover {
+  background: linear-gradient(135deg, #edd39a 0%, #d8b158 100%) !important;
+  color: #050a18 !important;
 }
 
 html[data-theme='midnight'] .btn-outline {
   border-color: rgba(216, 184, 120, 0.65) !important;
-  color: #f7f2e8 !important;
-  background-color: rgba(10, 20, 44, 0.55) !important;
+  color: #f6f1e7 !important;
+  background-color: rgba(10, 20, 44, 0.65) !important;
 }
 
 html[data-theme='midnight'] .btn-outline:hover {
   background-color: rgba(216, 184, 120, 0.16) !important;
+  border-color: #e6c987 !important;
 }
 
+html[data-theme='midnight'] .btn-ghost {
+  color: #f6f1e7 !important;
+}
+
+html[data-theme='midnight'] .btn-ghost:hover {
+  background-color: rgba(216, 184, 120, 0.14) !important;
+}
+
+/* Hover button text safeguard when global text-brand-charcoal is light */
+html[data-theme='midnight'] .product-card-action-btn:not(:disabled):hover,
+html[data-theme='midnight'] .row-slider-btn:not(:disabled):hover {
+  color: #070e1e !important;
+}
+
+/* ── Forms, Inputs & Native Controls ────────────────────────────────── */
 html[data-theme='midnight'] .field,
+html[data-theme='midnight'] select,
 html[data-theme='midnight'] header input[type='search'] {
-  background-color: rgba(11, 22, 48, 0.84) !important;
-  border-color: rgba(216, 184, 120, 0.3) !important;
-  color: #f7f2e8 !important;
+  background-color: rgba(9, 19, 43, 0.9) !important;
+  border-color: rgba(216, 184, 120, 0.32) !important;
+  color: #f6f1e7 !important;
+}
+
+html[data-theme='midnight'] select option {
+  background-color: #09132b;
+  color: #f6f1e7;
 }
 
 html[data-theme='midnight'] .field::placeholder,
 html[data-theme='midnight'] header input[type='search']::placeholder {
-  color: rgba(220, 228, 244, 0.58) !important;
+  color: rgba(216, 224, 242, 0.56) !important;
 }
 
+/* Brand logos marquee pill backdrop so dark wordmarks/SVGs remain visible */
 html[data-theme='midnight'] .brand-marquee img {
-  background: rgba(255, 255, 255, 0.92);
-  border-radius: 0.6rem;
-  padding: 0.35rem 0.9rem;
+  background: rgba(255, 255, 255, 0.94);
+  border-radius: 0.65rem;
+  padding: 0.35rem 0.95rem;
+  box-shadow: 0 6px 20px -8px rgba(0, 0, 0, 0.55);
   mix-blend-mode: normal !important;
 }
 
+/* ── Closing CTA & Footer ───────────────────────────────────────────── */
 html[data-theme='midnight'] footer.bg-brand-charcoal {
-  background-color: rgba(5, 11, 24, 0.92) !important;
-  border-top: 1px solid rgba(216, 184, 120, 0.22);
+  background-color: rgba(4, 9, 22, 0.95) !important;
+  border-top: 1px solid rgba(216, 184, 120, 0.28);
 }
 

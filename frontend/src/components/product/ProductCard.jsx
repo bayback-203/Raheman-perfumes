@@ -100,9 +100,9 @@ export function ProductCard({
       aria-label={isItemWishlisted ? `Remove ${name} from wishlist` : `Save ${name} to wishlist`}
       aria-pressed={isItemWishlisted}
       className={cn(
-        'relative z-30 pointer-events-auto flex h-8 w-8 items-center justify-center rounded-full border shadow-sm backdrop-blur transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-400',
+        'product-card-action-btn relative z-30 pointer-events-auto flex h-8 w-8 items-center justify-center rounded-full border shadow-sm backdrop-blur transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-400',
         isItemWishlisted
-          ? 'border-red-200 bg-white text-red-500 shadow-md hover:bg-red-50'
+          ? 'is-wishlisted border-red-200 bg-white text-red-500 shadow-md hover:bg-red-50'
           : 'border-brand-border bg-white/95 text-brand-muted hover:border-brand-gold hover:bg-white hover:text-brand-goldDark',
       )}
     >
@@ -120,7 +120,7 @@ export function ProductCard({
   // ---------------------------------------------------------------- list row
   if (variant === 'list') {
     return (
-      <article className={cn('card-surface card-lift group flex gap-4 p-4 sm:gap-6 sm:p-5', className)}>
+      <article className={cn('product-card card-surface card-lift group flex gap-4 p-4 sm:gap-6 sm:p-5', className)}>
         <Link to={`/product/${slug}`} className="relative block w-28 shrink-0 sm:w-36">
           <FlaconStage tier={tier} seed={slug} label={name} image={image} hoverImage={hoverImage} compact />
           {soldOut && <OutOfStockBadge compact />}
@@ -193,7 +193,7 @@ export function ProductCard({
   // ------------------------------------------------------------- compact rail
   if (variant === 'compact') {
     return (
-      <article className={cn('card-surface card-lift group w-[190px] shrink-0 overflow-hidden p-3', className)}>
+      <article className={cn('product-card card-surface card-lift group w-[190px] shrink-0 overflow-hidden p-3', className)}>
         <Link to={`/product/${slug}`} className="relative block">
           <FlaconStage tier={tier} seed={slug} label={name} image={image} hoverImage={hoverImage} compact />
           {soldOut && <OutOfStockBadge compact />}
@@ -235,11 +235,11 @@ export function ProductCard({
     <>
       <article
         className={cn(
-          'group relative flex h-full w-full flex-col rounded-xl border border-[#EFE3CF] bg-gradient-to-b from-white via-[#FFFDF9] to-[#FDF6EB]/90 p-3 shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:border-brand-gold/70 hover:shadow-[0_18px_38px_-12px_rgba(200,155,60,0.26)]',
+          'product-card group relative flex h-full w-full flex-col rounded-xl border border-[#EFE3CF] bg-gradient-to-b from-white via-[#FFFDF9] to-[#FDF6EB]/90 p-3 shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:border-brand-gold/70 hover:shadow-[0_18px_38px_-12px_rgba(200,155,60,0.26)]',
           className,
         )}
       >
-        <div className="relative overflow-hidden rounded-lg border border-[#F3E9D8] bg-gradient-to-br from-[#FFFDF9] via-[#FDF4F6] to-[#FBF1E1]">
+        <div className="product-card-stage relative overflow-hidden rounded-lg border border-[#F3E9D8] bg-gradient-to-br from-[#FFFDF9] via-[#FDF4F6] to-[#FBF1E1]">
           <Link to={`/product/${slug}`} className="block">
             <FlaconStage
               tier={tier}
@@ -266,7 +266,7 @@ export function ProductCard({
             </span>
           ) : (
             percent > 0 && (
-              <span className="pointer-events-none absolute bottom-2.5 left-2.5 z-20 rounded-full border border-brand-gold/45 bg-gradient-to-r from-[#FFFDF9] to-[#FBF0DA] px-2.5 py-0.5 text-[11px] font-semibold tracking-tight text-brand-charcoal shadow-sm">
+              <span className="product-card-discount pointer-events-none absolute bottom-2.5 left-2.5 z-20 rounded-full border border-brand-gold/45 bg-gradient-to-r from-[#FFFDF9] to-[#FBF0DA] px-2.5 py-0.5 text-[11px] font-semibold tracking-tight text-brand-charcoal shadow-sm">
                 − {percent}%
               </span>
             )
@@ -300,7 +300,7 @@ export function ProductCard({
                 aria-label={soldOut ? `${name} is out of stock` : `Add ${name} to bag`}
                 title={soldOut ? 'Out of stock' : 'Add to bag'}
                 className={cn(
-                  'pointer-events-auto flex h-9 w-9 items-center justify-center rounded-full border border-neutral-200 bg-white/95 text-brand-charcoal shadow-md backdrop-blur-sm transition duration-200',
+                  'product-card-action-btn pointer-events-auto flex h-9 w-9 items-center justify-center rounded-full border border-neutral-200 bg-white/95 text-brand-charcoal shadow-md backdrop-blur-sm transition duration-200',
                   soldOut
                     ? 'cursor-not-allowed opacity-55'
                     : 'hover:scale-105 hover:border-brand-charcoal hover:bg-brand-charcoal hover:text-white active:scale-95',
@@ -319,7 +319,7 @@ export function ProductCard({
               }}
               aria-label={`Quick view ${name}`}
               title="Quick view"
-              className="pointer-events-auto flex h-9 w-9 items-center justify-center rounded-full border border-neutral-200 bg-white/95 text-brand-charcoal shadow-md backdrop-blur-sm transition duration-200 hover:scale-105 hover:border-brand-charcoal hover:bg-brand-charcoal hover:text-white active:scale-95"
+              className="product-card-action-btn pointer-events-auto flex h-9 w-9 items-center justify-center rounded-full border border-neutral-200 bg-white/95 text-brand-charcoal shadow-md backdrop-blur-sm transition duration-200 hover:scale-105 hover:border-brand-charcoal hover:bg-brand-charcoal hover:text-white active:scale-95"
             >
               <Icon name="eye" className="h-[16px] w-[16px]" strokeWidth={1.75} />
             </button>

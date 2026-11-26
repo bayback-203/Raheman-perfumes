@@ -63,7 +63,7 @@ function useRowSlider(itemCount) {
 /** Circular prev/next arrows paired with row sliders. */
 function RowSlideControls({ canPrev, canNext, onSlide }) {
   const btnClass =
-    'flex h-9 w-9 items-center justify-center rounded-full border border-brand-border bg-white text-brand-charcoal transition hover:border-brand-charcoal hover:bg-brand-charcoal hover:text-white disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:border-brand-border disabled:hover:bg-white disabled:hover:text-brand-charcoal'
+    'row-slider-btn flex h-9 w-9 items-center justify-center rounded-full border border-brand-border bg-white text-brand-charcoal transition hover:border-brand-charcoal hover:bg-brand-charcoal hover:text-white disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:border-brand-border disabled:hover:bg-white disabled:hover:text-brand-charcoal'
   return (
     <div className="flex items-center gap-1.5" role="group" aria-label="Slide row">
       <button type="button" onClick={() => onSlide(-1)} disabled={!canPrev} aria-label="Slide previous" className={btnClass}>
@@ -549,7 +549,7 @@ export function ShopByNotes() {
               type="button"
               onClick={() => slider.slide(-1)}
               aria-label="Previous notes"
-              className="absolute -left-3 top-[40%] z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-[#E5D7BF] bg-white/95 text-brand-charcoal shadow-md backdrop-blur-xs transition hover:scale-105 hover:border-brand-gold hover:text-brand-goldDark lg:flex"
+              className="row-slider-btn absolute -left-3 top-[40%] z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-[#E5D7BF] bg-white/95 text-brand-charcoal shadow-md backdrop-blur-xs transition hover:scale-105 hover:border-brand-gold hover:text-brand-goldDark lg:flex"
             >
               <Icon name="chevron-left" className="h-4 w-4" strokeWidth={2.2} />
             </button>
@@ -559,7 +559,7 @@ export function ShopByNotes() {
               type="button"
               onClick={() => slider.slide(1)}
               aria-label="Next notes"
-              className="absolute -right-3 top-[40%] z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-[#E5D7BF] bg-white/95 text-brand-charcoal shadow-md backdrop-blur-xs transition hover:scale-105 hover:border-brand-gold hover:text-brand-goldDark lg:flex"
+              className="row-slider-btn absolute -right-3 top-[40%] z-20 hidden h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-[#E5D7BF] bg-white/95 text-brand-charcoal shadow-md backdrop-blur-xs transition hover:scale-105 hover:border-brand-gold hover:text-brand-goldDark lg:flex"
             >
               <Icon name="chevron-right" className="h-4 w-4" strokeWidth={2.2} />
             </button>

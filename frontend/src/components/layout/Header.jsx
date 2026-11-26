@@ -218,7 +218,7 @@ export function Header() {
                           : 'pointer-events-none invisible translate-y-1 opacity-0',
                       )}
                     >
-                      <div className="min-w-[15.5rem] border border-[#E5D3B3] border-t-2 border-t-brand-gold bg-gradient-to-b from-[#FFFDF9] via-[#FDF7EC] to-[#F9EFE0] py-2 shadow-[0_18px_40px_-14px_rgba(32,22,12,0.18)]">
+                      <div className="header-dropdown-panel min-w-[15.5rem] border border-[#E5D3B3] border-t-2 border-t-brand-gold bg-gradient-to-b from-[#FFFDF9] via-[#FDF7EC] to-[#F9EFE0] py-2 shadow-[0_18px_40px_-14px_rgba(32,22,12,0.18)]">
                         {item.children.map((child) => {
                           const childActive = location.pathname === child.to
                           const isViewAll = child.id === 'view-all'
@@ -289,7 +289,7 @@ export function Header() {
 
               {showSuggestions && (
                 <div
-                  className="absolute right-0 top-[calc(100%+10px)] z-50 w-[22rem] animate-fade-in overflow-hidden rounded border border-brand-border bg-white shadow-overlay"
+                  className="header-search-panel absolute right-0 top-[calc(100%+10px)] z-50 w-[22rem] animate-fade-in overflow-hidden rounded border border-brand-border bg-white shadow-overlay"
                 >
                   {suggestions.length === 0 ? (
                     <p className="px-4 py-5 text-body-sm text-brand-muted">
@@ -336,7 +336,7 @@ export function Header() {
                       <button
                         type="button"
                         onClick={submitSearch}
-                        className="flex w-full items-center justify-between gap-2 bg-neutral-50 px-4 py-3 text-label-sm font-bold uppercase text-brand-goldDark transition hover:bg-neutral-100"
+                        className="header-search-footer flex w-full items-center justify-between gap-2 bg-neutral-50 px-4 py-3 text-label-sm font-bold uppercase text-brand-goldDark transition hover:bg-neutral-100"
                       >
                         See all results for “{query.trim()}”
                         <Icon name="arrow-right" className="h-3.5 w-3.5" />
