@@ -264,38 +264,45 @@ export function Hero() {
       />
 
       <div className="relative flex flex-1 flex-col justify-center">
-        {/* Mobile full-bleed background: mathematically dead-centered crystal flacon anchored downwards */}
-        <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 top-0 flex items-end overflow-hidden md:hidden"
-          aria-hidden="true"
-        >
-          {slides.map((src, index) => {
-            const active = index === safeIndex
-            const isDefault = src === DEFAULT_HERO_IMAGE
-            return (
-              <img
-                key={`hero-mobile-${src}-${index}`}
-                src={src}
-                alt="Luxury crystal perfume bottle on white marble framed by roses, citrus, fig, oud wood, and cinnamon sticks"
-                decoding="async"
-                referrerPolicy="no-referrer"
-                className={cn(
-                  'absolute bottom-0 left-0 right-0 h-[104vw] max-h-[460px] w-full transition-opacity duration-1000 ease-in-out',
-                  isDefault ? 'object-cover object-right-bottom' : 'object-cover object-center',
-                  active ? 'opacity-100' : 'opacity-0',
-                )}
-                style={{
-                  WebkitMaskImage:
-                    'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 14%, black 26%)',
-                  maskImage:
-                    'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 14%, black 26%)',
-                }}
-              />
-            )
-          })}
-        </div>
+        {/* Mobile full-bleed background for default studio hero */}
+        {!isCustomActive && (
+          <div
+            className="pointer-events-none absolute inset-x-0 bottom-0 top-0 flex items-end overflow-hidden md:hidden"
+            aria-hidden="true"
+          >
+            {slides.map((src, index) => {
+              if (src !== DEFAULT_HERO_IMAGE) return null
+              const active = index === safeIndex
+              return (
+                <img
+                  key={`hero-mobile-${src}-${index}`}
+                  src={src}
+                  alt="Luxury crystal perfume bottle on white marble framed by roses, citrus, fig, oud wood, and cinnamon sticks"
+                  decoding="async"
+                  className={cn(
+                    'absolute bottom-0 left-0 right-0 h-[104vw] max-h-[460px] w-full object-cover object-right-bottom transition-opacity duration-1000 ease-in-out',
+                    active ? 'opacity-100' : 'opacity-0',
+                  )}
+                  style={{
+                    WebkitMaskImage:
+                      'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 14%, black 26%)',
+                    maskImage:
+                      'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 14%, black 26%)',
+                  }}
+                />
+              )
+            })}
+          </div>
+        )}
 
-        <div className="shell relative z-10 grid gap-8 pb-[86vw] pt-[104px] text-center sm:pb-[380px] sm:pt-32 md:my-auto md:grid-cols-[1.05fr_0.95fr] md:items-center md:gap-12 md:pb-16 md:pt-28 md:text-left lg:gap-16 lg:pb-24 lg:pt-36">
+        <div
+          className={cn(
+            'shell relative z-10 grid gap-8 text-center md:my-auto md:grid-cols-[1.05fr_0.95fr] md:items-center md:gap-12 md:pb-16 md:pt-28 md:text-left lg:gap-16 lg:pb-24 lg:pt-36',
+            isCustomActive
+              ? 'pb-4 pt-[96px] sm:pb-6 sm:pt-28'
+              : 'pb-[86vw] pt-[104px] sm:pb-[380px] sm:pt-32',
+          )}
+        >
           <div className="animate-rise-lux">
             <TypewriterHeadline />
 
@@ -314,6 +321,30 @@ export function Hero() {
 
           <div className="hidden md:block" aria-hidden="true" />
         </div>
+
+        {/* Mobile dedicated landscape frame for custom hero images so bottle & artwork are never clipped or overlapped by CTA */}
+        {isCustomActive && (
+          <div className="relative mt-2 w-full aspect-[16/10] overflow-hidden bg-white sm:aspect-[16/9] md:hidden" aria-hidden="true">
+            {slides.map((src, index) => {
+              if (src === DEFAULT_HERO_IMAGE) return null
+              const active = index === safeIndex
+              return (
+                <img
+                  key={`hero-mobile-custom-${src}-${index}`}
+                  src={src}
+                  alt="Raheman Perfumes hero showcase"
+                  decoding="async"
+                  referrerPolicy="no-referrer"
+                  className={cn(
+                    'absolute inset-0 h-full w-full object-cover object-right transition-opacity duration-1000 ease-in-out',
+                    active ? 'opacity-100' : 'opacity-0',
+                  )}
+                />
+              )
+            })}
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-8 bg-gradient-to-b from-white to-transparent" />
+          </div>
+        )}
       </div>
 
       {slides.length > 1 && (
