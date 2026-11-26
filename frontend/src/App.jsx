@@ -75,6 +75,17 @@ export function AppRoutes() {
 export function App() {
   const restore = useAuthStore((state) => state.restore)
   const hydrateCatalogue = useCatalogueStore((state) => state.hydrate)
+  const siteTheme = useCatalogueStore((state) => state.showcase?.siteTheme)
+
+  useEffect(() => {
+    const next = siteTheme === 'midnight' ? 'midnight' : 'creamy'
+    document.documentElement.dataset.theme = next
+    try {
+      localStorage.setItem('rp_site_theme', next)
+    } catch {
+      // ignore storage errors
+    }
+  }, [siteTheme])
 
   /*
    * Ask the server who we are, once, per load.

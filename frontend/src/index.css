@@ -679,3 +679,218 @@
   }
 }
 
+/* ==========================================================================
+   HERO SCRIMS & MIDNIGHT COSMIC DARK THEME
+   ========================================================================== */
+
+.hero-custom-scrim-x {
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.52) 0%,
+    rgba(255, 255, 255, 0.36) 28%,
+    rgba(255, 255, 255, 0.12) 48%,
+    rgba(255, 255, 255, 0) 66%
+  );
+}
+
+.hero-custom-scrim-y {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.52) 0%,
+    rgba(255, 255, 255, 0.2) 55%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.hero-mist-radial-custom {
+  background: radial-gradient(
+    34% 46% at 25% 50%,
+    rgba(255, 253, 249, 0.42) 0%,
+    rgba(255, 251, 246, 0.25) 45%,
+    rgba(255, 255, 255, 0.08) 76%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.hero-mist-radial-default {
+  background: radial-gradient(
+    34% 46% at 25% 50%,
+    rgba(255, 253, 249, 0.92) 0%,
+    rgba(255, 251, 246, 0.68) 45%,
+    rgba(255, 255, 255, 0.2) 76%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.hero-mobile-feather-top {
+  background: linear-gradient(to bottom, #ffffff, transparent);
+}
+
+.hero-mobile-feather-bottom {
+  background: linear-gradient(to top, #ffffff, transparent);
+}
+
+/* Midnight Cosmic (Dark Starry Sky) — toggled from Admin -> Website Display / Settings */
+html[data-theme='midnight'] body {
+  background-color: #060d1d;
+  background-image:
+    linear-gradient(180deg, rgba(6, 13, 29, 0.46) 0%, rgba(7, 15, 34, 0.34) 50%, rgba(5, 10, 24, 0.62) 100%),
+    url('/theme-midnight.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  color: #f4efe6;
+}
+
+html[data-theme='midnight'] .bridal-canvas,
+html[data-theme='midnight'] .bridal-banner,
+html[data-theme='midnight'] section.bg-white,
+html[data-theme='midnight'] section[class*='bg-gradient-to-'] {
+  background: transparent !important;
+  border-color: rgba(216, 184, 120, 0.18) !important;
+}
+
+html[data-theme='midnight'] .hero-section {
+  background: transparent !important;
+  border-color: rgba(216, 184, 120, 0.2) !important;
+}
+
+html[data-theme='midnight'] .hero-backdrop,
+html[data-theme='midnight'] .hero-mobile-custom-wrap {
+  background-color: #060d1d !important;
+}
+
+html[data-theme='midnight'] .hero-custom-scrim-x {
+  background: linear-gradient(
+    to right,
+    rgba(6, 13, 29, 0.72) 0%,
+    rgba(6, 13, 29, 0.48) 30%,
+    rgba(6, 13, 29, 0.14) 52%,
+    rgba(6, 13, 29, 0) 70%
+  );
+}
+
+html[data-theme='midnight'] .hero-custom-scrim-y {
+  background: linear-gradient(
+    to bottom,
+    rgba(6, 13, 29, 0.72) 0%,
+    rgba(6, 13, 29, 0.28) 55%,
+    rgba(6, 13, 29, 0) 100%
+  );
+}
+
+html[data-theme='midnight'] .hero-mist-radial-custom {
+  background: radial-gradient(
+    36% 48% at 25% 50%,
+    rgba(6, 13, 29, 0.48) 0%,
+    rgba(6, 13, 29, 0.24) 48%,
+    rgba(6, 13, 29, 0) 100%
+  );
+}
+
+html[data-theme='midnight'] .hero-mobile-feather-top {
+  background: linear-gradient(to bottom, #071024, transparent);
+}
+
+html[data-theme='midnight'] .hero-mobile-feather-bottom {
+  background: linear-gradient(to top, #071024, transparent);
+}
+
+html[data-theme='midnight'] header.site-header-transparent {
+  background: linear-gradient(to bottom, rgba(6, 13, 29, 0.62), transparent);
+}
+
+html[data-theme='midnight'] header.site-header-scrolled {
+  background-color: rgba(7, 15, 34, 0.88) !important;
+  border-color: rgba(216, 184, 120, 0.25) !important;
+  backdrop-filter: blur(14px);
+}
+
+html[data-theme='midnight'] .card-surface,
+html[data-theme='midnight'] aside.bg-white,
+html[data-theme='midnight'] div[role='dialog'],
+html[data-theme='midnight'] header div.bg-white,
+html[data-theme='midnight'] .bg-white\/95,
+html[data-theme='midnight'] .bg-white\/90,
+html[data-theme='midnight'] .bg-white\/85,
+html[data-theme='midnight'] .bg-white\/80,
+html[data-theme='midnight'] .bg-brand-ivory,
+html[data-theme='midnight'] .bg-brand-cream,
+html[data-theme='midnight'] li.bg-gradient-to-b,
+html[data-theme='midnight'] a.bg-gradient-to-b,
+html[data-theme='midnight'] div.bg-brand-cream\/40 {
+  background: rgba(10, 20, 44, 0.86) !important;
+  border-color: rgba(216, 184, 120, 0.28) !important;
+  backdrop-filter: blur(12px);
+}
+
+html[data-theme='midnight'] .text-brand-charcoal,
+html[data-theme='midnight'] .text-ink,
+html[data-theme='midnight'] .text-ink-variant,
+html[data-theme='midnight'] h1,
+html[data-theme='midnight'] h2,
+html[data-theme='midnight'] h3 {
+  color: #f7f2e8 !important;
+}
+
+html[data-theme='midnight'] .text-brand-muted,
+html[data-theme='midnight'] .text-ink-muted {
+  color: rgba(220, 228, 244, 0.74) !important;
+}
+
+html[data-theme='midnight'] .text-brand-goldDark {
+  color: #e6c987 !important;
+}
+
+html[data-theme='midnight'] .border-brand-border,
+html[data-theme='midnight'] .border-\[\#EFE3D0\],
+html[data-theme='midnight'] .border-\[\#EFE3CF\],
+html[data-theme='midnight'] .border-\[\#ECE0CC\],
+html[data-theme='midnight'] .border-\[\#E9DAC1\],
+html[data-theme='midnight'] .border-\[\#E9D9BF\] {
+  border-color: rgba(216, 184, 120, 0.22) !important;
+}
+
+html[data-theme='midnight'] .btn-primary {
+  background-color: #d8b878 !important;
+  color: #070e1e !important;
+}
+
+html[data-theme='midnight'] .btn-primary:hover {
+  background-color: #ebd094 !important;
+}
+
+html[data-theme='midnight'] .btn-outline {
+  border-color: rgba(216, 184, 120, 0.65) !important;
+  color: #f7f2e8 !important;
+  background-color: rgba(10, 20, 44, 0.55) !important;
+}
+
+html[data-theme='midnight'] .btn-outline:hover {
+  background-color: rgba(216, 184, 120, 0.16) !important;
+}
+
+html[data-theme='midnight'] .field,
+html[data-theme='midnight'] header input[type='search'] {
+  background-color: rgba(11, 22, 48, 0.84) !important;
+  border-color: rgba(216, 184, 120, 0.3) !important;
+  color: #f7f2e8 !important;
+}
+
+html[data-theme='midnight'] .field::placeholder,
+html[data-theme='midnight'] header input[type='search']::placeholder {
+  color: rgba(220, 228, 244, 0.58) !important;
+}
+
+html[data-theme='midnight'] .brand-marquee img {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 0.6rem;
+  padding: 0.35rem 0.9rem;
+  mix-blend-mode: normal !important;
+}
+
+html[data-theme='midnight'] footer.bg-brand-charcoal {
+  background-color: rgba(5, 11, 24, 0.92) !important;
+  border-top: 1px solid rgba(216, 184, 120, 0.22);
+}
+

@@ -1103,6 +1103,7 @@ router.patch(
         showCombos: z.boolean().optional(),
         showCelebrities: z.boolean().optional(),
         showCarPerfumes: z.boolean().optional(),
+        siteTheme: z.enum(['creamy', 'midnight']).optional(),
         heroImages: heroImageList,
         offerProductIds: showcaseIdList,
         bestsellerProductIds: showcaseIdList,

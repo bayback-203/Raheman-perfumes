@@ -60,6 +60,7 @@ export const DEFAULT_SHOWCASE = {
   showCombos: true,
   showCelebrities: true,
   showCarPerfumes: true,
+  siteTheme: 'creamy',
   heroImages: [],
   offerProductIds: [],
   bestsellerProductIds: [],
@@ -163,6 +164,7 @@ export async function getShowcase() {
       typeof stored.showCelebrities === 'boolean' ? stored.showCelebrities : DEFAULT_SHOWCASE.showCelebrities,
     showCarPerfumes:
       typeof stored.showCarPerfumes === 'boolean' ? stored.showCarPerfumes : DEFAULT_SHOWCASE.showCarPerfumes,
+    siteTheme: stored.siteTheme === 'midnight' ? 'midnight' : DEFAULT_SHOWCASE.siteTheme,
     heroImages: normalizeHeroImages(stored.heroImages),
     offerProductIds: normalizeIdList(stored.offerProductIds),
     bestsellerProductIds: normalizeIdList(stored.bestsellerProductIds),
@@ -392,6 +394,10 @@ export async function updateShowcase(patch = {}) {
 
   if (Array.isArray(patch.heroImages)) {
     next.heroImages = normalizeHeroImages(patch.heroImages)
+  }
+
+  if (patch.siteTheme === 'creamy' || patch.siteTheme === 'midnight') {
+    next.siteTheme = patch.siteTheme
   }
 
   await Setting.put(SETTING_KEYS.showcase, next, 'Website display, COD & showcase products')

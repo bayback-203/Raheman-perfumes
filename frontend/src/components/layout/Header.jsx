@@ -110,11 +110,11 @@ export function Header() {
   return (
     <header
       className={cn(
-        'sticky top-0 z-40 transition-all duration-300',
+        'site-header sticky top-0 z-40 transition-all duration-300',
         isHeroPage && '-mb-[80px] sm:-mb-[88px] lg:-mb-[104px]',
         isTransparent
-          ? 'border-b border-transparent bg-transparent shadow-none'
-          : 'border-b border-brand-border/80 bg-white/95 backdrop-blur-md shadow-card',
+          ? 'site-header-transparent border-b border-transparent bg-transparent shadow-none'
+          : 'site-header-scrolled border-b border-brand-border/80 bg-white/95 backdrop-blur-md shadow-card',
       )}
     >
       <div className="shell-wide">

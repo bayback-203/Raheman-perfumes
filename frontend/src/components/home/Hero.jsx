@@ -127,10 +127,10 @@ export function Hero() {
   const isCustomActive = activeSrc !== DEFAULT_HERO_IMAGE
 
   return (
-    <section className="relative flex flex-col justify-between overflow-hidden border-b border-brand-border bg-white text-brand-charcoal md:min-h-screen md:min-h-[100dvh]">
-      {/* Custom uploaded hero images: clean full-bleed widescreen plate with soft left/top white readability scrim */}
+    <section className="hero-section relative flex flex-col justify-between overflow-hidden border-b border-brand-border bg-white text-brand-charcoal md:min-h-screen md:min-h-[100dvh]">
+      {/* Custom uploaded hero images: clean full-bleed widescreen plate with soft left/top readability scrim */}
       <div
-        className="pointer-events-none absolute inset-0 hidden overflow-hidden bg-white md:block"
+        className="hero-backdrop pointer-events-none absolute inset-0 hidden overflow-hidden bg-white md:block"
         aria-hidden="true"
       >
         {slides.map((src, index) => {
@@ -152,20 +152,8 @@ export function Hero() {
         })}
         {isCustomActive && (
           <>
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  'linear-gradient(to right, rgba(255,255,255,0.52) 0%, rgba(255,255,255,0.36) 28%, rgba(255,255,255,0.12) 48%, rgba(255,255,255,0) 66%)',
-              }}
-            />
-            <div
-              className="absolute inset-x-0 top-0 h-24"
-              style={{
-                background:
-                  'linear-gradient(to bottom, rgba(255,255,255,0.52) 0%, rgba(255,255,255,0.2) 55%, rgba(255,255,255,0) 100%)',
-              }}
-            />
+            <div className="hero-custom-scrim-x absolute inset-0" />
+            <div className="hero-custom-scrim-y absolute inset-x-0 top-0 h-24" />
           </>
         )}
       </div>
@@ -247,19 +235,17 @@ export function Hero() {
       {/* Subtle localized mist glow ONLY behind left-column typography on tablet/desktop — never washes out the crystal bottle */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-[4%] top-[18%] hidden h-72 w-72 rounded-full bg-[#FADAE3]/35 blur-3xl md:block"
+        className="hero-aura-pink pointer-events-none absolute left-[4%] top-[18%] hidden h-72 w-72 rounded-full bg-[#FADAE3]/35 blur-3xl md:block"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-[24%] bottom-[16%] hidden h-64 w-64 rounded-full bg-[#F4E0B5]/30 blur-3xl md:block"
+        className="hero-aura-gold pointer-events-none absolute left-[24%] bottom-[16%] hidden h-64 w-64 rounded-full bg-[#F4E0B5]/30 blur-3xl md:block"
       />
       <div
-        className="pointer-events-none absolute inset-0 hidden md:block"
-        style={{
-          background: isCustomActive
-            ? 'radial-gradient(34% 46% at 25% 50%, rgba(255,253,249,0.42) 0%, rgba(255,251,246,0.25) 45%, rgba(255,255,255,0.08) 76%, rgba(255,255,255,0) 100%)'
-            : 'radial-gradient(34% 46% at 25% 50%, rgba(255,253,249,0.92) 0%, rgba(255,251,246,0.68) 45%, rgba(255,255,255,0.2) 76%, rgba(255,255,255,0) 100%)',
-        }}
+        className={cn(
+          'pointer-events-none absolute inset-0 hidden md:block',
+          isCustomActive ? 'hero-mist-radial-custom' : 'hero-mist-radial-default',
+        )}
         aria-hidden="true"
       />
 
@@ -298,7 +284,7 @@ export function Hero() {
         {/* Mobile dedicated landscape frame FIRST (above text), keeping desktop layout completely untouched */}
         {isCustomActive && (
           <div className="pt-[72px] sm:pt-[80px] md:hidden" aria-hidden="true">
-            <div className="relative w-full aspect-[16/10] overflow-hidden bg-white sm:aspect-[16/9]">
+            <div className="hero-mobile-custom-wrap relative w-full aspect-[16/10] overflow-hidden bg-white sm:aspect-[16/9]">
               {slides.map((src, index) => {
                 if (src === DEFAULT_HERO_IMAGE) return null
                 const active = index === safeIndex
@@ -316,8 +302,8 @@ export function Hero() {
                   />
                 )
               })}
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-6 bg-gradient-to-b from-white to-transparent" />
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-white to-transparent" />
+              <div className="hero-mobile-feather-top pointer-events-none absolute inset-x-0 top-0 h-6" />
+              <div className="hero-mobile-feather-bottom pointer-events-none absolute inset-x-0 bottom-0 h-8" />
             </div>
           </div>
         )}

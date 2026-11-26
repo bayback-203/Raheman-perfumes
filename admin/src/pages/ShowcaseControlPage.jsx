@@ -10,6 +10,7 @@ import { Panel } from '@/components/ui/StatCard'
 import { ProductThumb } from '@/components/ui/ProductThumb'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { HeroImagesEditor } from '@/components/media/HeroImagesEditor'
+import { ThemeSelector } from '@/components/media/ThemeSelector'
 import useDocumentTitle from '@/hooks/useDocumentTitle'
 import { useServerAction, useServerResource } from '@/hooks/useServerResource'
 import { useAdminStore } from '@/store/adminStore'
@@ -26,6 +27,7 @@ const DEFAULT_SHOWCASE = {
   showCombos: true,
   showCelebrities: true,
   showCarPerfumes: true,
+  siteTheme: 'creamy',
   heroImages: [],
   offerProductIds: [],
   bestsellerProductIds: [],
@@ -529,6 +531,24 @@ export function ShowcaseControlPage() {
         </div>
       ) : (
         <>
+          <Panel
+            title="Website Theme"
+            description="Toggle between your existing Creamy Ivory theme and the Midnight Cosmic dark starry theme."
+            action={
+              isOwner && (draft.siteTheme ?? 'creamy') !== (serverShowcase.siteTheme ?? 'creamy') && (
+                <Button variant="gold" size="sm" icon="check" loading={busy} onClick={save}>
+                  Save theme
+                </Button>
+              )
+            }
+          >
+            <ThemeSelector
+              value={draft.siteTheme ?? 'creamy'}
+              disabled={!isOwner}
+              onChange={(siteTheme) => patch({ siteTheme })}
+            />
+          </Panel>
+
           <Panel
             title="Hero Banner Images"
             description="Change, replace, or upload up to 3 hero images for the homepage banner."

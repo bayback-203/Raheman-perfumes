@@ -570,6 +570,7 @@ const showcaseBody = (draft) => ({
   showCombos: Boolean(draft.showCombos),
   showCelebrities: Boolean(draft.showCelebrities),
   showCarPerfumes: Boolean(draft.showCarPerfumes),
+  siteTheme: draft.siteTheme === 'midnight' ? 'midnight' : 'creamy',
   heroImages: Array.isArray(draft.heroImages) ? draft.heroImages.map(String).filter(Boolean).slice(0, 3) : [],
   offerProductIds: Array.isArray(draft.offerProductIds) ? draft.offerProductIds.map(String) : [],
   bestsellerProductIds: Array.isArray(draft.bestsellerProductIds) ? draft.bestsellerProductIds.map(String) : [],
