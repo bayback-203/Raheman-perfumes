@@ -145,8 +145,8 @@ export function ProductDetailPage() {
   }, [syncPricing])
 
   const currentPrice = variant?.price ?? product?.price ?? 0
-  const isFreeDeliveryAll = shippingFee === 0
-  const hasFreeShipping = typeof freeShippingOver === 'number' && freeShippingOver > shippingFee && freeShippingOver > 1
+  const isFreeDeliveryAll = shippingFee === 0 || freeShippingOver === 0
+  const hasFreeShipping = typeof freeShippingOver === 'number' && freeShippingOver > 0 && shippingFee > 0
   const qualifiesForFreeDelivery = isFreeDeliveryAll || (hasFreeShipping && currentPrice >= freeShippingOver)
   const shippingGap = hasFreeShipping ? Math.max(0, freeShippingOver - currentPrice) : 0
 

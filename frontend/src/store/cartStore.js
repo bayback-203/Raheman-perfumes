@@ -304,15 +304,12 @@ export const useCartStore = create(
         const afterCoupon = Math.max(0, subtotal - couponDiscount)
         const threshold = typeof state.freeShippingOver === 'number' ? state.freeShippingOver : FREE_SHIPPING_THRESHOLD
         const fee = typeof state.shippingFee === 'number' ? state.shippingFee : STANDARD_SHIPPING_FEE
-        const hasFreeShipping = fee > 0 && threshold > fee && threshold > 1
+        const isFreeDeliveryAll = fee === 0 || threshold === 0
+        const hasFreeShipping = fee > 0 && threshold > 0
         const shipping =
-          fee === 0
+          isFreeDeliveryAll || afterCoupon === 0 || afterCoupon >= threshold
             ? 0
-            : afterCoupon === 0
-              ? 0
-              : hasFreeShipping && afterCoupon >= threshold
-                ? 0
-                : fee
+            : fee
         const giftWrapFee = state.giftWrap ? GIFT_WRAP_FEE : 0
         const gst = Math.round((afterCoupon * 18) / 118)
         const total = afterCoupon + shipping + giftWrapFee

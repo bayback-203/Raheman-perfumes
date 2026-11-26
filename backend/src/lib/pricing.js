@@ -119,17 +119,14 @@ export function priceOrder({ items = [], coupon = null, giftWrap = false, rule =
   const afterCoupon = Math.max(0, subtotal - discount)
 
   // An empty basket is not charged for delivery, and once discounts have taken
-  // the order past the threshold the delivery is complimentary — both as the
-  // cart does it, measured after the discount rather than before.
-  const hasFreeShipping = shippingFee > 0 && freeShippingOver > shippingFee && freeShippingOver > 1
+  // the order past the threshold (or if either fee or threshold is 0) delivery
+  // is complimentary. `freeShippingOver` and `shippingFee` are independent.
+  const isFreeDeliveryAll = shippingFee === 0 || freeShippingOver === 0
+  const hasFreeShipping = shippingFee > 0 && freeShippingOver > 0
   const shipping =
-    shippingFee === 0
+    isFreeDeliveryAll || afterCoupon === 0 || afterCoupon >= freeShippingOver
       ? 0
-      : afterCoupon === 0
-        ? 0
-        : hasFreeShipping && afterCoupon >= freeShippingOver
-          ? 0
-          : shippingFee
+      : shippingFee
   const wrap = giftWrap ? giftWrapFee : 0
   const gst = Math.round((afterCoupon * GST_RATE) / GST_DIVISOR)
   const total = afterCoupon + shipping + wrap
