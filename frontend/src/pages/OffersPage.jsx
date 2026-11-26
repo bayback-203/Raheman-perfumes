@@ -6,7 +6,6 @@ import useCartStore from '@/store/cartStore'
 import { toast } from '@/store/uiStore'
 import { Icon } from '@/components/ui/Icon'
 import { Button } from '@/components/ui/Button'
-import { Chip } from '@/components/ui/Badge'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { Accordion } from '@/components/ui/Accordion'
 import { Tabs } from '@/components/ui/Tabs'
@@ -162,7 +161,7 @@ export function OffersPage() {
   return (
     <div className="pb-16">
       {/* Hero */}
-      <section className="relative flex flex-col justify-start overflow-hidden border-b border-brand-border bg-white text-brand-charcoal sm:min-h-screen sm:min-h-[100dvh] sm:justify-center">
+      <section className="relative flex flex-col justify-start overflow-hidden border-b border-brand-border bg-white text-brand-charcoal sm:min-h-[52vh] sm:justify-center lg:min-h-[54vh]">
         {/* Full-bleed background image: dead-centered bottles on phones, full cover on desktop */}
         <div
           className="pointer-events-none absolute inset-0 flex items-end overflow-hidden"
@@ -172,7 +171,7 @@ export function OffersPage() {
             src="/offer-white.jpg?v=3"
             alt=""
             decoding="async"
-            className="h-[96vw] max-h-[440px] w-full object-cover object-right-bottom sm:h-full sm:max-h-none sm:object-center"
+            className="h-[72vw] max-h-[300px] w-full object-cover object-right-bottom sm:h-full sm:max-h-none sm:object-center"
             style={{
               WebkitMaskImage:
                 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.82) 14%, black 26%)',
@@ -186,29 +185,20 @@ export function OffersPage() {
           className="pointer-events-none absolute inset-0 hidden sm:block sm:bg-gradient-to-r sm:from-white/90 sm:via-white/45 sm:to-transparent"
           aria-hidden="true"
         />
-        <div className="shell relative z-10 pb-[78vw] pt-[104px] text-center sm:py-24 sm:pt-32 sm:text-left lg:pt-40">
+        <div className="shell relative z-10 pb-[60vw] pt-[100px] text-center sm:pb-14 sm:pt-28 sm:text-left lg:pb-16 lg:pt-32">
           <div className="mx-auto max-w-2xl sm:mx-0">
-            <Chip tone="dark" className="bg-white/95 shadow-sm">
-              <Icon name="tag" className="h-3.5 w-3.5 text-brand-goldDark" />
-              {OFFER_HERO.badge}
-            </Chip>
-            <h1 className="mt-4 font-cormorant text-[32px] font-medium leading-[1.15] text-brand-charcoal sm:mt-6 sm:text-[44px]">
+            <h1 className="font-cormorant text-[30px] font-medium leading-[1.15] text-brand-charcoal sm:text-[42px]">
               {OFFER_HERO.title}
             </h1>
 
-            <div className="mt-5 flex flex-wrap justify-center gap-2.5 sm:mt-8 sm:justify-start sm:gap-3">
-              {showcase.showOffersProducts && (
+            {showcase.showOffersProducts && (
+              <div className="mt-5 flex flex-wrap justify-center gap-2.5 sm:mt-7 sm:justify-start sm:gap-3">
                 <Button variant="primary" size="lg" href="#vault" className="px-5 py-3 text-xs sm:px-7 sm:py-3.5 sm:text-label-md">
                   {OFFER_HERO.cta.label}
                   <Icon name="arrow-right" className="h-4 w-4" />
                 </Button>
-              )}
-              {showcase.showCouponsSection && (
-                <Button variant="outline" size="lg" href="#coupons" className="bg-white/90 px-5 py-3 text-xs sm:px-7 sm:py-3.5 sm:text-label-md">
-                  View Coupon Codes
-                </Button>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
