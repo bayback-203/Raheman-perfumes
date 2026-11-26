@@ -175,7 +175,6 @@ export function BestSellers({ products }) {
   if (!products && !showcase.showBestsellers) return null
 
   const currentTab = BESTSELLER_TABS.find((t) => t.id === activeTab) || BESTSELLER_TABS[0]
-  const totalInShop = displayList.length
 
   return (
     <section className="bridal-canvas relative overflow-hidden py-16 lg:py-20">
@@ -183,15 +182,10 @@ export function BestSellers({ products }) {
         <SectionHeading
           title="The Bestsellers"
           action={
-            <div className="flex flex-wrap items-center gap-2.5">
-              {displayList.length > 0 && (
-                <RowSlideControls canPrev={slider.canPrev} canNext={slider.canNext} onSlide={slider.slide} />
-              )}
-              <Button variant="outline" size="sm" to={currentTab.to}>
-                {currentTab.shopLabel} {totalInShop > 0 ? totalInShop : ''}
-                <Icon name="arrow-right" className="h-3.5 w-3.5" />
-              </Button>
-            </div>
+            <Button variant="outline" size="sm" to={currentTab.to}>
+              {currentTab.shopLabel}
+              <Icon name="arrow-right" className="h-3.5 w-3.5" />
+            </Button>
           }
         />
 
