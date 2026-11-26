@@ -797,37 +797,56 @@ html[data-theme='midnight'] .hero-mobile-custom-wrap {
 }
 
 html[data-theme='midnight'] .hero-default-top-fade {
-  background: linear-gradient(to bottom, rgba(4, 10, 24, 0.88), transparent) !important;
+  background: transparent !important;
 }
 
+/* Smooth full-bleed cosmic veil across the Hero — no oval dark blotch splitting left vs right */
 html[data-theme='midnight'] .hero-mist-radial-default,
 html[data-theme='midnight'] .hero-mist-radial-custom {
-  background: radial-gradient(
-    44% 58% at 24% 50%,
-    rgba(4, 10, 24, 0.92) 0%,
-    rgba(5, 12, 28, 0.72) 48%,
-    rgba(6, 13, 29, 0.22) 78%,
-    rgba(6, 13, 29, 0) 100%
+  background: linear-gradient(
+    90deg,
+    rgba(4, 10, 24, 0.9) 0%,
+    rgba(5, 12, 28, 0.78) 38%,
+    rgba(6, 13, 29, 0.45) 68%,
+    rgba(6, 13, 29, 0.22) 100%
   ) !important;
 }
 
 html[data-theme='midnight'] .hero-custom-scrim-x {
   background: linear-gradient(
     to right,
-    rgba(4, 10, 24, 0.92) 0%,
-    rgba(5, 12, 28, 0.76) 30%,
-    rgba(6, 13, 29, 0.34) 50%,
-    rgba(6, 13, 29, 0) 70%
+    rgba(4, 10, 24, 0.88) 0%,
+    rgba(5, 12, 28, 0.62) 38%,
+    rgba(6, 13, 29, 0.22) 68%,
+    rgba(6, 13, 29, 0) 100%
   ) !important;
 }
 
 html[data-theme='midnight'] .hero-custom-scrim-y {
   background: linear-gradient(
     to bottom,
-    rgba(4, 10, 24, 0.9) 0%,
-    rgba(5, 12, 28, 0.44) 60%,
+    rgba(4, 10, 24, 0.65) 0%,
+    rgba(5, 12, 28, 0.22) 55%,
     rgba(6, 13, 29, 0) 100%
   ) !important;
+}
+
+/* Soften ShopBanner top & left edges seamlessly without any header seam */
+html[data-theme='midnight'] .shop-banner-visual img {
+  opacity: 0.78 !important;
+}
+
+html[data-theme='midnight'] .shop-banner-veil {
+  background: linear-gradient(
+    180deg,
+    rgba(6, 13, 29, 0.55) 0%,
+    rgba(6, 13, 29, 0.14) 45%,
+    rgba(6, 13, 29, 0.42) 100%
+  ) !important;
+}
+
+html[data-theme='midnight'] .bridal-banner a[aria-current='page'] {
+  --tw-ring-offset-color: #070f23;
 }
 
 html[data-theme='midnight'] [class*='sm:from-white/90'] {
@@ -864,11 +883,10 @@ html[data-theme='midnight'] .hero-slide-dots button[aria-selected='true'] {
 html[data-theme='midnight'] header.site-header-transparent {
   background: linear-gradient(
     to bottom,
-    rgba(4, 10, 24, 0.92) 0%,
-    rgba(5, 12, 28, 0.62) 68%,
+    rgba(4, 10, 24, 0.62) 0%,
+    rgba(5, 12, 28, 0.24) 60%,
     rgba(6, 13, 29, 0) 100%
   ) !important;
-  backdrop-filter: blur(8px);
 }
 
 html[data-theme='midnight'] header.site-header-scrolled {
@@ -1141,6 +1159,16 @@ html[data-theme='midnight'] .btn-primary:hover,
 html[data-theme='midnight'] .btn-gold:hover {
   background: linear-gradient(135deg, #edd39a 0%, #d8b158 100%) !important;
   color: #050a18 !important;
+}
+
+/* Crisp dark ink & bars inside active Grid Layout Density buttons on gold background */
+html[data-theme='midnight'] [aria-label='Grid layout density'] button.bg-brand-charcoal span,
+html[data-theme='midnight'] [aria-label='Grid layout density'] button.bg-brand-charcoal svg {
+  color: #070e1e !important;
+}
+
+html[data-theme='midnight'] [aria-label='Grid layout density'] button.bg-brand-charcoal span[aria-hidden='true'] > span {
+  background-color: #070e1e !important;
 }
 
 html[data-theme='midnight'] .btn-outline {

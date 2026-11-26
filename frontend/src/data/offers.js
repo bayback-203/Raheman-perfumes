@@ -15,7 +15,7 @@ export const OFFER_HERO = {
   spotlight: 'Special Discount Collection',
   spotlightNote: 'Popular amber & oud perfume blends',
   badge: 'Limited Time Offers',
-  cta: { label: 'Shop Deals', to: '/offers#vault' },
+  cta: { label: 'Coupons', to: '/offers#coupons' },
 }
 
 /** Offer category tabs on the offers page. */

@@ -192,9 +192,9 @@ export function OffersPage() {
               {OFFER_HERO.title}
             </h1>
 
-            {showcase.showOffersProducts && (
+            {showcase.showCouponsSection && (
               <div className="mt-5 flex flex-wrap justify-center gap-2.5 sm:mt-7 sm:justify-start sm:gap-3">
-                <Button variant="primary" size="lg" href="#vault" className="px-5 py-3 text-xs sm:px-7 sm:py-3.5 sm:text-label-md">
+                <Button variant="primary" size="lg" href="#coupons" className="px-5 py-3 text-xs sm:px-7 sm:py-3.5 sm:text-label-md">
                   {OFFER_HERO.cta.label}
                   <Icon name="arrow-right" className="h-4 w-4" />
                 </Button>

@@ -114,7 +114,7 @@ export function ShopBanner({ collection, title, eyebrow, imageOverride }) {
       {/* Right-hand editorial perfume composition blended smoothly into bridal ivory silk */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-y-0 right-0 hidden w-[46%] overflow-hidden md:block lg:w-[44%]"
+        className="shop-banner-visual pointer-events-none absolute inset-y-0 right-0 hidden w-[46%] overflow-hidden md:block lg:w-[44%]"
         style={{
           WebkitMaskImage:
             'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.3) 18%, black 55%)',
@@ -128,7 +128,7 @@ export function ShopBanner({ collection, title, eyebrow, imageOverride }) {
           decoding="async"
           className="h-full w-full object-cover object-center opacity-90"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-[#FFFBF6]/30" />
+        <div className="shop-banner-veil absolute inset-0 bg-gradient-to-t from-transparent via-transparent to-[#FFFBF6]/30" />
       </div>
 
       <div className="shell relative z-20 pb-3.5 pt-[84px] sm:pb-4 sm:pt-[94px] lg:pb-4.5 lg:pt-[108px]">
