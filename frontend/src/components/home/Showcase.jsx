@@ -100,11 +100,11 @@ export function useShopActions() {
 }
 
 const BESTSELLER_TABS = [
-  { id: 'all', label: 'All Mix', icon: 'grid', to: '/shop/best-sellers', shopLabel: 'Shop All' },
-  { id: 'him', label: 'Him', icon: 'user', to: '/shop/men', shopLabel: "Shop Men's" },
-  { id: 'her', label: 'Her', icon: 'sparkle', to: '/shop/women', shopLabel: "Shop Women's" },
-  { id: 'attar', label: 'Attar', icon: 'crown', to: '/shop/attars', shopLabel: 'Shop Attars' },
-  { id: 'bakhoor', label: 'Bakhoor', icon: 'flame', to: '/shop/bakhoor', shopLabel: 'Shop Bakhoor' },
+  { id: 'all', label: 'All', to: '/shop/best-sellers', shopLabel: 'Shop All' },
+  { id: 'him', label: 'Him', to: '/shop/men', shopLabel: "Shop Men's" },
+  { id: 'her', label: 'Her', to: '/shop/women', shopLabel: "Shop Women's" },
+  { id: 'attar', label: 'Attar', to: '/shop/attars', shopLabel: 'Shop Attars' },
+  { id: 'bakhoor', label: 'Bakhoor', to: '/shop/bakhoor', shopLabel: 'Shop Bakhoor' },
 ]
 
 function matchesBestsellerTab(product, tabId) {
@@ -189,34 +189,36 @@ export function BestSellers({ products }) {
           }
         />
 
-        {/* Bestseller Category Filter Tabs (All Mix, Him, Her, Attar, Bakhoor) */}
+        {/* Bestseller Category Filter Tabs (All | Him | Her | Attar | Bakhoor) */}
         <div
           role="tablist"
           aria-label="Filter bestsellers"
-          className="no-scrollbar mt-4 mb-2 flex items-center gap-2 overflow-x-auto pb-1 pt-1"
+          className="no-scrollbar mt-4 mb-2 flex items-center gap-3 overflow-x-auto pb-1 pt-1"
         >
-          {BESTSELLER_TABS.map((tab) => {
+          {BESTSELLER_TABS.map((tab, index) => {
             const isActive = activeTab === tab.id
             return (
-              <button
-                key={tab.id}
-                type="button"
-                role="tab"
-                aria-selected={isActive}
-                onClick={() => setActiveTab(tab.id)}
-                className={cn(
-                  'inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-200 shrink-0 select-none cursor-pointer',
-                  isActive
-                    ? 'bg-brand-charcoal text-white shadow-sm ring-1 ring-brand-charcoal'
-                    : 'border border-brand-border bg-white/90 text-brand-charcoal hover:border-brand-gold hover:bg-brand-cream/60 hover:text-brand-charcoal'
+              <div key={tab.id} className="flex items-center gap-3 shrink-0">
+                {index > 0 && (
+                  <span aria-hidden="true" className="text-xs text-brand-border select-none">
+                    |
+                  </span>
                 )}
-              >
-                <Icon
-                  name={tab.icon}
-                  className={cn('h-3.5 w-3.5 transition-colors', isActive ? 'text-brand-gold' : 'text-brand-muted')}
-                />
-                <span>{tab.label}</span>
-              </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={isActive}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={cn(
+                    'py-1 text-xs font-semibold uppercase tracking-[0.14em] transition-colors duration-200 select-none cursor-pointer',
+                    isActive
+                      ? 'border-b-2 border-brand-goldDark text-brand-charcoal'
+                      : 'text-brand-muted hover:text-brand-charcoal'
+                  )}
+                >
+                  {tab.label}
+                </button>
+              </div>
             )
           })}
         </div>
