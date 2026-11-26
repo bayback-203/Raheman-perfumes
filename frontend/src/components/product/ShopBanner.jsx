@@ -1,7 +1,6 @@
 import { useSearchParams } from 'react-router-dom'
 import { Link } from '@/components/ui/AppLink'
 import cn from '@/lib/cn'
-import { Icon } from '@/components/ui/Icon'
 
 const BANNER_IMAGES = {
   originals: '/pillar-originals.jpg?v=4',
@@ -144,28 +143,28 @@ export function ShopBanner({ collection, title, eyebrow, imageOverride }) {
           {title}
         </h1>
 
-        <div className="no-scrollbar -mx-4 mt-2.5 flex flex-nowrap items-center gap-1.5 overflow-x-auto px-4 pb-0.5 sm:mx-0 sm:mt-3 sm:flex-wrap sm:gap-2 sm:overflow-visible sm:px-0 sm:pb-0">
-          {pills.map((pill) => {
+        <div className="no-scrollbar -mx-4 mt-3 flex flex-nowrap items-center gap-3 overflow-x-auto px-4 pb-1 pt-1 sm:mx-0 sm:mt-3.5 sm:flex-wrap sm:overflow-visible sm:px-0">
+          {pills.map((pill, index) => {
             const isActive = pill.active
             return (
-              <Link
-                key={pill.label}
-                to={pill.to}
-                className={cn(
-                  'inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full font-manrope px-3 py-1 text-xs font-semibold transition-all duration-300 sm:px-3.5 sm:py-1.5 sm:text-[13px]',
-                  isActive
-                    ? 'bg-gradient-to-r from-[#1A1613] via-[#2C231B] to-[#1A1613] text-[#FDF6E8] shadow-[0_4px_14px_-3px_rgba(20,16,12,0.45)] ring-1 ring-brand-gold/60'
-                    : 'border border-[#CDBAA0] bg-white text-brand-charcoal shadow-xs hover:-translate-y-0.5 hover:border-brand-charcoal hover:bg-[#FFFDF7] hover:shadow-sm',
+              <div key={pill.label} className="flex shrink-0 items-center gap-3">
+                {index > 0 && (
+                  <span aria-hidden="true" className="select-none text-xs text-brand-border">
+                    |
+                  </span>
                 )}
-              >
-                {pill.icon && (
-                  <Icon
-                    name={pill.icon}
-                    className={cn('h-3.5 w-3.5', isActive ? 'text-brand-gold' : 'text-brand-goldDark')}
-                  />
-                )}
-                {pill.label}
-              </Link>
+                <Link
+                  to={pill.to}
+                  className={cn(
+                    'whitespace-nowrap py-1 text-xs font-semibold uppercase tracking-[0.14em] transition-colors duration-200',
+                    isActive
+                      ? 'border-b-2 border-brand-goldDark text-brand-charcoal'
+                      : 'text-brand-muted hover:text-brand-charcoal',
+                  )}
+                >
+                  {pill.label}
+                </Link>
+              </div>
             )
           })}
         </div>
