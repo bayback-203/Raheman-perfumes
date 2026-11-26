@@ -282,7 +282,7 @@ export function OccasionGrid() {
     <section className="relative border-b border-[#EFE3D0] bg-white py-14 lg:py-16">
       <div className="shell">
         <h2 className="text-center font-cormorant text-2xl font-semibold tracking-tight text-brand-charcoal sm:text-3xl lg:text-headline-xl">
-          Discover Your Signature Scent
+          Shop by Occasion
         </h2>
 
         <div className="mt-8 grid grid-cols-2 gap-3.5 sm:mt-10 sm:grid-cols-3 sm:gap-4 lg:grid-cols-6 lg:gap-5">
