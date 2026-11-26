@@ -11,6 +11,17 @@ import { useUiStore } from '@/store/uiStore'
 
 const PRESET_DISCOUNTS = [5, 10, 15, 20]
 
+function isPlaceholderEmail(value) {
+  const clean = String(value ?? '').trim().toLowerCase()
+  if (!clean) return true
+  return (
+    clean === 'google.patron@rehmanperfume.in' ||
+    clean === 'walk-in@counter.rehmanperfume.in' ||
+    clean.endsWith('@counter.rehmanperfume.in') ||
+    clean.endsWith('@phone.counter.rehmanperfume.in')
+  )
+}
+
 /**
  * Issue a personal coupon code and email the repeat-customer benefit.
  * Supports single customer (with editable email if missing yet) or bulk repeat buyers.
@@ -32,7 +43,8 @@ export function BenefitEmailModal({ open, onClose, target = null, bulkRecipients
   useEffect(() => {
     if (!open) return
     setResult(null)
-    setEmail(target?.email ?? '')
+    const rawEmail = target?.email ?? ''
+    setEmail(isPlaceholderEmail(rawEmail) ? '' : rawEmail)
     const initialPct = target?.eligibleBenefit?.discountPercent || (isBulk ? 10 : 5)
     setDiscountPercent(!isOwner && initialPct > 15 ? 15 : initialPct)
     setMinOrder(rules?.minOrderAmount ?? 0)

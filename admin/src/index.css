@@ -164,6 +164,12 @@
     -moz-appearance: textfield;
   }
 
+  input:focus::placeholder,
+  textarea:focus::placeholder {
+    color: transparent !important;
+    opacity: 0;
+  }
+
   :focus-visible {
     @apply outline-none ring-2 ring-brand-gold ring-offset-2 ring-offset-brand-paper;
   }
@@ -221,7 +227,7 @@
   /* --- Form fields ------------------------------------------------------- */
   .field {
     @apply w-full rounded border border-outline-variant bg-brand-paper px-3 py-2 text-body-sm text-ink
-           placeholder:text-ink-muted/60 transition
+           placeholder:text-ink-muted/60 focus:placeholder:text-transparent transition
            focus:border-brand-gold focus:outline-none focus:ring-1 focus:ring-brand-gold;
   }
   .field-label {

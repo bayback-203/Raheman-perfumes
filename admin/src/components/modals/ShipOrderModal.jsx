@@ -28,7 +28,7 @@ export function ShipOrderModal({ open, onClose, order = null }) {
   const [courierSelect, setCourierSelect] = useState('Blue Dart')
   const [customCourier, setCustomCourier] = useState('')
   const [awb, setAwb] = useState('')
-  const [transitNote, setTransitNote] = useState('Air Express')
+  const [transitNote, setTransitNote] = useState('')
   const [expectedDelivery, setExpectedDelivery] = useState('')
   const [errors, setErrors] = useState({})
   const [submitting, setSubmitting] = useState(false)
@@ -40,7 +40,7 @@ export function ShipOrderModal({ open, onClose, order = null }) {
 
     const existingCourier = order.courier || order.tracking?.courier || ''
     const existingAwb = order.awb || order.trackingId || order.tracking?.awb || ''
-    const existingNote = order.tracking?.transitNote || 'Air Express'
+    const existingNote = order.tracking?.transitNote || ''
     const existingDate = order.tracking?.expectedDelivery
       ? new Date(order.tracking.expectedDelivery).toISOString().slice(0, 10)
       : ''

@@ -283,7 +283,7 @@ export default function LoginPage() {
                 autoFocus
                 value={forgotEmail}
                 onChange={edited(setForgotEmail)}
-                placeholder="ayaan@rahemanperfumes.in"
+                placeholder="Enter your admin email"
               />
 
               <Button

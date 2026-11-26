@@ -13,7 +13,12 @@ export const SYNTHETIC_PHONE_DOMAIN = '@phone.counter.rehmanperfume.in'
 export function isSyntheticEmail(email) {
   const clean = String(email ?? '').trim().toLowerCase()
   if (!clean) return true
-  return clean === WALK_IN_EMAIL || clean.endsWith(SYNTHETIC_PHONE_DOMAIN) || clean.endsWith('@counter.rehmanperfume.in')
+  return (
+    clean === WALK_IN_EMAIL ||
+    clean === 'google.patron@rehmanperfume.in' ||
+    clean.endsWith(SYNTHETIC_PHONE_DOMAIN) ||
+    clean.endsWith('@counter.rehmanperfume.in')
+  )
 }
 
 export function normalizeEmail(email) {

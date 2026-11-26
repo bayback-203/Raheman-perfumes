@@ -203,7 +203,7 @@ export function TaxonomyModal({ open, onClose, kind = 'category', record = null 
       record ??
         (isCategory
           ? { name: '', description: '', status: 'Active', shelf: categories.length + 1 }
-          : { name: '', house: BRAND_HOUSES[1], country: 'India', status: 'Stocked', since: new Date().getFullYear(), logo: '' }),
+          : { name: '', house: BRAND_HOUSES[1], country: '', status: 'Stocked', since: '', logo: '' }),
     )
     setErrors({})
     setUploadingLogo(false)
@@ -324,7 +324,8 @@ export function TaxonomyModal({ open, onClose, kind = 'category', record = null 
               min="1600"
               max="2100"
               value={draft.since ?? ''}
-              onChange={(event) => set('since')(Number(event.target.value))}
+              placeholder="e.g. 2024"
+              onChange={(event) => set('since')(event.target.value === '' ? '' : Number(event.target.value))}
             />
             <Select
               label="Status"
