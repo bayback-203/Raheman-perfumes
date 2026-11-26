@@ -156,14 +156,14 @@ export function Hero() {
               className="absolute inset-0"
               style={{
                 background:
-                  'linear-gradient(to right, rgba(255,255,255,0.94) 0%, rgba(255,255,255,0.82) 32%, rgba(255,255,255,0.28) 54%, rgba(255,255,255,0) 74%)',
+                  'linear-gradient(to right, rgba(255,255,255,0.52) 0%, rgba(255,255,255,0.36) 28%, rgba(255,255,255,0.12) 48%, rgba(255,255,255,0) 66%)',
               }}
             />
             <div
-              className="absolute inset-x-0 top-0 h-28"
+              className="absolute inset-x-0 top-0 h-24"
               style={{
                 background:
-                  'linear-gradient(to bottom, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.45) 55%, rgba(255,255,255,0) 100%)',
+                  'linear-gradient(to bottom, rgba(255,255,255,0.52) 0%, rgba(255,255,255,0.2) 55%, rgba(255,255,255,0) 100%)',
               }}
             />
           </>
@@ -256,8 +256,9 @@ export function Hero() {
       <div
         className="pointer-events-none absolute inset-0 hidden md:block"
         style={{
-          background:
-            'radial-gradient(34% 46% at 25% 50%, rgba(255,253,249,0.92) 0%, rgba(255,251,246,0.68) 45%, rgba(255,255,255,0.2) 76%, rgba(255,255,255,0) 100%)',
+          background: isCustomActive
+            ? 'radial-gradient(34% 46% at 25% 50%, rgba(255,253,249,0.42) 0%, rgba(255,251,246,0.25) 45%, rgba(255,255,255,0.08) 76%, rgba(255,255,255,0) 100%)'
+            : 'radial-gradient(34% 46% at 25% 50%, rgba(255,253,249,0.92) 0%, rgba(255,251,246,0.68) 45%, rgba(255,255,255,0.2) 76%, rgba(255,255,255,0) 100%)',
         }}
         aria-hidden="true"
       />
