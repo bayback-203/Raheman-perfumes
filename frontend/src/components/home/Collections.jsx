@@ -139,15 +139,11 @@ export function BrandStrip() {
   )
 
   return (
-    <section className="border-y border-[#E9DAC1] bg-gradient-to-r from-[#FFFDF9] via-[#FBF3E2]/75 to-[#FFFDF9] py-14">
-      <div className="shell">
-        <SectionHeading
-          align="center"
-          title="Brands We Carry"
-        />
-      </div>
-
-      <div className="brand-marquee mt-10 w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+    <section
+      aria-label="Brands We Carry"
+      className="border-y border-[#E9DAC1] bg-gradient-to-r from-[#FFFDF9] via-[#FBF3E2]/75 to-[#FFFDF9] py-6 sm:py-8"
+    >
+      <div className="brand-marquee w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
         <div
           className="brand-marquee-track items-center"
           style={{ '--marquee-duration': `${durationSeconds}s` }}

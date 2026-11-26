@@ -57,19 +57,19 @@ export function HomePage() {
       {/* 1. Landing page hero banner */}
       <Hero />
 
-      {/* 2. The Bestsellers */}
+      {/* 2. Brand Slider */}
+      <Reveal>
+        <BrandStrip />
+      </Reveal>
+
+      {/* 3. The Bestsellers */}
       <Reveal>
         <BestSellers />
       </Reveal>
 
-      {/* 3. The 4 Category Tiles: Perfumes, Attars, Combos, Bakhoor */}
+      {/* 4. The 4 Category Tiles: Perfumes, Attars, Combos, Bakhoor */}
       <Reveal>
         <Pillars />
-      </Reveal>
-
-      {/* 4. Brands We Carry */}
-      <Reveal>
-        <BrandStrip />
       </Reveal>
 
       {/* 5. Discover Your Signature Scent */}
