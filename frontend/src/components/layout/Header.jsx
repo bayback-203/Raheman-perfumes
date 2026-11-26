@@ -277,7 +277,7 @@ export function Header() {
                   }
                   blurTimer.current = setTimeout(() => setFocused(false), 250)
                 }}
-                placeholder="Search perfumes, notes, brands…"
+                placeholder="Search perfumes…"
                 aria-label="Search the catalogue"
                 className={cn(
                   'w-36 rounded-full border py-2 pl-9 pr-3 text-body-sm outline-none transition-all xl:w-52',
