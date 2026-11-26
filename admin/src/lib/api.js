@@ -11,7 +11,21 @@
  * the backend origin in dev).
  */
 
-const BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? '/api').replace(/\/$/, '')
+function sanitizeBaseUrl(raw) {
+  if (!raw) return '/api'
+  let url = String(raw).trim().replace(/\/$/, '')
+  const httpsIdx = url.lastIndexOf('https://')
+  const httpIdx = url.lastIndexOf('http://')
+  const protocolIdx = Math.max(httpsIdx, httpIdx)
+  if (protocolIdx > 0) {
+    url = url.slice(protocolIdx)
+  } else if (!/^https?:\/\//i.test(url) && !url.startsWith('/')) {
+    url = `https://${url}`
+  }
+  return url
+}
+
+const BASE_URL = sanitizeBaseUrl(import.meta.env.VITE_API_BASE_URL)
 
 export const API_ORIGIN = /^https?:\/\//i.test(BASE_URL) ? BASE_URL.replace(/\/api$/, '') : ''
 
