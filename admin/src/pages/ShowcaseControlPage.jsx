@@ -9,6 +9,7 @@ import { EmptyState, ErrorState, Skeleton } from '@/components/ui/Feedback'
 import { Panel } from '@/components/ui/StatCard'
 import { ProductThumb } from '@/components/ui/ProductThumb'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { HeroImagesEditor } from '@/components/media/HeroImagesEditor'
 import useDocumentTitle from '@/hooks/useDocumentTitle'
 import { useServerAction, useServerResource } from '@/hooks/useServerResource'
 import { useAdminStore } from '@/store/adminStore'
@@ -25,6 +26,7 @@ const DEFAULT_SHOWCASE = {
   showCombos: true,
   showCelebrities: true,
   showCarPerfumes: true,
+  heroImages: [],
   offerProductIds: [],
   bestsellerProductIds: [],
   homeDealProductIds: [],
@@ -527,6 +529,24 @@ export function ShowcaseControlPage() {
         </div>
       ) : (
         <>
+          <Panel
+            title="Hero Banner Images"
+            description="Change, replace, or upload up to 3 hero images for the homepage banner."
+            action={
+              isOwner && JSON.stringify(draft.heroImages ?? []) !== JSON.stringify(serverShowcase.heroImages ?? []) && (
+                <Button variant="gold" size="sm" icon="check" loading={busy} onClick={save}>
+                  Save hero images
+                </Button>
+              )
+            }
+          >
+            <HeroImagesEditor
+              heroImages={draft.heroImages ?? []}
+              disabled={!isOwner}
+              onChange={(nextHeroImages) => patch({ heroImages: nextHeroImages })}
+            />
+          </Panel>
+
           <Panel title="Access & Section Controls">
             <p className="mb-3 text-body-sm text-ink-muted">
               Step 1: Turn sections ON or OFF. Step 2: Add products in the sections below, then click <strong>Save changes</strong>.

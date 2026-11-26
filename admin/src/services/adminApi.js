@@ -551,7 +551,7 @@ const storeBody = (draft) => ({
   hours: draft.hours ?? '',
 })
 
-/** Access toggles & manually curated homepage / offers product lists. */
+/** Access toggles, hero images & manually curated homepage / offers product lists. */
 const showcaseBody = (draft) => ({
   codEnabled: Boolean(draft.codEnabled),
   showBestsellers: Boolean(draft.showBestsellers),
@@ -559,9 +559,16 @@ const showcaseBody = (draft) => ({
   showOffersProducts: Boolean(draft.showOffersProducts),
   showCouponsSection: Boolean(draft.showCouponsSection),
   showMultiBottleOffers: Boolean(draft.showMultiBottleOffers),
+  showCombos: Boolean(draft.showCombos),
+  showCelebrities: Boolean(draft.showCelebrities),
+  showCarPerfumes: Boolean(draft.showCarPerfumes),
+  heroImages: Array.isArray(draft.heroImages) ? draft.heroImages.map(String).filter(Boolean).slice(0, 3) : [],
   offerProductIds: Array.isArray(draft.offerProductIds) ? draft.offerProductIds.map(String) : [],
   bestsellerProductIds: Array.isArray(draft.bestsellerProductIds) ? draft.bestsellerProductIds.map(String) : [],
   homeDealProductIds: Array.isArray(draft.homeDealProductIds) ? draft.homeDealProductIds.map(String) : [],
+  comboProductIds: Array.isArray(draft.comboProductIds) ? draft.comboProductIds.map(String) : [],
+  celebrityProductIds: Array.isArray(draft.celebrityProductIds) ? draft.celebrityProductIds.map(String) : [],
+  carPerfumeProductIds: Array.isArray(draft.carPerfumeProductIds) ? draft.carPerfumeProductIds.map(String) : [],
 })
 
 export default adminApi

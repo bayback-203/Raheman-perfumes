@@ -1,10 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import cn from '@/lib/cn'
 import { Link } from '@/components/ui/AppLink'
 import { Button } from '@/components/ui/Button'
 import { Icon } from '@/components/ui/Icon'
+import { SectionHeading } from '@/components/ui/SectionHeading'
 import { PILLARS, OCCASIONS, GENDER_SEGMENTS } from '@/data/content'
+import { resolveImageUrl } from '@/data/productImages'
 import { TIERS } from '@/data/tiers'
+import { useShowcase } from '@/store/catalogueStore'
+
+const DEFAULT_HERO_IMAGE = '/hero-white.jpg?v=5'
+const HERO_ROTATE_MS = 8500
 
 const HERO_LINE_1 = 'Wear a scent that'
 const HERO_LINE_2 = 'exists only for you.'
@@ -87,8 +93,37 @@ function TypewriterHeadline() {
 /**
  * Pure-white editorial hero. The left column holds crisp dark typography over
  * negative studio white; the right column features the crystal flacon plate.
+ * Supports 1-3 admin-configured hero images with automatic 8.5s rotation.
  */
 export function Hero() {
+  const showcase = useShowcase()
+
+  const slides = useMemo(() => {
+    const custom = Array.isArray(showcase?.heroImages)
+      ? showcase.heroImages.map(resolveImageUrl).filter(Boolean).slice(0, 3)
+      : []
+    return custom.length > 0 ? custom : [DEFAULT_HERO_IMAGE]
+  }, [showcase?.heroImages])
+
+  const [activeIndex, setActiveIndex] = useState(0)
+
+  useEffect(() => {
+    setActiveIndex(0)
+  }, [slides.length])
+
+  useEffect(() => {
+    if (slides.length <= 1) return undefined
+    const media = typeof window !== 'undefined' ? window.matchMedia?.('(prefers-reduced-motion: reduce)') : null
+    if (media?.matches) return undefined
+
+    const timer = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % slides.length)
+    }, HERO_ROTATE_MS)
+    return () => clearInterval(timer)
+  }, [slides.length, activeIndex])
+
+  const safeIndex = activeIndex % slides.length
+
   return (
     <section className="relative flex flex-col justify-between overflow-hidden border-b border-brand-border bg-white text-brand-charcoal md:min-h-screen md:min-h-[100dvh]">
       {/* Ambient botanical left backdrop (tablet/desktop): wet vetiver grass, pampas plumes, ferns & sunlit leaf shadows */}
@@ -100,18 +135,29 @@ export function Hero() {
           className="relative w-auto aspect-[1376/768]"
           style={{ height: 'min(100%, 55.814vw)' }}
         >
-          <img
-            src="/hero-white.jpg?v=5"
-            alt=""
-            decoding="async"
-            className="h-full w-full object-contain"
-            style={{
-              WebkitMaskImage:
-                'linear-gradient(to right, black 8%, rgba(0,0,0,0.72) 22%, rgba(0,0,0,0.28) 33%, transparent 43%)',
-              maskImage:
-                'linear-gradient(to right, black 8%, rgba(0,0,0,0.72) 22%, rgba(0,0,0,0.28) 33%, transparent 43%)',
-            }}
-          />
+          {slides.map((src, index) => {
+            const active = index === safeIndex
+            const isDefault = src === DEFAULT_HERO_IMAGE
+            return (
+              <img
+                key={`hero-left-${src}-${index}`}
+                src={src}
+                alt=""
+                decoding="async"
+                className={cn(
+                  'absolute inset-0 h-full w-full transition-opacity duration-1000 ease-in-out',
+                  isDefault ? 'object-contain' : 'object-cover object-left',
+                  active ? 'opacity-100' : 'opacity-0',
+                )}
+                style={{
+                  WebkitMaskImage:
+                    'linear-gradient(to right, black 8%, rgba(0,0,0,0.72) 22%, rgba(0,0,0,0.28) 33%, transparent 43%)',
+                  maskImage:
+                    'linear-gradient(to right, black 8%, rgba(0,0,0,0.72) 22%, rgba(0,0,0,0.28) 33%, transparent 43%)',
+                }}
+              />
+            )
+          })}
           <div className="absolute inset-x-0 top-0 h-[14%] bg-gradient-to-b from-white to-transparent" />
         </div>
       </div>
@@ -130,12 +176,23 @@ export function Hero() {
         <div
           className="relative h-full w-auto shrink-0 aspect-[1376/768] md:h-[min(115%,62vw)] lg:h-[min(122%,58vw)]"
         >
-          <img
-            src="/hero-white.jpg?v=5"
-            alt="Luxury crystal perfume bottle on white marble framed by ornamental grass, roses, jasmine, blood orange, citrus, fig, aqua splash, oud wood, and cinnamon sticks"
-            decoding="async"
-            className="h-full w-full object-contain"
-          />
+          {slides.map((src, index) => {
+            const active = index === safeIndex
+            const isDefault = src === DEFAULT_HERO_IMAGE
+            return (
+              <img
+                key={`hero-right-${src}-${index}`}
+                src={src}
+                alt="Luxury crystal perfume bottle on white marble framed by ornamental grass, roses, jasmine, blood orange, citrus, fig, aqua splash, oud wood, and cinnamon sticks"
+                decoding="async"
+                className={cn(
+                  'absolute inset-0 h-full w-full transition-opacity duration-1000 ease-in-out',
+                  isDefault ? 'object-contain' : 'object-cover object-center',
+                  active ? 'opacity-100' : 'opacity-0',
+                )}
+              />
+            )
+          })}
         </div>
       </div>
 
@@ -163,18 +220,29 @@ export function Hero() {
           className="pointer-events-none absolute inset-x-0 bottom-0 top-0 flex items-end overflow-hidden md:hidden"
           aria-hidden="true"
         >
-          <img
-            src="/hero-white.jpg?v=5"
-            alt="Luxury crystal perfume bottle on white marble framed by roses, citrus, fig, oud wood, and cinnamon sticks"
-            decoding="async"
-            className="h-[104vw] max-h-[460px] w-full object-cover object-right-bottom"
-            style={{
-              WebkitMaskImage:
-                'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 14%, black 26%)',
-              maskImage:
-                'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 14%, black 26%)',
-            }}
-          />
+          {slides.map((src, index) => {
+            const active = index === safeIndex
+            const isDefault = src === DEFAULT_HERO_IMAGE
+            return (
+              <img
+                key={`hero-mobile-${src}-${index}`}
+                src={src}
+                alt="Luxury crystal perfume bottle on white marble framed by roses, citrus, fig, oud wood, and cinnamon sticks"
+                decoding="async"
+                className={cn(
+                  'absolute bottom-0 left-0 right-0 h-[104vw] max-h-[460px] w-full transition-opacity duration-1000 ease-in-out',
+                  isDefault ? 'object-cover object-right-bottom' : 'object-cover object-center',
+                  active ? 'opacity-100' : 'opacity-0',
+                )}
+                style={{
+                  WebkitMaskImage:
+                    'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 14%, black 26%)',
+                  maskImage:
+                    'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.8) 14%, black 26%)',
+                }}
+              />
+            )
+          })}
         </div>
 
         <div className="shell relative z-10 grid gap-8 pb-[86vw] pt-[104px] text-center sm:pb-[380px] sm:pt-32 md:my-auto md:grid-cols-[1.05fr_0.95fr] md:items-center md:gap-12 md:pb-16 md:pt-28 md:text-left lg:gap-16 lg:pb-24 lg:pt-36">
@@ -197,6 +265,32 @@ export function Hero() {
           <div className="hidden md:block" aria-hidden="true" />
         </div>
       </div>
+
+      {slides.length > 1 && (
+        <div
+          className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-brand-border/60 bg-white/80 px-3 py-1.5 backdrop-blur-xs"
+          role="tablist"
+          aria-label="Hero banner slides"
+        >
+          {slides.map((_, index) => {
+            const active = index === safeIndex
+            return (
+              <button
+                key={`hero-dot-${index}`}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                aria-label={`Show hero slide ${index + 1}`}
+                onClick={() => setActiveIndex(index)}
+                className={cn(
+                  'h-2 rounded-full transition-all duration-300 cursor-pointer',
+                  active ? 'w-6 bg-brand-charcoal' : 'w-2 bg-brand-charcoal/25 hover:bg-brand-charcoal/50',
+                )}
+              />
+            )
+          })}
+        </div>
+      )}
     </section>
   )
 }
@@ -206,7 +300,9 @@ export function Pillars() {
   return (
     <section className="bridal-canvas relative border-b border-[#EFE3D0] py-14 lg:py-16">
       <div className="shell">
-        <div className="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4">
+        <SectionHeading title="Categories" />
+
+        <div className="mt-8 grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4">
           {PILLARS.map((pillar) => (
             <Link
               key={pillar.id}

@@ -60,6 +60,7 @@ export const DEFAULT_SHOWCASE = {
   showCombos: true,
   showCelebrities: true,
   showCarPerfumes: true,
+  heroImages: [],
   offerProductIds: [],
   bestsellerProductIds: [],
   homeDealProductIds: [],
@@ -77,6 +78,20 @@ function normalizeIdList(values) {
     if (!id || seen.has(id)) continue
     seen.add(id)
     out.push(id)
+  }
+  return out
+}
+
+function normalizeHeroImages(values) {
+  if (!Array.isArray(values)) return []
+  const seen = new Set()
+  const out = []
+  for (const item of values) {
+    const url = String(item ?? '').trim()
+    if (!url || seen.has(url)) continue
+    seen.add(url)
+    out.push(url)
+    if (out.length >= 3) break
   }
   return out
 }
@@ -148,6 +163,7 @@ export async function getShowcase() {
       typeof stored.showCelebrities === 'boolean' ? stored.showCelebrities : DEFAULT_SHOWCASE.showCelebrities,
     showCarPerfumes:
       typeof stored.showCarPerfumes === 'boolean' ? stored.showCarPerfumes : DEFAULT_SHOWCASE.showCarPerfumes,
+    heroImages: normalizeHeroImages(stored.heroImages),
     offerProductIds: normalizeIdList(stored.offerProductIds),
     bestsellerProductIds: normalizeIdList(stored.bestsellerProductIds),
     homeDealProductIds: normalizeIdList(stored.homeDealProductIds),
@@ -372,6 +388,10 @@ export async function updateShowcase(patch = {}) {
 
   for (const key of ['offerProductIds', 'bestsellerProductIds', 'homeDealProductIds', 'comboProductIds', 'celebrityProductIds', 'carPerfumeProductIds']) {
     if (Array.isArray(patch[key])) next[key] = normalizeIdList(patch[key])
+  }
+
+  if (Array.isArray(patch.heroImages)) {
+    next.heroImages = normalizeHeroImages(patch.heroImages)
   }
 
   await Setting.put(SETTING_KEYS.showcase, next, 'Website display, COD & showcase products')

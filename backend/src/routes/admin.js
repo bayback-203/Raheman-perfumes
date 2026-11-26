@@ -1085,6 +1085,7 @@ router.patch(
 )
 
 const showcaseIdList = z.array(z.string().trim().min(1).max(64)).max(50).optional()
+const heroImageList = z.array(z.string().trim().min(1).max(2000)).max(3).optional()
 
 router.patch(
   '/settings/showcase',
@@ -1102,6 +1103,7 @@ router.patch(
         showCombos: z.boolean().optional(),
         showCelebrities: z.boolean().optional(),
         showCarPerfumes: z.boolean().optional(),
+        heroImages: heroImageList,
         offerProductIds: showcaseIdList,
         bestsellerProductIds: showcaseIdList,
         homeDealProductIds: showcaseIdList,
