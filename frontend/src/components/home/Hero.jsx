@@ -191,9 +191,6 @@ export function Hero() {
                 Shop The Collection
                 <Icon name="arrow-right" className="h-4 w-4" />
               </Button>
-              <Button variant="outline" size="lg" to="/combos" className="bg-white/90 px-5 py-3 text-xs sm:px-7 sm:py-3.5 sm:text-label-md">
-                Combos
-              </Button>
             </div>
           </div>
 
