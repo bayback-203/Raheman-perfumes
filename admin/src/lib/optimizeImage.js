@@ -1,5 +1,5 @@
-const DEFAULT_TARGET_BYTES = 850 * 1024
-const MAX_DIMENSION = 1920
+const DEFAULT_TARGET_BYTES = 4.5 * 1024 * 1024
+const MAX_DIMENSION = 3840
 
 function loadImage(file) {
   return new Promise((resolve, reject) => {
@@ -45,7 +45,7 @@ export async function optimizeImageForUpload(file, { maxBytes = DEFAULT_TARGET_B
     if (!ctx) return file
 
     const mimeCandidates = ['image/webp', 'image/jpeg']
-    const qualitySteps = [0.88, 0.8, 0.72, 0.62]
+    const qualitySteps = [0.94, 0.88, 0.8, 0.72]
     let bestBlob = null
     let bestMime = 'image/webp'
 
