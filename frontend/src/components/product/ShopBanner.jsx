@@ -42,59 +42,59 @@ export function ShopBanner({ collection, title, eyebrow, imageOverride }) {
   const visualSrc = imageOverride || BANNER_IMAGES[collection] || BANNER_IMAGES.default
 
   const pills = [
-    { label: 'All', to: '/shop', active: !collection && !sort },
+    { label: 'All', to: '/shop', badgeImage: '/badges/all.png', active: !collection && !sort },
     {
       label: 'Bestseller',
       to: '/shop/best-sellers',
-      icon: 'crown',
+      badgeImage: '/badges/bestseller.png',
       active: collection === 'best-sellers' || collection === 'bestsellers' || collection === 'bestseller',
     },
     {
       label: 'Originals',
       to: '/shop/originals',
-      icon: 'award',
+      badgeImage: '/badges/original.png',
       active: collection === 'originals' || collection === 'original',
     },
     {
       label: 'Inspired',
       to: '/shop/inspired',
-      icon: 'sparkle',
+      badgeImage: '/badges/inspired.png',
       active: collection === 'inspired',
     },
     {
       label: 'Pure Attars',
       to: '/shop/attars',
-      icon: 'sparkle',
+      badgeImage: '/badges/attar.png',
       active: collection === 'attars' || collection === 'attar',
     },
     {
       label: 'Celebrities',
       to: '/shop/celebrities',
-      icon: 'star',
+      badgeImage: '/badges/celebrity.png',
       active: collection === 'celebrities' || collection === 'celebrity' || collection === 'celebrity-perfumes',
     },
     {
       label: 'Car Perfumes',
       to: '/shop/car-perfumes',
-      icon: 'sparkle',
+      badgeImage: '/badges/car-perfume.png',
       active: collection === 'car-perfumes' || collection === 'car-perfume' || collection === 'car',
     },
     {
       label: 'Combos',
       to: '/combos',
-      icon: 'gift',
+      badgeImage: '/badges/combo.png',
       active: collection === 'combos' || collection === 'combo',
     },
     {
       label: 'Bakhoor',
       to: '/shop/bakhoor',
-      icon: 'flame',
+      badgeImage: '/badges/bakhoor.png',
       active: collection === 'bakhoor',
     },
     {
       label: 'New Arrivals',
       to: '/shop/new-arrivals',
-      icon: 'sparkle',
+      badgeImage: '/badges/new-arrivals.png',
       active: collection === 'new-arrivals' || collection === 'new' || sort === 'newest',
     },
   ]
@@ -143,28 +143,30 @@ export function ShopBanner({ collection, title, eyebrow, imageOverride }) {
           {title}
         </h1>
 
-        <div className="no-scrollbar -mx-4 mt-3 flex flex-nowrap items-center gap-3 overflow-x-auto px-4 pb-1 pt-1 sm:mx-0 sm:mt-3.5 sm:flex-wrap sm:overflow-visible sm:px-0">
-          {pills.map((pill, index) => {
+        <div className="no-scrollbar -mx-4 mt-3 flex flex-nowrap items-center gap-2.5 overflow-x-auto px-4 pb-1 pt-1 sm:mx-0 sm:mt-3.5 sm:flex-wrap sm:gap-3 sm:overflow-visible sm:px-0">
+          {pills.map((pill) => {
             const isActive = pill.active
             return (
-              <div key={pill.label} className="flex shrink-0 items-center gap-3">
-                {index > 0 && (
-                  <span aria-hidden="true" className="select-none text-xs text-brand-border">
-                    |
-                  </span>
+              <Link
+                key={pill.label}
+                to={pill.to}
+                aria-label={pill.label}
+                aria-current={isActive ? 'page' : undefined}
+                className={cn(
+                  'inline-flex shrink-0 items-center rounded-full transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold',
+                  isActive
+                    ? 'scale-[1.04] opacity-100 ring-2 ring-brand-gold ring-offset-2 drop-shadow-md'
+                    : 'opacity-85 hover:scale-[1.04] hover:opacity-100',
                 )}
-                <Link
-                  to={pill.to}
-                  className={cn(
-                    'whitespace-nowrap py-1 text-xs font-semibold uppercase tracking-[0.14em] transition-colors duration-200',
-                    isActive
-                      ? 'border-b-2 border-brand-goldDark text-brand-charcoal'
-                      : 'text-brand-muted hover:text-brand-charcoal',
-                  )}
-                >
-                  {pill.label}
-                </Link>
-              </div>
+              >
+                <img
+                  src={pill.badgeImage}
+                  alt={pill.label}
+                  loading="eager"
+                  decoding="async"
+                  className="h-7 w-auto select-none object-contain sm:h-8"
+                />
+              </Link>
             )
           })}
         </div>
