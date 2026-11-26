@@ -6,8 +6,6 @@ import { EmptyState, ErrorState, Skeleton } from '@/components/ui/Feedback'
 import { Modal } from '@/components/ui/Modal'
 import { Input, Select, FieldGroup } from '@/components/ui/Form'
 import { Panel } from '@/components/ui/StatCard'
-import { HeroImagesEditor } from '@/components/media/HeroImagesEditor'
-import { ThemeSelector } from '@/components/media/ThemeSelector'
 import useDocumentTitle from '@/hooks/useDocumentTitle'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { useServerResource, useServerAction } from '@/hooks/useServerResource'
@@ -75,8 +73,6 @@ export function SettingsPage() {
         </div>
       ) : (
         <>
-          <WebsiteThemePanel showcase={settings.data.showcase} canEdit={isOwner} onSaved={settings.reload} />
-          <HeroBannerPanel showcase={settings.data.showcase} canEdit={isOwner} onSaved={settings.reload} />
           <PricingPanel pricing={settings.data.pricing} canEdit={isOwner} onSaved={settings.reload} />
           <StorePanel store={settings.data.store} canEdit={isOwner} onSaved={settings.reload} />
           <EmailSetupPanel email={settings.data.email} canEdit={isOwner} onSaved={settings.reload} />
@@ -85,88 +81,6 @@ export function SettingsPage() {
 
       {isOwner && <StaffPanel resource={staff} currentUserId={currentUserId} />}
     </div>
-  )
-}
-
-/* ───────────────────────────────────────────────────── website theme ──── */
-
-function WebsiteThemePanel({ showcase = {}, canEdit, onSaved }) {
-  const { run, busy } = useServerAction()
-  const serverTheme = showcase?.siteTheme === 'midnight' ? 'midnight' : 'creamy'
-  const [draftTheme, setDraftTheme] = useState(serverTheme)
-
-  useEffect(() => {
-    setDraftTheme(serverTheme)
-  }, [serverTheme])
-
-  const dirty = draftTheme !== serverTheme
-
-  const save = async () => {
-    const result = await run(
-      () => adminApi.saveShowcase({ ...showcase, siteTheme: draftTheme }),
-      { success: `Website switched to ${draftTheme === 'midnight' ? 'Midnight Cosmic' : 'Creamy Ivory'} theme` },
-    )
-    if (result) onSaved()
-  }
-
-  return (
-    <Panel
-      title="Website Theme"
-      description="Switch the live storefront between the Creamy Ivory theme and the Midnight Cosmic dark starry theme."
-      action={
-        canEdit && (
-          <Button variant="gold" icon="check" onClick={save} loading={busy} disabled={!dirty}>
-            Save theme
-          </Button>
-        )
-      }
-    >
-      <ThemeSelector value={draftTheme} disabled={!canEdit} onChange={setDraftTheme} />
-    </Panel>
-  )
-}
-
-/* ─────────────────────────────────────────────────────── hero banner ──── */
-
-function HeroBannerPanel({ showcase = {}, canEdit, onSaved }) {
-  const { run, busy } = useServerAction()
-  const serverImages = useMemo(
-    () => (Array.isArray(showcase?.heroImages) ? showcase.heroImages.slice(0, 3) : []),
-    [showcase],
-  )
-  const [draftImages, setDraftImages] = useState(serverImages)
-
-  useEffect(() => {
-    setDraftImages(serverImages)
-  }, [serverImages])
-
-  const dirty = useMemo(
-    () => JSON.stringify(draftImages) !== JSON.stringify(serverImages),
-    [draftImages, serverImages],
-  )
-
-  const save = async () => {
-    const result = await run(
-      () => adminApi.saveShowcase({ ...showcase, heroImages: draftImages }),
-      { success: 'Hero banner updated' },
-    )
-    if (result) onSaved()
-  }
-
-  return (
-    <Panel
-      title="Homepage Hero Images"
-      description="Replace or add up to 3 hero images. Multiple images rotate automatically every 8–9 seconds."
-      action={
-        canEdit && (
-          <Button variant="gold" icon="check" onClick={save} loading={busy} disabled={!dirty}>
-            Save hero images
-          </Button>
-        )
-      }
-    >
-      <HeroImagesEditor heroImages={draftImages} disabled={!canEdit} onChange={setDraftImages} />
-    </Panel>
   )
 }
 
