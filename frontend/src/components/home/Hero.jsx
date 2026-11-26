@@ -69,19 +69,19 @@ function TypewriterHeadline() {
 
   return (
     <h1
-      className="relative font-cormorant text-[36px] font-medium leading-[1.12] tracking-tight text-brand-charcoal sm:text-[52px] lg:text-display-lg"
+      className="relative font-cormorant text-[36px] font-bold leading-[1.12] tracking-tight text-brand-charcoal sm:text-[52px] lg:text-display-lg"
       aria-label={`${HERO_LINE_1} ${HERO_LINE_2}`}
     >
       {/* Hidden full text locks the two-line height so surrounding layout never shifts while typing */}
       <span className="invisible select-none" aria-hidden="true">
         {HERO_LINE_1}
-        <span className="mt-1 block font-cormorant font-medium">{HERO_LINE_2}</span>
+        <span className="mt-1 block font-cormorant font-bold">{HERO_LINE_2}</span>
       </span>
 
       <span className="absolute inset-0" aria-hidden="true">
         {line1Text}
         {cursorOnLine1 && cursor}
-        <span className="mt-1 block font-cormorant font-medium text-brand-goldDark">
+        <span className="mt-1 block font-cormorant font-bold text-brand-goldDark">
           {line2Text}
           {cursorOnLine2 && cursor}
         </span>
