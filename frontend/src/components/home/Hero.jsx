@@ -295,11 +295,38 @@ export function Hero() {
           </div>
         )}
 
+        {/* Mobile dedicated landscape frame FIRST (above text), keeping desktop layout completely untouched */}
+        {isCustomActive && (
+          <div className="pt-[72px] sm:pt-[80px] md:hidden" aria-hidden="true">
+            <div className="relative w-full aspect-[16/10] overflow-hidden bg-white sm:aspect-[16/9]">
+              {slides.map((src, index) => {
+                if (src === DEFAULT_HERO_IMAGE) return null
+                const active = index === safeIndex
+                return (
+                  <img
+                    key={`hero-mobile-custom-${src}-${index}`}
+                    src={src}
+                    alt="Raheman Perfumes hero showcase"
+                    decoding="async"
+                    referrerPolicy="no-referrer"
+                    className={cn(
+                      'absolute inset-0 h-full w-full object-cover object-right transition-opacity duration-1000 ease-in-out',
+                      active ? 'opacity-100' : 'opacity-0',
+                    )}
+                  />
+                )
+              })}
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-6 bg-gradient-to-b from-white to-transparent" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-white to-transparent" />
+            </div>
+          </div>
+        )}
+
         <div
           className={cn(
             'shell relative z-10 grid gap-8 text-center md:my-auto md:grid-cols-[1.05fr_0.95fr] md:items-center md:gap-12 md:pb-16 md:pt-28 md:text-left lg:gap-16 lg:pb-24 lg:pt-36',
             isCustomActive
-              ? 'pb-4 pt-[96px] sm:pb-6 sm:pt-28'
+              ? cn('pt-5 sm:pt-6', slides.length > 1 ? 'pb-14 sm:pb-16' : 'pb-10 sm:pb-12')
               : 'pb-[86vw] pt-[104px] sm:pb-[380px] sm:pt-32',
           )}
         >
@@ -316,30 +343,6 @@ export function Hero() {
 
           <div className="hidden md:block" aria-hidden="true" />
         </div>
-
-        {/* Mobile dedicated landscape frame for custom hero images so bottle & artwork are never clipped or overlapped by CTA */}
-        {isCustomActive && (
-          <div className="relative mt-2 w-full aspect-[16/10] overflow-hidden bg-white sm:aspect-[16/9] md:hidden" aria-hidden="true">
-            {slides.map((src, index) => {
-              if (src === DEFAULT_HERO_IMAGE) return null
-              const active = index === safeIndex
-              return (
-                <img
-                  key={`hero-mobile-custom-${src}-${index}`}
-                  src={src}
-                  alt="Raheman Perfumes hero showcase"
-                  decoding="async"
-                  referrerPolicy="no-referrer"
-                  className={cn(
-                    'absolute inset-0 h-full w-full object-cover object-right transition-opacity duration-1000 ease-in-out',
-                    active ? 'opacity-100' : 'opacity-0',
-                  )}
-                />
-              )
-            })}
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-8 bg-gradient-to-b from-white to-transparent" />
-          </div>
-        )}
       </div>
 
       {slides.length > 1 && (
