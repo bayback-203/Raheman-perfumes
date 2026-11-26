@@ -1241,6 +1241,20 @@ export function ProductFormModal({ open, onClose, product = null }) {
               checked={Boolean(draft.featured)}
               onChange={(event) => set('featured')(event.target.checked)}
             />
+            {draft.tier === 'Inspired' && (
+              <Checkbox
+                label="Show in Home Inspired Perfumes"
+                description="Marks this Inspired perfume to appear directly under The Bestsellers on the Home page."
+                checked={Boolean(draft.collections?.includes('home-inspired'))}
+                onChange={(event) => {
+                  const current = Array.isArray(draft.collections) ? draft.collections : []
+                  const next = event.target.checked
+                    ? Array.from(new Set([...current, 'home-inspired']))
+                    : current.filter((c) => c !== 'home-inspired')
+                  set('collections')(next)
+                }}
+              />
+            )}
           </div>
         </FieldGroup>
 

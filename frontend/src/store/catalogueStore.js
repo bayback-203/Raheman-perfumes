@@ -24,6 +24,7 @@ import { productService } from '@/services/productService'
 export const DEFAULT_SHOWCASE = {
   codEnabled: true,
   showBestsellers: true,
+  showInspired: true,
   showHomeDeals: true,
   showOffersProducts: true,
   showCouponsSection: true,
@@ -35,6 +36,7 @@ export const DEFAULT_SHOWCASE = {
   heroImages: [],
   offerProductIds: [],
   bestsellerProductIds: [],
+  inspiredProductIds: [],
   homeDealProductIds: [],
   comboProductIds: [],
   celebrityProductIds: [],
@@ -47,6 +49,7 @@ function normalizeShowcase(raw) {
   return {
     codEnabled: typeof raw.codEnabled === 'boolean' ? raw.codEnabled : true,
     showBestsellers: typeof raw.showBestsellers === 'boolean' ? raw.showBestsellers : true,
+    showInspired: typeof raw.showInspired === 'boolean' ? raw.showInspired : true,
     showHomeDeals: typeof raw.showHomeDeals === 'boolean' ? raw.showHomeDeals : true,
     showOffersProducts: typeof raw.showOffersProducts === 'boolean' ? raw.showOffersProducts : true,
     showCouponsSection: typeof raw.showCouponsSection === 'boolean' ? raw.showCouponsSection : true,
@@ -58,6 +61,7 @@ function normalizeShowcase(raw) {
     heroImages: list(raw.heroImages).slice(0, 3),
     offerProductIds: list(raw.offerProductIds),
     bestsellerProductIds: list(raw.bestsellerProductIds),
+    inspiredProductIds: list(raw.inspiredProductIds),
     homeDealProductIds: list(raw.homeDealProductIds),
     comboProductIds: list(raw.comboProductIds),
     celebrityProductIds: list(raw.celebrityProductIds),
@@ -151,6 +155,7 @@ export const useCatalogueStore = create((set, get) => ({
       const anyMissing = [
         ...next.offerProductIds,
         ...next.bestsellerProductIds,
+        ...(next.inspiredProductIds ?? []),
         ...next.homeDealProductIds,
       ].some((id) => !current.byId[id])
 
@@ -216,6 +221,24 @@ export function useBestsellers() {
       (p) => (p.bestseller || p.badges?.includes('Bestseller')) && !curatedIds.has(p.id || p._id),
     )
     return [...(curated ?? []), ...tagged]
+  }, [curated, products])
+}
+
+/** Strictly Inspired-tier products manually selected or marked by Admin for the Home page Inspired Perfumes section. */
+export function useInspiredHome() {
+  const curated = useShowcaseProducts('inspiredProductIds')
+  const products = useCatalogueProducts()
+  return useMemo(() => {
+    const onlyInspiredCurated = (curated ?? []).filter((p) => p?.tier === 'Inspired')
+    const curatedIds = new Set(onlyInspiredCurated.map((p) => p.id || p._id))
+    const tagged = (products ?? []).filter(
+      (p) =>
+        p?.tier === 'Inspired' &&
+        Array.isArray(p.collections) &&
+        p.collections.includes('home-inspired') &&
+        !curatedIds.has(p.id || p._id),
+    )
+    return [...onlyInspiredCurated, ...tagged]
   }, [curated, products])
 }
 

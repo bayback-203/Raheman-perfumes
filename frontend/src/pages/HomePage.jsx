@@ -8,6 +8,7 @@ import { Hero, Pillars, GenderShowcase, OccasionGrid } from '@/components/home/H
 import { BrandStrip } from '@/components/home/Collections'
 import {
   BestSellers,
+  InspiredPerfumes,
   ComingSoon,
   DealsOfDay,
   ShopByNotes,
@@ -65,6 +66,11 @@ export function HomePage() {
       {/* 3. The Bestsellers */}
       <Reveal>
         <BestSellers />
+      </Reveal>
+
+      {/* 3b. Inspired Perfumes (strictly Inspired tier marked by Admin) */}
+      <Reveal>
+        <InspiredPerfumes />
       </Reveal>
 
       {/* 4. The 4 Category Tiles: Perfumes, Attars, Combos, Bakhoor */}

@@ -53,6 +53,7 @@ export const DEFAULT_EMAIL = {
 export const DEFAULT_SHOWCASE = {
   codEnabled: true,
   showBestsellers: true,
+  showInspired: true,
   showHomeDeals: true,
   showOffersProducts: true,
   showCouponsSection: true,
@@ -64,6 +65,7 @@ export const DEFAULT_SHOWCASE = {
   heroImages: [],
   offerProductIds: [],
   bestsellerProductIds: [],
+  inspiredProductIds: [],
   homeDealProductIds: [],
   comboProductIds: [],
   celebrityProductIds: [],
@@ -150,6 +152,7 @@ export async function getShowcase() {
   return {
     codEnabled: typeof stored.codEnabled === 'boolean' ? stored.codEnabled : DEFAULT_SHOWCASE.codEnabled,
     showBestsellers: typeof stored.showBestsellers === 'boolean' ? stored.showBestsellers : DEFAULT_SHOWCASE.showBestsellers,
+    showInspired: typeof stored.showInspired === 'boolean' ? stored.showInspired : DEFAULT_SHOWCASE.showInspired,
     showHomeDeals: typeof stored.showHomeDeals === 'boolean' ? stored.showHomeDeals : DEFAULT_SHOWCASE.showHomeDeals,
     showOffersProducts:
       typeof stored.showOffersProducts === 'boolean' ? stored.showOffersProducts : DEFAULT_SHOWCASE.showOffersProducts,
@@ -168,6 +171,7 @@ export async function getShowcase() {
     heroImages: normalizeHeroImages(stored.heroImages),
     offerProductIds: normalizeIdList(stored.offerProductIds),
     bestsellerProductIds: normalizeIdList(stored.bestsellerProductIds),
+    inspiredProductIds: normalizeIdList(stored.inspiredProductIds),
     homeDealProductIds: normalizeIdList(stored.homeDealProductIds),
     comboProductIds: normalizeIdList(stored.comboProductIds),
     celebrityProductIds: normalizeIdList(stored.celebrityProductIds),
@@ -196,10 +200,26 @@ export async function getPublicShowcase() {
     ...autoBestsellerIds.filter((id) => !showcase.bestsellerProductIds.includes(id)),
   ]
 
+  // Strictly only active Inspired-tier perfumes are allowed in the homepage Inspired section.
+  const inspiredDocs = await Product.find(
+    { status: 'Active', tier: 'Inspired' },
+    '_id collections',
+  ).lean()
+  const activeInspiredSet = new Set(inspiredDocs.map((doc) => String(doc._id)))
+  const autoInspiredIds = inspiredDocs
+    .filter((doc) => Array.isArray(doc.collections) && doc.collections.includes('home-inspired'))
+    .map((doc) => String(doc._id))
+  const filteredCuratedInspiredIds = showcase.inspiredProductIds.filter((id) => activeInspiredSet.has(id))
+  const mergedInspiredIds = [
+    ...filteredCuratedInspiredIds,
+    ...autoInspiredIds.filter((id) => !filteredCuratedInspiredIds.includes(id)),
+  ]
+
   if (offerAndDealIds.length === 0) {
     return {
       ...showcase,
       bestsellerProductIds: mergedBestsellerIds,
+      inspiredProductIds: mergedInspiredIds,
       comboProductIds: showcase.comboProductIds,
       celebrityProductIds: showcase.celebrityProductIds,
       carPerfumeProductIds: showcase.carPerfumeProductIds,
@@ -216,6 +236,7 @@ export async function getPublicShowcase() {
   return {
     ...showcase,
     bestsellerProductIds: mergedBestsellerIds,
+    inspiredProductIds: mergedInspiredIds,
     comboProductIds: showcase.comboProductIds,
     celebrityProductIds: showcase.celebrityProductIds,
     carPerfumeProductIds: showcase.carPerfumeProductIds,
@@ -377,6 +398,7 @@ export async function updateShowcase(patch = {}) {
   for (const key of [
     'codEnabled',
     'showBestsellers',
+    'showInspired',
     'showHomeDeals',
     'showOffersProducts',
     'showCouponsSection',
@@ -390,6 +412,17 @@ export async function updateShowcase(patch = {}) {
 
   for (const key of ['offerProductIds', 'bestsellerProductIds', 'homeDealProductIds', 'comboProductIds', 'celebrityProductIds', 'carPerfumeProductIds']) {
     if (Array.isArray(patch[key])) next[key] = normalizeIdList(patch[key])
+  }
+
+  if (Array.isArray(patch.inspiredProductIds)) {
+    const candidateIds = normalizeIdList(patch.inspiredProductIds).filter((id) => mongoose.isValidObjectId(id))
+    if (candidateIds.length === 0) {
+      next.inspiredProductIds = []
+    } else {
+      const validInspired = await Product.find({ _id: { $in: candidateIds }, tier: 'Inspired' }, '_id').lean()
+      const validSet = new Set(validInspired.map((doc) => String(doc._id)))
+      next.inspiredProductIds = candidateIds.filter((id) => validSet.has(id))
+    }
   }
 
   if (Array.isArray(patch.heroImages)) {

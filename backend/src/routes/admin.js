@@ -1096,6 +1096,7 @@ router.patch(
       .object({
         codEnabled: z.boolean().optional(),
         showBestsellers: z.boolean().optional(),
+        showInspired: z.boolean().optional(),
         showHomeDeals: z.boolean().optional(),
         showOffersProducts: z.boolean().optional(),
         showCouponsSection: z.boolean().optional(),
@@ -1107,6 +1108,7 @@ router.patch(
         heroImages: heroImageList,
         offerProductIds: showcaseIdList,
         bestsellerProductIds: showcaseIdList,
+        inspiredProductIds: showcaseIdList,
         homeDealProductIds: showcaseIdList,
         comboProductIds: showcaseIdList,
         celebrityProductIds: showcaseIdList,

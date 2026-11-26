@@ -563,6 +563,7 @@ const storeBody = (draft) => ({
 const showcaseBody = (draft) => ({
   codEnabled: Boolean(draft.codEnabled),
   showBestsellers: Boolean(draft.showBestsellers),
+  showInspired: Boolean(draft.showInspired),
   showHomeDeals: Boolean(draft.showHomeDeals),
   showOffersProducts: Boolean(draft.showOffersProducts),
   showCouponsSection: Boolean(draft.showCouponsSection),
@@ -574,6 +575,7 @@ const showcaseBody = (draft) => ({
   heroImages: Array.isArray(draft.heroImages) ? draft.heroImages.map(String).filter(Boolean).slice(0, 3) : [],
   offerProductIds: Array.isArray(draft.offerProductIds) ? draft.offerProductIds.map(String) : [],
   bestsellerProductIds: Array.isArray(draft.bestsellerProductIds) ? draft.bestsellerProductIds.map(String) : [],
+  inspiredProductIds: Array.isArray(draft.inspiredProductIds) ? draft.inspiredProductIds.map(String) : [],
   homeDealProductIds: Array.isArray(draft.homeDealProductIds) ? draft.homeDealProductIds.map(String) : [],
   comboProductIds: Array.isArray(draft.comboProductIds) ? draft.comboProductIds.map(String) : [],
   celebrityProductIds: Array.isArray(draft.celebrityProductIds) ? draft.celebrityProductIds.map(String) : [],

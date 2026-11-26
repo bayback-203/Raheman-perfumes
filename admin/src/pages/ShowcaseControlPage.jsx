@@ -20,6 +20,7 @@ import adminApi from '@/services/adminApi'
 const DEFAULT_SHOWCASE = {
   codEnabled: true,
   showBestsellers: true,
+  showInspired: true,
   showHomeDeals: true,
   showOffersProducts: true,
   showCouponsSection: true,
@@ -31,6 +32,7 @@ const DEFAULT_SHOWCASE = {
   heroImages: [],
   offerProductIds: [],
   bestsellerProductIds: [],
+  inspiredProductIds: [],
   homeDealProductIds: [],
   comboProductIds: [],
   celebrityProductIds: [],
@@ -51,6 +53,13 @@ const ACCESS_TOGGLES = [
     label: 'Home Page — Best Sellers Section',
     description: 'Show/hide "The Bestsellers" section on Home page.',
     icon: 'star',
+  },
+  {
+    key: 'showInspired',
+    listKey: 'inspiredProductIds',
+    label: 'Home Page — Inspired Perfumes Section',
+    description: 'Show/hide "Inspired Perfumes" under The Bestsellers (Inspired tier only).',
+    icon: 'sparkle',
   },
   {
     key: 'showHomeDeals',
@@ -120,6 +129,17 @@ const SHOWCASE_SECTIONS = [
     description: 'Manually add and order the perfumes shown under "The Bestsellers" on the Home page.',
     emptyTitle: 'No Best Sellers selected',
     emptyDescription: 'Pick products above to display them in Best Sellers on the Home page.',
+  },
+  {
+    key: 'inspiredProductIds',
+    toggleKey: 'showInspired',
+    inStockOnly: false,
+    allowedTiers: ['Inspired'],
+    title: 'Home Page — Inspired Perfumes (Inspired Tier Only)',
+    description:
+      'Appears right under "The Bestsellers" on the Home page. Strictly only Inspired perfumes can be added or displayed here.',
+    emptyTitle: 'No Inspired Perfumes selected',
+    emptyDescription: 'Pick active Inspired perfumes above to display them under The Bestsellers on the Home page.',
   },
   {
     key: 'homeDealProductIds',
@@ -251,6 +271,7 @@ function ShowcaseProductSection({
   emptyDescription,
   enabled,
   inStockOnly = false,
+  allowedTiers = null,
   selectedIds,
   products,
   productsById,
@@ -267,11 +288,12 @@ function ShowcaseProductSection({
     () =>
       products.filter((product) => {
         if (product.status !== 'Active') return false
+        if (allowedTiers && !allowedTiers.includes(product.tier)) return false
         if (inStockOnly && stockOf(product) <= 0) return false
         if (!query) return true
         return `${product.name} ${product.brand} ${product.sku} ${product.tier}`.toLowerCase().includes(query)
       }),
-    [products, query, inStockOnly],
+    [products, query, inStockOnly, allowedTiers],
   )
 
   const available = useMemo(
@@ -280,20 +302,27 @@ function ShowcaseProductSection({
   )
 
   const hasAnyActive = useMemo(
-    () => products.some((p) => p.status === 'Active' && (!inStockOnly || stockOf(p) > 0)),
-    [products, inStockOnly],
+    () =>
+      products.some(
+        (p) =>
+          p.status === 'Active' &&
+          (!allowedTiers || allowedTiers.includes(p.tier)) &&
+          (!inStockOnly || stockOf(p) > 0),
+      ),
+    [products, inStockOnly, allowedTiers],
   )
+  const tierHint = allowedTiers?.length === 1 ? `${allowedTiers[0]} ` : ''
   const emptyOptionLabel = !hasAnyActive
     ? inStockOnly
-      ? 'No in-stock active products available'
-      : 'No active products found'
+      ? `No in-stock active ${tierHint}products available`
+      : `No active ${tierHint}products found`
     : query && activeMatches.length === 0
       ? 'No matching products found'
       : query
         ? 'Matching products are already added'
         : inStockOnly
-          ? 'All in-stock active products are already added'
-          : 'All active products are already added'
+          ? `All in-stock active ${tierHint}products are already added`
+          : `All active ${tierHint}products are already added`
 
   const effectivePick = available.some((p) => p.id === pickedId) ? pickedId : (available[0]?.id ?? '')
 
@@ -594,6 +623,7 @@ export function ShowcaseControlPage() {
               emptyDescription={section.emptyDescription}
               enabled={Boolean(draft[section.toggleKey])}
               inStockOnly={Boolean(section.inStockOnly)}
+              allowedTiers={section.allowedTiers ?? null}
               selectedIds={draft[section.key] ?? []}
               products={products}
               productsById={productsById}
